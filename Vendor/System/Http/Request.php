@@ -15,12 +15,14 @@ class Request
         $requestUri = $this->server('REQUEST_URI');
 
         if (strpos($requestUri, '?')) list($requestUri, $queryString) = explode('?', $requestUri);
-
-        $this->url = preg_replace('#^' . $script . '#', ' ', $requestUri);
+      
+        if (! in_array($script, ['/', '\\'])) {
+            $this->url = preg_replace('#^' . $script . '#', '', $requestUri);
+        } else {
+            $this->url = $requestUri;
+        }
 
         $this->baseUrl = $this->server('REQUEST_SCHEME') . '://' . $this->server('HTTP_HOST') . $requestUri . '/';
-
-        echo $this->method();
     }
 
     public function get($key)

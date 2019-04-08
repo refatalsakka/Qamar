@@ -10,7 +10,6 @@ class Application
     
     public function __construct(File $file)
     {
-        echo "hio";
         $this->share('file', $file);
 
         $this->registerClasses();
@@ -28,6 +27,10 @@ class Application
         $this->session->start();
 
         $this->request->prepareUrl();
+
+        $this->file->call($this->file->to('App/index', '.php'));
+
+        $this->route->getProperRoute();
     }
 
     public function registerClasses()
