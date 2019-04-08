@@ -6,8 +6,50 @@ class Request
 {
     private $url;
 
+    private $baseUrl;
+
     public function prepareUrl()
     {
-        echo $_SERVER['REQUEST_URI'];
+        $script = dirname($this->server('SCRIPT_NAME'));
+
+        $requestUri = $this->server('REQUEST_URI');
+
+        if (strpos($requestUri, '?')) list($requestUri, $queryString) = explode('?', $requestUri);
+
+        $this->url = preg_replace('#^' . $script . '#', ' ', $requestUri);
+
+        $this->baseUrl = $this->server('REQUEST_SCHEME') . '://' . $this->server('HTTP_HOST') . $requestUri . '/';
+
+        echo $this->method();
+    }
+
+    public function get($key)
+    {
+        return array_get($_GET, $key);
+    }
+
+    public function post($key)
+    {
+        return array_get($_GET, $key);
+    }
+
+    public function server($key)
+    {
+        return array_get($_SERVER, $key);
+    }
+
+    public function method()
+    {
+        return $this->server('REQUEST_METHOD');
+    }
+
+    public function baseUrl()
+    {
+        return $this->baseUrl;
+    }
+
+    public function url()
+    {
+        return $this->url;
     }
 }

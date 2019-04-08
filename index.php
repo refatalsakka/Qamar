@@ -7,5 +7,10 @@ use System\Application;
 use System\File;
 
 $app = new Application(new File(__DIR__));
+$app = new Application(new File(__DIR__));
+$app = new Application(new File(__DIR__));
+// $app = Application::getInstance(new File(__DIR__));
+// $app = Application::getInstance(new File(__DIR__));
+// $app = Application::getInstance(new File(__DIR__));
 
 $app->run();

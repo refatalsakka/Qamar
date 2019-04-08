@@ -28,10 +28,10 @@ class File
         
     }
 
-    public function toVendor($path, $ext)
-    {   
-        return $this->to('Vendor' . static::DS . $path, $ext);
-    }
+    // public function toVendor($path, $ext)
+    // {   
+    //     return $this->to('Vendor' . static::DS . $path, $ext);
+    // }
 
     public function to($path, $ext)
     {

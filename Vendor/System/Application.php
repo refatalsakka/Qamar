@@ -3,17 +3,24 @@
 namespace System;
 
 class Application
-{
-
+{    
     private $container = [];
-
+ 
+    private static $instance;
+    
     public function __construct(File $file)
     {
+        echo "hio";
         $this->share('file', $file);
 
         $this->registerClasses();
 
         $this->loadHelpers();
+    }
+
+    public static function getInstance($file = null)
+    {
+        return static::$instance = is_null(static::$instance) ? new static($file) : static::$instance;
     }
 
     public function run()
@@ -30,16 +37,16 @@ class Application
 
     public function load($class)
     {
-        $toCorrect = (strpos($class, 'App') === 0) ? 'to': 'toVendor';
+        $toCorrect = (strpos($class, 'App') === 0) ? '': 'Vendor\\';
 
-        $file = $this->file->$toCorrect($class, '.php');
+        $file = $this->file->to($toCorrect . $class, '.php');
 
         $this->file->call($file);
     }
 
     private function loadHelpers()
     {
-        $this->file->call($this->file->toVendor('helpers', '.php'));
+        $this->file->call($this->file->to('Vendor/helpers', '.php'));
     }
 
     public function coreClasses()
@@ -47,6 +54,7 @@ class Application
         return [
             'request'   =>  'System\\Http\\Request',
             'response'  =>  'System\\Http\\Response',
+            'route'     =>  'System\\route',
             'session'   =>  'System\\Session',
             'cookie'    =>  'System\\Cookie',
             'load'      =>  'System\\Load',
