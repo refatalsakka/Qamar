@@ -30,7 +30,11 @@ class Application
 
         $this->file->call($this->file->to('App/index', '.php'));
 
-        $this->route->getProperRoute();
+        list($controller, $method, $arguments) = $this->route->getProperRoute();
+        echo $controller;
+        // $this->loader->controller($controller);
+
+        // $this->loader->action($controller, $method, $arguments);
     }
 
     public function registerClasses()
@@ -60,7 +64,7 @@ class Application
             'route'     =>  'System\\route',
             'session'   =>  'System\\Session',
             'cookie'    =>  'System\\Cookie',
-            'load'      =>  'System\\Load',
+            'loader'    =>  'System\\Loader',
             'html'      =>  'System\\Html',
             'db'        =>  'System\\Database',
             'view'      =>  'System\\View\\ViewFactory',
