@@ -46,7 +46,7 @@ class Route
 
     public function notFound()
     {
-
+        
     }
 
     public function getProperRoute()
