@@ -28,11 +28,6 @@ class File
         
     }
 
-    // public function toVendor($path, $ext)
-    // {   
-    //     return $this->to('Vendor' . static::DS . $path, $ext);
-    // }
-
     public function to($path, $ext)
     {
         return $this->root . static::DS . str_replace(['/', '\\'], static::DS, $path . $ext);

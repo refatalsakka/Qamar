@@ -24,7 +24,6 @@ class Loader
 
     public function controller($controller)
     {
-
         $controller = $this->getControllerName($controller);
         
         if (! $this->hasController($controller)) {

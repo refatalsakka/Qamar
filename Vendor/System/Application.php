@@ -32,7 +32,8 @@ class Application
 
         list($controller, $method, $arguments) = $this->route->getProperRoute();
 
-        $this->loader->action($controller, $method, $arguments);
+        $output = (string) $this->loader->action($controller, $method, $arguments);
+
     }
 
     public function registerClasses()
