@@ -31,10 +31,8 @@ class Application
         $this->file->call($this->file->to('App/index', '.php'));
 
         list($controller, $method, $arguments) = $this->route->getProperRoute();
-        echo $controller;
-        // $this->loader->controller($controller);
 
-        // $this->loader->action($controller, $method, $arguments);
+        $this->loader->action($controller, $method, $arguments);
     }
 
     public function registerClasses()

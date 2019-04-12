@@ -17,14 +17,16 @@ class Loader
 
     public function action($controller, $method, array $arguments)
     {
-
+        $object = $this->controller($controller);
+        
+        return call_user_func([$object, $method], $arguments);
     }
 
     public function controller($controller)
     {
-        echo '<br>';
+
         $controller = $this->getControllerName($controller);
-        echo $controller;
+        
         if (! $this->hasController($controller)) {
             $this->addController($controller);
         }
@@ -52,7 +54,7 @@ class Loader
     private function getControllerName($controller)
     {
         $controller .= 'Controller';
-        $controller .= 'App\\Controllers\\' . $controller;
+        $controller = 'App\\Controllers\\' . $controller;
 
         return $controller;
     }
