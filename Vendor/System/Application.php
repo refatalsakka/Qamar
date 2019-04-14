@@ -34,6 +34,10 @@ class Application
 
         $output = (string) $this->loader->action($controller, $method, $arguments);
 
+        $this->response->setOutput($output);
+
+        $this->response->send($output);
+
     }
 
     public function registerClasses()
