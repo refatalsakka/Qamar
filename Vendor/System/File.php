@@ -21,7 +21,7 @@ class File
     public function call($file)
     {
         if ($this->exists($file)) {
-            require $file;
+            return require $file;
         } else {
             die('Ohh! <strong>' . $file .'</strong> is not found');
         }

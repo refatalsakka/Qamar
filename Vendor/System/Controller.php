@@ -4,7 +4,7 @@ namespace System;
 
 abstract class Controller
 {
-    private $app;
+    protected $app;
 
     public function __construct(Application $app)
     {

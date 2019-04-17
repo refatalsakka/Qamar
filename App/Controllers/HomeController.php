@@ -8,12 +8,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $this->response->setHeaders('name', 'refat');
-
-        $data = [
-            'my_name' => 'Refat'
-        ];
-        return $this->view->render('home', $data);
+        $this->db;
     }
 
     public function profile()
