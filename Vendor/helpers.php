@@ -14,3 +14,10 @@ if (! function_exists('array_get')) {
         return isset($array[$key]) ? $array[$key] : $default;
     }
 }
+
+if (! function_exists('_e')) {
+    function _e($value)
+    {
+        return htmlspecialchars($value);
+    }
+}

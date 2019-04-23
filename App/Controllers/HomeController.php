@@ -8,14 +8,9 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $this->db;
-    }
-
-    public function profile()
-    {
-        $data = [
-            'my_name' => 'Hassan'
-        ];
-        return $this->view->render('home', $data);
+        // $this->db->query('insert into settings set `key` = ?,  `value` = ?', [
+        //     'refat',
+        //     'alsakka',
+        // ]);
     }
 }
