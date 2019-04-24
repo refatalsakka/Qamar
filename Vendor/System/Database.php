@@ -17,6 +17,8 @@ class Database
 
     private $bindings = [];
 
+    private $wheres = [];
+
     private $lastId;
 
     public function __construct(Application $app)
@@ -40,7 +42,6 @@ class Database
         extract($data);
         
         try {
-
             static::$connection  = new PDO('mysql:host=' . $server . ';dbname=' . $dbname, $dbuser, $dbpass);
 
             static::$connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -68,6 +69,17 @@ class Database
 
     }
 
+    public function where(...$bindings)
+    {
+        $sql = array_shift($bindings);
+
+        $this->addToBindings($bindings);
+
+        $this->wheres[] = $sql;
+
+        return $this;
+    }
+
     public function lastId()
     {
         return $this->lastId;
@@ -83,10 +95,15 @@ class Database
         if (is_array($key)) {
       
             $this->data = array_merge($this->data, $key);
+
+            $this->addToBindings($key);
        
         } else {
       
             $this->data[$key] = $value;
+
+            $this->addToBindings($value);
+
         }
         
         return $this;
@@ -100,14 +117,7 @@ class Database
 
         $sql = 'INSERT INTO ' . $this->table . ' SET ';
 
-        foreach($this->data as $key => $value) {
-
-            $sql .= '`' . $key . '` = ? ,';
-
-            $this->addToBindings($value);
-        }
-
-        $sql = rtrim($sql, ' ,');
+        $sql .= $this->setField();
 
         $this->query($sql, $this->bindings);
 
@@ -116,9 +126,47 @@ class Database
         return $this;
     }
 
-    private function addToBindings($data)
+    public function update($table = null)
     {
-        $this->bindings[] = _e($value);
+        if ($table) {
+            $this->table($table);
+        }
+
+        $sql = 'UPDATE ' . $this->table . ' SET ';
+
+        $sql .= $this->setField();
+        
+        if ($this->wheres) {
+            $sql .= ' WHERE ' . implode('', $this->wheres);
+        }
+        
+        $this->query($sql, $this->bindings);
+
+        return $this;
+    }
+
+    private function setField()
+    {
+        $sql = '';
+
+        foreach($this->data as $key => $value) {
+
+            $sql .= '`' . $key . '` = ? ,';
+        }
+        
+        $sql = rtrim($sql, ' ,');
+
+        return $sql;
+    }
+
+    private function addToBindings($value)
+    {
+        if (is_array($value)) {
+            $this->bindings = array_merge($this->bindings, array_values($value));
+        } else {
+            
+            $this->bindings[] = $value;
+        }
     }
 
     public function query(...$bindings)
@@ -133,7 +181,7 @@ class Database
             $query = $this->connection()->prepare($sql);
 
             foreach ($bindings as $key => $value) {
-                $query->bindValue($key + 1, $value);
+                $query->bindValue($key + 1, _e($value));
             }
 
             $query->execute();
