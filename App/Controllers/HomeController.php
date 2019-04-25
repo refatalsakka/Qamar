@@ -8,6 +8,8 @@ class HomeController extends Controller
 {
     public function index()
     {
-        // $this->db->data(['first_name' => 'hi'])->where('first_name = ?', 'refat')->update('users');
+        $users = $this->db->select('first_name')->from('users')->fetchAll();
+
+        pre($users);
     }
 }

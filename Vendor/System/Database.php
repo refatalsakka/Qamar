@@ -19,6 +19,18 @@ class Database
 
     private $wheres = [];
 
+    private $selects = [];
+
+    private $joins = [];
+
+    private $limit;
+
+    private $offset;
+   
+    private $rows;
+
+    private $orderBy = [];
+
     private $lastId;
 
     public function __construct(Application $app)
@@ -69,6 +81,20 @@ class Database
 
     }
 
+    public function select($select = '*')
+    {
+        $this->selects[] = $select;
+        
+        return $this;
+    }
+
+    public function join($join)
+    {
+        $this->joins[] = $joins;
+
+        return $this;
+    }
+
     public function where(...$bindings)
     {
         $sql = array_shift($bindings);
@@ -78,6 +104,97 @@ class Database
         $this->wheres[] = $sql;
 
         return $this;
+    }
+
+    public function limit($limit, $offset = 0)
+    {
+        $this->limit = $limit;
+
+        $this->offset = $offset;
+
+        return $this;
+    }
+
+    public function rows()
+    {
+        return $this->rows;
+    }
+
+    public function orderBy($orderBy, $sort = 'ASC')
+    {
+        $this->orderBy = [$orderBy, $sort];
+        
+        return $this;
+    }
+
+    public function fetch($table = null)
+    {
+        if ($table) {
+            $this->table($table);
+        }
+
+        $sql = $this->fetchStatment();
+
+        $query = $this->query($sql, $this->bindings);
+
+        $result = $query->fetch();
+
+        $this->rows = $query->rowCount();
+
+        return $result;
+    }
+
+    public function fetchAll($table = null)
+    {
+        if ($table) {
+            $this->table($table);
+        }
+
+        $sql = $this->fetchStatment();
+
+        $query = $this->query($sql, $this->bindings);
+        echo $sql . "<br>";
+        $results = $query->fetchall();
+
+        $this->rows = $query->rowCount();
+
+        return $results;
+    }
+
+    private function fetchStatment()
+    {
+        $sql = 'SELECT ';
+
+        $sql .= implode(', ', $this->selects);
+
+        $sql .= ' FROM ' . $this->table . ' ';
+
+        if ($this->joins) {
+            
+            $sql .= implode(' ', $this->joins);
+        }
+        
+        if ($this->wheres) {
+
+            $sql .= ' WHERE ' . implode(' ', $this->wheres);
+        }
+        
+        if ($this->limit) {
+
+            $sql .= ' LIMIT ' . implode (' ', $this->limit);
+        }
+        
+        if ($this->offset) {
+
+            $sql .= ' OFFSET ' . implode (' ', $this->offset);
+        }
+        
+        if ($this->orderBy) {
+
+            $sql .= ' ORDER BY ' . implode (' ', $this->orderBy);
+        }
+
+        return $sql;
     }
 
     public function lastId()
@@ -145,6 +262,23 @@ class Database
         return $this;
     }
 
+    public function delete($table = null)
+    {
+        if ($table) {
+            $this->table($table);
+        }
+
+        $sql = 'DELETE FROM ' . $this->table . ' ';
+        
+        if ($this->wheres) {
+            $sql .= ' WHERE ' . implode('', $this->wheres);
+        }
+        
+        $this->query($sql, $this->bindings);
+
+        return $this;
+    }
+
     private function setField()
     {
         $sql = '';
@@ -186,11 +320,37 @@ class Database
 
             $query->execute();
 
+            $this->reset();
+
             return $query;
 
         } catch (PDOException $e) {
 
             die($e->getMessage());
         }
+    }
+
+    private function reset()
+    {
+        $this->table = null;
+
+        $this->data = [];
+    
+        $this->bindings = [];
+    
+        $this->wheres = [];
+    
+        $this->selects = [];
+    
+        $this->joins = [];
+    
+        $this->limit = null;
+    
+        $this->offset = 0;
+
+        $this->rows = 0;
+    
+        $this->orderBy = [];
+    
     }
 }
