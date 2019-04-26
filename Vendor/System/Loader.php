@@ -60,21 +60,37 @@ class Loader
 
     public function model($model)
     {
-
+        $model = $this->getModelName($model);
+        
+        if (! $this->hasModel($model)) {
+            $this->addModel($model);
+        }
+        
+        return $this->getModel($model);
     } 
 
     private function hasModel($model)
     {
-
+        return array_key_exists($model, $this->models);
     }
 
     private function addModel($model)
     {
+        $object = new $model($this->app);
 
+        $this->models[$model] = $object;
     }
 
     private function getModel($model)
     {
+        return $this->models[$model];
+    }
 
+    private function getModelName($model)
+    {
+        $model .= 'Model';
+        $model = 'App\\Models\\' . $model;
+
+        return $model;
     }
 }

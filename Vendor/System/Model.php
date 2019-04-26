@@ -16,8 +16,8 @@ abstract class Model
         return $this->app->get($key);    
     }
 
-    public function __call ($method, $args)
+    public function __call($method, $args)
     {
-        
+        return call_user_func_array([$this->app->db, $method], $args);
     }
 }

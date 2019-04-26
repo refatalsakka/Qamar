@@ -8,8 +8,8 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $users = $this->db->select('first_name')->from('users')->fetchAll();
+       $users = $this->loader->model('Users');
 
-        pre($users);
+        pre($users->getUsers());
     }
 }
