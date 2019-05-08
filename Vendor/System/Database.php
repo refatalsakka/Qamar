@@ -49,7 +49,7 @@ class Database
 
     private function connect()
     {
-        $data = $this->app->file->call($this->app->file->to('config', '.php'));
+        $data = $this->app->file->call($this->app->file->to('config/database', '.php'));
 
         extract($data);
         
@@ -88,9 +88,15 @@ class Database
         return $this;
     }
 
-    public function join($join)
+    public function join($join, $localId = 'id', $forginId = null)
     {
-        $this->joins[] = $joins;
+        if (! $forginId) {
+            $forginId =  rtrim($this->table, 's') . '_id';
+        }
+
+        $sql = $join . ' ON ' . $this->table . '.' . $localId . ' = ' . $join . '.' . $forginId;
+
+        $this->joins[] = $sql;
 
         return $this;
     }
@@ -140,7 +146,7 @@ class Database
         $result = $query->fetch();
 
         $this->rows = $query->rowCount();
-
+        
         return $result;
     }
 
@@ -153,7 +159,7 @@ class Database
         $sql = $this->fetchStatment();
 
         $query = $this->query($sql, $this->bindings);
-        echo $sql . "<br>";
+        
         $results = $query->fetchall();
 
         $this->rows = $query->rowCount();
@@ -170,8 +176,8 @@ class Database
         $sql .= ' FROM ' . $this->table . ' ';
 
         if ($this->joins) {
-            
-            $sql .= implode(' ', $this->joins);
+
+            $sql .= 'LEFT JOIN ' . implode(' ', $this->joins);
         }
         
         if ($this->wheres) {

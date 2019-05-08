@@ -17,11 +17,15 @@ class Request
         if (strpos($requestUri, '?')) list($requestUri, $queryString) = explode('?', $requestUri);
       
         if (! in_array($script, ['/', '\\'])) {
+          
             $this->url = preg_replace('#^' . $script . '#', '', $requestUri);
         } else {
+            
             $this->url = $requestUri;
         }
 
+        $this->url = rtrim($this->url, '/');
+        
         $this->baseUrl = $this->server('REQUEST_SCHEME') . '://' . $this->server('HTTP_HOST') . $requestUri . '/';
     }
 

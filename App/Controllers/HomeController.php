@@ -8,8 +8,10 @@ class HomeController extends Controller
 {
     public function index()
     {
-       $users = $this->loader->model('Users');
+       $user = $this->loader->model('User');
 
-        pre($users->getUsers());
+       $comments = $user->comments()->where('comments.id = ?', 2)->fetchAll();
+
+       pre($comments);
     }
 }

@@ -8,6 +8,6 @@ class NotfoundController extends Controller
 {
     public function index()
     {
-        echo "<h1> No Page</h1>";
+        echo "<h1>No Page</h1>";
     }
 }

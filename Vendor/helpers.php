@@ -21,3 +21,10 @@ if (! function_exists('_e')) {
         return htmlspecialchars($value);
     }
 }
+
+if (! function_exists('getLastIndex')) {
+    function getLastIndex($index) {
+        $array = explode('\\', $index);
+        return end($array);
+    }
+}

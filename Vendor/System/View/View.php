@@ -26,7 +26,7 @@ class View implements ViewInterface
     private function preparePath($viewPath) {
 
         $this->viewPath = $this->app->file->to('App\\View\\' . $viewPath, '.php');
-    
+        
         if (! $this->viewfileExists($this->viewPath)) {
             echo $this->viewPath . ' does not exist';
         }

@@ -2,6 +2,8 @@
 
 namespace System;
 
+use Closure;
+
 class Application
 {    
     private $container = [];
@@ -56,26 +58,25 @@ class Application
 
     private function loadHelpers()
     {
-        $this->file->call($this->file->to('Vendor/helpers', '.php'));
+        $helpers = $this->file->to('Vendor/helpers', '.php');
+        
+        $this->file->call($helpers);
     }
 
     public function coreClasses()
     {
-        return [
-            'request'   =>  'System\\Http\\Request',
-            'response'  =>  'System\\Http\\Response',
-            'route'     =>  'System\\route',
-            'session'   =>  'System\\Session',
-            'cookie'    =>  'System\\Cookie',
-            'loader'    =>  'System\\Loader',
-            'html'      =>  'System\\Html',
-            'db'        =>  'System\\Database',
-            'view'      =>  'System\\View\\ViewFactory',
-        ];
+        $alias = $this->file->to('config/alias', '.php');
+
+        return $this->file->call($alias);
     }
 
     public function share($key, $value)
     {
+        if ($value instanceof Closure) {
+
+            $value = call_user_func($value, $this);
+        }
+
         $this->container[$key] = $value;
     }
 
@@ -88,6 +89,7 @@ class Application
                 
             } else {
                 die('Ohh! <strong>' . $key .'</strong> is not found');
+                exit();
             }
         }
         return $this->container[$key];

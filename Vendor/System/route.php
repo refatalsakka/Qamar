@@ -44,11 +44,6 @@ class Route
         return $action;
     }
 
-    public function notFound()
-    {
-        
-    }
-
     public function getProperRoute()
     {
         foreach($this->routes as $route) {
@@ -62,6 +57,8 @@ class Route
                 return [$controller, $method, $arguments];
             }
         }
+
+        // return ['Notfound', 'index', []];
     }
 
     public function isMatching($pattern)

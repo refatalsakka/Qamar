@@ -52,7 +52,10 @@ class Loader
 
     private function getControllerName($controller)
     {
-        $controller .= 'Controller';
+        $controller .= strpos($controller, 'Controller') ? '' : 'Controller';
+
+        $controller = str_replace('/', '\\', $controller);
+
         $controller = 'App\\Controllers\\' . $controller;
 
         return $controller;
@@ -88,7 +91,10 @@ class Loader
 
     private function getModelName($model)
     {
-        $model .= 'Model';
+        $model .= strpos($model, 'Model') ? '' : 'Model';
+
+        $model = str_replace('/', '\\', $model);
+
         $model = 'App\\Models\\' . $model;
 
         return $model;
