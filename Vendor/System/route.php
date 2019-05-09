@@ -48,7 +48,7 @@ class Route
     {
         foreach($this->routes as $route) {
 
-            if ($this->isMatching($route['pattern'])) {
+            if ($this->isMatching($route['pattern'])  && $this->isMatchingRequestMethod($route['method'])) {
 
                 list($controller, $method) = $route['action'];
 
@@ -66,6 +66,11 @@ class Route
         $url = $this->app->request->url();
         
         return preg_match($pattern, $url);  
+    }
+
+    private function isMatchingRequestMethod($method)
+    {
+        return $this->app->request->method() == $method;
     }
 
     public function getArgumentsFor($pattern)

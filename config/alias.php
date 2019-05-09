@@ -9,5 +9,7 @@ return [
     'loader'    =>  'System\\Loader',
     'html'      =>  'System\\Html',
     'db'        =>  'System\\Database',
+    'url'       =>  'System\\Url',
+    'validator' =>  'System\\Validation',
     'view'      =>  'System\\View\\ViewFactory',
 ];

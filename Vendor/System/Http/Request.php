@@ -24,7 +24,7 @@ class Request
             $this->url = $requestUri;
         }
 
-        $this->url = rtrim($this->url, '/');
+        // $this->url = rtrim($this->url, '/');
         
         $this->baseUrl = $this->server('REQUEST_SCHEME') . '://' . $this->server('HTTP_HOST') . $requestUri . '/';
     }
@@ -35,8 +35,8 @@ class Request
     }
 
     public function post($key)
-    {
-        return array_get($_GET, $key);
+    {   
+        return array_get($_POST, $key);
     }
 
     public function server($key)

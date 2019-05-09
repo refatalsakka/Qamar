@@ -22,7 +22,7 @@ class Html
         $this->title = $title;
     }
 
-    public function getTitle($title)
+    public function getTitle()
     {
         return $this->title;
     }
@@ -32,7 +32,7 @@ class Html
         $this->description = $description;
     }
 
-    public function getDescription($description)
+    public function getDescription()
     {
         return $this->description;
     }
@@ -42,7 +42,7 @@ class Html
         $this->keywords = $keywords;
     }
 
-    public function getKeywords($keywords)
+    public function getKeywords()
     {
         return $this->keywords;
     }

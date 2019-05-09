@@ -105,6 +105,8 @@ class Database
     {
         $sql = array_shift($bindings);
 
+        if (is_array($bindings[0])) $bindings = $bindings[0];
+
         $this->addToBindings($bindings);
 
         $this->wheres[] = $sql;

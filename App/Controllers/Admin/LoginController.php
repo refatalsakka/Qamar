@@ -8,6 +8,25 @@ class LoginController extends Controller
 {
     public function index()
     {
-     
+        $this->html->setTitle('Log in');
+
+        $data = [
+            
+        ];
+
+        $view = $this->view->render('Admin/login', $data);
+
+        return $this->admin->render($view);
+    }
+
+    public function submit()
+    {
+        $this->html->setTitle('Submit');
+
+        $userId = 2;
+        $this->validator->input('email')->require()->email()->unique(['users', 'email', 'id', $userId]);
+        $this->validator->input('password')->require()->minLen(5)->maxLen(10);
+
+        pre($this->validator->getMsgs());
     }
 }
