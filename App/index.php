@@ -4,8 +4,9 @@ use System\Application;
 
 $app = Application::getInstance();
 
-$app->route->add('/admin/home', 'Admin\Home');
+$app->route->add('/', 'Users/Home');
 
+$app->route->add('/admin/home', 'Admin\Home');
 $app->route->add('/admin/login', 'Admin\Login');
 $app->route->add('/admin/login/submit', 'Admin\Login@submit', 'POST');
 

@@ -23,10 +23,12 @@ class LoginController extends Controller
     {
         $this->html->setTitle('Submit');
 
-        $userId = 2;
-        $this->validator->input('email')->require()->email()->unique(['users', 'email', 'id', $userId]);
-        $this->validator->input('password')->require()->minLen(5)->maxLen(10);
+        // $userId = 2;
+        // $this->validator->input('email')->require()->email()->unique(['users', 'email', 'id', $userId]);
+        // $this->validator->input('password')->require()->minLen(5)->maxLen(10);
 
-        pre($this->validator->getMsgs());
+        $this->request->file('img');
+
+        // pre($this->validator->getMsgs());
     }
 }

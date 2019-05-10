@@ -104,11 +104,9 @@ class Validation
         $value = $this->value($this->input);
 
         $table = null;
-        
         $column = null;
 
         $id = null;
-
         $userId = null;
 
         if (count($data) == 2) list($table, $column) = $data;

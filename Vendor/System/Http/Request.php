@@ -2,11 +2,22 @@
 
 namespace System\Http;
 
+use System\Application;
+
 class Request
 {
+    private $app;
+
     private $url;
 
     private $baseUrl;
+
+    private $files = [];
+
+    public function __construct(Application $app)
+    {
+        $this->app = $app;
+    }
 
     public function prepareUrl()
     {
@@ -37,6 +48,20 @@ class Request
     public function post($key)
     {   
         return array_get($_POST, $key);
+    }
+    
+    public function file($input)
+    {
+        if (isset($this->files[$input])) {
+
+            return $this->files[$input];
+        }
+        
+        $upoadedFile = new UploadeFile($this->app, $input);
+        
+        $this->files[$input] = $upoadedFile;
+
+        return $this->files[$input];
     }
 
     public function server($key)
