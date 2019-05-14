@@ -28,8 +28,29 @@ class File
         
     }
 
-    public function to($path, $ext)
+    public function to($path, $ext = null)
     {
         return $this->root . static::DS . str_replace(['/', '\\'], static::DS, $path . $ext);
     }
+
+    public function public($target = null)
+    {
+        return $this->to('public/' . $target);
+    }
+
+    public function images($target = null)
+    {
+        return $this->public('images/' . $target);
+    }
+
+    public function javasctipt($target = null)
+    {
+        return $this->public('javasctipt/' . $target);
+    }
+
+    public function css($target = null)
+    {
+        return $this->public('css/' . $target);
+    }
+
 }

@@ -26,8 +26,13 @@ class LoginController extends Controller
         // $userId = 2;
         // $this->validator->input('email')->require()->email()->unique(['users', 'email', 'id', $userId]);
         // $this->validator->input('password')->require()->minLen(5)->maxLen(10);
+        
+        // $this->request->file('img');
 
-        $this->request->file('img');
+        $file = $this->request->file('img');
+        if ($file->isImage()) {
+            $file->moveTo($this->file->images());
+        }
 
         // pre($this->validator->getMsgs());
     }

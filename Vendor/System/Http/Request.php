@@ -35,7 +35,7 @@ class Request
             $this->url = $requestUri;
         }
 
-        // $this->url = rtrim($this->url, '/');
+        $this->url = rtrim($this->url, '/');
         
         $this->baseUrl = $this->server('REQUEST_SCHEME') . '://' . $this->server('HTTP_HOST') . $requestUri . '/';
     }
