@@ -22,6 +22,8 @@ class Route
         ];
 
         $this->routes[] = $routes;
+
+        return $this;
     }
 
     public function generatePattern($url)
@@ -49,7 +51,7 @@ class Route
         foreach($this->routes as $route) {
 
             if ($this->isMatching($route['pattern'])  && $this->isMatchingRequestMethod($route['method'])) {
-
+                
                 list($controller, $method) = $route['action'];
 
                 $arguments = $this->getArgumentsFor($route['pattern']);
@@ -82,5 +84,10 @@ class Route
         array_shift($matches);
 
         return $matches;
+    }
+
+    public function middleware($class, $method = 'index')
+    {
+        return $this->app->loader->middleware($class)->$method();
     }
 }

@@ -10,6 +10,8 @@ class Loader
 
     private $models = [];
 
+    private $middlewares = [];
+
     public function __construct(Application $app)
     {
         $this->app = $app;
@@ -98,5 +100,54 @@ class Loader
         $model = 'App\\Models\\' . $model;
 
         return $model;
+    }
+
+    public function middleware($middleware)
+    {        
+        if (! $this->hasMiddleware($middleware)) 
+        {
+            if ($this->isCoreMiddleware($middleware)) {
+
+                $this->addMiddleware($middleware);
+            } else {
+                
+                die('Ohh! <strong>' . $middleware .'</strong> is not found');
+                exit();
+            }
+        }
+        
+        return $this->getMiddleware($middleware);
+    } 
+
+    private function hasMiddleware($middleware)
+    {
+        return array_key_exists($middleware, $this->middlewares);
+    }
+
+    private function addMiddleware($middleware)
+    {
+        $key = $middleware;
+        
+        $middleware = $this->coreMiddlewares()[$middleware];
+
+        $object = new $middleware($this->app);
+
+        $this->middlewares[$key] = $object;
+    }
+
+    private function getMiddleware($middleware)
+    {
+        return $this->middlewares[$middleware];
+    }
+
+    private function coreMiddlewares()
+    {
+        $middlewares = $this->app->file->to('config/middelwares', '.php');
+
+        return $this->app->file->call($middlewares);
+    }
+
+    private function isCoreMiddleware($key) {
+        return isset($this->coreMiddlewares()[$key]);
     }
 }
