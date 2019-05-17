@@ -1,5 +1,9 @@
 # Vendor Composer
-Vendor
+Vendor/*
+
+# Exept my Files
+!Vendor/System
+!Vendor/helpers
 
 # JPEG
 *.jpg
