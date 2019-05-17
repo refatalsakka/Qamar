@@ -10,9 +10,9 @@ class Authenticate extends Middleware
     {
         // should be in Model 'Log in'
         
-       if (!$this->session->has('login')) {
+    //    if (!$this->session->has('login')) {
 
-           $this->app->url->redirectTo('/');
-       }
+    //        $this->app->url->redirectTo('/');
+    //    }
     }
 }
