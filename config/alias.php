@@ -6,7 +6,7 @@ return [
     'route'     =>  'System\\Route',
     'session'   =>  'System\\Session',
     'cookie'    =>  'System\\Cookie',
-    'loader'    =>  'System\\Loader',
+    'load'      =>  'System\\Loader',
     'html'      =>  'System\\Html',
     'db'        =>  'System\\Database',
     'url'       =>  'System\\Url',

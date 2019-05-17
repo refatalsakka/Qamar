@@ -13,6 +13,6 @@ abstract class Middleware
 
     public function __get($key)
     {
-        return $this->app->get($key);    
+        return $this->app->get($key);
     }
 }

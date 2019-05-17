@@ -13,7 +13,12 @@ class Url
 
     public function link($path)
     {
-        return $this->app->request->baseUrl() . trim($path, '/');
+        $link = $this->app->request->link();
+        
+        $path = rtrim($path, '/');
+        $path = ltrim($path, '/');
+
+        return $link . '/' . $path;
     }
 
     public function redirectTo($path)

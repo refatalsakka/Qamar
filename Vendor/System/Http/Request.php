@@ -14,6 +14,8 @@ class Request
 
     private $files = [];
 
+    private $link;
+
     public function __construct(Application $app)
     {
         $this->app = $app;
@@ -37,7 +39,10 @@ class Request
 
         if ($this->url !== '/') $this->url = rtrim($this->url, '/');
         
-        $this->baseUrl = $this->server('REQUEST_SCHEME') . '://' . $this->server('HTTP_HOST') . $requestUri . '/';
+        $this->link = $this->server('REQUEST_SCHEME') . '://' . $this->server('HTTP_HOST');
+
+        $this->baseUrl = $this->link . $requestUri;
+
     }
 
     public function get($key)
@@ -82,5 +87,10 @@ class Request
     public function url()
     {
         return $this->url;
+    }
+
+    public function link()
+    {
+        return $this->link;
     }
 }

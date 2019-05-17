@@ -34,7 +34,7 @@ class Application
 
         list($controller, $method, $arguments) = $this->route->getProperRoute();
 
-        $output = (string) $this->loader->action($controller, $method, $arguments);
+        $output = (string) $this->load->action($controller, $method, $arguments);
 
         $this->response->setOutput($output);
 

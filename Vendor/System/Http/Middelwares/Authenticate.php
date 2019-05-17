@@ -8,8 +8,11 @@ class Authenticate extends Middleware
 {
     public function index()
     {
-       if (!$this->session->has('login') || $this->session->get('login') == false) {
-           echo 'no';
+        // should be in Model 'Log in'
+        
+       if (!$this->session->has('login')) {
+
+           $this->app->url->redirectTo('/');
        }
     }
 }

@@ -10,8 +10,8 @@ class LayoutController extends Controller
     public function render(ViewInterface $view)
     {
        $data['content'] = $view;
-       $data['header'] = $this->loader->controller('Admin/Common/Header')->index();
-       $data['footer'] = $this->loader->controller('Admin/Common/Footer')->index();
+       $data['header'] = $this->load->controller('Admin/Common/Header')->index();
+       $data['footer'] = $this->load->controller('Admin/Common/Footer')->index();
 
        return $this->view->render('admin/common/layout', $data);
 

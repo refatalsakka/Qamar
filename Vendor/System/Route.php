@@ -52,12 +52,21 @@ class Route
     {
         foreach($this->routes as $route) {
 
-            if ($this->isMatching($route['pattern'])  && $this->isMatchingRequestMethod($route['method'])) {
+            if ($this->isMatching($route['pattern']) && $this->isMatchingRequestMethod($route['method'])) {
 
-                if (is_array($route['middleware'])) {
-                    
-                } else {
-                    $this->middleware($route['middleware']);
+                if (! empty($route['middleware'] )) {
+                  
+                    if (is_array($route['middleware'])) {
+                        
+                        foreach($route['middleware'] as $class) {
+    
+                            $this->middleware($class);
+                        }
+    
+                    } else {
+    
+                        $this->middleware($route['middleware']);
+                    }
                 }
 
                 list($controller, $method) = $route['action'];
@@ -80,6 +89,26 @@ class Route
 
     private function isMatchingRequestMethod($method)
     {
+        $methods = ['GET', 'POST'];
+
+        if (($method == 'both') && in_array($this->app->request->method(), $methods)) return true;
+
+        if (is_array($method)) {
+
+            if (count($method) == 1) {
+
+                $method = $method[0];
+
+            } else if (count($method) == 2) {
+                
+                if (in_array($method[0], $methods) && in_array($method[1], $methods)) return true;
+
+            } else {
+
+                return false;
+            }
+        }
+
         return $this->app->request->method() == $method;
     }
 
@@ -94,8 +123,8 @@ class Route
         return $matches;
     }
 
-    public function middleware($class, $method = 'index')
+    public function middleware($class)
     {
-        return $this->app->loader->middleware($class)->$method();
+        return $this->app->load->middleware($class)->index();
     }
 }
