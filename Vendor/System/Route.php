@@ -12,13 +12,15 @@ class Route
     {
         $this->app = $app;
     }
-    public function add($url, $action, $requestMethos = 'GET')
+
+    public function add($url, $action, $requestMethos = 'GET', $middlware = [])
     {
         $routes = [
             'url'       => $url,
             'pattern'   => $this->generatePattern($url),
             'action'    => $this->getAction($action),
-            'method'    => $requestMethos
+            'method'    => $requestMethos,
+            'middleware' => $middlware
         ];
 
         $this->routes[] = $routes;
@@ -51,7 +53,13 @@ class Route
         foreach($this->routes as $route) {
 
             if ($this->isMatching($route['pattern'])  && $this->isMatchingRequestMethod($route['method'])) {
-                
+
+                if (is_array($route['middleware'])) {
+                    
+                } else {
+                    $this->middleware($route['middleware']);
+                }
+
                 list($controller, $method) = $route['action'];
 
                 $arguments = $this->getArgumentsFor($route['pattern']);
