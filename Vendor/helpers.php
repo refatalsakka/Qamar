@@ -2,7 +2,6 @@
 
 use System\Application;
 
-
 if (! function_exists('pre')) {
     function pre($var) {
         echo '<pre>';
