@@ -84,7 +84,7 @@ class Database
     public function select($select = '*')
     {
         $this->selects[] = $select;
-        
+  
         return $this;
     }
 
@@ -146,7 +146,7 @@ class Database
         }
 
         $sql = $this->fetchStatment();
-
+        
         $query = $this->query($sql, $this->bindings);
 
         $result = $query->fetch();
@@ -177,8 +177,14 @@ class Database
     {
         $sql = 'SELECT ';
 
-        $sql .= implode(', ', $this->selects);
+        if ( $this->selects) {
 
+            $sql .= implode(', ', $this->selects);
+
+        } else {
+            $sql .= '*';
+        }
+ 
         $sql .= ' FROM ' . $this->table . ' ';
 
         if ($this->joins) {

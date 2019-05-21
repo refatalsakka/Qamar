@@ -28,5 +28,6 @@ class HomeController extends Controller
         // $comments = $this->load->model('Post')->comments(3);
         // pre($comments);
         // echo "<h1>hi</h1>";
+        $this->app->load->model('UsersGroups')->get(1);
     }
 }

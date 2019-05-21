@@ -6,6 +6,8 @@ abstract class Model
 {
     protected $app;
 
+    protected $table;
+
     public function __construct(Application $app)
     {
         $this->app = $app;
@@ -19,6 +21,11 @@ abstract class Model
     public function __call($method, $args)
     {
         return call_user_func_array([$this->app->db, $method], $args);
+    }
+
+    public function get($id)
+    {
+        return $this->where('id = ?' , $id)->fetch($this->table);
     }
 
     public function hasOne($join, $id = null, $localId = null, $forginId = null)
