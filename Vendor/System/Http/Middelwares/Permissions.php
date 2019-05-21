@@ -12,7 +12,7 @@ class Authenticate extends Middleware
         
     //    if (!$this->session->has('login')) {
 
-           echo 'noooooo';
+    //        $this->app->url->redirectTo('/');
     //    }
     }
 }

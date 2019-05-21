@@ -6,5 +6,5 @@ use System\Model;
 
 class CategoryModel extends Model
 {
-
+    protected $table = 'categories';
 }

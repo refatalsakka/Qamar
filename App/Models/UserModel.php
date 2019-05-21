@@ -6,14 +6,15 @@ use System\Model;
 
 class UserModel extends Model
 {
+    protected $table = 'users';
 
-    public function comment()
+    public function permissions($id)
     {
-        return $this->hasOne('App\Models\Comment');
-    }
+        return $this->hasMany('UsersGroupPermissions', $id, 'id', 'users_group_id');
+    } 
 
-    public function comments()
+    public function comments($id)
     {
-        return $this->hasMany('App\Models\Comment');
-    }
+        return $this->hasMany('Comment', $id);
+    } 
 }

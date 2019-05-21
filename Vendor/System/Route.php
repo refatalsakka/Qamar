@@ -125,6 +125,6 @@ class Route
 
     public function middleware($class)
     {
-        return $this->app->load->middleware($class)->index();
+        return $this->app->load->middleware($class)->handle();
     }
 }

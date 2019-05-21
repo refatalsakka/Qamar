@@ -21,26 +21,11 @@ abstract class Model
         return call_user_func_array([$this->app->db, $method], $args);
     }
 
-    private function cleanName($model)
-    {
-        $model =  getLastIndex($model);
-
-        $model = rtrim($model, 'Model');
-
-        $model = strtolower($model);
-
-        $model = (substr($model, -1) == 'y') ? $model . 'ies' : $model . 's';
-
-        return $model;
-    }
-
-    public function hasOne($join)
+    public function hasOne($join, $id = null, $localId = null, $forginId = null)
     {
         $join = rtrim($join, 'Model');
-
-        $join .= 'Model';
-
-        $file = $this->app->file->to($join, '.php');
+ 
+        $file = $this->app->file->to( 'App/Models/' . $join . 'Model', '.php');
        
         $exists = $this->app->file->exists($file);
      
@@ -48,22 +33,18 @@ abstract class Model
         
         $trace = debug_backtrace();
 
-        $table = $trace[1]['class'];
-
-        $table = $this->cleanName($table);
+        $table = $trace[1]['object']->table;
+            
+        $join = $this->load->model($join)->table;
         
-        $join = $this->cleanName($join);
-    
-        return $this->db->select()->from($table)->join($join)->fetch();
+        return $this->db->select()->from($table)->join($join, $localId, $forginId)->where($table . '.id = ?', $id)->fetch();
     }
 
-    public function hasMany($join)
+    public function hasMany($join, $id = null, $localId = null, $forginId = null)
     {
         $join = rtrim($join, 'Model');
-
-        $join .= 'Model';
-
-        $file = $this->app->file->to($join, '.php');
+ 
+        $file = $this->app->file->to( 'App/Models/' . $join . 'Model', '.php');
        
         $exists = $this->app->file->exists($file);
      
@@ -71,12 +52,10 @@ abstract class Model
         
         $trace = debug_backtrace();
 
-        $table = $trace[1]['class'];
+        $table = $trace[1]['object']->table;
+            
+        $join = $this->load->model($join)->table;
 
-        $table = $this->cleanName($table);
-        
-        $join = $this->cleanName($join);
-    
-        return $this->db->select()->from($table)->join($join);
+        return $this->db->select()->from($table)->join($join, $localId, $forginId)->where($table . '.id = ?', $id)->fetchAll();
     }
 }

@@ -13,7 +13,9 @@ class LayoutController extends Controller
        $data['header'] = $this->load->controller('Admin/Common/Header')->index();
        $data['footer'] = $this->load->controller('Admin/Common/Footer')->index();
 
-       return $this->view->render('admin/common/layout', $data);
+       return $this->view->render('admin/common/layout', [
+           
+       ]);
 
     }
 }

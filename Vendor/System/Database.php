@@ -88,14 +88,18 @@ class Database
         return $this;
     }
 
-    public function join($join, $localId = 'id', $forginId = null)
+    public function join($join, $localId = null, $forginId = null)
     {
+        if (! $localId) {
+            $localId =  'id';
+        }
+  
         if (! $forginId) {
             $forginId =  rtrim($this->table, 's') . '_id';
         }
 
         $sql = $join . ' ON ' . $this->table . '.' . $localId . ' = ' . $join . '.' . $forginId;
-
+    
         $this->joins[] = $sql;
 
         return $this;
@@ -106,7 +110,7 @@ class Database
         $sql = array_shift($bindings);
 
         if (is_array($bindings[0])) $bindings = $bindings[0];
-
+        
         $this->addToBindings($bindings);
 
         $this->wheres[] = $sql;
@@ -159,7 +163,7 @@ class Database
         }
 
         $sql = $this->fetchStatment();
-
+        
         $query = $this->query($sql, $this->bindings);
         
         $results = $query->fetchall();

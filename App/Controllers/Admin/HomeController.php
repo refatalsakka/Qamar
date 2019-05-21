@@ -9,12 +9,10 @@ class HomeController extends Controller
     public function index()
     {
         $this->html->setTitle('Dashboard');
-        
-        $data = [
-            
-        ];
 
-        $view = $this->view->render('Admin/home', $data);
+        $view = $this->view->render('Admin/home', [
+
+        ]);
 
         return $this->admin->render($view);
     }
