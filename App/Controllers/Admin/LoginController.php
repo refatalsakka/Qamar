@@ -16,7 +16,7 @@ class LoginController extends Controller
 
         $view = $this->view->render('Admin/login', $data);
 
-        return $this->admin->render($view);
+        return $this->adminLayout->render($view);
     }
 
     public function submit()

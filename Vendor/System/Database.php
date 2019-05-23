@@ -81,9 +81,9 @@ class Database
 
     }
 
-    public function select($select = '*')
+    public function select(...$select)
     {
-        $this->selects[] = $select;
+        $this->selects = array_merge($this->selects, $select);
   
         return $this;
     }

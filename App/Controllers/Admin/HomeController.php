@@ -8,12 +8,11 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $this->html->setTitle('Dashboard');
+        $title = $this->html->setTitle('Dashboard');
 
-        $view = $this->view->render('Admin/home', [
-
-        ]);
-
-        return $this->admin->render($view);
+        $context = [
+            'title' => $title 
+        ];
+        return $this->adminLayout->render('home', $context);
     }
 }

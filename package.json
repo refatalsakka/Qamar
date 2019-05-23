@@ -1,0 +1,19 @@
+{
+  "name": "myframework",
+  "version": "1.0.0",
+  "description": "New Framework",
+  "main": "app.js",
+  "scripts": {
+    "test": "public/js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/refatalsakka/myFrameWork.git"
+  },
+  "author": "Refat Alsakka",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/refatalsakka/myFrameWork/issues"
+  },
+  "homepage": "https://github.com/refatalsakka/myFrameWork#readme"
+}

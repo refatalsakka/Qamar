@@ -7,15 +7,14 @@ use System\View\ViewInterface as ViewInterface;
 
 class LayoutController extends Controller
 {
-    public function render(ViewInterface $view)
+    public function render($file, $context)
     {
-       $data['content'] = $view;
-       $data['header'] = $this->load->controller('Admin/Common/Header')->index();
-       $data['footer'] = $this->load->controller('Admin/Common/Footer')->index();
+        
+        $data['content'] = $this->view->render('admin\\' . $file, $context);
+        $data['header'] = $this->load->controller('Admin/Common/Header')->index();
+        $data['footer'] = $this->load->controller('Admin/Common/Footer')->index();
 
-       return $this->view->render('admin/common/layout', [
-           
-       ]);
-
+        return $this->view->render('admin/common/layout', $data);
     }
+
 }

@@ -4,21 +4,59 @@ use System\Application;
 
 $app = Application::getInstance();
 
-//Users
-$app->route->add('/', 'Users/Home', 'GET');
-$app->route->add('/login', 'Users/Login', 'GET');
-$app->route->add('/login/submit', 'Users/Login@submit', 'POST');
-$app->route->add('/my-categories', 'Users/Categories', 'GET', ['auth']);
+// ====== Users ====== //
 
-//Check if Admin Login
-if (strpos($app->request->url(), '/admin') === 0) $app->load->middleware('auth')->index();
+// Share Users Layout
+$app->share('usersLayout', function($app) {
+    return $app->load->controller('Users\Common\LayoutController');
+});
 
-//Admins
-$app->route->add('/admin/home', 'Admin\Home');
-$app->route->add('/admin/posts', 'Admin\Posts@posts');
-$app->route->add('/admin/post/:id', 'Admin\Posts@post');
+//Home
+$app->route->add('/', 'Users/Home');
+
+//Services
+$app->route->add('/services', 'Users/Services');
+$app->route->add('/services/webdesign', 'Users/Services@webdesign');
+$app->route->add('/services/seo', 'Users/Services@seo');
+$app->route->add('/services/browser-extension', 'Users/Services@browserExtension');
+$app->route->add('/services/media-box', 'Users/Services@mediaBox');
+$app->route->add('/services/server', 'Users/Services@server');
+$app->route->add('/services/datenbank', 'Users/Services@database');
+$app->route->add('/services/display-webung', 'Users/Services@displayAdvertising');
+$app->route->add('/services/imagefilm', 'Users/Services@imagefilm');
+$app->route->add('/services/native-werbung', 'Users/Services@nativeAdvertising');
+$app->route->add('/services/mobile-werbung', 'Users/Services@mobileAdvertising');
+
+//Team
+$app->route->add('/team', 'Users/Team');
+
+//Prise
+$app->route->add('/preis', 'Users/Prise');
+
+//Contact
+$app->route->add('/kontakt', 'Users/Contact');
+
+//Data Protection
+$app->route->add('/datenschutz', 'Users/dataProtection');
+
+//imprint
+$app->route->add('/immpresssum', 'Users/Imprint');
+
+
+// ====== Admins ====== //
 
 // Share Admin Layout
-$app->share('admin', function($app) {
+$app->share('adminLayout', function($app) {
     return $app->load->controller('Admin\Common\LayoutController');
 });
+
+$app->route->add('/admin', 'Admin/Home');
+
+//Check if Admin Login
+$app->route->add('/login', 'Admin/Login');
+$app->route->add('/login/submit', 'Admin/Login@submit', 'POST');
+
+if (strpos($app->request->url(), '/admin') === 0) $app->load->middleware('permissions')->handle();
+
+$app->route->add('/admin/home', 'Admin\Home');
+$app->route->add('/admin/posts', 'Admin\Posts@posts');

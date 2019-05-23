@@ -12,6 +12,18 @@ class UsersGroupsModel extends Model
     {
         $userGroup = parent::get($id);
 
-        pre($userGroup);
+        if ($userGroup) {
+
+            $userGroupInfos = $this->hasMany('UsersGroupPermissionsModel', $id);
+
+            $userGroup->pages = [];
+    
+            foreach($userGroupInfos as $userGroupInfo) {
+            
+                $userGroup->pages[] = $userGroupInfo->page;
+            }
+
+            return $userGroup;
+        }
     }
 }

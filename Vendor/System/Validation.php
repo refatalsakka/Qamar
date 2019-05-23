@@ -22,8 +22,10 @@ class Validation
         return $this;
     }
 
-    public function require($msg = null)
+    public function require($input, $msg = null)
     {
+        if (!$this->input) $this->input = $input;
+
         $value = $this->value($this->input);
       
         if (! $value) {
