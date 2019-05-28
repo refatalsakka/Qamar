@@ -13,6 +13,7 @@ $app->share('usersLayout', function($app) {
 
 //Home
 $app->route->add('/', 'Users/Home');
+$app->route->add('/home', 'Users/Home');
 
 //Services
 $app->route->add('/services', 'Users/Services');
