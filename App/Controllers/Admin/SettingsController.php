@@ -15,5 +15,4 @@ class SettingsController extends Controller
         ];
         return $this->adminLayout->render('settings', $context);
     }
-
 }

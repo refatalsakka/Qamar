@@ -15,5 +15,4 @@ class ProfileController extends Controller
         ];
         return $this->adminLayout->render('profile', $context);
     }
-
 }
