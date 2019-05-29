@@ -8,6 +8,11 @@ class NotfoundController extends Controller
 {
     public function index()
     {
-        echo "<h1>No Page</h1>";
+        $this->html->setTitle('404');
+
+        $context = [
+
+        ];
+        return $this->usersLayout->render('/../notFound', $context);
     }
 }

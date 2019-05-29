@@ -8,6 +8,11 @@ class TeamController extends Controller
 {
     public function index()
     {
-        echo "<h1>Team</h1>";
+        $this->html->setTitle('Team');
+
+        $context = [
+
+        ];
+        return $this->usersLayout->render('team', $context);
     }
 }

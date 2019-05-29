@@ -8,7 +8,7 @@ class ContactController extends Controller
 {
     public function index()
     {
-        $this->html->setTitle('Kontakt');
+        $this->html->setTitle('Contact');
 
         $context = [
 

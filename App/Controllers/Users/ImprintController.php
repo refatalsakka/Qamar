@@ -4,10 +4,15 @@ namespace App\Controllers\Users;
 
 use System\Controller as Controller;
 
-class imprintController extends Controller
+class ImprintController extends Controller
 {
     public function index()
     {
-        echo "<h1>imprint</h1>";
+        $this->html->setTitle('Imprint');
+
+        $context = [
+
+        ];
+        return $this->usersLayout->render('imprint', $context);
     }
 }
