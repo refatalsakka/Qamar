@@ -17,6 +17,11 @@ abstract class Model
     {
         return $this->app->get($key);    
     }
+    
+    public function all()
+    {
+        return $this->orderBy('id', 'DESC')->fetchAll($this->table);
+    }
 
     public function __call($method, $args)
     {
@@ -28,6 +33,16 @@ abstract class Model
         return $this->where('id = ?' , $id)->fetch($this->table);
     }
 
+    public function exists($value, $key = 'id')
+    {
+        return (bool) $this->select($key)->where($key .'=?' , $value)->fetch($this->table);
+    }
+
+    public function delete($id)
+    {
+        return $this->where('id = ?' , $id)->delete($this->table);
+    }
+    
     public function hasOne($join, $id = null, $localId = null, $forginId = null)
     {
         $join = rtrim($join, 'Model');

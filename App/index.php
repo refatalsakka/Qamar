@@ -53,10 +53,11 @@ $app->share('adminLayout', function($app) {
 
 $app->route->add('/admin', 'Admin/Home');
 
-//Check if Admin Login
-$app->route->add('/login', 'Admin/Login');
+//Login
+$app->route->add('/login', 'Admin/Login', 'GET', 'auth');
 $app->route->add('/login/submit', 'Admin/Login@submit', 'POST');
 
+if (strpos($app->request->url(), '/admin') === 0) $app->load->middleware('auth')->handle();
 if (strpos($app->request->url(), '/admin') === 0) $app->load->middleware('permissions')->handle();
 
 $app->route->add('/admin/home', 'Admin\Home');

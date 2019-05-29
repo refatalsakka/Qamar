@@ -7,12 +7,18 @@ use System\Middleware as Middleware;
 class Authenticate extends Middleware
 {
     public function handle()
-    {
-        // should be in Model 'Log in'
+    {   
+        $request = $this->request->url();
         
-    //    if (!$this->session->has('login')) {
+        $login = $this->load->model('Login');
 
-           echo 'noooooo';
-    //    }
+        if (strpos($request, '/admin') === 0) {
+
+            if (! $login->isLogged()) $this->url->redirectTo('/login');
+            
+        } else {
+            
+            if ($login->isLogged()) $this->url->redirectTo('/home');
+        }
     }
 }
