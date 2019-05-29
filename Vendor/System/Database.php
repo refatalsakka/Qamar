@@ -201,13 +201,7 @@ class Database
     {
         $sql = 'SELECT ';
 
-        if ( $this->selects) {
-
-            $sql .= implode(', ', $this->selects);
-
-        } else {
-            $sql .= '*';
-        }
+        $sql .= $this->selects ? implode(', ', $this->selects) : '*';
  
         $sql .= ' FROM ' . $this->table . ' ';
 
