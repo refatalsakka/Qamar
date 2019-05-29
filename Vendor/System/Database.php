@@ -12,26 +12,30 @@ class Database
     private static $connection;
 
     private $table;
+    
+    private $rows;
+    
+    private $lastId;
 
     private $data = [];
 
     private $bindings = [];
 
+    private $selects = [];
+    
+    private $joins = [];
+    
     private $wheres = [];
 
-    private $selects = [];
-
-    private $joins = [];
-
-    private $limit;
-
-    private $offset;
-   
-    private $rows;
-
+    private $havings = [];
+    
     private $orderBy = [];
-
-    private $lastId;
+    
+    private $limit;
+    
+    private $offset;
+    
+    private $groupBy = [];
 
     public function __construct(Application $app)
     {
@@ -118,6 +122,26 @@ class Database
         return $this;
     }
 
+    public function having()
+    {
+        $bindings = func_get_args();
+
+        $sql = array_shift($bindings);
+
+        $this->addToBindings($bindings);
+
+        $this->havings[] = $sql;
+
+        return $this;
+    }
+
+    public function groupBy(...$arguments)
+    {
+        $this->groupBy = $arguments;
+
+        return $this;
+    }
+
     public function limit($limit, $offset = 0)
     {
         $this->limit = $limit;
@@ -196,6 +220,15 @@ class Database
 
             $sql .= ' WHERE ' . implode(' ', $this->wheres);
         }
+
+        if ($this->havings) {
+            $sql .= ' HAVING ' . implode(' ', $this->havings) . ' ';
+        }
+
+        if ($this->orderBy) {
+
+            $sql .= ' ORDER BY ' . implode (' ', $this->orderBy);
+        }
         
         if ($this->limit) {
 
@@ -207,9 +240,8 @@ class Database
             $sql .= ' OFFSET ' . implode (' ', $this->offset);
         }
         
-        if ($this->orderBy) {
-
-            $sql .= ' ORDER BY ' . implode (' ', $this->orderBy);
+        if ($this->groupBy) {
+            $sql .= ' GROUP BY ' . implode(' ' , $this->groupBy);
         }
 
         return $sql;
@@ -351,24 +383,27 @@ class Database
     private function reset()
     {
         $this->table = null;
-
+    
+        $this->rows = 0;
+    
         $this->data = [];
     
         $this->bindings = [];
     
+        $this->selects = [];
+        
+        $this->joins = [];
+        
         $this->wheres = [];
     
-        $this->selects = [];
-    
-        $this->joins = [];
-    
+        $this->havings = [];
+        
+        $this->orderBy = [];
+        
         $this->limit = null;
     
         $this->offset = 0;
 
-        $this->rows = 0;
-    
-        $this->orderBy = [];
-    
+        $this->$groupBy = [];
     }
 }

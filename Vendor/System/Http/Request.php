@@ -79,6 +79,11 @@ class Request
         return $this->server('REQUEST_METHOD');
     }
 
+    public function referer()
+    {
+        return $this->server('HTTP_REFERER');
+    }
+
     public function baseUrl()
     {
         return $this->baseUrl;

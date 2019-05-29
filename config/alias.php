@@ -11,5 +11,6 @@ return [
     'db'        =>  'System\\Database',
     'url'       =>  'System\\Url',
     'validator' =>  'System\\Validation',
+    'paginatio' =>  'System\\Paginatio',
     'view'      =>  'System\\View\\ViewFactory',
 ];

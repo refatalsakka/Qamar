@@ -6,7 +6,7 @@ class Cookie
 {
     private $app;
 
-    private $path = '/';
+    private $path;
 
     public function __construct(Application $app)
     {
@@ -47,6 +47,7 @@ class Cookie
     public function destroy()
     {
         foreach (array_keys($this->all()) AS $key) {
+            
             $this->remove($key);
         }
 

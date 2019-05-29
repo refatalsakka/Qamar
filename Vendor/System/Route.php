@@ -8,6 +8,8 @@ class Route
 
     private $routes = [];
 
+    public $current = [];
+
     public function __construct(Application $app)
     {
         $this->app = $app;
@@ -54,7 +56,7 @@ class Route
 
             if ($this->isMatching($route['pattern']) && $this->isMatchingRequestMethod($route['method'])) {
 
-                if (! empty($route['middleware'] )) {
+                if (! empty($route['middleware'])) {
                   
                     if (is_array($route['middleware'])) {
                         
@@ -68,6 +70,8 @@ class Route
                         $this->middleware($route['middleware']);
                     }
                 }
+
+                $this->current = $route;
 
                 list($controller, $method) = $route['action'];
 
@@ -121,6 +125,11 @@ class Route
         array_shift($matches);
 
         return $matches;
+    }
+
+    public function getCurrent($key)
+    {
+        return $this->current[$key];
     }
 
     public function middleware($class)
