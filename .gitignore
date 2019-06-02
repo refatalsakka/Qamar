@@ -7,6 +7,11 @@ Vendor/*
 # Node Modules
 node_modules
 
+# Exept my Files
+!Vendor/System
+!Vendor/helpers
+!images/logos/*.png
+
 # JPEG
 *.jpg
 *.jpeg
@@ -70,8 +75,3 @@ node_modules
 # 3D Images
 *.3dm
 *.max
-
-# Exept my Files
-!Vendor/System
-!Vendor/helpers
-!Images/logos/*.png
