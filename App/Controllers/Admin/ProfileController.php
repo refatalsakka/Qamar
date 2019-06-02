@@ -10,6 +10,10 @@ class ProfileController extends Controller
     {
         $this->html->setTitle('Profile');
 
+        $this->html->setCss('profile');
+
+        $this->html->setJs('profile');
+
         $context = [
             
         ];

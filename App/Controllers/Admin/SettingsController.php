@@ -10,6 +10,10 @@ class SettingsController extends Controller
     {
         $this->html->setTitle('Settings');
 
+        $this->html->setCss('settings');
+
+        $this->html->setJs('settings');
+
         $context = [
             
         ];

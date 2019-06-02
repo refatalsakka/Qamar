@@ -10,6 +10,10 @@ class LoginController extends Controller
     {
         $this->html->setTitle('Login');
 
+        $this->html->setCss('login');
+
+        $this->html->setJs('login');
+
         $context = [
             
         ];
