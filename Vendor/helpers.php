@@ -47,3 +47,28 @@ if (! function_exists('assets')) {
         return $app->url->link('public/' . $path);
     }
 }
+
+if (! function_exists('htmlTag')) {
+
+    function htmlTag($path, $tag) {
+        
+        $file = $_SERVER['DOCUMENT_ROOT'] .  '/public//' . $path . '.' . $tag;
+        
+        if (file_exists($file)) {
+
+            $file = assets($path . '.' . $tag);
+
+            if ($tag == 'js') {
+                 
+                ?>
+                    <script scr="<?php echo $file ?>"></script>
+                <?php
+            } elseif ($tag == 'css') {
+                
+                ?>
+                    <link rel="stylesheet" href="<?php echo $file ?>" />
+                <?php
+            }
+        }
+    }
+}

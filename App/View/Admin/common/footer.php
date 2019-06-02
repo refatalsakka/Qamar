@@ -1,3 +1,5 @@
-        <script src="<?php echo assets('js/admin/pages/' . $script . '.js') ?>"></script>
+        <?php  htmlTag('js/libs/bootstrap', 'js') ?>
+        <?php  htmlTag('js/libs/jquery', 'js') ?>
+        <?php  htmlTag('js/users/pages/' . $script, 'js') ?>
     </body>
 </html>
