@@ -74,4 +74,4 @@ node_modules
 # Exept my Files
 !Vendor/System
 !Vendor/helpers
-!Images/logos
+!Images/logos/*.png
