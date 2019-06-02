@@ -12,6 +12,10 @@ class Html
 
     private $keywords;
 
+    private $css;
+
+    private $js;
+
     public function __construct(Application $app)
     {
         $this->app = $app;
@@ -45,5 +49,25 @@ class Html
     public function getKeywords()
     {
         return $this->keywords;
+    }
+
+    public function setCss($css)
+    {
+        $this->css = $css;
+    }
+
+    public function getCss()
+    {
+        return $this->css;
+    }
+
+    public function setJs($js)
+    {
+        $this->js = $js;
+    }
+
+    public function getJs()
+    {
+        return $this->js;
     }
 }

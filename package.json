@@ -15,5 +15,26 @@
   "bugs": {
     "url": "https://github.com/refatalsakka/myFrameWork/issues"
   },
-  "homepage": "https://github.com/refatalsakka/myFrameWork#readme"
+  "homepage": "https://github.com/refatalsakka/myFrameWork#readme",
+  "dependencies": {
+    "@babel/parser": "^7.4.5",
+    "@fortawesome/fontawesome-free": "^5.8.2",
+    "bootstrap": "^4.3.1",
+    "html5shiv": "^3.7.3",
+    "jquery": "^3.4.1"
+  },
+  "devDependencies": {
+    "@types/gulp-if": "0.0.33",
+    "eslint": "^5.16.0",
+    "gulp": "^4.0.2",
+    "gulp-connect": "^5.7.0",
+    "gulp-if": "^2.0.2",
+    "gulp-if-else": "^1.0.3",
+    "gulp-image": "^5.0.0",
+    "gulp-rename": "^1.4.0",
+    "gulp-sass": "^4.0.2",
+    "gulp-sourcemaps": "^2.6.5",
+    "gulp-util": "^3.0.8",
+    "gulp-watch-sass": "^1.4.1"
+  }
 }

@@ -10,6 +10,10 @@ class ImprintController extends Controller
     {
         $this->html->setTitle('Imprint');
 
+        $this->html->setCss('imprint');
+
+        $this->html->setJs('imprint');
+
         $context = [
 
         ];

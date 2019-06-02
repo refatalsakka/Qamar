@@ -10,6 +10,10 @@ class ContactController extends Controller
     {
         $this->html->setTitle('Contact');
 
+        $this->html->setCss('contact');
+
+        $this->html->setJs('contact');
+
         $context = [
 
         ];

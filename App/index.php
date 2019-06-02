@@ -25,7 +25,7 @@ $app->route->add('/team', 'Users/Team');
 $app->route->add('/contact', 'Users/Contact');
 
 //Data Protection
-$app->route->add('/datenschutz', 'Users/dataProtection');
+$app->route->add('/data-protection', 'Users/dataProtection');
 
 //Imprint
 $app->route->add('/imprint', 'Users/Imprint');

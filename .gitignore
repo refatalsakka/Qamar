@@ -4,9 +4,8 @@
 # Vendor Composer
 Vendor/*
 
-# Exept my Files
-!Vendor/System
-!Vendor/helpers
+# Node Modules
+node_modules
 
 # JPEG
 *.jpg
@@ -71,3 +70,8 @@ Vendor/*
 # 3D Images
 *.3dm
 *.max
+
+# Exept my Files
+!Vendor/System
+!Vendor/helpers
+!Images/logos

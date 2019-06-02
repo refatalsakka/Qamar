@@ -9,6 +9,10 @@ class NotfoundController extends Controller
     public function index()
     {
         $this->html->setTitle('404');
+        
+        $this->html->setCss('404');
+
+        $this->html->setJs('404');
 
         $context = [
 

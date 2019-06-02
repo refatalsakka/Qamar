@@ -10,6 +10,10 @@ class TeamController extends Controller
     {
         $this->html->setTitle('Team');
 
+        $this->html->setCss('team');
+
+        $this->html->setJs('team');
+        
         $context = [
 
         ];

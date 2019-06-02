@@ -10,6 +10,10 @@ class HomeController extends Controller
     {
         $this->html->setTitle('Home');
 
+        $this->html->setCss('home');
+
+        $this->html->setJs('home');
+
         $context = [
 
         ];
