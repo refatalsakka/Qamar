@@ -12,13 +12,18 @@ class Authenticate extends Middleware
         
         $login = $this->load->model('Login');
 
-        // if ($request == '/admin/login') {
+        $pagesWhenLogout = [
+            '/login',
+            '/registration'
+        ];
 
-        //     if ($login->isLogged()) $this->url->redirectTo('/admin');
+        if ($login->isLogged()) {
+            
+            if (in_array($request, $pagesWhenLogout)) $this->url->redirectTo('/');
 
-        // } else {
+        } else {
 
-        //     if (! $login->isLogged()) $this->url->redirectTo('/admin/login');
-        // }
+            if (! in_array($request, $pagesWhenLogout)) $this->url->redirectTo('/');
+        }
     }
 }

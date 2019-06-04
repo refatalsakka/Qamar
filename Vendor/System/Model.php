@@ -17,20 +17,20 @@ abstract class Model
     {
         return $this->app->get($key);    
     }
-    
-    public function all()
-    {
-        return $this->orderBy('id', 'DESC')->fetchAll($this->table);
-    }
-
+        
     public function __call($method, $args)
     {
         return call_user_func_array([$this->app->db, $method], $args);
     }
-
-    public function get($id)
+    
+    public function all($limit = null)
     {
-        return $this->where('id = ?' , $id)->fetch($this->table);
+        return $this->orderBy('id', 'DESC')->limit($limit)->fetchAll($this->table);
+    }
+
+    public function get($coulmn = 'id', $value)
+    {
+        return $this->where($coulmn . ' = ?' , $value)->fetch($this->table);
     }
 
     public function exists($value, $key = 'id')

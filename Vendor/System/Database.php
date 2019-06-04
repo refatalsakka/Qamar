@@ -185,7 +185,7 @@ class Database
         if ($table) {
             $this->table($table);
         }
-
+       
         $sql = $this->fetchStatment();
         
         $query = $this->query($sql, $this->bindings);
@@ -226,12 +226,12 @@ class Database
         
         if ($this->limit) {
 
-            $sql .= ' LIMIT ' . implode (' ', $this->limit);
+            $sql .= ' LIMIT ' . $this->limit;
         }
         
         if ($this->offset) {
 
-            $sql .= ' OFFSET ' . implode (' ', $this->offset);
+            $sql .= ' OFFSET ' . $this->offset;
         }
         
         if ($this->groupBy) {
@@ -398,6 +398,6 @@ class Database
     
         $this->offset = 0;
 
-        $this->$groupBy = [];
+        $this->groupBy = [];
     }
 }
