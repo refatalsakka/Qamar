@@ -33,10 +33,9 @@ if (! function_exists('getLastIndex')) {
 }
 
 if (! function_exists('url')) {
-    function url($path)
-    {
+    function url($path) {
         $app = Application::getInstance();
-        return rtrim($app->request->baseUrl(), '/') . $path;
+        return $app->url->link($path);
     }
 }
 
@@ -58,10 +57,12 @@ if (! function_exists('htmlTag')) {
 
             $file = assets($path . '.' . $tag);
 
+            $file = rtrim($file, '/');
+            
             if ($tag == 'js') {
                  
                 ?>
-                    <script scr="<?php echo $file ?>"></script>
+                    <script src="<?php echo $file ?>"></script>
                 <?php
             } elseif ($tag == 'css') {
                 
@@ -69,6 +70,57 @@ if (! function_exists('htmlTag')) {
                     <link rel="stylesheet" href="<?php echo $file ?>" />
                 <?php
             }
+        }
+    }
+}
+
+if (! function_exists('remove_space')) {
+    function remove_space($str) {
+        return str_replace(' ', '-', $str);
+    }
+}
+
+if (! function_exists('remove_dash')) {
+    function remove_dash($str) {
+        return str_replace('-', ' ', $str);
+    }
+}
+
+if (! function_exists('clean_name_url')) {
+    function clean_name_url($class = null) {
+
+        $app = Application::getInstance();
+       
+        if (! $class) {
+            
+            $class = debug_backtrace()[1]['class'];
+
+            $clases = explode('\\', $class);
+    
+            $class = end($clases);
+    
+            $class = str_replace('Controller', '', $class);
+
+            $class = strtolower($class);
+
+            $class = '/' . $class .  '/';
+
+        }
+        
+        $url = $app->request->url();
+
+        $name = str_replace($class, '', $url);
+
+        $name = remove_dash($name);
+
+        return $name;
+    }
+}
+
+if (! function_exists('text_char_limit')) {
+    function text_char_limit($text, $limit) {
+        if (strlen($text) > $limit) {
+            return substr($text, 0, $limit) . '...';
         }
     }
 }

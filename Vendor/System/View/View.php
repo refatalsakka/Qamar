@@ -25,7 +25,16 @@ class View implements ViewInterface
     
     private function preparePath($viewPath) {
 
-        $this->viewPath = $this->app->file->to('App\\View\\' . $viewPath, '.php');
+        
+        $trace = debug_backtrace()[4]['object'];
+    
+        $class = get_class(array ($trace)[0]);
+
+        $dir = strpos($class, 'Users') != false ? 'users\\' : 'admin\\';
+
+        $sub_dir = '';
+        
+        $this->viewPath = $this->app->file->to('App\\View\\' . $dir . $sub_dir . $viewPath, '.php');
         
         if (! $this->viewfileExists($this->viewPath)) {
             echo $this->viewPath . ' does not exist';
@@ -33,6 +42,7 @@ class View implements ViewInterface
     }
 
     private function viewfileExists($viewPath) {
+
         return $this->app->file->exists($viewPath);
     }
     
