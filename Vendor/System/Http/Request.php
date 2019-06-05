@@ -39,8 +39,21 @@ class Request
 
         if ($this->url !== '/') $this->url = rtrim($this->url, '/');
         
-        $this->link = $this->server('REQUEST_SCHEME') . '://' . $this->server('HTTP_HOST');
+        $isSecure = false;
 
+        if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
+            
+            $isSecure = true;
+            
+        }
+        elseif (! empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https' || ! empty($_SERVER['HTTP_X_FORWARDED_SSL']) && $_SERVER['HTTP_X_FORWARDED_SSL'] == 'on') {
+            $isSecure = true;
+        }
+        
+        $REQUEST_PROTOCOL = $isSecure ? 'https' : 'http';
+
+        $this->link = $REQUEST_PROTOCOL . '://' . $this->server('HTTP_HOST');
+    
         $this->baseUrl = $this->link . $requestUri;
 
     }
@@ -53,6 +66,11 @@ class Request
     public function post($key)
     {   
         return array_get($_POST, $key);
+    }
+
+    public function posts()
+    {   
+        return $_POST;
     }
     
     public function file($input)

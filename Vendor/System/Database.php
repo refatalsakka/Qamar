@@ -94,16 +94,12 @@ class Database
 
     public function join($join, $localId = null, $forginId = null)
     {
-        if (! $localId) {
-            $localId =  'id';
-        }
+        if (! $localId)  $localId =  trim($join, 's' ). '_id';
   
-        if (! $forginId) {
-            $forginId =  rtrim($this->table, 's') . '_id';
-        }
+        if (! $forginId) $forginId =  'id';
 
         $sql = $join . ' ON ' . $this->table . '.' . $localId . ' = ' . $join . '.' . $forginId;
-    
+
         $this->joins[] = $sql;
 
         return $this;

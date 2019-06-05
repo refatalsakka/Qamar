@@ -8,9 +8,11 @@ class FooterController extends Controller
 {
     public function index()
     {
+        $script = $this->html->getJs() ?: '';
+
         $data = [
-            'script' => $this->html->getJs()
+            'script' => $script
         ];
-        return $this->view->render('users\common\footer', $data);
+        return $this->view->render('common\footer', $data);
     }
 }

@@ -115,4 +115,15 @@ if (! function_exists('clean_name_url')) {
 
         return $name;
     }
+<<<<<<< HEAD
+=======
+}
+
+if (! function_exists('text_char_limit')) {
+    function text_char_limit($text, $limit) {
+        if (strlen($text) > $limit) {
+            return substr($text, 0, $limit) . '...';
+        }
+    }
+>>>>>>> 424c5dfaeb4737b4c2cde1c6d8ac822cce91e2e5
 }
