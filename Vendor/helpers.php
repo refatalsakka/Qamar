@@ -115,8 +115,6 @@ if (! function_exists('clean_name_url')) {
 
         return $name;
     }
-<<<<<<< HEAD
-=======
 }
 
 if (! function_exists('text_char_limit')) {
@@ -125,5 +123,4 @@ if (! function_exists('text_char_limit')) {
             return substr($text, 0, $limit) . '...';
         }
     }
->>>>>>> 424c5dfaeb4737b4c2cde1c6d8ac822cce91e2e5
 }

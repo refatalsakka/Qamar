@@ -14,7 +14,9 @@ class Authenticate extends Middleware
 
         $pagesWhenLogout = [
             '/login',
-            '/registration'
+            '/login/submit',
+            '/registration',
+            '/registration/submit'
         ];
 
         if ($login->isLogged()) {

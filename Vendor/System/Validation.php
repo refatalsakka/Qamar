@@ -22,15 +22,15 @@ class Validation
         return $this;
     }
 
-    public function require($input, $msg = null)
+    public function require($input = null, $msg = null)
     {
-        if (!$this->input) $this->input = $input;
-
+        if (! $this->input) $this->input = $input;
+        
         $value = $this->value($this->input);
       
         if (! $value) {
 
-            $msg = $msg ?: sprintf('%s is Required', ucfirst($this->input));
+            $msg = $msg ?: 'This input is required';
 
             $this->addError($this->input, $msg);;
         }
@@ -38,8 +38,10 @@ class Validation
         return $this;
     }
 
-    public function email($msg = null)
+    public function email($input = null, $msg = null)
     {
+        if (! $this->input) $this->input = $input;
+
         $value = $this->value($this->input);
 
         if (! filter_var($value, FILTER_VALIDATE_EMAIL)) {
@@ -52,7 +54,7 @@ class Validation
         return $this;
     }
 
-    public function float($input, $msg = null)
+    public function float($input = null, $msg = null)
     {
 
     }
@@ -63,7 +65,7 @@ class Validation
 
         if (strlen($value) < $length) {
 
-            $msg = $msg ?: sprintf('%s must be more than ' . $length, ucfirst($this->input));
+            $msg = $msg ?: 'This input must be more than ' . $length;
 
             $this->addError($this->input, $msg);
         }
@@ -77,7 +79,7 @@ class Validation
 
         if (strlen($value) > $length) {
 
-            $msg = $msg ?: sprintf('%s must be fewer than ' . $length, ucfirst($this->input));
+            $msg = $msg ?: 'This must be fewer than ' . $length;
 
             $this->addError($this->input, $msg);
         }
@@ -91,11 +93,11 @@ class Validation
 
         $valueConfirm = $this->value($input);
 
-        if ($valuePassword !== $valueConfirm && ! empty($valueConfirm)) {
+        if ($valuePassword !== $valueConfirm) {
 
-            $msg = $msg ?: sprintf('%s dosnt match %s', ucfirst($input), ucfirst($this->input));
+            $msg = $msg ?: 'Passwords does not match';
             
-            $this->addError($this->input, $msg);
+            $this->addError('match', $msg);
         }
 
         return $this;
@@ -176,7 +178,7 @@ class Validation
         return $this->app->request->post($input);
     }
 
-    private function addError($input, $msg)
+    public function addError($input, $msg)
     {
         if (! $this->checkError($input)) {
 
