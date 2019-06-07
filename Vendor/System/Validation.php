@@ -32,7 +32,7 @@ class Validation
 
             $msg = $msg ?: 'This input is required';
 
-            $this->addError($this->input, $msg);;
+            $this->addError($this->input, $msg);
         }
 
         return $this;
@@ -48,7 +48,7 @@ class Validation
 
             $msg = $msg ?: sprintf('%s is not valid Email', ucfirst($this->input));
 
-            $this->addError($this->input, $msg);;
+            $this->addError($this->input, $msg);
         }
 
         return $this;
@@ -66,7 +66,7 @@ class Validation
                 
                 $msg = $msg ?: 'the Input must be number';
 
-                $this->addError($this->input, $msg);;
+                $this->addError($this->input, $msg);
             }
         }
 
@@ -86,7 +86,7 @@ class Validation
                 
                 $msg = $msg ?: 'the Input must be Text';
 
-                $this->addError($this->input, $msg);;
+                $this->addError($this->input, $msg);
             }
         }
 
