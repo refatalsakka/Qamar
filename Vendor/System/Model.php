@@ -28,7 +28,7 @@ abstract class Model
         return $this->orderBy('id', 'DESC')->limit($limit)->fetchAll($this->table);
     }
 
-    public function get($coulmn = 'id', $value)
+    public function get($value, $coulmn = 'id')
     {
         return $this->where($coulmn . ' = ?' , $value)->fetch($this->table);
     }

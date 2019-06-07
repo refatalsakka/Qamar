@@ -54,20 +54,58 @@ class Validation
         return $this;
     }
 
-    public function float($input = null, $msg = null)
+    public function number($input = null, $msg = null)
     {
+        if (! $this->input) $this->input = $input;
 
+        $value = $this->value($this->input);
+
+        if ($value) { 
+
+            if (! is_numeric($value)) {
+                
+                $msg = $msg ?: 'the Input must be number';
+
+                $this->addError($this->input, $msg);;
+            }
+        }
+
+        return $this;
+        
+    }
+
+    public function text($input = null, $msg = null)
+    {
+        if (! $this->input) $this->input = $input;
+
+        $value = $this->value($this->input);
+
+        if ($value) { 
+
+            if (is_numeric($value)) {
+                
+                $msg = $msg ?: 'the Input must be Text';
+
+                $this->addError($this->input, $msg);;
+            }
+        }
+
+        return $this;
+        
     }
 
     public function minLen($length, $msg = null)
     {
         $value = $this->value($this->input);
 
-        if (strlen($value) < $length) {
+        if ($value) { 
 
-            $msg = $msg ?: 'This input must be more than ' . $length;
+            if (strlen($value) < $length) {
 
-            $this->addError($this->input, $msg);
+                $msg = $msg ?: 'This input must be more than ' . $length;
+
+                $this->addError($this->input, $msg);
+            }
         }
 
         return $this;
@@ -76,13 +114,17 @@ class Validation
     public function maxLen($length, $msg = null)
     {
         $value = $this->value($this->input);
+        
+        if ($value) {
 
-        if (strlen($value) > $length) {
-
-            $msg = $msg ?: 'This must be fewer than ' . $length;
-
-            $this->addError($this->input, $msg);
+            if (strlen($value) > $length) {
+    
+                $msg = $msg ?: 'This must be fewer than ' . $length;
+    
+                $this->addError($this->input, $msg);
+            }
         }
+
 
         return $this;
     }
