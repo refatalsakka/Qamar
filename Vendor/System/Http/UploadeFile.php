@@ -29,7 +29,7 @@ class UploadeFile
     public function __construct(Application $app, $input)
     {
         $this->app = $app;
-
+     
         $this->getFileInfo($input);
     }
 
@@ -44,7 +44,7 @@ class UploadeFile
         if ($this->error != UPLOAD_ERR_OK) return;
 
         $this->file = $file;
-
+      
         $this->name = $this->file['name'];
 
         $this->minetype = $this->file['type'];
@@ -106,14 +106,13 @@ class UploadeFile
 
         $newName .= '.' . $this->extension;
 
-        if (! is_dir($target)) {
-            mkdir($target, 0777, true);
-        }
+        if (! is_dir($target)) mkdir($target, 0777, true);
 
         $filePath = $target . $newName;
+       
+        $filePath  = rtrim($filePath, '/'); 
+        $filePath  = ltrim($filePath, '/'); 
 
-        $filePath  = rtrim($filePath, '/') . '/'; 
-        
         $uploade = move_uploaded_file($this->tempFile, $filePath);
 
         return $uploade;

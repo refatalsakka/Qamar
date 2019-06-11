@@ -72,13 +72,15 @@ class Request
     {   
         return $_POST;
     }
+
+    public function files()
+    {   
+        return $_FILES;
+    }
     
     public function file($input)
     {
-        if (isset($this->files[$input])) {
-
-            return $this->files[$input];
-        }
+        if (isset($this->files[$input])) return $this->files[$input];
         
         $upoadedFile = new UploadeFile($this->app, $input);
         

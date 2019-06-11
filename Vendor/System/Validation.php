@@ -34,7 +34,6 @@ class Validation
 
             $this->addError($this->input, $msg);
         }
-
         return $this;
     }
 
@@ -50,7 +49,6 @@ class Validation
 
             $this->addError($this->input, $msg);
         }
-
         return $this;
     }
 
@@ -69,9 +67,7 @@ class Validation
                 $this->addError($this->input, $msg);
             }
         }
-
         return $this;
-        
     }
 
     public function text($input = null, $msg = null)
@@ -89,9 +85,7 @@ class Validation
                 $this->addError($this->input, $msg);
             }
         }
-
         return $this;
-        
     }
 
     public function minLen($length, $msg = null)
@@ -107,7 +101,6 @@ class Validation
                 $this->addError($this->input, $msg);
             }
         }
-
         return $this;
     }
 
@@ -124,8 +117,6 @@ class Validation
                 $this->addError($this->input, $msg);
             }
         }
-
-
         return $this;
     }
 
@@ -135,13 +126,15 @@ class Validation
 
         $valueConfirm = $this->value($input);
 
-        if ($valuePassword !== $valueConfirm) {
+        if ($valuePassword && $valueConfirm ) {
 
-            $msg = $msg ?: 'Passwords does not match';
-            
-            $this->addError('match', $msg);
+            if ($valuePassword !== $valueConfirm) {
+    
+                $msg = $msg ?: 'Passwords does not match';
+                
+                $this->addError('match', $msg);
+            }
         }
-
         return $this;
     }
 
@@ -173,9 +166,7 @@ class Validation
             
             $this->addError($this->input, $msg);
         }
-
         return $this;
-
     }
 
     public function requireFile($input, $msg = null)
