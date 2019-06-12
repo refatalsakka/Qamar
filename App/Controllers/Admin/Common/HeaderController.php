@@ -8,12 +8,12 @@ class HeaderController extends Controller
 {
     public function index()
     {
-        $title =  $this->html->getTitle() ?: '';
-        $style =  $this->html->getCss() ?: '';
+        $titles =  $this->html->getTitle() ?: '';
+        $styles =  $this->html->getCss() ?: '';
 
         $data = [
             'title' => $title,
-            'style' => $style
+            'styles' => $styles
         ];
         return $this->view->render('common\header', $data);
     }

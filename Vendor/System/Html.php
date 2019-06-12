@@ -12,9 +12,9 @@ class Html
 
     private $keywords;
 
-    private $css;
+    private $css = [];
 
-    private $js;
+    private $js = [];
 
     public function __construct(Application $app)
     {

@@ -9,12 +9,12 @@ class HeaderController extends Controller
     public function index()
     {
         $title =  $this->html->getTitle() ?: '';
-        $style =  $this->html->getCss() ?: '';
+        $styles =  $this->html->getCss() ?: '';
         $login = $this->load->model('Login')->isLogged();
 
         $data = [
             'title' => $title,
-            'style' => $style,
+            'styles' => $styles,
             'login' => $login
         ];
         return $this->view->render('common\header', $data);
