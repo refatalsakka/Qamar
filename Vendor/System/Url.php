@@ -21,9 +21,9 @@ class Url
         return $link . '/' . $path;
     }
 
-    public function redirectTo($path)
+    public function redirectTo($path, $num = 0)
     {
-        header('location:' . $this->link($path));
+        header('Refresh: ' . $num . '; URL=' . $this->link($path));
         exit;
     }  
 }
