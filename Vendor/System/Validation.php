@@ -96,7 +96,7 @@ class Validation
 
             if (strlen($value) < $length) {
 
-                $msg = $msg ?: 'This input must be more than ' . $length;
+                $msg = $msg ?: 'This input must be at least ' . $length;
 
                 $this->addError($this->input, $msg);
             }
@@ -112,7 +112,7 @@ class Validation
 
             if (strlen($value) > $length) {
     
-                $msg = $msg ?: 'This must be fewer than ' . $length;
+                $msg = $msg ?: 'This must be ' . $length . ' or fewer';
     
                 $this->addError($this->input, $msg);
             }

@@ -53,7 +53,7 @@ abstract class Model
         return $this->where('id = ?' , $id)->delete($this->table);
     }
     
-    public function hasOne($join, $limit, $id = null, $localId = null, $forginId = null)
+    public function hasOne($join, $id = null, $select = '*', $limit = null, $localId = null, $forginId = null)
     {
         $join = rtrim($join, 'Model');
  
@@ -69,10 +69,10 @@ abstract class Model
             
         $join = $this->load->model($join)->table;
         
-        return $this->db->select()->from($table)->join($join, $localId, $forginId)->where($table . '.id = ?', $id)->limit($limit)->fetch();
+        return $this->db->select($select)->from($table)->join($join, $localId, $forginId)->where($table . '.id = ?', $id)->limit($limit)->fetch();
     }
 
-    public function hasMany($join, $limit, $id = null, $localId = null, $forginId = null)
+    public function hasMany($join, $id = null, $select = '*', $limit = null, $localId = null, $forginId = null)
     {
         $join = rtrim($join, 'Model');
  
@@ -88,7 +88,7 @@ abstract class Model
             
         $join = $this->load->model($join)->table;
 
-        return $this->db->select()->from($table)->join($join, $localId, $forginId)->where($table . '.id = ?', $id)->limit($limit)->fetchAll();
+        return $this->db->select($select)->from($table)->join($join, $localId, $forginId)->where($table . '.id = ?', $id)->limit($limit)->fetchAll();
     }
 
     public function join($join, $limit = null, $localId = null, $forginId = null)

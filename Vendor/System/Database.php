@@ -88,7 +88,7 @@ class Database
     public function select(...$select)
     {
         $this->selects = array_merge($this->selects, $select);
-  
+        
         return $this;
     }
 
@@ -166,7 +166,7 @@ class Database
         }
 
         $sql = $this->fetchStatment();
-        
+
         $query = $this->query($sql, $this->bindings);
 
         $result = $query->fetch();
@@ -183,9 +183,9 @@ class Database
         }
        
         $sql = $this->fetchStatment();
-        
+      
         $query = $this->query($sql, $this->bindings);
-        
+
         $results = $query->fetchall();
 
         $this->rows = $query->rowCount();
