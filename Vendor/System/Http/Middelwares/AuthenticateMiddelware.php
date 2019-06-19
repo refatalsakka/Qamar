@@ -4,7 +4,7 @@ namespace System\Http\Middelwares;
 
 use System\Middleware as Middleware;
 
-class Authenticate extends Middleware
+class AuthenticateMiddelware extends Middleware
 {
     public function handle()
     {   

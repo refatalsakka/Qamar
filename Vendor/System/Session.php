@@ -49,9 +49,9 @@ class Session
         return $_SESSION;
     }
 
-    public function remove()
+    public function remove($key)
     {
-        unset($_SESSION);
+        unset($_SESSION[$key]);
     }
 
     public function destroy()

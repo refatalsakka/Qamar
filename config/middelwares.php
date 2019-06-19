@@ -1,6 +1,8 @@
 <?php
 
 return [
-    'auth'        => 'System\\Http\\Middelwares\\Authenticate',
-    'permissions' => 'System\\Http\\Middelwares\\Permissions',
+    'auth'        => 'System\\Http\\Middelwares\\AuthenticateMiddelware',
+    'permissions' => 'System\\Http\\Middelwares\\PermissionsMiddelware',
+    'ajax'        => 'System\\Http\\Middelwares\\AjaxMiddelware',
+    'redirect'    => 'System\\Http\\Middelwares\\RedirectMiddelware',
 ];

@@ -52,8 +52,8 @@ $app->route->add('/admin/profile', 'Admin/Profile');
 $app->route->add('/admin/settings', 'Admin/Settings');
 
 
-if (strpos($app->request->url(), '/admin') === 0) $app->load->middleware('auth')->handle();
-if (strpos($app->request->url(), '/admin') === 0) $app->load->middleware('permissions')->handle();
+// if (strpos($app->request->url(), '/admin') === 0) $app->load->middleware('auth')->handle();
+// if (strpos($app->request->url(), '/admin') === 0) $app->load->middleware('permissions')->handle();
 
 $app->route->add('/admin/home', 'Admin\Home');
 $app->route->add('/admin/posts', 'Admin\Posts@posts');

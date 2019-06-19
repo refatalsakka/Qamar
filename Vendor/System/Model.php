@@ -33,6 +33,16 @@ abstract class Model
         return $this->where($coulmn . ' = ?' , $value)->fetch($this->table);
     }
 
+    public function getAll($value, $coulmn = 'id')
+    {
+        return $this->where($coulmn . ' = ?' , $value)->fetchAll($this->table);
+    }
+
+    public function selectAll($coulmn)
+    {
+        return $this->select($coulmn)->fetchAll($this->table);
+    }
+
     public function exists($value, $key = 'id')
     {
         return (bool) $this->select($key)->where($key .'=?' , $value)->fetch($this->table);
