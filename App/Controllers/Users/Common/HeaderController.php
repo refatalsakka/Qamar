@@ -11,8 +11,8 @@ class HeaderController extends Controller
         $title =  $this->html->getTitle() ?: '';
         $styles =  $this->html->getCss() ?: '';
         $login = $this->load->model('Login')->isLogged();
-        $codeId = $this->session->get('usercode');
-       
+        $codeId = $this->session->has('usercode') ? $this->session->has('get'): '';
+
         $data = [
             'title' => $title,
             'styles' => $styles,
