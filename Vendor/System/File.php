@@ -21,8 +21,11 @@ class File
     public function call($file)
     {
         if ($this->exists($file)) {
+
             return require $file;
+        
         } else {
+        
             die('Ohh! <strong>' . $file .'</strong> is not found');
         }
         
@@ -33,7 +36,7 @@ class File
         return $this->root . static::DS . str_replace(['/', '\\'], static::DS, $path . $ext);
     }
 
-    public function public($target = null)
+    public function inPublic($target = null)
     {
         return $this->to('public/' . $target);
     }
