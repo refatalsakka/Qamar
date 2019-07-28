@@ -8,7 +8,7 @@ class HeaderController extends Controller
 {
     public function index()
     {
-        $titles =  $this->html->getTitle() ?: '';
+        $title =  $this->html->getTitle() ?: '';
         $styles =  $this->html->getCss() ?: '';
 
         $data = [

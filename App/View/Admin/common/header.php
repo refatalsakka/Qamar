@@ -8,7 +8,15 @@
     <?php  htmlTag('css/libs/bootstrap', 'css') ?>
     <?php  htmlTag('css/libs/fontawesome', 'css') ?>
     <?php  htmlTag('css/users/layout', 'css') ?>
-    <?php  htmlTag('css/users/pages/' . $style, 'css') ?>
+    <?php
+        if (! is_array($styles)) {
+            htmlTag('css/' . $styles, 'css');
+        } else {
+            foreach($styles as $style) {
+                htmlTag('css/' . $style, 'css');
+            }
+        }
+    ?>
 </head>
 <body>
     
