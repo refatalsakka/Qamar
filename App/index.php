@@ -12,7 +12,7 @@ $app->share('usersLayout', function($app) {
 });
 
 //Home
-$app->route->add('/', 'Users/Home');
+$app->route->add('/', 'Users/Home', 'GET');
 $app->route->add('/home', 'Users/Home');
 
 //Services

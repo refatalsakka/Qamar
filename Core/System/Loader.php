@@ -142,7 +142,7 @@ class Loader
 
     private function coreMiddlewares()
     {
-        $middlewares = $this->app->file->to('config/middelwares', '.php');
+        $middlewares = $this->app->file->to('config/Middlewares', '.php');
 
         return $this->app->file->call($middlewares);
     }

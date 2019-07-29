@@ -1,10 +1,10 @@
 <?php
 
-namespace System\Http\Middelwares;
+namespace System\Http\Middlewares;
 
 use System\Middleware as Middleware;
 
-class AjaxMiddelware extends Middleware
+class AjaxMiddleware extends Middleware
 {
     public function handle()
     {   
