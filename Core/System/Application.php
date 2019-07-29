@@ -3,6 +3,11 @@
 namespace System;
 
 use Closure;
+use Exception;
+use Whoops\Run AS Whoops;
+use Whoops\Util\Misc AS WhoopsMisc;
+use Whoops\Handler\JsonResponseHandler;
+use Whoops\Handler\PrettyPageHandler;
 
 class Application
 {    
@@ -12,11 +17,31 @@ class Application
     
     public function __construct(File $file)
     {
+        // $this->handleErrors();
+
         $this->share('file', $file);
 
-        $this->registerClasses();
+        $this->share('config', $this->file->call($this->file->to('config', '.php')));
 
         $this->loadHelpers();
+    }
+
+    private function handleErrors() {
+
+        $run = new Whoops();
+  
+        $run->prependHandler(new PrettyPageHandler());
+
+        if (WhoopsMisc::isAjaxRequest()) {
+
+            $jsonHandler = new JsonResponseHandler();
+
+            $jsonHandler->setJsonApi(true);
+
+            $run->prependHandler($jsonHandler);
+        }
+        
+        $run->register();
     }
 
     public static function getInstance($file = null)
@@ -30,30 +55,15 @@ class Application
 
         $this->request->prepareUrl();
 
-        $this->file->call($this->file->to('App/index', '.php'));
+        $routes = glob("routes/*.php");
 
-        list($controller, $method, $arguments) = $this->route->getProperRoute();
+        foreach ($routes AS $route) $this->file->call($this->file->to($route));
 
-        $output = (string) $this->load->action($controller, $method, $arguments);
+        $output = $this->route->getProperRoute();
 
         $this->response->setOutput($output);
 
-        $this->response->send($output);
-
-    }
-
-    public function registerClasses()
-    {
-        spl_autoload_register([$this, 'load']);
-    }
-
-    public function load($class)
-    {
-        $toCorrect = (strpos($class, 'App') === 0) ? '': 'Core\\';
-
-        $file = $this->file->to($toCorrect . $class, '.php');
-
-        $this->file->call($file);
+        $this->response->send();
     }
 
     private function loadHelpers()
@@ -65,9 +75,7 @@ class Application
 
     public function coreClasses()
     {
-        $alias = $this->file->to('config/alias', '.php');
-
-        return $this->file->call($alias);
+        return $this->config['alias'];
     }
 
     public function share($key, $value)
@@ -88,7 +96,7 @@ class Application
                 $this->share($key, $this->createObject($key));
                 
             } else {
-                die('Ohh! <strong>' . $key .'</strong> is not found');
+                throw new Exception("$key is not found");
                 exit();
             }
         }

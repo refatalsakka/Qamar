@@ -1,8 +1,6 @@
 <?php
 
-use System\Application;
-
-$app = Application::getInstance();
+$app = app();
 
 // ====== Users ====== //
 
@@ -13,7 +11,7 @@ $app->share('usersLayout', function($app) {
 
 //Home
 $app->route->add('/', 'Users/Home');
-$app->route->add('/home', 'Users/Home');
+$app->route->add('/home', 'Users/Home', 'GET', 'auth');
 
 //Services
 $app->route->add('/services', 'Users/Services');

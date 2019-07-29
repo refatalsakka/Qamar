@@ -2,6 +2,8 @@
 
 namespace System;
 
+use Exception;
+
 class File
 {
     const DS = DIRECTORY_SEPARATOR;
@@ -26,7 +28,7 @@ class File
         
         } else {
         
-            die('Ohh! <strong>' . $file .'</strong> is not found');
+            throw new Exception("$file is not found");
         }
         
     }

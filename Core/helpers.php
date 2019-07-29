@@ -17,6 +17,13 @@ if (! function_exists('array_get')) {
     }
 }
 
+if (! function_exists('app')) {
+    function app()
+    {
+        return Application::getInstance();
+    }
+}
+
 if (! function_exists('_e')) {
     function _e($value)
     {
@@ -104,7 +111,6 @@ if (! function_exists('clean_name_url')) {
             $class = strtolower($class);
 
             $class = '/' . $class .  '/';
-
         }
         
         $url = $app->request->url();

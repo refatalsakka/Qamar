@@ -2,8 +2,12 @@
 
 namespace System;
 
+use Exception;
+
 class Route
 {
+    const NEXT = '_NEXT_';
+
     private $app;
 
     private $routes = [];
@@ -55,33 +59,49 @@ class Route
         foreach($this->routes as $route) {
 
             if ($this->isMatching($route['pattern']) && $this->isMatchingRequestMethod($route['method'])) {
+                
+                $this->current = $route;
 
-                if (! empty($route['middleware'])) {
+                $output = '';
+
+                if ($route['middleware']) {
                   
                     if (is_array($route['middleware'])) {
                         
-                        foreach($route['middleware'] as $class) {
-    
-                            $this->middleware($class);
+                        foreach($route['middleware'] as $middleware) {
+                            
+                            $output = $this->middleware($middleware);
+
+                            if ($output != '') break;   
                         }
     
                     } else {
-    
-                        $this->middleware($route['middleware']);
+                    
+                        $output = $this->middleware($route['middleware']);
+
+                        if ($output != '') break;
                     }
                 }
+       
+                if ($output == '') {
 
-                $this->current = $route;
+                    list($controller, $method) = $route['action'];
 
-                list($controller, $method) = $route['action'];
+                    $arguments = $this->getArgumentsFor($route['pattern']);
+              
+                    $output = (string) $this->app->load->action($controller, $method, $arguments);
 
-                $arguments = $this->getArgumentsFor($route['pattern']);
+                    return $output;
 
-                return [$controller, $method, $arguments];
+                } else {
+                    break;
+                }
             }
         }
 
-        return ['Notfound', 'index', []];
+        $output = (string) $this->app->load->action('notFound', 'index', []);
+
+        return $output;
     }
 
     public function isMatching($pattern)
@@ -132,8 +152,24 @@ class Route
         return $this->current[$key];
     }
 
-    public function middleware($class)
+    private function middleware($middleware, $from = 'admin')
     {
-        return $this->app->load->middleware($class)->handle();
+        $middlewareInterface = 'App\\Middleware\\MiddlewaresInterface';
+        
+        $middlewares = $this->app->config['middlewares'][$from];
+
+        $middlewareClass = $middlewares[$middleware];
+   
+        if (! in_array($middlewareInterface, class_implements($middlewareClass))) {
+            throw new Exception("$middlewareClass not Implement");
+        }
+
+        $middlewareObject = new $middlewareClass;
+
+        $output = $middlewareObject->handle($this->app, static::NEXT);
+
+        if ($output && $output === static::NEXT) $output = '';
+
+        return $output;
     }
 }

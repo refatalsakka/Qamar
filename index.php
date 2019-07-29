@@ -1,7 +1,6 @@
 <?php
 
-require __DIR__ . '/Core/System/Application.php';
-require __DIR__ . '/Core/System/File.php';
+require __DIR__ . '/vendor/autoload.php';
 
 use System\Application;
 use System\File;

@@ -1,10 +1,11 @@
 <?php
 
-namespace System\Http\Middelwares;
+namespace App\Middleware\Admin;
 
-use System\Middleware as Middleware;
+use System\Application;
+use App\Middleware\MiddlewaresInterface as Middleware;
 
-class RedirectMiddelware extends Middleware
+class RedirectMiddleware implements Middleware
 {
     public function handle()
     {

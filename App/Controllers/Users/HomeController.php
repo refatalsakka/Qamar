@@ -13,7 +13,7 @@ class HomeController extends Controller
         $this->html->setCss('home');
 
         $this->html->setJs('home');
-
+        
         $context = [
 
         ];

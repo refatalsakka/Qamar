@@ -4,6 +4,7 @@ namespace System;
 
 use PDO;
 use PDOException;
+use Exception;
 
 class Database
 {
@@ -53,7 +54,7 @@ class Database
 
     private function connect()
     {
-        $data = $this->app->file->call($this->app->file->to('config/database', '.php'));
+        $data = $this->app->config['db'];
 
         extract($data);
         
@@ -68,7 +69,7 @@ class Database
 
         } catch (PDOException $e) {
 
-            die($e->getMessage());
+            throw new Exception($e->getMessage());
         }
     }
 
@@ -366,7 +367,7 @@ class Database
 
         } catch (PDOException $e) {
 
-            die($e->getMessage());
+            throw new Exception($e->getMessage());
         }
     }
 
