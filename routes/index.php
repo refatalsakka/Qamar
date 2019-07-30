@@ -2,32 +2,30 @@
 
 $app = app();
 
-// ====== Users ====== //
+// ====== Website ====== //
 
-// Share Users Layout
-$app->share('usersLayout', function($app) {
-    return $app->load->controller('Users\Common\LayoutController');
+// Share Website Layout
+$app->share('websiteLayout', function($app) {
+    return $app->load->controller('Website\Common\LayoutController');
 });
 
-//Home
-$app->route->add('/', 'Users/Home');
-$app->route->add('/home', 'Users/Home', 'GET', 'auth');
+$app->route->add('/', 'Website/Home');
+$app->route->add('/home', 'Website/Home');
 
 //Services
-$app->route->add('/services', 'Users/Services');
+$app->route->add('/services', 'Website/Services');
 
 //Team
-$app->route->add('/team', 'Users/Team');
+$app->route->add('/team', 'Website/Team');
 
 //Contact
-$app->route->add('/contact', 'Users/Contact');
+$app->route->add('/contact', 'Website/Contact');
 
 //Data Protection
-$app->route->add('/data-protection', 'Users/dataProtection');
+$app->route->add('/data-protection', 'Website/dataProtection');
 
 //Imprint
-$app->route->add('/imprint', 'Users/Imprint');
-
+$app->route->add('/imprint', 'Website/Imprint');
 
 // ====== Admins ====== //
 
@@ -36,22 +34,25 @@ $app->share('adminLayout', function($app) {
     return $app->load->controller('Admin\Common\LayoutController');
 });
 
-$app->route->add('/admin', 'Admin/Home');
 
-//Login
-$app->route->add('/admin/login', 'Admin/Login');
-$app->route->add('/admin/submit', 'Admin/Login@submit', 'POST');
-$app->route->add('/admin/logout', 'Admin/Logout');
+$adminOptions = [
+    'prefix' => '/admin',
+    'controller' => 'Admin',
+    'middleware' => ['admin', ['ajax']]
+];
 
-//Profile
-$app->route->add('/admin/profile', 'Admin/Profile');
+$app->route->group($adminOptions, function ($route) {
 
-//Settings
-$app->route->add('/admin/settings', 'Admin/Settings');
+    $route->add('/', 'Home');
+    
+    //Login
+    $route->add('/login', 'Login');
+    $route->add('/submit', 'Login@submit', 'POST');
+    $route->add('/logout', 'Logout');
 
+    //Profile
+    $route->add('/profile', 'Profile', 'GET', ['auth']);
 
-// if (strpos($app->request->url(), '/admin') === 0) $app->load->middleware('auth')->handle();
-// if (strpos($app->request->url(), '/admin') === 0) $app->load->middleware('permissions')->handle();
-
-$app->route->add('/admin/home', 'Admin\Home');
-$app->route->add('/admin/posts', 'Admin\Posts@posts');
+    //Settings
+    $route->add('/settings', 'Settings');
+});

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers\Users;
+namespace App\Controllers\Website;
 
 use System\Controller as Controller;
 
@@ -13,10 +13,10 @@ class ServicesController extends Controller
         $this->html->setCss('services');
 
         $this->html->setJs('services');
-
+        
         $context = [
 
         ];
-        return $this->usersLayout->render('services', $context);
+        return $this->websiteLayout->render('services', $context);
     }
 }

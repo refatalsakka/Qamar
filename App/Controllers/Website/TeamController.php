@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers\Users;
+namespace App\Controllers\Website;
 
 use System\Controller as Controller;
 
@@ -17,6 +17,6 @@ class TeamController extends Controller
         $context = [
 
         ];
-        return $this->usersLayout->render('team', $context);
+        return $this->websiteLayout->render('team', $context);
     }
 }

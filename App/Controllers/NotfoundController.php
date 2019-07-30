@@ -17,6 +17,6 @@ class NotfoundController extends Controller
         $context = [
 
         ];
-        return $this->usersLayout->render('/../notFound', $context);
+        return $this->websiteLayout->render('/../notFound', $context);
     }
 }

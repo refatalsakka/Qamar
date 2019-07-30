@@ -7,8 +7,8 @@ use App\Middleware\MiddlewaresInterface as Middleware;
 
 class AjaxMiddleware implements Middleware
 {
-    public function handle()
+    public function handle(Application $app, $next)
     {   
-        if(empty($_SERVER['HTTP_X_REQUESTED_WITH'])) $this->url->redirectTo('error');
+        // if(empty($_SERVER['HTTP_X_REQUESTED_WITH'])) $this->url->redirectTo('error');
     }
 }

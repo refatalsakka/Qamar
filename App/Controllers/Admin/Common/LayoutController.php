@@ -9,7 +9,6 @@ class LayoutController extends Controller
 {
     public function render($file, $context)
     {
-        
         $data['content'] = $this->view->render($file, $context);
         $data['header'] = $this->load->controller('Admin/Common/Header')->index();
         $data['footer'] = $this->load->controller('Admin/Common/Footer')->index();

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers\Users;
+namespace App\Controllers\Website;
 
 use System\Controller as Controller;
 
@@ -17,6 +17,6 @@ class ImprintController extends Controller
         $context = [
 
         ];
-        return $this->usersLayout->render('imprint', $context);
+        return $this->websiteLayout->render('imprint', $context);
     }
 }

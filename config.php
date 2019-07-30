@@ -27,6 +27,8 @@ return [
             'ajax'        => 'App\\Middleware\\Admin\\AjaxMiddleware',
             'permissions' => 'App\\Middleware\\Admin\\PermissionsMiddleware',
             'redirect'    => 'App\\Middleware\\Admin\\RedirectMiddleware',
+        ],
+        'website' => [
         ]
     ]
 ];

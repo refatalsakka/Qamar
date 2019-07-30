@@ -14,23 +14,76 @@ class Route
 
     public $current = [];
 
+    private $prefix;
+
+    private $basController;
+
+    private $middlewareFrom;
+
+    private $groupMiddleware = [];
+
     public function __construct(Application $app)
     {
         $this->app = $app;
     }
 
-    public function add($url, $action, $requestMethos = 'GET', $middlware = [])
+    public function add($url, $action, $requestMethos = 'GET', $middleware = [])
     {
+        if ($this->prefix) {
+
+            if ($this->prefix !== '/') {
+
+                $url = $this->prefix . $url;
+
+                $url = rtrim($url, '/');
+            }
+        }
+     
+        if ($this->basController) $action = $this->basController . '/' . $action;
+      
+        if ($this->groupMiddleware) {
+            
+            if (is_array($middleware)) {
+                
+                $middleware = array_merge($this->groupMiddleware[0], $middleware);
+
+            } else {
+             
+                array_push($this->groupMiddleware[0], $middleware);
+
+                $middleware = $this->groupMiddleware[0];
+            }
+        }
+        
         $routes = [
             'url'       => $url,
             'pattern'   => $this->generatePattern($url),
             'action'    => $this->getAction($action),
             'method'    => $requestMethos,
-            'middleware' => $middlware
+            'middleware' => $middleware
         ];
 
         $this->routes[] = $routes;
 
+        return $this;
+    }
+
+    public function group($groupOptions, callable $callback)
+    {
+        $prefix = $groupOptions['prefix'];
+        $controller = $groupOptions['controller'];
+        $middlewareFrom = array_shift($groupOptions['middleware']);
+        $middleware = $groupOptions['middleware'];
+       
+        if (strpos($this->app->request->url(), $prefix) !== 0) return $this;
+        
+        $this->prefix = $prefix;
+        $this->basController = $controller;
+        $this->middlewareFrom = $middlewareFrom;
+        $this->groupMiddleware = $middleware;
+      
+        $callback($this);
+    
         return $this;
     }
 
@@ -61,13 +114,13 @@ class Route
             if ($this->isMatching($route['pattern']) && $this->isMatchingRequestMethod($route['method'])) {
                 
                 $this->current = $route;
-
+           
                 $output = '';
-
+                
                 if ($route['middleware']) {
-                  
+
                     if (is_array($route['middleware'])) {
-                        
+
                         foreach($route['middleware'] as $middleware) {
                             
                             $output = $this->middleware($middleware);

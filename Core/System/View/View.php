@@ -30,7 +30,7 @@ class View implements ViewInterface
     
         $class = get_class(array ($trace)[0]);
 
-        $dir = strpos($class, 'Users') != false ? 'users\\' : 'admin\\';
+        $dir = strpos($class, 'Website') != false ? 'Website\\' : 'Admin\\';
 
         $sub_dir = '';
         

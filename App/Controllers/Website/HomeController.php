@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers\Users;
+namespace App\Controllers\Website;
 
 use System\Controller as Controller;
 
@@ -8,6 +8,7 @@ class HomeController extends Controller
 {
     public function index()
     {
+        
         $this->html->setTitle('Home');
 
         $this->html->setCss('home');
@@ -17,6 +18,6 @@ class HomeController extends Controller
         $context = [
 
         ];
-        return $this->usersLayout->render('home', $context);
+        return $this->websiteLayout->render('home', $context);
     }
 }

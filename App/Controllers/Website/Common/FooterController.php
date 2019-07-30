@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers\Users\Common;
+namespace App\Controllers\Website\Common;
 
 use System\Controller as Controller;
 
