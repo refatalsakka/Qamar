@@ -87,6 +87,18 @@ class Route
         return $this;
     }
 
+    public function package($url, $controller)
+    {
+        $this->add("$url", "$controller");
+        $this->add("$url/add", "$controller@add", "POST");
+        $this->add("$url/submit", "$controller@submit", "POST");
+        $this->add("$url/edit/:id", "$controller@edit", "POST");
+        $this->add("$url/save/:id", "$controller@save", "POST");
+        $this->add("$url/delete/:id", "$controller@delete", "POST");
+    
+        return $this;
+    }
+
     public function generatePattern($url)
     {
         $pattern = '#^';

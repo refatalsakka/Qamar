@@ -35,6 +35,8 @@ $app->share('adminLayout', function($app) {
 });
 
 
+$app->route->package('cat', 'Website/Category');
+
 $adminOptions = [
     'prefix' => '/admin',
     'controller' => 'Admin',
