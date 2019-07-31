@@ -60,14 +60,35 @@ class Request
 
     public function get($key)
     {
-        return array_get($_GET, $key);
+        $value = array_get($_GET, $key, $default);
+
+        if (is_array($value)) {
+            $value = array_filter($value);
+        } else {
+            $value = trim($value);
+        }
+
+        return $value;
     }
 
     public function post($key)
     {   
-        return array_get($_POST, $key);
+        $value = array_get($_POST, $key, $default);
+
+        if (is_array($value)) {
+            $value = array_filter($value);
+        } else {
+            $value = trim($value);
+        }
+        
+        return $value;
     }
 
+    public function setPost($key, $value)
+    {
+        $_POST[$key] = $value;
+    }
+    
     public function posts()
     {   
         return $_POST;
