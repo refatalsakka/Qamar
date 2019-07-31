@@ -6,13 +6,16 @@ use Exception;
 
 class File
 {
-    const DS = DIRECTORY_SEPARATOR;
-
     private $root;
 
     public function __construct($root)
     {
         $this->root = $root;
+    }
+
+    public function root()
+    {
+        return $this->root;
     }
 
     public function exists($file)
@@ -35,7 +38,7 @@ class File
 
     public function to($path, $ext = null)
     {
-        return $this->root . static::DS . str_replace(['/', '\\'], static::DS, $path . $ext);
+        return $this->root . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $path . $ext);
     }
 
     public function inPublic($target = null)

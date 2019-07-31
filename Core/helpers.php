@@ -50,7 +50,7 @@ if (! function_exists('assets')) {
     function assets($path)
     {
         $app = Application::getInstance();
-        return $app->url->link('public/' . $path);
+        return $app->url->link('public' . DS . $path);
     }
 }
 

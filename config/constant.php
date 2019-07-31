@@ -1,0 +1,3 @@
+<?php
+
+const DS = DIRECTORY_SEPARATOR;

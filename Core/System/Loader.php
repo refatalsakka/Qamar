@@ -58,9 +58,9 @@ class Loader
     {
         $controller .= strpos($controller, 'Controller') ? '' : 'Controller';
 
-        $controller = str_replace('/', '\\', $controller);
+        $controller = str_replace('/', DS, $controller);
 
-        $controller = 'App\\Controllers\\' . $controller;
+        $controller = 'App' . DS .'Controllers' . DS . $controller;
 
         return $controller;
     }
@@ -97,9 +97,9 @@ class Loader
     {
         $model .= strpos($model, 'Model') ? '' : 'Model';
 
-        $model = str_replace('/', '\\', $model);
+        $model = str_replace('/', DS, $model);
 
-        $model = 'App\\Models\\' . $model;
+        $model = 'App' . DS . 'Models' . DS . $model;
 
         return $model;
     }

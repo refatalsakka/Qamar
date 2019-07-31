@@ -17,11 +17,13 @@ class Application
     
     public function __construct(File $file)
     {
-        // $this->handleErrors();
+        $this->handleErrors();
 
         $this->share('file', $file);
 
         $this->share('config', $this->file->call($this->file->to('config', '.php')));
+
+        $this->share('alias', $this->file->call($this->file->to('config/alias', '.php')));
 
         $this->loadHelpers();
     }
@@ -55,9 +57,9 @@ class Application
 
         $this->request->prepareUrl();
 
-        $routes = glob("routes/*.php");
-
-        foreach ($routes AS $route) $this->file->call($this->file->to($route));
+        $this->file->call($this->file->to('config/constant.php'));
+        
+        foreach (glob("routes/*.php") AS $route) $this->file->call($this->file->to($route));
 
         $output = $this->route->getProperRoute();
 
@@ -75,7 +77,7 @@ class Application
 
     public function coreClasses()
     {
-        return $this->config['alias'];
+        return $this->alias['classes'];
     }
 
     public function share($key, $value)
