@@ -113,6 +113,3 @@ $ gulp build
 ```sh
 $ npm run build
 ```
-
-## Usage
-TEST
