@@ -1,0 +1,8 @@
+.vscode
+node_modules
+vendor
+template/cache
+resources/sass/linters
+public
+package-lock.json
+composer.lock

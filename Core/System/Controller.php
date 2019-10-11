@@ -1,0 +1,47 @@
+<?php
+
+namespace System;
+
+abstract class Controller
+{
+  /**
+   * Application Object
+   *
+   * @var \System\Application
+   */
+  protected $app;
+
+  public function __construct(Application $app)
+  {
+    $this->app = $app;
+  }
+
+  /**
+   * Errors container
+   *
+   * @var array
+   */
+  protected $errors = [];
+
+  /**
+   * Encode the given value to json
+   *
+   * @param mixed $data
+   * @return string
+   */
+  public function json($data)
+  {
+    return json_encode($data);
+  }
+
+  /**
+   * Call shared application objects dynamically
+   *
+   * @param string $key
+   * @return mixed
+   */
+  public function __get($key)
+  {
+    return $this->app->get($key);
+  }
+}

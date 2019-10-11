@@ -1,0 +1,26 @@
+@import "../../layout";
+
+table {
+  background: #fff;
+
+  .search-input input {
+    border: none;
+    border-radius: 0;
+    outline: none;
+
+    &:focus {
+      border-bottom: 1px solid #ffc107;
+      box-shadow: 0 1px 0 0 #ffc107 !important;
+    }
+  }
+
+  .tr-users {
+    width: 15%;
+  }
+  .tr-country {
+    width: 10%;
+  }
+  .tr-id, .tr-zip {
+    width: 6.5%;
+  }
+}

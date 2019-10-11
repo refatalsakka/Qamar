@@ -1,0 +1,24 @@
+- var images  = img + ds + 'admin' + ds
+- var styles  = css + ds + 'admin' + ds
+- var scripts = js + ds + 'admin' + ds + 'pages' + ds
+block varibles
+doctype html
+html(lang='en')
+  head
+    include partials/head.pug
+    include partials/styles.pug
+  body.app.header-fixed.sidebar-fixed.aside-menu-fixed.sidebar-lg-show
+    if !loginPage
+      include partials/header.pug
+      .app-body
+        include partials/sidebar.pug
+        main.main
+          include partials/breadcrumb.pug
+          .container-fluid
+            block view
+        include partials/aside.pug
+      include partials/footer.pug
+    else
+      .container-fluid
+        block view
+    include partials/scripts.pug

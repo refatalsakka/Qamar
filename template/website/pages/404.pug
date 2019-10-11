@@ -1,0 +1,19 @@
+extends ../layout.pug
+
+block title
+  title 404
+
+block styles
+  link(href=styles + '404.css', rel='stylesheet')
+
+block scripts
+  script(src=scripts + '404.js')
+
+block view
+  .notfound
+    h1 OOPS! 😲
+    div
+      p 404 Page not found
+      hr
+      p.quote A lot of hard work is hidden behind nice things.
+    a(href='/')  Go to Home

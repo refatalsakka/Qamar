@@ -1,0 +1,33 @@
+@import "../layout";
+
+.main {
+  margin: 0 !important;
+}
+.form-check-input {
+  position: relative;
+  margin-left: 0;
+}
+.form-check-label {
+  margin-left: 3px;
+}
+.card-group {
+  box-shadow: 0 0 10px #c8cccf
+}
+.logo img {
+  display: block;
+  margin: 0 auto 20px;
+  width: 50%;
+}
+
+.loading {
+  animation: loading .6s infinite linear;
+}
+
+@keyframes loading {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

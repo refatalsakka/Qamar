@@ -1,0 +1,71 @@
+extends ../../layout.pug
+
+block title
+  title Users
+
+block styles
+  link(href=styles + ds + 'users' + ds + 'users.css', rel='stylesheet')
+
+block view
+  .filters
+  table.table.table-responsive-sm.table-hover.table-outline.mb-0
+    thead.thead-light
+      tr
+        th.tr-id
+          .md-form.search-input
+            input.form-control(type='text', placeholder='ID', aria-label='Search')
+        th.text-center
+          i.icon-people
+        th.tr-users
+          .md-form.search-input
+            input.form-control(type='text', placeholder='Users', aria-label='Search')
+        th.tr-country
+          .md-form.search-input
+            input.form-control(type='text', placeholder='Country', aria-label='Search')
+        th.tr-zip
+          .md-form.search-input
+            input.form-control(type='text', placeholder='ZIP', aria-label='Search')
+        th Activity
+    tbody
+      each user in users
+        tr
+          td.text-center
+            strong #{'#' + user.id}
+          td.text-center
+            .avatar
+              img.img-avatar(src=images + 'avatars/' + user.img, alt='admin@bootstrapmaster.com')
+              if user.is_login
+                span.avatar-status.badge-success
+              else
+                span.avatar-status.badge-danger
+          td
+            div
+              a(href=host + '/admin/users/' + user.id) #{user.fname  + ' ' +  user.lname}
+            .small.text-muted
+              if user.new
+                span.badge.badge-success new
+                | &nbsp;
+              | Registered: #{user.registration}
+          td.text-center
+            if user.coutrny_Icon
+              i.flag-icon.h4.mb-0(title=user.country, class=user.coutrny_Icon)
+            else
+              | Unknown
+          td.text-center= user.zip
+          td
+            if user.is_login
+              .small.text-muted Online
+            else
+              if user.status === '2'
+                .small.text-muted Offline
+            if user.last_login
+              .small.text-muted Last login
+                | &nbsp;
+                strong= user.last_login
+            if !user.is_login
+              if user.status !== '2'
+                .small.text-muted Status &nbsp;
+                  if user.status === '0'
+                    span.badge.badge-danger Inactive
+                  else if user.status === "1"
+                    span.badge.badge-warning Pending

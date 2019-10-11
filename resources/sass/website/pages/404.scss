@@ -1,0 +1,39 @@
+@import "../layout";
+
+body {
+  background-image: url('../../img/website/404/404.webp');
+  background-size: cover;
+}
+
+.notfound {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 90vh;
+
+  h1 {
+    font-size: 125px;
+    font-family: cursive;
+    @include custom-width(591px) {
+      font-size: 105px;
+    }
+  }
+
+  > div {
+    text-align: center;
+    color: #343434;
+
+    p.quote {
+      color: #669dd1;
+      background: #ffc83d;
+      padding: 14px;
+      text-shadow: 0px 0px 0 10px #fff;
+      text-shadow: -1px 0 7px #fff;
+    }
+  }
+
+  a {
+    color: #fff;
+  }
+}

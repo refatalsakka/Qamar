@@ -1,0 +1,4 @@
+{
+  "extends": "./node_modules/pug-lint-config-clock/.pug-lintrc.json",
+  "disallowIdLiterals": null
+}

@@ -1,0 +1,192 @@
+extends ../../layout.pug
+
+block title
+  title User
+
+block styles
+  link(href=styles + ds + 'users' + ds + 'user.css', rel='stylesheet')
+  link(href=css + ds + 'libs' + ds + 'bootstrap-datepicker.min.css', rel='stylesheet')
+
+block scripts
+  script(src=scripts + ds + 'users' + ds + 'user.js')
+  script(src=js + ds + 'libs' + ds + 'bootstrap-datepicker.min.js')
+
+block view
+  .row
+    .col-md-4
+      .card
+        .card-header
+          i.fa.fa-align-justify
+          | &nbsp;Informations
+        .card-body
+          table.table.table-responsive-sm.table-bordered
+            tbody
+              tr
+                td  ID
+                td
+                  strong ##{user.id}
+              tr
+                td Username
+                td.editable(data-type='text', data-name='username')= user.username
+              tr
+                td First Name
+                td.editable(data-type='text', data-name='fname')= user.fname
+              tr
+                td Last Name
+                td.editable(data-type='text', data-name='lname')= user.lname
+              tr
+                td Sex
+                td.editable(data-type='text', data-name='sex', data-options='male,female')= user.sex
+              tr
+              tr
+                td Birthday
+                td.editable(data-type='text', data-name='birthday', data-date=user.birthday)= user.birthday
+              tr
+                td E-Mail
+                td.editable(data-type='text', data-name='email')= user.email
+              tr
+                td Password
+                td
+                  button.btn.btn-warning.mb-1(type='button', data-toggle='modal', data-target='#newPasswordModel') Generate new password
+              tr
+                td Registration
+                td= user.registration
+              tr
+                td Status
+                td
+                  if user.status === '0'
+                    span.badge.badge-danger Inactive
+                  else if user.status === "1"
+                    span.badge.badge-warning Pending
+                  else if user.status === "2"
+                    span.badge.badge-success Active
+                  if user.status === '0'
+                    button.btn.btn-success.mb-1(type='button', data-toggle='modal', data-target='#successModal') Active
+                    button.btn.btn-warning.mb-1(type='button', data-toggle='modal', data-target='#warningModal') Pending
+                  else if user.status === "1"
+                    button.btn.btn-success.mb-1(type='button', data-toggle='modal', data-target='#successModal') Active
+                    button.btn.btn-danger.mb-1(type='button', data-toggle='modal', data-target='#dangerModal') Disable
+                  else if user.status === "2"
+                    button.btn.btn-warning.mb-1(type='button', data-toggle='modal', data-target='#warningModal') Pending
+                    button.btn.btn-danger.mb-1(type='button', data-toggle='modal', data-target='#dangerModal') Disable
+              tr
+                td Image
+                td
+                  img.img-thumbnail.target-img-box(src=images + 'avatars/' + user.img, alt='')
+    .col-md-4
+      .card
+        .card-header
+          i.fa.fa-align-justify
+          |  &nbsp;Address
+        .card-body
+          table.table.table-responsive-sm.table-bordered
+            tbody
+              tr
+                td Country
+                td.editable(data-type='text', data-name='country')= user.country
+              tr
+                td State
+                td.editable(data-type='text', data-name='state')= user.state
+              tr
+                td City
+                td.editable(data-type='text', data-name='city')= user.city
+              tr
+                td Street
+                td.editable(data-type='text', data-name='street')= user.street
+              tr
+                td Zip
+                td.editable(data-type='number', data-name='zip')= user.zip
+              if user.additional
+                tr
+                  td Additional
+                  td.editable(data-type='text', data-name='additional')= user.additional
+    .col-md-4
+      .card
+        .card-header
+          i.fa.fa-align-justify
+          | &nbsp;Activitise
+        .card-body
+          table.table.table-responsive-sm.table-bordered
+            tbody
+              tr
+                td  Last Login
+                td
+                  if user.last_login
+                    = user.last_login
+                  else
+                    | Unknown
+              tr
+                td  Last Logout
+                td
+                  if user.last_logout
+                    = user.last_logout
+                  else
+                    | Unknown
+              tr
+                td Now
+                if user.is_login
+                  td
+                    span.badge.badge-success online
+                else
+                  td
+                    span.badge.badge-danger offline
+  .modal.fade#successModal(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+    .modal-dialog.modal-success(role='document')
+      .modal-content
+        .modal-header
+          h4.modal-title Modal title
+          button.close(type='button', data-dismiss='modal', aria-label='Close')
+            span(aria-hidden='true') ×
+        .modal-body
+          p One fine body…
+        .modal-footer
+          form.form-status(action=host + '/admin/users/update/' + user.id, method='POST')
+            input(type='hidden', name='status', value='2')
+            button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+            button.btn.btn-success(type='submit') Save changes
+  .modal.fade#dangerModal(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', style='display: none;', aria-hidden='true')
+    .modal-dialog.modal-danger(role='document')
+      .modal-content
+        .modal-header
+          h4.modal-title Modal title
+          button.close(type='button', data-dismiss='modal', aria-label='Close')
+            span(aria-hidden='true') ×
+        .modal-body
+          p One fine body…
+        .modal-footer
+          form.form-status(action=host + '/admin/users/update/' + user.id, method='POST')
+            input(type='hidden', name='status', value='0')
+            button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+            button.btn.btn-danger(type='submit') Save changes
+  .modal.fade#warningModal(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+    .modal-dialog.modal-warning(role='document')
+      .modal-content
+        .modal-header
+          h4.modal-title Modal title
+          button.close(type='button', data-dismiss='modal', aria-label='Close')
+            span(aria-hidden='true') ×
+        .modal-body
+          p One fine body…
+        .modal-footer
+          form.form-status(action=host + '/admin/users/update/' + user.id, method='POST')
+            input(type='hidden', name='status', value='1')
+            button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+            button.btn.btn-warning(type='submit') Save changes
+  .modal.fade#newPasswordModel(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+    .modal-dialog.modal-warning(role='document')
+      .modal-content
+        .modal-header
+          h4.modal-title Modal title
+          button.close(type='button', data-dismiss='modal', aria-label='Close')
+            span(aria-hidden='true') ×
+        .modal-body
+          p One fine body…
+        .modal-footer
+          button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+          button.btn.btn-warning(type='button') Save changes
+  .img-box
+    .img-card
+      .img
+        .img-box-close
+          i.fas.fa-times-circle
+        img#big-img(alt='')

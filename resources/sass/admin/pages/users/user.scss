@@ -1,0 +1,60 @@
+@import "../../layout";
+.img-thumbnail {
+  cursor: pointer;
+  user-select: none;
+}
+.img-box {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 10001;
+  background: #00000085;
+
+  .img-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+
+    .img {
+      width: 50vh;
+
+      .img-box-close {
+        display: inline;
+        position: relative;
+        bottom: -27px;
+        left: 6px;
+        background: #fff;
+        border-radius: 5px;
+        padding: 3px;
+        box-sizing: content-box;
+        cursor: pointer;
+      }
+      img {
+        width: 100%;
+        user-select: none;
+      }
+    }
+  }
+
+}
+form {
+  display: flex;
+
+  div {
+    margin: 0 5px;
+
+    button {
+      margin-top: 5px;
+    }
+  }
+  div:first-child {
+    flex-grow: 2;
+  }
+  div:last-child {
+    flex-grow: 1;
+  }
+}

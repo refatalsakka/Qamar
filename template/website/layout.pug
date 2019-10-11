@@ -1,0 +1,13 @@
+- var images  = img + ds + 'website' + ds
+- var styles  = css + ds + 'website' + ds
+- var scripts = js + ds + 'website' + ds + 'pages' + ds
+block varibles
+<!DOCTYPE html>
+html(lang=websiteLang)
+  head
+  include partials/head.pug
+  include partials/styles.pug
+  body
+    block view
+  include partials/footer.pug
+  include partials/scripts.pug

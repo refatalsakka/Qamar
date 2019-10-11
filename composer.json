@@ -1,0 +1,17 @@
+{
+  "name": "mvc-framework-php",
+  "description": "",
+  "require": {
+    "filp/whoops": "^2.4",
+    "pug-php/pug": "^3.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\":  "App/",
+      "System\\": "Core/System/"
+    }
+  },
+  "require-dev": {
+
+  }
+}

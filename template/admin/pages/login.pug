@@ -1,0 +1,42 @@
+extends ../layout.pug
+
+block title
+  title Login
+
+block varibles
+  - var loginPage = true
+
+block styles
+  link(href=styles + 'login.css', rel='stylesheet')
+
+block scripts
+  script(src=scripts + 'login.js')
+
+block view
+  .container
+    .row.justify-content-center
+      .col-md-4
+        .logo
+          img(src=img + ds + 'logos' + ds + 'logo.webp', alt='logo')
+        .card-group
+          .card.p-4
+            .card-body
+              h1 Admin
+              p.text-muted Sign In to the admin panel
+              form.form(action=host + '/admin/submit', method='POST')
+                .input-group.mb-3
+                  .input-group-prepend
+                    span.input-group-text
+                      i.icon-user
+                  input.form-control(type='text', name='username', placeholder='Username', data-minlength='4')
+                .input-group.mb-2
+                  .input-group-prepend
+                    span.input-group-text
+                      i.icon-lock
+                  input.form-control(type='password', name='password', placeholder='Password', data-minlength='6')
+                .input-group.mb-3
+                  input.form-check-input#exampleCheck1(type='checkbox', name='remeberme')
+                  label.form-check-label(for='remeberme') Remember me
+                .row
+                  .col-6
+                    button.btn.btn-primary.px-4.submit-btn(type='submit') Login
