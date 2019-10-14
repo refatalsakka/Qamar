@@ -60,7 +60,7 @@ abstract class Model
 
   public function hasOne($select, $table, $joins, $where)
   {
-    return $this->db->select($select)->from($table)->join($joins)->where($table . '.id = ?', $where)->fetch();
+    return $this->db->select($select)->from($table)->join($joins)->where($table . '.id = ?', $where);
   }
 
   public function join($select, $table, $joins)

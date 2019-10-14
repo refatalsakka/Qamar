@@ -48,6 +48,6 @@ class UserModel extends Model
     activity.is_login,
     activity.last_login,
     activity.last_logout
-    ', $this->table, [['address', 'id', 'user_id'], ['activity', 'id', 'user_id']], $id);
+    ', $this->table, [['address', 'id', 'user_id'], ['activity', 'id', 'user_id']], $id)->fetch();
   }
 }
