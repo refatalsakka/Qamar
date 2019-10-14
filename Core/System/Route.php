@@ -112,7 +112,7 @@ class Route
     $this->add("$url/:id", "$controller@user");
 
     $add = isset($middlewares['add']) ? $middlewares['add'] : [];
-    $this->add("$url/add", "$controller@add", 'POST', $add);
+    $this->add("$url/add", "$controller@add", 'BOTH', $add);
 
     $submit = isset($middlewares['submit']) ? $middlewares['submit'] : [];
     $this->add("$url/submit", "$controller@submit", 'POST', $submit);
