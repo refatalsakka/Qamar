@@ -104,101 +104,102 @@ class UsersController extends Controller
 
     $id = getLastParameter($this->request->baseUrl());
 
-    if (isset($allows[$inputs[0]])) {
+    if (!isset($allows[$inputs[0]])) {
 
-      $column = $inputs[0];
-      $table = $allows[$column]['table'];
+      $msg = 'reload';
+      return json_encode($msg);
+    }
 
-      if (isset($allows[$column]['type'])) {
-        $type = $allows[$column]['type'];
-        $this->validator->input($column)->$type();
-      }
-      if (isset($allows[$column]['require'])) {
-        $this->validator->input($column)->require();
-      }
-      if (isset($allows[$column]['unique'])) {
-        $this->validator->input($column)->unique([$table, $column]);
-      }
-      if (isset($allows[$column]['noUmlaut'])) {
-        $this->validator->input($column)->noUmlaut();
-      }
-      if (isset($allows[$column]['email'])) {
-        $this->validator->input($column)->email();
-      }
-      if (isset($allows[$column]['date'])) {
-        $dateFormat = $allows[$column]['date'];
-        $this->validator->input($column)->date($dateFormat['show']);
+    $column = $inputs[0];
+    $table = $allows[$column]['table'];
 
-        if (isset($allows[$column]['dateRange'])) {
-          $this->validator->input($column)->dateRange($dateFormat['show'], $allows[$column]['dateRange']);
-        }
-      }
-      if (isset($allows[$column]['minLen'])) {
-        $this->validator->input($column)->minLen($allows[$column]['minLen']);
-      }
-      if (isset($allows[$column]['maxLen'])) {
-        $this->validator->input($column)->maxLen($allows[$column]['maxLen']);
-      }
-      if (isset($allows[$column]['containJust'])) {
-        $this->validator->input($column)->containJust($allows[$column]['containJust']);
-      }
+    if (isset($allows[$column]['type'])) {
+      $type = $allows[$column]['type'];
+      $this->validator->input($column)->$type();
+    }
+    if (isset($allows[$column]['require'])) {
+      $this->validator->input($column)->require();
+    }
+    if (isset($allows[$column]['unique'])) {
+      $this->validator->input($column)->unique([$table, $column]);
+    }
+    if (isset($allows[$column]['noUmlaut'])) {
+      $this->validator->input($column)->noUmlaut();
+    }
+    if (isset($allows[$column]['email'])) {
+      $this->validator->input($column)->email();
+    }
+    if (isset($allows[$column]['date'])) {
+      $dateFormat = $allows[$column]['date'];
+      $this->validator->input($column)->date($dateFormat['show']);
 
-      if ($this->validator->fails()) {
-
-        $msg['error'] = $this->validator->getMsgs();
-
-        if ($column === 'status') {
-
-          $msg = 'reload';
-        }
-
-        return json_encode($msg);
-      }
-
-      $user = $this->load->model('User')->get($id);
-
-      if ($user) {
-
-        $value = $posts[$column];
-        $user_id_table_name = $allows[$column]['user_id_table_name'];
-
-        $value = strtolower($value);
-
-        if (isset($allows[$column]['date'])) {
-
-          $value = date($dateFormat['insert'], strtotime($value));
-        }
-
-        $update = $this->db->data([
-          $column => $value,
-
-        ])->where($user_id_table_name . ' = ?', $id)->update($table);
-
-        if ($update) {
-
-          $msg = 'reload';
-
-          if ($column !== 'status') {
-
-            $msg  = null;
-
-            $msg['success'] = 'no text';
-
-            if ($value) {
-
-              $msg['success'] = $value;
-
-              if (isset($allows[$column]['date'])) {
-
-                $msg['success'] = $this->changeFormatDate($value, [$dateFormat['insert'], $dateFormat['show']], false);
-              }
-            }
-          }
-          return json_encode($msg);
-        }
+      if (isset($allows[$column]['dateRange'])) {
+        $this->validator->input($column)->dateRange($dateFormat['show'], $allows[$column]['dateRange']);
       }
     }
-    $msg = 'reload';
+    if (isset($allows[$column]['minLen'])) {
+      $this->validator->input($column)->minLen($allows[$column]['minLen']);
+    }
+    if (isset($allows[$column]['maxLen'])) {
+      $this->validator->input($column)->maxLen($allows[$column]['maxLen']);
+    }
+    if (isset($allows[$column]['containJust'])) {
+      $this->validator->input($column)->containJust($allows[$column]['containJust']);
+    }
+
+    if ($this->validator->fails()) {
+
+      $msg['error'] = $this->validator->getMsgs();
+      return json_encode($msg);
+    }
+
+    $user = $this->load->model('User')->get($id);
+
+    if (!$user) {
+
+      $msg = 'reload';
+      return json_encode($msg);
+    }
+
+    $value = $posts[$column];
+    $user_id_table_name = $allows[$column]['user_id_table_name'];
+
+    if ($value == '') {
+
+      $value = null;
+    }
+
+    $value = strtolower($value);
+
+    if (isset($allows[$column]['date'])) {
+
+      $value = date($dateFormat['insert'], strtotime($value));
+    }
+
+    $update = $this->db->data([
+      $column => $value,
+
+    ])->where($user_id_table_name . ' = ?', $id)->update($table);
+
+    if (!$update) {
+
+      $msg = 'reload';
+      return json_encode($msg);
+    }
+
+    $msg = null;
+
+    $msg['success'] = 'no text';
+
+    if ($value) {
+
+      $msg['success'] = $value;
+
+      if (isset($allows[$column]['date'])) {
+
+        $msg['success'] = $this->changeFormatDate($value, [$dateFormat['insert'], $dateFormat['show']], false);
+      }
+    }
 
     return json_encode($msg);
   }

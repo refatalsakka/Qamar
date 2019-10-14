@@ -153,6 +153,9 @@ class View
   private function parameters()
   {
     $url =  $this->app->request->url();
+
+    if ($url === '/') {return;}
+
     $parameters =  explode('/', $url);
     array_shift($parameters);
     $return = [];
