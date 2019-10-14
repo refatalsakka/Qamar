@@ -42,6 +42,9 @@ class View
     $host = $this->app->request->host();
     $dir = $this->app->file->root();
 
+    $parameters = $this->parameters();
+
+
     //File path
     $file = $this->filePath($path, $dir);
 
@@ -61,11 +64,12 @@ class View
 
     $context += [
       'host'  => $host,
+      'parameters' => $parameters,
       'css'   => $css,
       'js'    => $js,
       'img'   => $img,
       'pages' => $pages,
-      'ds'    => DS
+      'ds'    => DS,
     ];
 
     return $pug->render($file, $context);
@@ -144,5 +148,26 @@ class View
     $img = str_replace(['\\', '/'], DS, $img);
 
     return $img;
+  }
+
+  private function parameters()
+  {
+    $url =  $this->app->request->url();
+    $parameters =  explode('/', $url);
+    array_shift($parameters);
+    $return = [];
+
+    foreach ($parameters as $parameter) {
+      $name = $parameter;
+      $length =  strpos($url, $parameter) + strlen($parameter);
+      $link =  substr($url, 0, $length);
+
+      $return[] = [
+        'name' => $name,
+        'link' => $link,
+      ];
+    }
+
+    return $return;
   }
 }
