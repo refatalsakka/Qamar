@@ -1,18 +1,13 @@
 //-- Breadcrumb
 ol.breadcrumb
-  li.breadcrumb-item Home
-  if !starter
-    li.breadcrumb-item
-      a(href='#') Admin
-    li.breadcrumb-item.active Dashboard
+  if parameters.length > 1
+    each parameter in parameters
+      li.breadcrumb-item
+        if parameter.name === 'admin'
+          a(href=host + parameter.link) dashboard
+        else
+          a(href=host + parameter.link)= parameter.name
     //-- Breadcrumb Menu
-    li.breadcrumb-menu.d-md-down-none
-      .btn-group(role='group', aria-label='Button group')
-        a.btn(href='#')
-          i.icon-speech
-        a.btn(href='./')
-          i.icon-graph
-          |   Dashboard
-        a.btn(href='#')
-          i.icon-settings
-          |   Settings
+  li.breadcrumb-menu.d-md-down-none
+    .btn-group(role='group', aria-label='Button group')
+      block header-right-unser-profile
