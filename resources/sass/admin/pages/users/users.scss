@@ -23,4 +23,8 @@ table {
   .tr-id, .tr-zip {
     width: 6.5%;
   }
+
+  .user-name a {
+    text-transform: capitalize;
+  }
 }
