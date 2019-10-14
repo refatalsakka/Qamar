@@ -63,8 +63,8 @@ abstract class Model
     return $this->db->select($select)->from($table)->join($joins)->where($table . '.id = ?', $where)->fetch();
   }
 
-  public function join($select, $table, $joins, $limit = null)
+  public function join($select, $table, $joins)
   {
-    return $this->db->select($select)->from($table)->join($joins)->limit($limit)->fetchAll();
+    return $this->db->select($select)->from($table)->join($joins);
   }
 }
