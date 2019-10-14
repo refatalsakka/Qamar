@@ -6,6 +6,13 @@ block title
 block styles
   link(href=styles + ds + 'users' + ds + 'users.css', rel='stylesheet')
 
+block scripts
+  script(src=scripts + ds + 'users' + ds + 'users.js')
+
+block header-right-unser-profile
+  a.btn(href=host + '/admin/users/add')
+    i.fas.fa-user-plus
+
 block view
   .filters
   table.table.table-responsive-sm.table-hover.table-outline.mb-0
@@ -13,23 +20,23 @@ block view
       tr
         th.tr-id
           .md-form.search-input
-            input.form-control(type='text', placeholder='ID', aria-label='Search')
+            input.form-control#idInput(type='text', placeholder='ID', aria-label='Search', autocomplete='off')
         th.text-center
           i.icon-people
         th.tr-users
           .md-form.search-input
-            input.form-control(type='text', placeholder='Users', aria-label='Search')
+            input.form-control#userInput(type='text', placeholder='User', aria-label='Search', autocomplete='off')
         th.tr-country
           .md-form.search-input
-            input.form-control(type='text', placeholder='Country', aria-label='Search')
+            input.form-control#countryInput(type='text', placeholder='Country', aria-label='Search', autocomplete='off')
         th.tr-zip
           .md-form.search-input
-            input.form-control(type='text', placeholder='ZIP', aria-label='Search')
+            input.form-control#zipInput(type='text', placeholder='ZIP', aria-label='Search', autocomplete='off')
         th Activity
     tbody
       each user in users
         tr
-          td.text-center
+          td.text-center.user-id
             strong #{'#' + user.id}
           td.text-center
             .avatar
@@ -38,7 +45,7 @@ block view
                 span.avatar-status.badge-success
               else
                 span.avatar-status.badge-danger
-          td
+          td.user-name
             div
               a(href=host + '/admin/users/' + user.id) #{user.fname  + ' ' +  user.lname}
             .small.text-muted
@@ -46,12 +53,12 @@ block view
                 span.badge.badge-success new
                 | &nbsp;
               | Registered: #{user.registration}
-          td.text-center
+          td.text-center.user-country
             if user.coutrny_Icon
-              i.flag-icon.h4.mb-0(title=user.country, class=user.coutrny_Icon)
+              i.flag-icon.h4.mb-0(title=user.country, class=user.coutrny_Icon, data-country=user.country)
             else
               | Unknown
-          td.text-center= user.zip
+          td.text-center.user-zip= user.zip
           td
             if user.is_login
               .small.text-muted Online

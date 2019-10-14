@@ -11,6 +11,10 @@ block scripts
   script(src=scripts + ds + 'users' + ds + 'user.js')
   script(src=js + ds + 'libs' + ds + 'bootstrap-datepicker.min.js')
 
+block header-right-unser-profile
+  a.btn(href=host + '/admin/users/add')
+    i.fas.fa-user-plus
+
 block view
   .row
     .col-md-4
