@@ -24,3 +24,10 @@
     transform: translateX(0);
   }
 }
+
+// Dashboard
+ol.breadcrumb {
+  li {
+    text-transform: capitalize;
+  }
+}
