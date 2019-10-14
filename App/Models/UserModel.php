@@ -22,7 +22,7 @@ class UserModel extends Model
     address.zip,
     activity.is_login,
     activity.last_login
-    ', $this->table, [['address', 'id', 'user_id'], ['activity', 'id', 'user_id']]);
+    ', $this->table, [['address', 'id', 'user_id'], ['activity', 'id', 'user_id']])->orderBy('users.registration', 'DESC')->fetchAll();
   }
 
   public function user($id)
