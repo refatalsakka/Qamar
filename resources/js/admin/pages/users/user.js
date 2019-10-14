@@ -20,7 +20,6 @@ function cabBeConvertedToJson(data) {
   }
 }
 
-/* eslint-disable func-names */
 $(document).ready(() => {
   // append alert if not exists
   // if exists change the message
@@ -45,7 +44,6 @@ $(document).ready(() => {
     });
   });
 
-  // eslint-disable-next-line prefer-arrow-callback
   $('.editable').click(function (event) {
     // check if the td is open before
     // check that the use dosn't click on the buttons
@@ -123,7 +121,6 @@ $(document).ready(() => {
       // focus on the input
       $('.input-edit').focus();
 
-      // eslint-disable-next-line prefer-arrow-callback
       // close input on click
       $('.close-input-edit').click(function () {
         const form = $(this).parents('.form-editable')[0];
