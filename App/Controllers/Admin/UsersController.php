@@ -201,11 +201,13 @@ class UsersController extends Controller
     return json_encode($msg);
   }
 
+  public function new()
+  {
+    return $this->view->render('admin/pages/users/new', []);
+  }
+
   public function add()
   {
-    $context = [
-
-    ];
-    return $this->view->render('admin/pages/users/add', $context);
+    return json_encode('hi');
   }
 }
