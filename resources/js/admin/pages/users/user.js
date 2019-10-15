@@ -11,6 +11,14 @@ function genetareAction(method) {
   return newUrl;
 }
 
+function addSuccessBg(td) {
+  td.addClass('success-bg');
+
+  setTimeout(() => {
+    td.removeClass('success-bg');
+  }, 3000);
+}
+
 // check if the string can be parsed to JSON
 function cabBeConvertedToJson(data) {
   try {
@@ -21,11 +29,17 @@ function cabBeConvertedToJson(data) {
 }
 
 $(document).ready(() => {
+  $(document).on('click', () => {
+    $('.editable').each(function () {
+      $(this).removeClass('success-bg');
+    });
+  });
+
   // append alert if not exists
   // if exists change the message
-  function appendAlert(msg) {
+  function appendAlert(td, msg) {
     if (!$('.alert-danger')[0]) {
-      $('.form-editable').parents('.editable').prepend(`<div class="alert alert-danger" role="alert">${msg}</div>`);
+      td.prepend(`<div class="alert alert-danger" role="alert">${msg}</div>`);
     } else {
       $('.alert-danger')[0].innerHTML = msg;
     }
@@ -55,7 +69,7 @@ $(document).ready(() => {
         $(this).html(text);
       });
 
-      // get the value  from td
+      // get the value from td
       const value = $(this).text();
 
       // attributes values
@@ -156,26 +170,33 @@ $(document).ready(() => {
         e.preventDefault();
         const form = $(this);
         const action = form.attr('action');
+        const td = $(this).parents('.editable');
+        // const oldText = $(this).find('input');
 
         $.ajax({
           type: 'POST',
           url: action,
           data: form.serialize(),
+          beforeSend: () => {
+            td.append('<div class="disable-click"><i class="fas fa-spinner loading"></i></div>');
+          },
           success: (data) => {
             const json = cabBeConvertedToJson(data);
             if (json.success) {
               // "not text" means that it's let the input empty so it will be jsut empty
-              if (json.success !== 'no text') {
-                $(this).parents('.editable').html(json.success);
+              if (json.success === 'no text') {
+                td.html('');
               } else {
-                $(this).parents('.editable').html('');
+                td.html(json.success);
               }
+              addSuccessBg(td);
             } else if (json.error) {
               const input = Object.keys(json.error)[0];
-              appendAlert(json.error[input]);
+              appendAlert(td, json.error[input]);
             } else {
               window.location.reload();
             }
+            td.find('.disable-click').remove();
           },
           fail: () => {
             window.location.reload();

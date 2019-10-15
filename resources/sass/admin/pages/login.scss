@@ -18,16 +18,3 @@
   margin: 0 auto 20px;
   width: 50%;
 }
-
-.loading {
-  animation: loading .6s infinite linear;
-}
-
-@keyframes loading {
-  0% {
-    transform: rotate(0);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
