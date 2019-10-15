@@ -111,17 +111,14 @@ class Route
     $this->add("$url", "$controller");
     $this->add("$url/:id", "$controller@user");
 
-    $add = isset($middlewares['add']) ? $middlewares['add'] : [];
-    $this->add("$url/add", "$controller@add", 'BOTH', $add);
+    $new = isset($middlewares['new']) ? $middlewares['new'] : [];
+    $this->add("$url/new", "$controller@new", 'GET', $new);
 
-    $submit = isset($middlewares['submit']) ? $middlewares['submit'] : [];
-    $this->add("$url/submit", "$controller@submit", 'POST', $submit);
+    $add = isset($middlewares['add']) ? $middlewares['add'] : [];
+    $this->add("$url/add", "$controller@add", 'POST', $add);
 
     $update = isset($middlewares['update']) ? $middlewares['update'] : [];
     $this->add("$url/update/:id", "$controller@update", 'POST', $update);
-
-    $save = isset($middlewares['save']) ? $middlewares['save'] : [];
-    $this->add("$url/save/:id", "$controller@save", 'POST', $save);
 
     $delete = isset($middlewares['delete']) ? $middlewares['delete'] : [];
     $this->add("$url/delete/:id", "$controller@delete", 'POST', $delete);
