@@ -44,18 +44,11 @@ class View
 
     $parameters = $this->parameters();
 
-
     //File path
     $file = $this->filePath($path, $dir);
 
-    //Css path
-    $css = $this->stylesPath($dir, $host);
-
-    //Js path
-    $js = $this->scriptsPath($dir, $host);
-
-    //Imgs path
-    $img = $this->imagesPath($dir, $host);
+    //Public
+    $_public = $this->_public($dir, $host);
 
     //Website ages
     $pages = $this->websitePages();
@@ -65,9 +58,7 @@ class View
     $context += [
       'host'  => $host,
       'parameters' => $parameters,
-      'css'   => $css,
-      'js'    => $js,
-      'img'   => $img,
+      '_public' => $_public,
       'pages' => $pages,
       'ds'    => DS,
     ];
@@ -102,52 +93,13 @@ class View
     return $file;
   }
 
-  /**
-   * Get the path of js file
-   * The path will be replaced with the absolute host
-   * @param string $dir
-   * @param array $host
-   * @return string
-   */
-  private function scriptsPath($dir, $host)
+  private function _public($dir, $host)
   {
-    $js = $this->app->file->js();
-    $js = str_replace($dir, $host, $js);
-    $js = str_replace(['\\', '/'], DS, $js);
+    $public = $this->app->file->toPublic();
+    $public = str_replace($dir, $host, $public);
+    $public = str_replace(['\\', '/'], DS, $public);
 
-    return $js;
-  }
-
-  /**
-   * Get the path of css file
-   * The path will be replaced with the absolute host
-   * @param string $dir
-   * @param array $host
-   * @return string
-   */
-  private function stylesPath($dir, $host)
-  {
-    $css = $this->app->file->css();
-    $css = str_replace($dir, $host, $css);
-    $css = str_replace(['\\', '/'], DS, $css);
-
-    return $css;
-  }
-
-  /**
-   * Get the path of img file
-   * The path will be replaced with the absolute host
-   * @param string $dir
-   * @param array $host
-   * @return string
-   */
-  private function imagesPath($dir, $host)
-  {
-    $img = $this->app->file->img();
-    $img = str_replace($dir, $host, $img);
-    $img = str_replace(['\\', '/'], DS, $img);
-
-    return $img;
+    return $public;
   }
 
   private function parameters()
