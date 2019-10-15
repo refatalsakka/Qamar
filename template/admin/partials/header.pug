@@ -2,8 +2,8 @@ header.app-header.navbar
   button.navbar-toggler.sidebar-toggler.d-lg-none.mr-auto(type='button', data-toggle='sidebar-show')
     span.navbar-toggler-icon
   a.navbar-brand(href='#')
-    img.navbar-brand-full(src=img + ds + 'logos' + ds + 'logo_2.webp', width='89', height='25', alt='CoreUI Logo')
-    img.navbar-brand-minimized(src=img + ds + 'logos' + ds + 'logo.webp', width='30', height='30', alt='CoreUI Logo')
+    img.navbar-brand-full(src=logos + 'logo_2.webp', width='89', height='25', alt='CoreUI Logo')
+    img.navbar-brand-minimized(src=logos + 'logo.webp', width='30', height='30', alt='CoreUI Logo')
   button.navbar-toggler.sidebar-toggler.d-md-down-none(type='button', data-toggle='sidebar-lg-show')
     span.navbar-toggler-icon
   if !starter
@@ -115,7 +115,7 @@ header.app-header.navbar
             .message
               .py-3.mr-3.float-left
                 .avatar
-                  img.img-avatar(src=img + '/admin/avatars/2.webp', alt='admin@bootstrapmaster.com')
+                  img.img-avatar(src=usersImgs + '2.webp', alt='admin@bootstrapmaster.com')
                   span.avatar-status.badge-success
               div
                 small.text-muted John Doe
@@ -129,7 +129,7 @@ header.app-header.navbar
             .message
               .py-3.mr-3.float-left
                 .avatar
-                  img.img-avatar(src=img + '/admin/avatars/2.webp', alt='admin@bootstrapmaster.com')
+                  img.img-avatar(src=usersImgs + '2.webp', alt='admin@bootstrapmaster.com')
                   span.avatar-status.badge-warning
               div
                 small.text-muted John Doe
@@ -141,7 +141,7 @@ header.app-header.navbar
             .message
               .py-3.mr-3.float-left
                 .avatar
-                  img.img-avatar(src=img + '/admin/avatars/2.webp', alt='admin@bootstrapmaster.com')
+                  img.img-avatar(src=usersImgs + '2.webp', alt='admin@bootstrapmaster.com')
                   span.avatar-status.badge-danger
               div
                 small.text-muted John Doe
@@ -153,7 +153,7 @@ header.app-header.navbar
             .message
               .py-3.mr-3.float-left
                 .avatar
-                  img.img-avatar(src=img + '/admin/avatars/2.webp', alt='admin@bootstrapmaster.com')
+                  img.img-avatar(src=usersImgs + '2.webp', alt='admin@bootstrapmaster.com')
                   span.avatar-status.badge-info
               div
                 small.text-muted John Doe
@@ -165,7 +165,7 @@ header.app-header.navbar
             strong View all messages
       li.nav-item.dropdown
         a.nav-link(data-toggle='dropdown', href='#', role='button', aria-haspopup='true', aria-expanded='false')
-          img.img-avatar(src=images + '/avatars/6.webp', alt='admin@bootstrapmaster.com')
+          img.img-avatar(src=usersImgs + '6.webp', alt='admin@bootstrapmaster.com')
         .dropdown-menu.dropdown-menu-right
           .dropdown-header.text-center
             strong Account

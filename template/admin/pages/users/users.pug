@@ -4,10 +4,10 @@ block title
   title Users
 
 block styles
-  link(href=styles + ds + 'users' + ds + 'users.css', rel='stylesheet')
+  link(href=adminCss + 'users' + ds + 'users.css', rel='stylesheet')
 
 block scripts
-  script(src=scripts + ds + 'users' + ds + 'users.js')
+  script(src=adminJs + 'users' + ds + 'users.js')
 
 block header-right-unser-profile
   a.btn(href=host + '/admin/users/add')
@@ -39,7 +39,10 @@ block view
             strong #{'#' + user.id}
           td.text-center
             .avatar
-              img.img-avatar(src=images + 'avatars/' + user.img, alt='admin@bootstrapmaster.com')
+              - var imgDir = usersImgs
+              if user.img === 'avatar.webp'
+                - var imgDir = logos
+              img.img-avatar(src=imgDir + user.img, alt='admin@bootstrapmaster.com')
               if user.is_login
                 span.avatar-status.badge-success
               else

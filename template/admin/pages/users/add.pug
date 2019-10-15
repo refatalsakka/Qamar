@@ -4,11 +4,64 @@ block title
   title Add new User
 
 block styles
-  link(href=styles + ds + 'users' + ds + 'add.css', rel='stylesheet')
-  link(href=css + ds + 'libs' + ds + 'bootstrap-datepicker.min.css', rel='stylesheet')
+  link(href=adminCss + 'users' + ds + 'add.css', rel='stylesheet')
+  link(href=cssLibs + 'bootstrap-datepicker.min.css', rel='stylesheet')
 
 block scripts
-  script(src=scripts + ds + 'users' + ds + 'add.js')
-  script(src=js + ds + 'libs' + ds + 'bootstrap-datepicker.min.js')
+  script(src=adminJs + 'users' + ds + 'add.js')
+  script(src=jsLibs + 'bootstrap-datepicker.min.js')
 
 block view
+  form(action='', method='post', autocomplete='off')
+    .card
+      .card-header
+        strong User insert
+      .card-body
+        .row
+          .col-md-6
+            .form-group
+              label(for='firstname') First name
+              input.form-control#firstname(type='text', placeholder='Enter your first name')
+            .form-group
+              label(for='lastname') Last name
+              input.form-control#lastname(type='text', placeholder='Enter your last name')
+            .form-group
+              label(for='username') Username
+              input.form-control#username(type='text', placeholder='Enter username')
+            .form-group
+              label(for='email') Email
+              input.form-control#email(type='text', placeholder='Enter your email')
+            .form-group
+              label(for='sex') Sex
+              select.form-control#sex(name='sex')
+                option(value='male') Male
+                option(value='female') Female
+            .form-group
+              label(for='birthday') Birthday
+              input.form-control.date(type='text', name='birthday', placeholder='Enter your birthday', autofilee)
+            .form-group
+              label(for='status') Status
+              select.form-control#status(name='status')
+                option(value='1') Pending
+                option(value='2') Active
+            .form-group
+              label(for='Image') Image
+              input.form-control-file#image(type='file', name='birthday')
+          .col-sm-6
+            .form-group
+              label(for='country') Country
+              input.form-control#country(type='text', placeholder='Country name')
+            .form-group
+              label(for='state') State
+              input.form-control#state(type='text', placeholder='Enter your company name')
+            .form-group
+              label(for='city') City
+              input.form-control#city(type='text', placeholder='Enter your city')
+            .form-group
+              label(for='street') Street
+              input.form-control#street(type='text', placeholder='Enter street name')
+            .form-group
+              label(for='postal-code') Postal Code
+              input.form-control#postal-code(type='text', placeholder='Postal Code')
+      .card-footer
+        button.btn.btn-sm.btn-primary(type='submit') Add

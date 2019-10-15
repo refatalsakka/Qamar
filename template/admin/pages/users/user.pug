@@ -4,12 +4,12 @@ block title
   title User
 
 block styles
-  link(href=styles + ds + 'users' + ds + 'user.css', rel='stylesheet')
-  link(href=css + ds + 'libs' + ds + 'bootstrap-datepicker.min.css', rel='stylesheet')
+  link(href=adminCss + 'users' + ds + 'user.css', rel='stylesheet')
+  link(href=cssLibs + 'bootstrap-datepicker.min.css', rel='stylesheet')
 
 block scripts
-  script(src=scripts + ds + 'users' + ds + 'user.js')
-  script(src=js + ds + 'libs' + ds + 'bootstrap-datepicker.min.js')
+  script(src=adminJs + 'users' + ds + 'user.js')
+  script(src=jsLibs + 'bootstrap-datepicker.min.js')
 
 block header-right-unser-profile
   a.btn(href=host + '/admin/users/add')
@@ -73,10 +73,11 @@ block view
                   else if user.status === "2"
                     button.btn.btn-warning.mb-1(type='button', data-toggle='modal', data-target='#warningModal') Pending
                     button.btn.btn-danger.mb-1(type='button', data-toggle='modal', data-target='#dangerModal') Disable
-              tr
-                td Image
-                td
-                  img.img-thumbnail.target-img-box(src=images + 'avatars/' + user.img, alt='')
+                tr
+                  td Image
+                  td
+                    if user.img !== 'avatar.webp'
+                      img.img-thumbnail.target-img-box(src=usersImgs + user.img, alt='')
     .col-md-4
       .card
         .card-header
@@ -108,7 +109,7 @@ block view
       .card
         .card-header
           i.fa.fa-align-justify
-          | &nbsp;Activitise
+          | &nbsp;Activities
         .card-body
           table.table.table-responsive-sm.table-bordered
             tbody
