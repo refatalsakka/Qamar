@@ -3,6 +3,7 @@ node_modules
 vendor
 template/cache
 resources/sass/linters
-public
+public/*
+!public/uploads
 package-lock.json
 composer.lock
