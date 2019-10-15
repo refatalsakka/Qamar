@@ -16,7 +16,10 @@ $(document).ready(() => {
       // eslint-disable-next-line no-unused-vars
       const user = $(this).find('.user-name div a').text().trim();
       // eslint-disable-next-line no-unused-vars
-      const country = $(this).find('.user-country i').attr('data-country').trim();
+      let country = $(this).find('.user-country i').attr('data-country');
+      if (country) {
+        country = country.trim();
+      }
       // eslint-disable-next-line no-unused-vars
       const zip = $(this).children('.user-zip').text().trim();
 
@@ -50,7 +53,7 @@ $(document).ready(() => {
       let code = '';
       for (const filter in filters) {
         if (filters[filter].value !== '') {
-          code += `${filters[filter].match}.substring(0, ${filters[filter].length}) === ${filters[filter].input}.substring(0, ${filters[filter].length}) && `;
+          code += `${filters[filter].match} && ${filters[filter].match}.substring(0, ${filters[filter].length}) === ${filters[filter].input}.substring(0, ${filters[filter].length}) && `;
         }
       }
       code = code.slice(0, -4);
