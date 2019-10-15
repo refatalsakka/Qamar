@@ -92,7 +92,7 @@ $(document).ready(() => {
         // change the $htmlCodeInput
         // insert the select tag in it
         htmlCodeInput = `
-        <select class="form-control input-edit" id="ccmonth" data-text="${value}" name="${name}">
+        <select class="form-control input-edit" data-text="${value}" name="${name}">
           ${option}
         </select>
         `;
@@ -100,7 +100,7 @@ $(document).ready(() => {
 
       // create html form
       $(this).html(`
-        <form class='form-editable' method='POST' action='${url}'>
+        <form class='form-editable' method='POST' action='${url}' autocomplete='off'>
           <div>
           ${htmlCodeInput}
           </div>
