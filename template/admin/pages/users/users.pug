@@ -56,8 +56,6 @@ block view
           td.text-center.user-country
             if user.coutrny_Icon
               i.flag-icon.h4.mb-0(title=user.country, class=user.coutrny_Icon, data-country=user.country)
-            else
-              | Unknown
           td.text-center.user-zip= user.zip
           td
             if user.is_login
