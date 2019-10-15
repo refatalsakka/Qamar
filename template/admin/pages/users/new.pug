@@ -12,7 +12,7 @@ block scripts
   script(src=jsLibs + 'bootstrap-datepicker.min.js')
 
 block view
-  form(action='', method='post', autocomplete='off')
+  form(action=host + '/admin/users/add', method='post', autocomplete='off')
     .card
       .card-header
         strong User insert
@@ -53,13 +53,13 @@ block view
               input.form-control#country(type='text', placeholder='Country name')
             .form-group
               label(for='state') State
-              input.form-control#state(type='text', placeholder='Enter your company name')
+              input.form-control#state(type='text', placeholder='State name')
             .form-group
               label(for='city') City
-              input.form-control#city(type='text', placeholder='Enter your city')
+              input.form-control#city(type='text', placeholder='City name')
             .form-group
               label(for='street') Street
-              input.form-control#street(type='text', placeholder='Enter street name')
+              input.form-control#street(type='text', placeholder='Street name')
             .form-group
               label(for='postal-code') Postal Code
               input.form-control#postal-code(type='text', placeholder='Postal Code')
