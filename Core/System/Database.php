@@ -383,7 +383,14 @@ class Database
 
         foreach ($bindings as $key => $value) {
 
-          $query->bindValue($key + 1, _e($value));
+          if ($value === null) {
+
+            $query->bindValue($key + 1, $value);
+
+          } else {
+
+            $query->bindValue($key + 1, _e($value));
+          }
         }
 
         $query->execute();
