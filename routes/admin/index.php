@@ -27,6 +27,9 @@ $app->route->group($adminOptions, function($route) {
 
   //users
   $route->package('/users', 'Users', [
+    'add' => [
+      'ajax',
+    ],
     'update' => [
       'ajax',
     ],
