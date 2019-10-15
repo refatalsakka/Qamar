@@ -80,7 +80,7 @@ class UsersController extends Controller
     return 0;
   }
 
-  private function changeFormatDate($date, array $format = ['Y-m-d', 'd M Y'], $time = [' H:i:s', ' | H:i:s'])
+  private function changeFormatDate($date, array $format = ['Y-m-d', 'd M Y'], $time = [' H:i:s', ' | H:i'])
   {
     $time = $time ? $time : ['', ''];
 
@@ -91,7 +91,7 @@ class UsersController extends Controller
   {
     $countries_icons = $this->file->call('config/icons.php')['flags'];
 
-    return isset($countries_icons[$country]) ? $countries_icons[$country] : null;
+    return($country && isset($countries_icons[$country])) ? $countries_icons[$country] : null;
   }
 
   public function update()
@@ -164,11 +164,6 @@ class UsersController extends Controller
     $value = $posts[$column];
     $user_id_table_name = $allows[$column]['user_id_table_name'];
 
-    if ($value == '') {
-
-      $value = null;
-    }
-
     $value = strtolower($value);
 
     if (isset($allows[$column]['date'])) {
@@ -176,10 +171,12 @@ class UsersController extends Controller
       $value = date($dateFormat['insert'], strtotime($value));
     }
 
-    $update = $this->db->data([
-      $column => $value,
+    if ($value == '') {
 
-    ])->where($user_id_table_name . ' = ?', $id)->update($table);
+      $value = null;
+    }
+
+    $update = $this->db->data($column, $value)->where($user_id_table_name . ' = ?', $id)->update($table);
 
     if (!$update) {
 
