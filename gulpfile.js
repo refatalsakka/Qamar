@@ -18,10 +18,10 @@ const imagesConvert = require('gulp-images-convert');
 const TEMPLATE_DIR = 'resources/template';
 const SASS_DIR = 'resources/sass';
 const JAVASCRIPT_DIR = 'resources/js';
-const IMGAGES_DIR = 'resources/img';
+const IMGAGES_DIR = 'resources/imgs';
 const CSS_PUBLIC_DIR = 'public/css';
 const JS_PUBLIC_DIR = 'public/js';
-const IMG_PUBLIC_DIR = 'public/img';
+const IMG_PUBLIC_DIR = 'public/imgs';
 
 // Files 🗄
 const LIBS = {
@@ -125,6 +125,14 @@ async function scripts() {
 }
 exports.scripts = series(scriptsLint, scripts);
 
+// Copy SVG Output ↪ 📁 public/imgs
+async function imgmSvg() {
+  return gulp
+    .src(`${IMGAGES_DIR}/**/*.svg`)
+    .pipe(gulp.dest(`${IMG_PUBLIC_DIR}`));
+}
+exports.imgmSvg = imgmSvg;
+
 // Images Compress 🔄 Convert to .WEPB 🔂 Output ↪ 📁 public/imgs
 async function imgmin() {
   return gulp
@@ -134,7 +142,7 @@ async function imgmin() {
     .pipe(rename({ extname: '.webp' }))
     .pipe(gulp.dest(`${IMG_PUBLIC_DIR}`));
 }
-exports.imgmin = imgmin;
+exports.imgmin = gulp.parallel(imgmin, imgmSvg);
 
 // Libraries Copy  ↪ 📁 node_modules/ Output ↪ 📁 public/ {js & css} /libs
 async function libraries() {
@@ -188,4 +196,4 @@ exports.watchScripts = watchScripts;
 exports.default = gulp.parallel(watchStyles, watchScripts, watchTemplate);
 
 // Build the Plugins 🔥
-gulp.task('build', gulp.series(series(templateLint), series(styleLint, styles), gulp.parallel(series(scriptsLint, scripts)), gulp.parallel(imgmin, libraries)));
+gulp.task('build', gulp.series(templateLint, series(styleLint, styles), series(scriptsLint, scripts), series(imgmin, imgmSvg, libraries)));
