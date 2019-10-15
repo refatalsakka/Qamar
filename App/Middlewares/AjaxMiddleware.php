@@ -11,7 +11,7 @@ class AjaxMiddleware implements Middleware
   {
     if(empty($_SERVER['HTTP_X_REQUESTED_WITH'])) {
 
-      return $app->url->redirectTo('error');
+      return $app->url->redirectTo('404');
     }
 
     return $next;
