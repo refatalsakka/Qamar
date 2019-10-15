@@ -45,11 +45,6 @@ class Url
    */
   public function redirectTo($path, $num = 0)
   {
-    if ($path == 'error') {
-
-      $this->app->session->set('error', true);
-    }
-
     header('Refresh: ' . $num . '; URL=' . $this->link($path));
     exit;
   }
