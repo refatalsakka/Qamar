@@ -12,14 +12,14 @@ class Loader
   private $app;
 
   /**
-   * Controllers Container
+   * Controllers container
    *
    * @var array
    */
   private $controllers = [];
 
   /**
-   * Models Container
+   * Models container
    *
    * @var array
    */
