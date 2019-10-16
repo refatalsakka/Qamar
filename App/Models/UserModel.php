@@ -8,6 +8,11 @@ class UserModel extends Model
 {
   protected $table = 'users';
 
+  public function getTable()
+  {
+    return $this->table;
+  }
+
   public function users()
   {
     return $this->join('

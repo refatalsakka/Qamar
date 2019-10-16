@@ -51,7 +51,7 @@ return [
     'user_id_table_name' => 'id',
     'type' => 'email',
     'require' => true,
-    'noUmlaut' => true,
+    'unique' => true,
   ],
   'status' => [
     'table' => 'users',
