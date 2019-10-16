@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 15, 2019 at 08:30 AM
+-- Generation Time: Oct 16, 2019 at 02:36 PM
 -- Server version: 5.7.24
 -- PHP Version: 7.2.11
 
@@ -43,11 +43,13 @@ CREATE TABLE `activity` (
 --
 
 INSERT INTO `activity` (`id`, `user_id`, `is_login`, `last_login`, `last_logout`) VALUES
-(1, 649856, 1, '2019-10-09 07:25:24', '2019-10-03 03:16:17'),
-(2, 2, 0, NULL, '2019-10-09 02:15:29'),
-(5, 57442, 0, '2019-10-08 04:22:20', '2019-10-07 07:20:15'),
-(6, 32323, 0, '2019-10-09 06:18:08', '2019-10-10 07:15:12'),
-(7, 46676, 1, '2019-10-13 22:00:00', NULL);
+(8, 60480014, 0, NULL, NULL),
+(9, 83120010, 0, NULL, NULL),
+(10, 4360010, 0, NULL, NULL),
+(11, 33730027, 0, NULL, NULL),
+(12, 72970051, 0, NULL, NULL),
+(13, 81700017, 0, NULL, NULL),
+(14, 66950056, 0, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -71,11 +73,13 @@ CREATE TABLE `address` (
 --
 
 INSERT INTO `address` (`id`, `user_id`, `country`, `state`, `city`, `street`, `zip`, `additional`) VALUES
-(1, 649856, 'syria', 'heomso', 'homs', 'bahnhofstr', NULL, NULL),
-(2, 2, 'egypt', '', 'cuxhaven', '', NULL, NULL),
-(3, 57442, 'iraq', '', 'baghdad', 'wernerstr.', NULL, '1 edage'),
-(4, 32323, 'yemen', '', 'sana\'a', '', NULL, NULL),
-(5, 46676, 'germany', NULL, NULL, NULL, NULL, NULL);
+(7, 60480014, 'syria', 'niedersachen', 'cuxhaven', '27472', 27472, ''),
+(8, 83120010, 'germany', '', 'cuxhaven', '27472', 27472, ''),
+(9, 4360010, NULL, '', 'cuxhaven', '27472', 27472, ''),
+(10, 33730027, 'iraq', '', 'cuxhaven', '27472', 27472, ''),
+(11, 72970051, NULL, NULL, NULL, NULL, NULL, NULL),
+(12, 81700017, 'syria', 'fdsfd', 'cuxhavenfd', 'fdfsdf', 27473, NULL),
+(13, 66950056, 'Deutschland', NULL, 'cuxhaven', 'wernerstr.', 27472, NULL);
 
 -- --------------------------------------------------------
 
@@ -90,12 +94,11 @@ CREATE TABLE `users` (
   `fname` varchar(20) NOT NULL,
   `lname` varchar(20) NOT NULL,
   `sex` varchar(6) NOT NULL,
-  `birthday` date DEFAULT NULL,
+  `birthday` date NOT NULL,
   `email` varchar(50) NOT NULL,
-  `password` varchar(250) NOT NULL,
-  `img` varchar(100) DEFAULT 'avatar.webp',
+  `password` varchar(250) NOT NULL DEFAULT '0',
+  `img` varchar(100) NOT NULL DEFAULT 'avatar.webp',
   `registration` timestamp NOT NULL,
-  `group` tinyint(1) NOT NULL DEFAULT '0',
   `status` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -103,12 +106,15 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `code`, `username`, `fname`, `lname`, `sex`, `birthday`, `email`, `password`, `img`, `registration`, `group`, `status`) VALUES
-(2, '45445', 'amin111', 'amin', 'amin', 'female', '1998-02-25', 'amin@amin.com', '4447987kjhkjhk', '2.webp', '2019-10-05 01:06:17', 0, 0),
-(32323, '5554324', 'leena2000', 'leena', 'leena', 'female', '2000-07-12', 'leena@gmail.com', 'fsf4sd4f65sdf', '4.webp', '2019-10-09 04:17:10', 0, 2),
-(46676, '446464687648', 'marvel', 'marvel', 'marvel', 'female', '2004-12-31', 'maravel@gmail.com', '546464687', '6.webp', '2019-10-13 22:00:00', 0, 2),
-(57442, '23543', 'ahmad', 'ahmad', 'ahmad', 'male', '1938-11-30', 'ahmad@gmail.com', 'gfg54fd654g6df4', '3.webp', '2019-05-08 02:14:14', 1, 1),
-(649856, '12345', 'admin', 'refat', 'alsakka', 'male', '1998-01-01', 'refatalsakka@hotmail.com', '$2y$10$RZo9ppJXMCQTN.xxI3kbpeOgFQV.tQnMALPX/IN8jKg5S9NRQweEG', '1.webp', '2019-08-13 15:40:14', 0, 2);
+INSERT INTO `users` (`id`, `code`, `username`, `fname`, `lname`, `sex`, `birthday`, `email`, `password`, `img`, `registration`, `status`) VALUES
+(3453423, '34536543543', 'admin', 'refat', 'alsakka', 'male', '2004-12-27', 'refatalsakka@gmail.com', '$2y$10$RZo9ppJXMCQTN.xxI3kbpeOgFQV.tQnMALPX/IN8jKg5S9NRQweEG', 'avatar.webp', '2019-10-16 02:11:10', 2),
+(4360010, '04360043201916101013', 'fdsfdsfdsf', 'refat', 'alsakka', 'male', '2004-12-20', 'refatafdsflsakka@gmail.com', '0', 'avatar.webp', '2019-10-16 11:43:10', 1),
+(33730027, '33730043201916271013', 'fdsfsfgs', 'refat', 'alsakka', 'male', '2004-12-27', 'refatalsadsgsgkka@gmail.com', '0', 'avatar.webp', '2019-10-16 11:43:27', 1),
+(60480014, '60480038201916141013', 'aminamin', 'amin', 'amin', 'male', '2004-12-19', 'refatalsakka@gmail.comamin', '0', 'avatar.webp', '2019-10-16 11:38:14', 1),
+(66950056, '66960033201916561014', 'fdfdsfds', 'refat', 'alsakka', 'male', '2004-12-28', 'refatafdfdlsakka@gmail.com', '0', 'avatar.webp', '2019-10-16 12:33:56', 1),
+(72970051, '72970059201916511013', 'ahmad', 'ahmad', 'ahmad', 'male', '2004-12-14', 'refatalsakka@gmail.comahmad', '0', 'avatar.webp', '2019-10-16 11:59:51', 1),
+(81700017, '81710012201916171014', 'rerere', 'refat', 'refataa', 'female', '2004-12-27', 'refatdsfdfdssdlsakka@gmail.com', '0', 'avatar.webp', '2019-10-16 12:12:17', 2),
+(83120010, '83120039201916101013', 'addddda', 'amin', 'aminaminamin', 'male', '2004-12-20', 'refatalsadkka@gmail.comamin', '0', 'avatar.webp', '2019-10-16 11:39:10', 2);
 
 --
 -- Indexes for dumped tables
@@ -144,13 +150,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `activity`
 --
 ALTER TABLE `activity`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `address`
 --
 ALTER TABLE `address`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- Constraints for dumped tables
@@ -160,13 +166,13 @@ ALTER TABLE `address`
 -- Constraints for table `activity`
 --
 ALTER TABLE `activity`
-  ADD CONSTRAINT `activity_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `activity_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `address`
 --
 ALTER TABLE `address`
-  ADD CONSTRAINT `user_address` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `user_address` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
