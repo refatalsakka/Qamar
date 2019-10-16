@@ -41,6 +41,7 @@ class Url
    * Redirect to the given path
    *
    * @param string $path
+   * @param number $num
    * @return void
    */
   public function redirectTo($path, $num = 0)

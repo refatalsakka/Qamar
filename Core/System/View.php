@@ -24,9 +24,10 @@ class View
   }
 
   /**
-   * Render the given view path with the passed variables and generate new View Object for it
+   * Render the given path with the passed
+   * variables and generate new view object for it
    *
-   * @param string $viewPath
+   * @param string $path
    * @param array $context
    * @return mixed
    */
@@ -41,7 +42,6 @@ class View
 
     $host = $this->app->request->host();
     $dir = $this->app->file->root();
-
     $parameters = $this->parameters();
 
     //File path
@@ -67,8 +67,7 @@ class View
   }
 
   /**
-   * Get the website pages, that should be
-   * showen in the asaide of the admin panel
+   * Get the website pages
    *
    * @return array
    */
@@ -78,7 +77,6 @@ class View
   }
 
   /**
-   * Set the right DIRECTORY_SEPARATOR
    * Generate the path
    *
    * @param string $path
@@ -93,15 +91,32 @@ class View
     return $file;
   }
 
+  /**
+   * Generate the url to public
+   *
+   * @param string $dir
+   * @param array $host
+   * @return string
+   */
   private function _public($dir, $host)
   {
-    $public = $this->app->file->toPublic();
+    $public = assets();
     $public = str_replace($dir, $host, $public);
-    $public = str_replace(['\\', '/'], DS, $public);
+    $public = str_replace('\\', '/', $public);
 
     return $public;
   }
 
+  /**
+   * Get the parameters from the url
+   * loop over all and give it the right link for each one
+   * e.g. if the current page is localhost/admin/users
+   * the right link for localhost is localhost or just /
+   * the right link for admin is localhost/admin
+   * the right link for users is localhost/admin/users
+   *
+   * @return array
+   */
   private function parameters()
   {
     $url =  $this->app->request->url();

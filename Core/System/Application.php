@@ -44,7 +44,7 @@ class Application
   }
 
   /**
-   * Load Helpers File
+   * Load helpers.php file
    *
    * @return void
    */
@@ -54,7 +54,7 @@ class Application
   }
 
   /**
-   * Run Error handling of Whoops
+   * Run error handling of Whoops
    *
    * @return void
    */
@@ -77,7 +77,7 @@ class Application
   }
 
   /**
-   * Get Application Instance
+   * Get Application instance
    *
    * @param \System\File $file
    * @return \System\Application
@@ -88,7 +88,7 @@ class Application
   }
 
   /**
-   * Run The Application
+   * Run the Application
    *
    * @return void
    */
@@ -111,7 +111,7 @@ class Application
   }
 
   /**
-   * Get All Core Classes
+   * Get all core classes
    *
    * @return array
    */
@@ -121,7 +121,7 @@ class Application
   }
 
   /**
-   * Share the given key|value Through Application
+   * Share the given key|value through Application
    *
    * @param string $key
    * @param mixed $value
@@ -138,7 +138,7 @@ class Application
   }
 
  /**
-   * Get Shared Value
+   * Get shared value
    *
    * @param string $key
    * @return mixed
@@ -173,7 +173,7 @@ class Application
   /**
    * Determine if the given key is an alias to core class
    *
-   * @param string $alias
+   * @param string $key
    * @return bool
    */
   public function isCoreAlias($key)
@@ -182,9 +182,9 @@ class Application
   }
 
   /**
-   * Create new object for the core class based on the given alias
+   * Create new object for the core class based on the given key
    *
-   * @param string $alias
+   * @param string $key
    * @return object
    */
   public function createObject($key)

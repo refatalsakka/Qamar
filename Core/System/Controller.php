@@ -17,25 +17,7 @@ abstract class Controller
   }
 
   /**
-   * Errors container
-   *
-   * @var array
-   */
-  protected $errors = [];
-
-  /**
-   * Encode the given value to json
-   *
-   * @param mixed $data
-   * @return string
-   */
-  public function json($data)
-  {
-    return json_encode($data);
-  }
-
-  /**
-   * Call shared application objects dynamically
+   * Call shared Application Objects dynamically
    *
    * @param string $key
    * @return mixed

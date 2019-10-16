@@ -10,28 +10,28 @@ class Pagination
 
   private $app;
   /**
-   * Total Items
+   * Total items
    *
    * @var int
    */
 
   private $totalItems;
   /**
-   * Items Per Page
+   * Items per page
    *
    * @var int
    */
 
   private $itemsPerPage = 10;
   /**
-   * Last Page Number => Total Pages
+   * Last page number => total pages
    *
    * @var int
    */
 
   private $lastPage;
   /**
-   * Current Page Number
+   * Current page number
    *
    * @var int
    */
@@ -50,7 +50,7 @@ class Pagination
   }
 
   /**
-   * Set Current Page
+   * Set current page
    *
    * @return void
    */
@@ -72,7 +72,7 @@ class Pagination
   }
 
   /**
-   * Get Current Page Number
+   * Get current page number
    *
    * @return int
    */
@@ -82,7 +82,7 @@ class Pagination
   }
 
   /**
-   * Get Items Per Page
+   * Get items per page
    *
    * @return int
    */
@@ -92,7 +92,7 @@ class Pagination
   }
 
   /**
-   * Get Total Items
+   * Get total items
    *
    * @return int
    */
@@ -102,7 +102,7 @@ class Pagination
   }
 
   /**
-   * Get Last Page
+   * Get last page
    *
    * @return int
    */
@@ -112,7 +112,7 @@ class Pagination
   }
 
   /**
-   * Get Next Page number
+   * Get next page number
    *
    * @return int
    */
@@ -122,7 +122,7 @@ class Pagination
   }
 
   /**
-   * Get Previous Page number
+   * Get previous page number
    *
    * @return int
    */
@@ -132,7 +132,7 @@ class Pagination
   }
 
   /**
-   * Set Total Items
+   * Set total items
    *
    * @param int $totalItems
    * @return $this
@@ -145,7 +145,7 @@ class Pagination
   }
 
   /**
-   * Set Items Per Page
+   * Set items per page
    *
    * @param int $itemsPerPage
    * @return $this
@@ -158,7 +158,7 @@ class Pagination
   }
 
   /**
-   * Start Pagination
+   * Start pagination
    *
    * @return $this
    */
@@ -170,7 +170,7 @@ class Pagination
   }
 
   /**
-   * Set Last Page
+   * Set last page
    *
    * @return void
    */

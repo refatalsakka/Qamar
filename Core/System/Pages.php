@@ -4,22 +4,39 @@ namespace System;
 
 class Pages
 {
-  private $app;
+  /**
+   * Pages Container
+   *
+   * @var array
+   */
+  private $pages = [];
 
-  private $pages;
-
+  /**
+   * Title
+   *
+   * @var string
+   */
   private $title;
 
+  /**
+   * Icon
+   *
+   * @var string
+   */
   private $icon;
 
-  public function __construct(Application $app)
-  {
-    $this->app = $app;
-  }
-
+  /**
+   * Add $name, $link and $icon to $pages
+   * when the @method add beeing called in @method group then the @var $ttitle must be defined
+   * so the pages will be put it in the linkedPages of @var $pages
+   *
+   * @param string $name
+   * @param string $link
+   * @param string $icon
+   * @return void
+   */
   public function add($name, $link, $icon = null)
   {
-
     if (!$this->title) {
 
       if (!$icon) {
@@ -50,6 +67,15 @@ class Pages
     }
   }
 
+  /**
+   * Set the $title and $icon from the given $options
+   * $callback will add the pages in the linkedPages
+   * Call the @method cleanTitle to void overriding
+   *
+   * @param array $options
+   * @param callback $callback
+   * @return void
+   */
   public function group($options, $callback)
   {
     $this->title = $options['title'];
@@ -72,11 +98,22 @@ class Pages
     $this->cleanTitle();
   }
 
+
+  /**
+   * Set null to $title
+   *
+   * @return void
+   */
   private function cleanTitle()
   {
     $this->title = null;
   }
 
+  /**
+   * Return the $pages
+   *
+   * @return array
+   */
   public function getPages()
   {
     return $this->pages;

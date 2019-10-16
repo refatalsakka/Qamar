@@ -7,7 +7,7 @@ use Exception;
 class File
 {
   /**
-   * Root Path
+   * Root path
    *
    * @var string
    */
@@ -41,39 +41,29 @@ class File
   }
 
   /**
-   * add the path file to the container
+   * Add the given path file to the container
    *
    * @param string $file
    * @return void
    */
-  private function addToContainer($key, $value)
+  private function share($key, $value)
   {
     $this->container[$key] = $value;
   }
 
   /**
-   * check if the path file exists in the container
+   * Check if the given path file exists in the container
    *
    * @param string $key
    * @return bool
    */
-  private function isInContainer($key)
+  private function isSharing($key)
   {
     return isset($this->container[$key]);
   }
 
   /**
-   * get the path file form the container
-   *
-   * @param string $key
-   * @return string
-   */
-  private function getFromContainer($key)
-  {
-    return $this->container[$key];
-  }
-  /**
-   * Determine wether the given file path exists
+   * Determine if the given file path exists
    *
    * @param string $file
    * @return bool
@@ -84,7 +74,7 @@ class File
   }
 
   /**
-   * Require The given file
+   * Require the given file
    *
    * @param string $file
    * @return mixed
@@ -93,11 +83,11 @@ class File
   {
     $file = $this->to($file);
 
-    if (!$this->isInContainer($file)) {
+    if (!$this->isSharing($file)) {
 
       if ($this->exists($file)) {
 
-        $this->addToContainer($file, require $file);
+        $this->share($file, require $file);
 
       } else {
 
@@ -105,7 +95,7 @@ class File
       }
     }
 
-    return $this->getFromContainer($file);
+    return $this->container[$file];
   }
 
  /**
@@ -117,50 +107,5 @@ class File
   public function to($path)
   {
     return $this->root . DS . str_replace(['/', '\\'], DS, $path);
-  }
-
-  /**
-   * Generate full path to the given path in public folder
-   *
-   * @param string $path
-   * @return string
-   */
-  public function toPublic($target = null)
-  {
-    return $this->to('public' . DS . $target);
-  }
-
-
-  /**
-   * Generate full path to the given path in public/img folder
-   *
-   * @param string $path
-   * @return string
-   */
-  public function img()
-  {
-    return $this->toPublic('img');
-  }
-
-  /**
-   * Generate full path to the given path in public/js folder
-   *
-   * @param string $path
-   * @return string
-   */
-  public function js()
-  {
-    return $this->toPublic('js');
-  }
-
-  /**
-   * Generate full path to the given path in public/css folder
-   *
-   * @param string $path
-   * @return string
-   */
-  public function css()
-  {
-    return $this->toPublic('css');
   }
 }

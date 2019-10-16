@@ -14,14 +14,14 @@ class Response
   private $app;
 
   /**
-   * Headers container that will be sent to the browser
+   * Headers container will be sent to the browser
    *
    * @var array
    */
   private $headers = [];
 
   /**
-   * The content that will be sent to the browser
+   * The content will be sent to the browser
    *
    * @var string
    */

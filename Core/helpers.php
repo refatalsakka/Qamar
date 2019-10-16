@@ -28,7 +28,6 @@ if (!function_exists('app')) {
 if (!function_exists('_e')) {
   function _e($value)
   {
-    // print_r($value);die;
     return htmlspecialchars($value);
   }
 }
@@ -50,7 +49,7 @@ if (!function_exists('url')) {
 }
 
 if (!function_exists('assets')) {
-  function assets($path)
+  function assets($path = null)
   {
     $app = Application::getInstance();
     return $app->url->link('public' . DS . $path);
@@ -89,13 +88,5 @@ if (!function_exists('array_equal')) {
       && count($a) == count($b)
       && array_diff($a, $b) === array_diff($b, $a)
     );
-  }
-}
-
-if (!function_exists('redirect_after')) {
-  function redirect_after($num)
-  {
-    $app = Application::getInstance();
-    $app->url->redirectTo('/', $num);
   }
 }

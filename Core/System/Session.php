@@ -20,7 +20,7 @@ class Session
   }
 
   /**
-   * Start Session
+   * Start session
    *
    * @return void
    */
@@ -35,7 +35,7 @@ class Session
   }
 
   /**
-   * Set New Value to Session
+   * Set new value to session
    *
    * @param string $key
    * @param mixed $value
@@ -47,7 +47,7 @@ class Session
   }
 
   /**
-   * Get Value from session by the given key
+   * Get value from session by the given key
    *
    * @param string $key
    * @param mixed $default
@@ -106,7 +106,7 @@ class Session
   }
 
   /**
-   * Destroy Session
+   * Destroy session
    *
    * @return void
    */

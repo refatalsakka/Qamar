@@ -13,7 +13,7 @@ class Validation
   private $app;
 
   /**
-   * Input Name
+   * Input name
    *
    * @var string
    */
@@ -161,7 +161,7 @@ class Validation
   }
 
   /**
-   * Determine if the date not in the range
+   * Determine if the given date in the given range
    *
    * @param string $format
    * @param array $range
@@ -257,7 +257,7 @@ class Validation
   }
 
   /**
-   * Determine if the given input has umlaut charachter
+   * Determine if the given input has no umlaut charachter
    *
    * @param string $input
    * @param string $msg
@@ -269,9 +269,9 @@ class Validation
 
     if ($value) {
 
-      $umlauts = "Ŕ,Á,Â,Ă,Ä,Ĺ,Ç,Č,É,Ę,Ë,Ě,Í,Î,Ď,Ň,Ó,Ô,Ő,Ö,Ř,Ů,Ú,Ű,Ü,Ý,ŕ,á,â,ă,ä,ĺ,ç,č,é,ę,ë,ě,í,î,ď,đ,ň,ó,ô,ő,ö,ř,ů,ú,ű,ü,ý,˙,Ń,ń";
+      $umlauts = 'Ŕ,Á,Â,Ă,Ä,Ĺ,Ç,Č,É,Ę,Ë,Ě,Í,Î,Ď,Ň,Ó,Ô,Ő,Ö,Ř,Ů,Ú,Ű,Ü,Ý,ŕ,á,â,ă,ä,ĺ,ç,č,é,ę,ë,ě,í,î,ď,đ,ň,ó,ô,ő,ö,ř,ů,ú,ű,ü,ý,˙,Ń,ń';
 
-      $umlauts = explode(",", $umlauts);
+      $umlauts = explode(',', $umlauts);
 
       foreach($umlauts as $umlaut) {
 
@@ -363,7 +363,7 @@ class Validation
   }
 
   /**
-   * Determine if the first input matches the second input
+   * Determine if the $input matches the given input
    *
    * @param string $input
    * @param string $msg
@@ -415,7 +415,7 @@ class Validation
   }
 
   /**
-   * Add Custom Message
+   * Add custom message
    *
    * @param string $msg
    * @return $this
@@ -448,7 +448,7 @@ class Validation
   }
 
   /**
-   * Get All errors
+   * Get all errors
    *
    * @return array
    */

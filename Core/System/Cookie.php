@@ -31,7 +31,7 @@ class Cookie
   }
 
   /**
-   * Set New Value to Cookie
+   * Set new value to cookie
    *
    * @param string $key
    * @param mixed $value
@@ -46,7 +46,7 @@ class Cookie
   }
 
   /**
-   * Get Value from Cookies by the given key
+   * Get value from cookies by the given key
    *
    * @param string $key
    * @param mixed $default
@@ -58,7 +58,7 @@ class Cookie
   }
 
   /**
-   * Determine if the Cookies has the given key
+   * Determine if the cookies has the given key
    *
    * @param string $key
    * @return bool
@@ -69,7 +69,7 @@ class Cookie
   }
 
   /**
-   * Remove the given key from Cookie
+   * Remove the given key from cookie
    *
    * @param string $key
    * @return void
@@ -82,7 +82,7 @@ class Cookie
   }
 
   /**
-   * Get all Cookies data
+   * Get all cookies data
    *
    * @return array
    */
@@ -92,7 +92,7 @@ class Cookie
   }
 
   /**
-   * Destroy Cookie
+   * Destroy cookie
    *
    * @return void
    */

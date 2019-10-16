@@ -11,6 +11,8 @@ function genetareAction(method) {
   return newUrl;
 }
 
+// add green background to td after insert successfully
+// remove the background after 3 second
 function addSuccessBg(td) {
   td.addClass('success-bg');
 
@@ -29,10 +31,9 @@ function cabBeConvertedToJson(data) {
 }
 
 $(document).ready(() => {
+  // remove the background fronm td when clicking on the document
   $(document).on('click', () => {
-    $('.editable').each(function () {
-      $(this).removeClass('success-bg');
-    });
+    $('.editable').removeClass('success-bg');
   });
 
   // append alert if not exists
@@ -61,7 +62,7 @@ $(document).ready(() => {
   $('.editable').click(function (event) {
     // check if the td is open before
     // check that the use dosn't click on the buttons
-    if (!$(this).find('.form-editable')[0] && !$(event.target).is('.close-input-edit, .close-input-edit *, submit-input-edit, submit-input-edit *')) {
+    if (!$(this).find('.form-editable')[0] && !$(event.target).is('btn-cl, btn-cl *, btn-sub, btn-sub *')) {
       // close all the input are opend before when click on new td
       $('.editable').each(function () {
         // get the value that storage in the data-text of the input
@@ -119,8 +120,8 @@ $(document).ready(() => {
           ${htmlCodeInput}
           </div>
           <div>
-            <button class="btn btn-brand btn-sm btn-primary submit-input-edit" type="submit"><i class="fas fa-check"></i></button>
-            <button class="btn btn-brand btn-sm btn-danger close-input-edit" type="button"><i class="fas fa-times"></i></button>
+            <button class="btn btn-brand btn-sm btn-primary btn-sub" type="submit"><i class="fas fa-check"></i></button>
+            <button class="btn btn-brand btn-sm btn-danger btn-cl" type="button"><i class="fas fa-times"></i></button>
           </div>
         </form>
       `);
@@ -136,7 +137,7 @@ $(document).ready(() => {
       $('.input-edit').focus();
 
       // close input on click
-      $('.close-input-edit').click(function () {
+      $('.btn-cl').click(function () {
         const form = $(this).parents('.form-editable')[0];
         // check if the td is open
         // if has form then is open

@@ -28,7 +28,7 @@ class Request
   private $baseUrl;
 
   /**
-   * Uploaded Files Container
+   * Uploaded files container
    *
    * @var array
    */
@@ -103,7 +103,7 @@ class Request
   }
 
   /**
-   * Check if the website on secure host
+   * Check if the website is secure
    *
    * @return bool
    */
@@ -165,7 +165,7 @@ class Request
   }
 
   /**
-   * Get Value from _GET by the given key
+   * Get value from $_GET by the given key
    *
    * @param string $key
    * @return mixed
@@ -187,7 +187,7 @@ class Request
   }
 
   /**
-   * Get Value from _POST by the given key
+   * Get value from $_POST by the given key
    *
    * @param string $key
    * @return mixed
@@ -209,7 +209,7 @@ class Request
   }
 
   /**
-   * Set Value To _POST For the given key
+   * Set value To $_POST For the given key
    *
    * @param string $key
    * @param mixed $valuet
@@ -221,7 +221,7 @@ class Request
   }
 
   /**
-   * Get _POST
+   * Get $_POST
    *
    * @return array
    */
@@ -231,7 +231,7 @@ class Request
   }
 
   /**
-   * Get _GET
+   * Get $_GET
    *
    * @return array
    */
@@ -241,7 +241,7 @@ class Request
   }
 
   /**
-   * Get Files
+   * Get $_FILES
    *
    * @return array
    */
@@ -271,7 +271,7 @@ class Request
   }
 
   /**
-   * Get Value from _SERVER by the given key
+   * Get value from $_SERVER by the given key
    *
    * @param string $key
    * @return mixed
@@ -282,7 +282,7 @@ class Request
   }
 
   /**
-   * Get Current Request Method
+   * Get current request method
    *
    * @return string
    */
@@ -292,7 +292,7 @@ class Request
   }
 
   /**
-   * Get The referer link
+   * Get the referer link
    *
    * @return string
    */
@@ -312,7 +312,7 @@ class Request
   }
 
   /**
-   * Get Only relative url (clean url)
+   * Get only relative url (clean url)
    *
    * @return string
    */
@@ -322,7 +322,7 @@ class Request
   }
 
   /**
-   * Get Only host
+   * Get only host
    *
    * @return string
    */
@@ -331,6 +331,11 @@ class Request
     return $this->host;
   }
 
+  /**
+   * Check if the request to the admin panel
+   *
+   * @return bool
+   */
   public function isRequestToAdminManagement()
   {
     $url = $this->url;
