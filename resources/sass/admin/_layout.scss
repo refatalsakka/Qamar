@@ -1,27 +1,26 @@
-.wrong {
-  animation: wrong .3s 1;
+// Mixins
+@import '../mixin/mediaQueries';
+@import '../mixin/blockBox';
+
+// Global
+.error-input {
+  border-color: #f27070 !important;
 }
-@keyframes wrong {
+.error-msg {
+  color: #f27070 !important;
+}
+.prevent-click {
+  pointer-events: none;
+}
+.loading {
+  animation: loading .6s infinite linear;
+}
+@keyframes loading {
   0% {
-    transform: translateX(10px);
-  }
-  20% {
-    transform: translateX(-10px);
-  }
-  40% {
-    transform: translateX(10px);
-  }
-  60% {
-    transform: translateX(-10px);
-  }
-  80% {
-    transform: translateX(10px);
-  }
-  90% {
-    transform: translateX(-10px);
+    transform: rotate(0);
   }
   100% {
-    transform: translateX(0);
+    transform: rotate(360deg);
   }
 }
 
@@ -29,18 +28,5 @@
 ol.breadcrumb {
   li {
     text-transform: capitalize;
-  }
-}
-
-.loading {
-  animation: loading .6s infinite linear;
-}
-
-@keyframes loading {
-  0% {
-    transform: rotate(0);
-  }
-  100% {
-    transform: rotate(360deg);
   }
 }

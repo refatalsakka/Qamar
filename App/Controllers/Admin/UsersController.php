@@ -272,6 +272,9 @@ class UsersController extends Controller
       $msg = $this->validator->getMsgs();
       return json_encode($msg);
     }
+
+    $msg['success'] = $user_id;
+    return json_encode($msg);
   }
 
   private function isUserNew($date)

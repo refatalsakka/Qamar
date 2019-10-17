@@ -1,70 +1,86 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable guard-for-in */
 /* eslint-disable no-restricted-syntax */
 $(document).ready(() => {
-  // eslint-disable-next-line prefer-arrow-callback
-  $('.search-input input').keyup(function () {
+  function filterUsersTable() {
     const idInput = $('#idInput').val().trim();
     const userInput = $('#userInput').val().trim();
     const countryInput = $('#countryInput').val().trim();
     const zipInput = $('#zipInput').val().trim();
+    const statusInput = $('#status').val().trim();
 
-    const trs = $('table tbody tr').filter(function () {
-      // eslint-disable-next-line no-unused-vars
-      const id = $(this).find('.user-id strong').text()
-        .trim()
+    return $('table tbody tr').filter(function () {
+      const id = $(this).find('.user-id strong').text().trim()
         .substr(1);
-      // eslint-disable-next-line no-unused-vars
       const user = $(this).find('.user-name div a').text().trim();
-      // eslint-disable-next-line no-unused-vars
       let country = $(this).find('.user-country i').attr('data-country');
-      if (country) {
-        country = country.trim();
-      }
-      // eslint-disable-next-line no-unused-vars
-      const zip = $(this).children('.user-zip').text().trim();
+      if (country) { country = country.trim(); }
+      const zip = $(this).find('.user-zip').text().trim();
+      const status = $(this).find('.user-status span').attr('data-status').trim();
 
       const filters = {
         id: {
           input: 'idInput',
           value: idInput,
-          length: idInput.length,
+          inputLength: idInput.length,
           match: 'id',
         },
         user: {
           input: 'userInput',
           value: userInput,
-          length: userInput.length,
+          inputLength: userInput.length,
           match: 'user',
         },
         country: {
           input: 'countryInput',
           value: countryInput,
-          length: countryInput.length,
+          inputLength: countryInput.length,
           match: 'country',
         },
         zip: {
           input: 'zipInput',
           value: zipInput,
-          length: zipInput.length,
+          inputLength: zipInput.length,
           match: 'zip',
+        },
+        status: {
+          input: 'statusInput',
+          value: statusInput,
+          match: 'status',
         },
       };
 
       let code = '';
+
       for (const filter in filters) {
-        if (filters[filter].value !== '') {
-          code += `${filters[filter].match} && ${filters[filter].match}.substring(0, ${filters[filter].length}) === ${filters[filter].input}.substring(0, ${filters[filter].length}) && `;
+        if (filters[filter].input !== 'statusInput') {
+          if (filters[filter].value !== '' && filters[filter].value !== '-' && filters[filter].value !== '+') {
+            code += `${filters[filter].match} && ${filters[filter].match}.substring(0, ${filters[filter].inputLength}) === ${filters[filter].input}.substring(0, ${filters[filter].inputLength}) && `;
+          } else if (filters[filter].value === '-') {
+            code += `(${filters[filter].match} === '' || ${filters[filter].match} === undefined) && `;
+          } else if (filters[filter].value === '+') {
+            code += `${filters[filter].match} && `;
+          }
+        } else {
+          // eslint-disable-next-line no-lonely-if
+          if (filters[filter].value !== '') {
+            code += `${filters[filter].match} === ${filters[filter].input} && `;
+          }
         }
       }
+
       code = code.slice(0, -4);
 
       if (code) {
         // eslint-disable-next-line no-eval
         return eval(code);
       }
-
       return $(this);
     });
+  }
+
+  $('.search-input input, .search-input select').on('keyup change', () => {
+    const trs = filterUsersTable();
     $('table tbody tr').css('display', 'none');
     trs.css('display', 'table-row');
   });

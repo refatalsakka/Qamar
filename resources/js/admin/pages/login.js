@@ -1,4 +1,3 @@
-/* eslint-disable func-names */
 $(document).ready(() => {
   function IsJsonString(str) {
     try {
@@ -59,7 +58,6 @@ $(document).ready(() => {
     $('.submit-btn').html('Login');
   }
 
-  // eslint-disable-next-line func-names
   $('.form').submit(function (e) {
     e.preventDefault();
 

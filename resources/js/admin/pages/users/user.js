@@ -22,7 +22,7 @@ function addSuccessBg(td) {
 }
 
 // check if the string can be parsed to JSON
-function cabBeConvertedToJson(data) {
+function convertedToJson(data) {
   try {
     return JSON.parse(data);
   } catch (error) {
@@ -169,20 +169,20 @@ $(document).ready(() => {
       // ajax request for inputs
       $('.form-editable').submit(function (e) {
         e.preventDefault();
+
         const form = $(this);
         const action = form.attr('action');
         const td = $(this).parents('.editable');
-        // const oldText = $(this).find('input');
 
         $.ajax({
           type: 'POST',
           url: action,
           data: form.serialize(),
           beforeSend: () => {
-            td.append('<div class="disable-click"><i class="fas fa-spinner loading"></i></div>');
+            td.append('<div class="disable-box"><i class="fas fa-spinner loading"></i></div>');
           },
           success: (data) => {
-            const json = cabBeConvertedToJson(data);
+            const json = convertedToJson(data);
             if (json.success) {
               // "not text" means that it's let the input empty so it will be jsut empty
               if (json.success === 'no text') {
@@ -190,6 +190,7 @@ $(document).ready(() => {
               } else {
                 td.html(json.success);
               }
+
               addSuccessBg(td);
             } else if (json.error) {
               const input = Object.keys(json.error)[0];
@@ -197,7 +198,7 @@ $(document).ready(() => {
             } else {
               window.location.reload();
             }
-            td.find('.disable-click').remove();
+            td.find('.disable-box').remove();
           },
           fail: () => {
             window.location.reload();

@@ -6,15 +6,12 @@
 .editable {
   position: relative;
 
-  .disable-click {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0px;
+  @include disableBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     svg, i {
-      margin: 20px auto;
       display: block;
     }
   }
@@ -59,7 +56,6 @@
       }
     }
   }
-
 }
 form {
   display: flex;

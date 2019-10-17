@@ -26,17 +26,21 @@ const IMG_PUBLIC_DIR = 'public/imgs';
 // Files 🗄
 const LIBS = {
   css: [
-    'node_modules/bootstrap/dist/css/bootstrap.min.css',
-    'node_modules/bootstrap/dist/css/bootstrap.min.css.map',
-    'node_modules/@fortawesome/fontawesome-free/css/all.min.css',
-    'node_modules/normalize.css/normalize.css',
-    'node_modules/@coreui/coreui/dist/css/coreui.min.css',
-    'node_modules/@coreui/coreui/dist/css/coreui.min.css.map',
-    'node_modules/@coreui/icons/css/coreui-icons.min.css',
-    'node_modules/@coreui/icons/css/coreui-icons.min.css.map',
-    'node_modules/flag-icon-css/css/flag-icon.min.css',
-    'node_modules/simple-line-icons/css/simple-line-icons.css',
-    'node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css',
+    {
+      libs: [
+        'node_modules/bootstrap/dist/css/bootstrap.min.css',
+        'node_modules/bootstrap/dist/css/bootstrap.min.css.map',
+        'node_modules/@fortawesome/fontawesome-free/css/all.min.css',
+        'node_modules/normalize.css/normalize.css',
+        'node_modules/@coreui/coreui/dist/css/coreui.min.css',
+        'node_modules/@coreui/coreui/dist/css/coreui.min.css.map',
+        'node_modules/@coreui/icons/css/coreui-icons.min.css',
+        'node_modules/@coreui/icons/css/coreui-icons.min.css.map',
+        'node_modules/flag-icon-css/css/flag-icon.min.css',
+        'node_modules/simple-line-icons/css/simple-line-icons.css',
+        'node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css',
+      ],
+    },
     {
       fonts: [
         'node_modules/font-awesome/fonts/*',
@@ -55,17 +59,21 @@ const LIBS = {
     },
   ],
   js: [
-    'node_modules/bootstrap/dist/js/bootstrap.min.js',
-    'node_modules/bootstrap/dist/js/bootstrap.min.js.map',
-    'node_modules/@fortawesome/fontawesome-free/js/all.min.js',
-    'node_modules/jquery/dist/jquery.min.js',
-    'node_modules/popper.js/dist/umd/popper.min.js',
-    'node_modules/popper.js/dist/umd/popper.min.js.map',
-    'node_modules/pace-progress/pace.min.js',
-    'node_modules/perfect-scrollbar/dist/perfect-scrollbar.min.js',
-    'node_modules/@coreui/coreui/dist/js/coreui.min.js',
-    'node_modules/@coreui/coreui/dist/js/coreui.min.js.map',
-    'node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js',
+    {
+      libs: [
+        'node_modules/bootstrap/dist/js/bootstrap.min.js',
+        'node_modules/bootstrap/dist/js/bootstrap.min.js.map',
+        'node_modules/@fortawesome/fontawesome-free/js/all.min.js',
+        'node_modules/jquery/dist/jquery.min.js',
+        'node_modules/popper.js/dist/umd/popper.min.js',
+        'node_modules/popper.js/dist/umd/popper.min.js.map',
+        'node_modules/pace-progress/pace.min.js',
+        'node_modules/perfect-scrollbar/dist/perfect-scrollbar.min.js',
+        'node_modules/@coreui/coreui/dist/js/coreui.min.js',
+        'node_modules/@coreui/coreui/dist/js/coreui.min.js.map',
+        'node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js',
+      ],
+    },
   ],
 };
 
@@ -106,7 +114,7 @@ async function styles() {
       .pipe(sourcemaps.init({ loadMaps: true }))
       .pipe(sass({ outputStyle: 'compressed' }))
       .on('error', sass.logError)
-      .pipe(autoprefixer('last 2 version'))
+      .pipe(autoprefixer())
       .pipe(sourcemaps.write())
       .pipe(gulp.dest(`${CSS_PUBLIC_DIR}/${dir}`));
   });
@@ -159,7 +167,7 @@ async function libraries() {
       } else {
         return gulp
           .src(`${output}`)
-          .pipe(gulp.dest(`public/${LIB}/libs`));
+          .pipe(gulp.dest(`public/${LIB}`));
       }
     });
   }

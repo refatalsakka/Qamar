@@ -18,11 +18,11 @@ class LoginController extends Controller
   {
     $posts = $this->request->posts();
 
-    $inputs = array_keys($posts);
+    $names = array_keys($posts);
 
-    if (!in_array('remeberme', $inputs)) {
+    if (!in_array('remeberme', $names)) {
 
-      array_push($inputs, 'remeberme');
+      array_push($names, 'remeberme');
     }
 
     $allows = [
@@ -31,7 +31,7 @@ class LoginController extends Controller
       'remeberme',
     ];
 
-    if (array_equal($inputs, $allows)) {
+    if (array_equal($names, $allows)) {
 
       $username =  $this->request->post('username');
       $password =  $this->request->post('password');

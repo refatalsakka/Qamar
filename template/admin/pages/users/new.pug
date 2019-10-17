@@ -21,10 +21,10 @@ block view
           .col-md-6
             .form-group
               label(for='firstname') First name
-              input.form-control#firstname(type='text', name='fname', placeholder='Enter your first name')
+              input.form-control#fname(type='text', name='fname', placeholder='Enter your first name')
             .form-group
               label(for='lastname') Last name
-              input.form-control#lastname(type='text', name='lname', placeholder='Enter your last name')
+              input.form-control#lname(type='text', name='lname', placeholder='Enter your last name')
             .form-group
               label(for='username') Username
               input.form-control#username(type='text', name='username', placeholder='Enter username')
@@ -39,7 +39,7 @@ block view
                 option(value='female') Female
             .form-group
               label(for='birthday') Birthday
-              input.form-control.date(type='text', name='birthday', placeholder='Enter your birthday', autofilee)
+              input.form-control.date#birthday(type='text', name='birthday', placeholder='Enter your birthday', autofilee)
           .col-sm-6
             .form-group
               label(for='country') Country
@@ -55,9 +55,9 @@ block view
               input.form-control#street(type='text', name='street', placeholder='Street name')
             .form-group
               label(for='postal-code') Postal Code
-              input.form-control#postal-code(type='text', name='zip', placeholder='Postal Code')
+              input.form-control#postal-code#zip(type='text', name='zip', placeholder='Postal Code')
             .form-group
               label(for='additional') Additional
-              textarea.form-control#additional(name='additional', placeholder='More details')
+              textarea.form-control#additional(name='additional', placeholder='More details', rows='5')
       .card-footer
         button.btn.btn-sm.btn-primary(type='submit') Add
