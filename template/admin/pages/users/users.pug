@@ -31,13 +31,10 @@ block view
         th.tr-zip
           .md-form.search-input
             input.form-control#zipInput(type='text', placeholder='ZIP', aria-label='Search', autocomplete='off')
-        th.tr-status
-          .md-form.search-input
-            select.form-control#status(name='sex', aria-label='Search')
-              option(value='') Status
-              option(value='2') Active
-              option(value='1') Pending
-              option(value='0') Inactive
+        th.text-center.tr-status
+          | Status
+        th.text-center.tr-status
+          | sex
     tbody
       each user in users
         tr
@@ -72,3 +69,8 @@ block view
               span.badge.badge-warning(data-status=user.status) Pending
             else if user.status === '2'
               span.badge.badge-success(data-status=user.status) Active
+          td.text-center.user-status
+            if user.sex === 'male'
+              i.fas.fa-mars
+            else if user.sex === 'female'
+              i.fas.fa-mars

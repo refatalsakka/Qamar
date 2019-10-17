@@ -7,7 +7,6 @@ $(document).ready(() => {
     const userInput = $('#userInput').val().trim();
     const countryInput = $('#countryInput').val().trim();
     const zipInput = $('#zipInput').val().trim();
-    const statusInput = $('#status').val().trim();
 
     return $('table tbody tr').filter(function () {
       const id = $(this).find('.user-id strong').text().trim()
@@ -16,7 +15,6 @@ $(document).ready(() => {
       let country = $(this).find('.user-country i').attr('data-country');
       if (country) { country = country.trim(); }
       const zip = $(this).find('.user-zip').text().trim();
-      const status = $(this).find('.user-status span').attr('data-status').trim();
 
       const filters = {
         id: {
@@ -43,29 +41,17 @@ $(document).ready(() => {
           inputLength: zipInput.length,
           match: 'zip',
         },
-        status: {
-          input: 'statusInput',
-          value: statusInput,
-          match: 'status',
-        },
       };
 
       let code = '';
 
       for (const filter in filters) {
-        if (filters[filter].input !== 'statusInput') {
-          if (filters[filter].value !== '' && filters[filter].value !== '-' && filters[filter].value !== '+') {
-            code += `${filters[filter].match} && ${filters[filter].match}.substring(0, ${filters[filter].inputLength}) === ${filters[filter].input}.substring(0, ${filters[filter].inputLength}) && `;
-          } else if (filters[filter].value === '-') {
-            code += `(${filters[filter].match} === '' || ${filters[filter].match} === undefined) && `;
-          } else if (filters[filter].value === '+') {
-            code += `${filters[filter].match} && `;
-          }
-        } else {
-          // eslint-disable-next-line no-lonely-if
-          if (filters[filter].value !== '') {
-            code += `${filters[filter].match} === ${filters[filter].input} && `;
-          }
+        if (filters[filter].value !== '' && filters[filter].value !== '-' && filters[filter].value !== '+') {
+          code += `${filters[filter].match} && ${filters[filter].match}.substring(0, ${filters[filter].inputLength}) === ${filters[filter].input}.substring(0, ${filters[filter].inputLength}) && `;
+        } else if (filters[filter].value === '-') {
+          code += `(${filters[filter].match} === '' || ${filters[filter].match} === undefined) && `;
+        } else if (filters[filter].value === '+') {
+          code += `${filters[filter].match} && `;
         }
       }
 
