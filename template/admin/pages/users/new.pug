@@ -48,14 +48,17 @@ block view
               label(for='state') State
               input.form-control#state(type='text', name='state', placeholder='State name')
             .form-group
+              label(for='postal-code') Postal Code
+              input.form-control#postal-code#zip(type='number', name='zip', placeholder='Postal Code')
+            .form-group
               label(for='city') City
               input.form-control#city(type='text', name='city', placeholder='City name')
             .form-group
               label(for='street') Street
               input.form-control#street(type='text', name='street', placeholder='Street name')
             .form-group
-              label(for='postal-code') Postal Code
-              input.form-control#postal-code#zip(type='text', name='zip', placeholder='Postal Code')
+              label(for='hause_number') Hause Number
+              input.form-control#postal-code#hause_number(type='number', name='house_number', placeholder='Hause Number')
             .form-group
               label(for='additional') Additional
               textarea.form-control#additional(name='additional', placeholder='More details', rows='5')

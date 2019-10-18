@@ -19,15 +19,21 @@ class LoginModel extends Model
       return false;
     }
 
-    $this->user = $user;
+    if (password_verify($password, $user->password)) {
 
-    return password_verify($password, $user->password);
+      $this->user = $user;
+
+      return true;
+    }
+
+    return false;
   }
 
   public function user()
   {
     return $this->user;
   }
+
 
   public function isLogged()
   {

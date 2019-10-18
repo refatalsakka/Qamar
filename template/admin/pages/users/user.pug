@@ -93,14 +93,17 @@ block view
                 td State
                 td.editable(data-type='text', data-name='state')= user.state
               tr
+                td Zip
+                td.editable(data-type='number', data-name='zip')= user.zip
+              tr
                 td City
                 td.editable(data-type='text', data-name='city')= user.city
               tr
                 td Street
                 td.editable(data-type='text', data-name='street')= user.street
               tr
-                td Zip
-                td.editable(data-type='number', data-name='zip')= user.zip
+                td House Number
+                td.editable(data-type='number', data-name='house_number')= user.house_number
               tr
                 td Additional
                 td.editable(data-type='text', data-name='additional', data-tag='textarea')= user.additional

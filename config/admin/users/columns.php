@@ -71,6 +71,7 @@ return [
     'user_id_table_name' => 'user_id',
     'type' => 'text',
     'uppercaseNotAllowed' => true,
+    'containJust' => 'path:config/icons:[flags]::keys',
     'maxLen' => 20,
     'minLen' => 3,
   ],
@@ -81,6 +82,13 @@ return [
     'type' => 'text',
     'maxLen' => 20,
     'minLen' => 3,
+  ],
+  'zip' => [
+    'table' => 'address',
+    'user_id_table_name' => 'user_id',
+    'type' => 'number',
+    'maxLen' => 5,
+    'minLen' => 5,
   ],
   'city' => [
     'table' => 'address',
@@ -98,12 +106,12 @@ return [
     'maxLen' => 20,
     'minLen' => 3,
   ],
-  'zip' => [
+  'house_number' => [
     'table' => 'address',
     'user_id_table_name' => 'user_id',
     'type' => 'number',
     'maxLen' => 5,
-    'minLen' => 5,
+    'minLen' => 1,
   ],
   'additional' => [
     'table' => 'address',

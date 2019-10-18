@@ -10,8 +10,9 @@ return [
   'status',
   'country',
   'state',
+  'zip',
   'city',
   'street',
-  'zip',
+  'house_number',
   'additional',
 ];

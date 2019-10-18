@@ -8,8 +8,12 @@ class ProfileController extends Controller
 {
   public function index()
   {
-    $context = [
+    $id = $this->load->model('Login')->user()->id;
 
+    $user = $this->load->model('User')->user($id);
+
+    $context = [
+      'user' => $user,
     ];
     return $this->view->render('admin/pages/profile', $context);
   }

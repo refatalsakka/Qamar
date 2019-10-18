@@ -9,8 +9,9 @@ return [
   'email',
   'country',
   'state',
+  'zip',
   'city',
   'street',
-  'zip',
+  'house_number',
   'additional',
 ];

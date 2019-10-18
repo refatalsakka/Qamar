@@ -290,25 +290,100 @@ class Validation
   /**
    * Determine if the given input has the value that are passed
    *
-   * @param string $input
+   * @param $allow
    * @param string $msg
    * @return $this
    */
-  public function containJust(array $array, $msg = null)
+  public function containJust($allowes, $msg = null)
   {
     $value = $this->value($this->input);
 
-
     if ($value) {
 
-      if (!in_array($value, $array)) {
+      if (!is_array($allowes) && $allowes !== '') {
+
+        $allowes = [$allowes];
+      }
+
+      $path = null;
+      $indexes = null;
+
+      $files = [];
+      $final = [];
+
+      foreach($allowes as $key => $allow) {
+
+        if (strpos($allow, 'path:') === 0) {
+
+          unset($allowes[$key]);
+
+          $path = substr($allow, 5);
+
+          $getFrom = 'value';
+
+          if (strpos($path, '::')) {
+
+            list($path, $getFrom) = explode('::', $path);
+          }
+
+          if (strpos($path, ':[')) {
+
+            list($path, $indexes) = explode(':[', $path);
+
+            $indexes = rtrim($indexes, ']');
+
+            if (strpos($indexes, '][')) {
+
+              $indexesInFiles = [];
+
+              $indexes = explode('][', $indexes);
+
+              foreach ($indexes as $index) {
+
+                if (!empty($indexesInFiles)) {
+
+                  $indexesInFiles = $indexesInFiles[$index];
+
+                } else {
+
+                  $indexesInFiles = $this->app->file->call($path . '.php')[$index];
+                }
+              }
+
+              $files += $indexesInFiles;
+
+            } else {
+
+              $files += $this->app->file->call($path . '.php')[$indexes];
+            }
+
+          } else {
+
+            $files += $this->app->file->call($path . '.php');
+          }
+
+          if ($getFrom === 'keys') {
+
+            $final += array_keys($files);
+          } else {
+
+            $final += array_values($files);
+          }
+
+        } else {
+
+          array_push($final, $allow);
+        }
+      }
+
+      if (!in_array($value, $final)) {
 
         $msg = $msg ?: 'Wrong value';
 
         $this->addError($this->input, $msg);
       }
-    }
 
+    }
     return $this;
   }
 

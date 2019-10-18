@@ -258,8 +258,9 @@ class UsersController extends Controller
     $country = $posts['country'] ? $posts['country'] : null;
     $state = $posts['state'] ? $posts['state'] : null;
     $city = $posts['city'] ? $posts['city'] : null;
-    $street = $posts['street'] ? $posts['street'] : null;
     $zip = $posts['zip'] ? $posts['zip'] : null;
+    $street = $posts['street'] ? $posts['street'] : null;
+    $house_number = $posts['house_number'] ? $posts['house_number'] : null;
     $additional = $posts['additional'] ? $posts['additional'] : null;
 
     $insertInAddress = $this->db->data([
@@ -267,8 +268,9 @@ class UsersController extends Controller
       'country' => $country,
       'state' => $state,
       'city' => $city,
-      'street' => $street,
       'zip' => $zip,
+      'street' => $street,
+      'house_number' => $house_number,
       'additional' => $additional,
     ])->insert('address');
 
