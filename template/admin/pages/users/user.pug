@@ -28,7 +28,7 @@ block view
               tr
                 td  ID
                 td
-                  strong ##{user.id}
+                  strong #{'#' + user.id}
               tr
                 td Username
                 td.editable(data-type='text', data-name='username')= user.username
@@ -40,7 +40,7 @@ block view
                 td.editable(data-type='text', data-name='lname')= user.lname
               tr
                 td Sex
-                td.editable(data-type='text', data-name='sex', data-options='male,female')= user.sex
+                td.editable(data-type='text', data-name='sex', data-tag='select', data-options='male,female')= user.sex
               tr
               tr
                 td Birthday
@@ -101,10 +101,9 @@ block view
               tr
                 td Zip
                 td.editable(data-type='number', data-name='zip')= user.zip
-              if user.additional
-                tr
-                  td Additional
-                  td.editable(data-type='text', data-name='additional')= user.additional
+              tr
+                td Additional
+                td.editable(data-type='text', data-name='additional', data-tag='textarea')= user.additional
     .col-md-4
       .card
         .card-header

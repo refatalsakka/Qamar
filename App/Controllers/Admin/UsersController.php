@@ -63,6 +63,7 @@ class UsersController extends Controller
 
     $columns = $this->file->call('config/admin/users/columns.php');
     $table = $columns[$name]['table'];
+    $value = $posts[$name];
 
     if (isset($columns[$name]['type'])) {
       $type = $columns[$name]['type'];
@@ -87,6 +88,12 @@ class UsersController extends Controller
       if (isset($columns[$name]['dateRange'])) {
         $this->validator->input($name)->dateRange($dateFormat['show'], $columns[$name]['dateRange']);
       }
+    }
+    if (isset($columns[$name]['noSpaceBetween'])) {
+      $this->validator->input($name)->noSpaceBetween();
+    }
+    if (isset($columns[$name]['uppercaseNotAllowed'])) {
+      $value = strtolower($value);
     }
     if (isset($columns[$name]['minLen'])) {
       $this->validator->input($name)->minLen($columns[$name]['minLen']);
@@ -114,10 +121,7 @@ class UsersController extends Controller
       return json_encode($msg);
     }
 
-    $value = $posts[$name];
     $user_id_table_name = $columns[$name]['user_id_table_name'];
-
-    $value = strtolower($value);
 
     if (isset($columns[$name]['date'])) {
 
@@ -143,7 +147,7 @@ class UsersController extends Controller
 
     if ($value) {
 
-      $msg['success'] = $value;
+      $msg['success'] = _e($value);
 
       if (isset($columns[$name]['date'])) {
 
@@ -199,6 +203,12 @@ class UsersController extends Controller
       }
       if (isset($columns[$name]['noUmlaut'])) {
         $this->validator->input($name)->noUmlaut();
+      }
+      if (isset($columns[$name]['noSpaceBetween'])) {
+        $this->validator->input($name)->noSpaceBetween();
+      }
+      if (isset($columns[$name]['uppercaseNotAllowed'])) {
+        $posts[$name] = strtolower($posts[$name]);
       }
       if (isset($columns[$name]['minLen'])) {
         $this->validator->input($name)->minLen($columns[$name]['minLen']);

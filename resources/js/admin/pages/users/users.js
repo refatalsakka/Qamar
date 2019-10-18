@@ -65,7 +65,7 @@ $(document).ready(() => {
     });
   }
 
-  $('.search-input input, .search-input select').on('keyup change', () => {
+  $('.search-input input').on('keyup', () => {
     const trs = filterUsersTable();
     $('table tbody tr').css('display', 'none');
     trs.css('display', 'table-row');

@@ -28,7 +28,10 @@ if (!function_exists('app')) {
 if (!function_exists('_e')) {
   function _e($value)
   {
-    return htmlspecialchars($value);
+    $value = trim($value);
+    $value = preg_replace('# {2,}#', ' ', $value);
+    $value = htmlspecialchars($value);
+    return $value;
   }
 }
 

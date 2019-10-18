@@ -76,9 +76,9 @@ $(document).ready(() => {
       // attributes values
       const type = $(this).attr('data-type');
       const name = $(this).attr('data-name');
-      const options = $(this).attr('data-options');
       const date = $(this).attr('data-date');
       const url = genetareAction('update');
+      const tag = $(this).attr('data-tag') || 'input';
 
       // $extraClasses will contain classes for the input in $htmlCodeInput
       let extraClasses = '';
@@ -89,28 +89,37 @@ $(document).ready(() => {
       }
 
       // append inputs
-      let htmlCodeInput = `<input type="${type}" value="${value}" data-text="${value}" name="${name}" class="form-control input-edit${extraClasses}"/>`;
+      let htmlCodeInput = '';
 
-      // if options defind then it must be the select tag
-      if (options) {
-        // eslint-disable-next-line no-unused-vars
-        let option = '';
+      if (tag === 'input') {
+        htmlCodeInput = `<input type="${type}" value="${value}" data-text="${value}" name="${name}" class="form-control input-edit${extraClasses}"/>`;
+      } else if (tag === 'textarea') {
+        htmlCodeInput = `<textarea value="${value}" data-text="${value}" name="${name}" class="form-control input-edit${extraClasses}">${value}</textarea>`;
+      } else if (tag === 'select') {
+        const options = $(this).attr('data-options');
+        // if options defind then it must be the select tag
+        if (options) {
+          // eslint-disable-next-line no-unused-vars
+          let option = '';
 
-        // loop over the options that contain in the data-options attribute
-        options.split(',').forEach((op) => {
-          // check the right value
-          // eslint-disable-next-line prefer-const
-          let selected = (op === value) ? 'selected' : '';
-          option += `<option ${selected} value="${op}">${op}</option>`;
-        });
+          // loop over the options that contain in the data-options attribute
+          options.split(',').forEach((op) => {
+            // check the right value
+            // eslint-disable-next-line prefer-const
+            let selected = (op === value) ? 'selected' : '';
+            option += `<option ${selected} value="${op}">${op}</option>`;
+          });
 
-        // change the $htmlCodeInput
-        // insert the select tag in it
-        htmlCodeInput = `
-        <select class="form-control input-edit" data-text="${value}" name="${name}">
-          ${option}
-        </select>
-        `;
+          // change the $htmlCodeInput
+          // insert the select tag in it
+          htmlCodeInput = `
+          <select class="form-control input-edit" data-text="${value}" name="${name}">
+            ${option}
+          </select>
+          `;
+        } else {
+          htmlCodeInput = '<select class="form-control input-edit" data-text="" name=""></select>';
+        }
       }
 
       // create html form
@@ -188,7 +197,7 @@ $(document).ready(() => {
               if (json.success === 'no text') {
                 td.html('');
               } else {
-                td.html(json.success);
+                td.html(json.success.trim());
               }
 
               addSuccessBg(td);

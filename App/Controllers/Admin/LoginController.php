@@ -42,8 +42,8 @@ class LoginController extends Controller
         $remember = true;
       }
 
-      $this->validator->input('username')->require()->minLen(4);
-      $this->validator->input('password')->require()->minLen(6);
+      $this->validator->input('username')->require();
+      $this->validator->input('password')->require();
 
       if ($this->validator->fails()) {
 

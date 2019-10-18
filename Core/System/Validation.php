@@ -313,6 +313,30 @@ class Validation
   }
 
   /**
+   * Determine if the given input has spaces between the letters or the words
+   *
+   * @param string $msg
+   * @return $this
+   */
+  public function noSpaceBetween($msg = null)
+  {
+    $value = $this->value($this->input);
+
+
+    if ($value) {
+
+      if (preg_match('/\s/', $value)) {
+
+        $msg = $msg ?: 'Spaces are not allow';
+
+        $this->addError($this->input, $msg);
+      }
+    }
+
+    return $this;
+  }
+
+  /**
    * Determine if the given input value should be at least the given length
    *
    * @param string $input
