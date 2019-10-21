@@ -88,7 +88,7 @@ block view
             tbody
               tr
                 td Country
-                td.editable(data-type='text', data-name='country')= user.country
+                td.editable(data-type='text', data-name='country', data-tag='select', data-options=countries_options)= user.country
               tr
                 td State
                 td.editable(data-type='text', data-name='state')= user.state

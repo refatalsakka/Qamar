@@ -72,8 +72,6 @@ return [
     'type' => 'text',
     'uppercaseNotAllowed' => true,
     'containJust' => 'path:config/icons:[flags]::keys',
-    'maxLen' => 20,
-    'minLen' => 3,
   ],
   'state' => [
     'table' => 'address',

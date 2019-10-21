@@ -20,6 +20,5 @@ return [
     'auth'        => 'App\\Middlewares\\AuthenticateMiddleware',
     'ajax'        => 'App\\Middlewares\\AjaxMiddleware',
     'permissions' => 'App\\Middlewares\\PermissionsMiddleware',
-    'redirect'    => 'App\\Middlewares\\RedirectMiddleware',
   ]
 ];

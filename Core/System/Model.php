@@ -28,19 +28,9 @@ abstract class Model
     return $this->orderBy('id', 'DESC')->limit($limit)->fetchAll($this->table);
   }
 
-  public function allEnable($limit = null)
-  {
-    return $this->orderBy('id', 'DESC')->where('enable = ?', 1)->limit($limit)->fetchAll($this->table);
-  }
-
   public function get($value, $coulmn = 'id')
   {
     return $this->where($coulmn . ' = ?', $value)->fetch($this->table);
-  }
-
-  public function getEnable($value, $coulmn = 'id')
-  {
-    return $this->where($coulmn . ' = ? and enable = ?', [$value, 1])->fetch($this->table);
   }
 
   public function selectTable($coulmn)

@@ -33,6 +33,13 @@ class UserModel extends Model
 
   public function user($id)
   {
+    $exists = $this->exists($id);
+
+    if (!$exists) {
+
+      return $this->url->notfound();
+    }
+
     return $this->hasOne('
     users.id,
     users.username,

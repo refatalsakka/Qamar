@@ -109,7 +109,9 @@ class Route
   public function package($url, $controller, $middlewares = [])
   {
     $this->add("$url", "$controller");
-    $this->add("$url/:id", "$controller@user");
+
+    $row = isset($middlewares['row']) ? $middlewares['row'] : [];
+    $this->add("$url/:id", "$controller@row", 'GET', $row);
 
     $new = isset($middlewares['new']) ? $middlewares['new'] : [];
     $this->add("$url/new", "$controller@new", 'GET', $new);
@@ -171,18 +173,7 @@ class Route
       }
     }
 
-    // should be (ifAdmin()) insted isLogged
-    // if ($this->app->request->isRequestToAdminManagement() && $this->app->load->model('Login')->isAdmin()) {
-    if ($this->app->request->isRequestToAdminManagement() && $this->app->load->model('Login')->isLogged()) {
-
-      $output = (string) $this->app->load->action('Admin\Notfound', 'index', []);
-
-    } else {
-
-      $output = (string) $this->app->load->action('Website\Notfound', 'index', []);
-    }
-
-    return $output;
+    return $this->app->url->notfound();
   }
 
   public function isMatching($pattern)

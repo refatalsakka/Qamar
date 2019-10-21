@@ -69,8 +69,10 @@ form {
   }
   div:first-child {
     flex-grow: 2;
+    width: 80%;
   }
   div:last-child {
     flex-grow: 1;
+    width: 20%;
   }
 }

@@ -12,6 +12,9 @@ $adminOptions = [
 
 $app->route->group($adminOptions, function($route) {
 
+  // Not found
+  $route->add('/404', 'Notfound', 'GET');
+
   $route->add('/', 'Home', 'GET');
 
   //Login
@@ -28,7 +31,7 @@ $app->route->group($adminOptions, function($route) {
   //users
   $route->package('/users', 'Users', [
     'add' => [
-      // 'ajax',
+      'ajax',
     ],
     'update' => [
       'ajax',

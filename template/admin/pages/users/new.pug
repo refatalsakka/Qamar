@@ -43,7 +43,10 @@ block view
           .col-sm-6
             .form-group
               label(for='country') Country
-              input.form-control#country(type='text', name='country', placeholder='Country name')
+              select.form-control#country(name='country')
+                option
+                each country in countries
+                  option(value=country)= country
             .form-group
               label(for='state') State
               input.form-control#state(type='text', name='state', placeholder='State name')
