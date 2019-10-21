@@ -22,13 +22,10 @@ $app->route->group($adminOptions, function($route) {
   $route->add('/submit', 'Login@submit', 'POST', ['ajax']);
   $route->add('/logout', 'Logout');
 
-  //Profile
-  $route->add('/profile', 'Profile');
-
   //Settings
   $route->add('/settings', 'Settings');
 
-  //users
+  //Users
   $route->package('/users', 'Users', [
     'add' => [
       'ajax',
@@ -37,4 +34,19 @@ $app->route->group($adminOptions, function($route) {
       'ajax',
     ],
   ]);
+
+
+  // $route->add('/profile', 'Profile', 'GET');
+  // $route->add('/profile/update', 'Profile', 'POST', 'ajax');
 });
+
+// $profileOtions = [
+//   'prefix' => '/admin/profile',
+//   'controller' => 'Admin',
+//   'middleware' => ['auth']
+// ];
+
+// //Profile
+// $app->route->group($profileOtions, function($route) {
+
+// });

@@ -17,4 +17,9 @@ class ProfileController extends Controller
     ];
     return $this->view->render('admin/pages/profile', $context);
   }
+
+  public function update()
+  {
+
+  }
 }

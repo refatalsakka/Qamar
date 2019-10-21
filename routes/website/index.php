@@ -5,10 +5,6 @@ $app = app();
 // $app->route->add() to add to the Routes
 // $app->pages->add() to add to the Admin Panel
 
-// Not found
-$app->route->add('/404', 'Website/Notfound', 'GET');
-$app->pages->add('not found', '/404');
-
 $app->route->add('/', 'Website/Home');
 $app->route->add('/home', 'Website/Home', 'GET');
 $app->pages->add('home', '/home', 'icon-home');
@@ -41,3 +37,7 @@ $app->pages->add('privacy', '/privacy', 'icon-shield');
 //Imprint
 $app->route->add('/imprint', 'Website/Imprint');
 $app->pages->add('imprint', '/imprint', 'icon-info');
+
+// Not found
+$app->route->add('/404', 'Website/Notfound', 'GET');
+$app->pages->add('not found', '/404', 'fas fa-times');

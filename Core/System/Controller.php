@@ -32,4 +32,16 @@ abstract class Controller
   {
     return $date ? DateTime::createFromFormat("$format[0]", $date)->format("$format[1]") : null;
   }
+
+  protected function countries($country)
+  {
+    $countries_icons = $this->file->call('config/icons.php')['flags'];
+
+    if ($country === 'all') {
+
+      return  $countries_icons;
+    }
+
+    return($country && isset($countries_icons[$country])) ? $countries_icons[$country] : null;
+  }
 }

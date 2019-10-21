@@ -13,7 +13,7 @@ class UsersController extends Controller
     foreach ($users as $user) {
 
       $user->new = $this->isUserNew($user->registration);
-      $user->country_Icon = $this->getCountryIcons($user->country);
+      $user->country_Icon = $this->countries($user->country);
       $user->registration = $this->changeFormatDate($user->registration);
 
       $user->last_login = $this->changeFormatDate($user->last_login);
@@ -29,7 +29,7 @@ class UsersController extends Controller
     return $this->view->render('admin/pages/users/users', $context);
   }
 
-  public function row($id)
+  public function row()
   {
     $id = getLastParameter($this->request->baseUrl());
 
@@ -43,7 +43,7 @@ class UsersController extends Controller
     $user->last_logout = $this->changeFormatDate($user->last_logout);
     $user->birthday = $this->changeFormatDate($user->birthday, ['Y-m-d', 'd M Y']);
 
-    $countries = array_keys($this->getCountryIcons('all'));
+    $countries = array_keys($this->countries('all'));
     $countries_options = implode(',', $countries);
 
     $context = [
@@ -166,7 +166,7 @@ class UsersController extends Controller
 
   public function new()
   {
-    $countries = $this->getCountryIcons('all');
+    $countries = $this->countries('all');
 
     $countries = array_keys($countries);
 
@@ -331,17 +331,5 @@ class UsersController extends Controller
       }
     }
     return 0;
-  }
-
-  private function getCountryIcons($country)
-  {
-    $countries_icons = $this->file->call('config/icons.php')['flags'];
-
-    if ($country === 'all') {
-
-      return  $countries_icons;
-    }
-
-    return($country && isset($countries_icons[$country])) ? $countries_icons[$country] : null;
   }
 }
