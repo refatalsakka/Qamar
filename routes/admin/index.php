@@ -19,7 +19,7 @@ $app->route->group($adminOptions, function($route) {
 
   //Login
   $route->add('/login', 'Login', 'GET');
-  $route->add('/submit', 'Login@submit', 'POST', ['ajax']);
+  $route->add('/submit', 'Login@submit', 'POST');
   $route->add('/logout', 'Logout');
 
   //Settings
@@ -35,18 +35,6 @@ $app->route->group($adminOptions, function($route) {
     ],
   ]);
 
-
-  // $route->add('/profile', 'Profile', 'GET');
-  // $route->add('/profile/update', 'Profile', 'POST', 'ajax');
+  // Profile
+  $route->add('/profile', 'Profile', 'GET');
 });
-
-// $profileOtions = [
-//   'prefix' => '/admin/profile',
-//   'controller' => 'Admin',
-//   'middleware' => ['auth']
-// ];
-
-// //Profile
-// $app->route->group($profileOtions, function($route) {
-
-// });

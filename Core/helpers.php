@@ -43,6 +43,14 @@ if (!function_exists('getLastParameter')) {
   }
 }
 
+if (!function_exists('userId')) {
+  function userId()
+  {
+    $app = Application::getInstance();
+    return getLastParameter($app->request->baseUrl());
+  }
+}
+
 if (!function_exists('url')) {
   function url($path)
   {

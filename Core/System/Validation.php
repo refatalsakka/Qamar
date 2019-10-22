@@ -174,13 +174,18 @@ class Validation
 
     if ($value) {
 
-      $year = DateTime::createFromFormat($format, $value)->format('Y');
+      $checkFormat = DateTime::createFromFormat($format, $value);
 
-      if ($year < $range['start'] || $year > $range['end']) {
+      if ($checkFormat) {
 
-        $msg = $msg ?: 'The date must be between ' . $range['start'] . ' and ' . $range['end'];
+        $year = DateTime::createFromFormat($format, $value)->format('Y');
 
-        $this->addError($this->input, $msg);
+        if ($year < $range['start'] || $year > $range['end']) {
+
+          $msg = $msg ?: 'The date must be between ' . $range['start'] . ' and ' . $range['end'];
+
+          $this->addError($this->input, $msg);
+        }
       }
     }
 

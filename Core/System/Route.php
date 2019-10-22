@@ -48,14 +48,11 @@ class Route
 
   private function setPrefix($url)
   {
-    if ($this->prefix) {
+    if ($this->prefix && $this->prefix !== '/') {
 
-      if ($this->prefix !== '/') {
+      $url = $this->prefix . $url;
 
-        $url = $this->prefix . $url;
-
-        $url = rtrim($url, '/');
-      }
+      $url = rtrim($url, '/');
     }
 
     return $url;
@@ -89,10 +86,9 @@ class Route
     $controller = $groupOptions['controller'];
     $middleware = $groupOptions['middleware'];
 
-    $url = ltrim($this->app->request->url(), '/');
-    $check = '/' . explode('/', $url)[0];
+    $url = $this->app->request->url();
 
-    if ($check !== $prefix) {
+    if (($this->prefix && $prefix !== $this->prefix) || ($prefix && strpos($url, $prefix) !== 0)) {
 
       return $this;
     }
@@ -173,7 +169,14 @@ class Route
       }
     }
 
-    return $this->app->url->notfound();
+    $notfound = 'Website\Notfound';
+
+    if ($this->app->request->isRequestToAdminManagement() && $this->app->load->model('Login')->isLogged()) {
+
+      $notfound = 'Admin\Notfound';
+    }
+
+    return (string) $this->app->load->action($notfound, 'index', []);
   }
 
   public function isMatching($pattern)

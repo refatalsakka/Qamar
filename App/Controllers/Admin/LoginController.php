@@ -31,55 +31,53 @@ class LoginController extends Controller
       'remeberme',
     ];
 
-    if (array_equal($names, $allows)) {
+    if (!array_equal($names, $allows)) {
 
-      $username =  $this->request->post('username');
-      $password =  $this->request->post('password');
-      $remember = false;
-
-      if (in_array('remeberme', array_keys($posts))) {
-
-        $remember = true;
-      }
-
-      $this->validator->input('username')->require();
-      $this->validator->input('password')->require();
-
-      if ($this->validator->fails()) {
-
-        $msg['error'] = 'Please check the inputs length';
-
-        return json_encode($msg);
-      }
-
-      $login = $this->load->model('Login');
-
-      $valid = $login->isValidLogin($username, $password);
-
-      if ($valid) {
-
-        $user = $login->user();
-
-        $this->session->set('login', $user->code);
-
-        if ($remember) {
-
-          $this->cookie->set('login', $user->code);
-        }
-
-        $msg['success'] = $this->request->host() . '/admin';
-
-        return json_encode($msg);
-      }
-
-      $msg = $this->validator->getMsgs();
-
-      $msg['error'] = 'Username or Passowrd is invalid';
+      $msg['error'] = 'reload';
 
       return json_encode($msg);
     }
 
-    $msg['success'] = $this->request->host() . '/admin';
+    $username =  $this->request->post('username');
+    $password =  $this->request->post('password');
+    $remember = false;
+
+    if (in_array('remeberme', array_keys($posts))) {
+
+      $remember = true;
+    }
+
+    $this->validator->input('username')->require();
+    $this->validator->input('password')->require();
+
+    if ($this->validator->fails()) {
+
+      $msg['error'] = 'Please check the inputs';
+
+      return json_encode($msg);
+    }
+
+    $login = $this->load->model('Login');
+
+    $valid = $login->isValidLogin($username, $password);
+
+    if ($valid) {
+
+      $user = $login->user();
+
+      $this->session->set('login', $user->code);
+
+      if ($remember) {
+
+        $this->cookie->set('login', $user->code);
+      }
+
+      $msg['success'] = true;
+
+      return json_encode($msg);
+    }
+
+    $msg['error'] = 'Username or Passowrd is invalid';
 
     return json_encode($msg);
   }

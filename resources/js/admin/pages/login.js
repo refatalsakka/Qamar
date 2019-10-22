@@ -72,7 +72,7 @@ $(document).ready(() => {
         disableButton();
         addLoading();
         if (!checkEmptyInputs() || !checkTheInputsLength()) {
-          animateAndMsg('Please check the inputs length');
+          animateAndMsg('Please check the inputs');
           ableButton();
           removeLoading();
           return false;
@@ -81,20 +81,18 @@ $(document).ready(() => {
       },
       success: (data) => {
         let msg = 'Sorry, Something went wrong';
-
         if (IsJsonString(data)) {
           const json = JSON.parse(data);
-          if (json.success) {
+          if (json.success || json.error === 'reload') {
             removeAlert();
-            window.location.href = json.success;
-            return;
+            return window.location.reload();
           }
           msg = json.error;
         }
-
         animateAndMsg(msg);
         ableButton();
         removeLoading();
+        return false;
       },
     });
   });

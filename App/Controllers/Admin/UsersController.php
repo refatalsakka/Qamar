@@ -10,6 +10,8 @@ class UsersController extends Controller
   {
     $users = $this->load->model('User')->users();
 
+    $users_for_list = [];
+
     foreach ($users as $user) {
 
       $user->new = $this->isUserNew($user->registration);
@@ -18,20 +20,18 @@ class UsersController extends Controller
 
       $user->last_login = $this->changeFormatDate($user->last_login);
 
-      $users_modify[] = $user;
+      $users_for_list[] = $user;
     }
 
-    $users = $users_modify;
-
     $context = [
-      'users' => $users,
+      'users' => $users_for_list,
     ];
     return $this->view->render('admin/pages/users/users', $context);
   }
 
   public function row()
   {
-    $id = getLastParameter($this->request->baseUrl());
+    $id = userId();
 
     $model = $this->load->model('User');
 
@@ -69,46 +69,60 @@ class UsersController extends Controller
 
     $columns = $this->file->call('config/admin/users/columns.php');
     $table = $columns[$name]['table'];
+    $column = $columns[$name];
     $value = $posts[$name];
+    $id = userId();
+    $user_id_table_name = $column['user_id_table_name'];
 
-    if (isset($columns[$name]['type'])) {
-      $type = $columns[$name]['type'];
+    $current_value = $this->db->select($name)->from($table)->where($user_id_table_name . ' = ?', [$id])->fetch()->$name;
+
+    if ($current_value === strtolower($value)) {
+
+      $msg = null;
+
+      $msg['success'] = strtolower($value);
+
+      return json_encode($msg);
+    }
+
+    if (isset($column['type'])) {
+      $type = $column['type'];
       $this->validator->input($name)->$type();
     }
-    if (isset($columns[$name]['require'])) {
+    if (isset($column['require'])) {
       $this->validator->input($name)->require();
     }
-    if (isset($columns[$name]['unique'])) {
+    if (isset($column['unique'])) {
       $this->validator->input($name)->unique([$table, $name]);
     }
-    if (isset($columns[$name]['noUmlaut'])) {
+    if (isset($column['noUmlaut'])) {
       $this->validator->input($name)->noUmlaut();
     }
-    if (isset($columns[$name]['email'])) {
+    if (isset($column['email'])) {
       $this->validator->input($name)->email();
     }
-    if (isset($columns[$name]['date'])) {
-      $dateFormat = $columns[$name]['date'];
+    if (isset($column['date'])) {
+      $dateFormat = $column['date'];
       $this->validator->input($name)->date($dateFormat['show']);
 
-      if (isset($columns[$name]['dateRange'])) {
-        $this->validator->input($name)->dateRange($dateFormat['show'], $columns[$name]['dateRange']);
+      if (isset($column['dateRange'])) {
+        $this->validator->input($name)->dateRange($dateFormat['show'], $column['dateRange']);
       }
     }
-    if (isset($columns[$name]['noSpaceBetween'])) {
+    if (isset($column['noSpaceBetween'])) {
       $this->validator->input($name)->noSpaceBetween();
     }
-    if (isset($columns[$name]['uppercaseNotAllowed'])) {
+    if (isset($column['uppercaseNotAllowed'])) {
       $value = strtolower($value);
     }
-    if (isset($columns[$name]['minLen'])) {
-      $this->validator->input($name)->minLen($columns[$name]['minLen']);
+    if (isset($column['minLen'])) {
+      $this->validator->input($name)->minLen($column['minLen']);
     }
-    if (isset($columns[$name]['maxLen'])) {
-      $this->validator->input($name)->maxLen($columns[$name]['maxLen']);
+    if (isset($column['maxLen'])) {
+      $this->validator->input($name)->maxLen($column['maxLen']);
     }
-    if (isset($columns[$name]['containJust'])) {
-      $this->validator->input($name)->containJust($columns[$name]['containJust']);
+    if (isset($column['containJust'])) {
+      $this->validator->input($name)->containJust($column['containJust']);
     }
 
     if ($this->validator->fails()) {
@@ -116,8 +130,6 @@ class UsersController extends Controller
       $msg['error'] = $this->validator->getMsgs();
       return json_encode($msg);
     }
-
-    $id = getLastParameter($this->request->baseUrl());
 
     $user = $this->load->model('User')->get($id);
 
@@ -127,9 +139,7 @@ class UsersController extends Controller
       return json_encode($msg);
     }
 
-    $user_id_table_name = $columns[$name]['user_id_table_name'];
-
-    if (isset($columns[$name]['date'])) {
+    if (isset($column['date'])) {
 
       $value = date($dateFormat['insert'], strtotime($value));
     }
@@ -155,7 +165,7 @@ class UsersController extends Controller
 
       $msg['success'] = _e($value);
 
-      if (isset($columns[$name]['date'])) {
+      if (isset($column['date'])) {
 
         $msg['success'] = $this->changeFormatDate($value, [$dateFormat['insert'], $dateFormat['show']]);
       }
@@ -191,46 +201,47 @@ class UsersController extends Controller
     }
 
     $columns = $this->file->call('config/admin/users/columns.php');
-
     $table = $this->load->model('User')->getTable();
 
     foreach ($names as $name) {
 
-      if (isset($columns[$name]['require'])) {
+      $column = $columns[$name];
+
+      if (isset($column['require'])) {
         $this->validator->input($name)->require();
       }
-      if (isset($columns[$name]['type'])) {
-        $type = $columns[$name]['type'];
+      if (isset($column['type'])) {
+        $type = $column['type'];
         $this->validator->input($name)->$type();
       }
-      if (isset($columns[$name]['date'])) {
-        $dateFormat = $columns[$name]['date'];
+      if (isset($column['date'])) {
+        $dateFormat = $column['date'];
         $this->validator->input($name)->date($dateFormat['show']);
 
-        if (isset($columns[$name]['dateRange'])) {
-          $this->validator->input($name)->dateRange($dateFormat['show'], $columns[$name]['dateRange']);
+        if (isset($column['dateRange'])) {
+          $this->validator->input($name)->dateRange($dateFormat['show'], $column['dateRange']);
         }
       }
-      if (isset($columns[$name]['unique'])) {
+      if (isset($column['unique'])) {
         $this->validator->input($name)->unique([$table, $name]);
       }
-      if (isset($columns[$name]['noUmlaut'])) {
+      if (isset($column['noUmlaut'])) {
         $this->validator->input($name)->noUmlaut();
       }
-      if (isset($columns[$name]['noSpaceBetween'])) {
+      if (isset($column['noSpaceBetween'])) {
         $this->validator->input($name)->noSpaceBetween();
       }
-      if (isset($columns[$name]['uppercaseNotAllowed'])) {
+      if (isset($column['uppercaseNotAllowed'])) {
         $posts[$name] = strtolower($posts[$name]);
       }
-      if (isset($columns[$name]['minLen'])) {
-        $this->validator->input($name)->minLen($columns[$name]['minLen']);
+      if (isset($column['minLen'])) {
+        $this->validator->input($name)->minLen($column['minLen']);
       }
-      if (isset($columns[$name]['maxLen'])) {
-        $this->validator->input($name)->maxLen($columns[$name]['maxLen']);
+      if (isset($column['maxLen'])) {
+        $this->validator->input($name)->maxLen($column['maxLen']);
       }
-      if (isset($columns[$name]['containJust'])) {
-        $this->validator->input($name)->containJust($columns[$name]['containJust']);
+      if (isset($column['containJust'])) {
+        $this->validator->input($name)->containJust($column['containJust']);
       }
     }
 
@@ -240,7 +251,7 @@ class UsersController extends Controller
       return json_encode($msg);
     }
 
-    $user_id =  $this->changeFormatDate(microtime(true), ['U.u', 'us']);
+    $user_id = substr($this->changeFormatDate(microtime(true), ['U.u', 'us']) * rand(), 0, 6);
     $code = $this->changeFormatDate(microtime(true), ['U.u', 'uiYdsmH']);
     $username = $posts['username'];
     $fname = $posts['fname'];
@@ -264,7 +275,7 @@ class UsersController extends Controller
 
     if (!$insertInUser) {
 
-      $msg = $this->validator->getMsgs();
+      $msg = 'reload';
       return json_encode($msg);
     }
 
@@ -294,7 +305,7 @@ class UsersController extends Controller
 
     if (!$insertInAddress || !$insertInActivity) {
 
-      $msg = $this->validator->getMsgs();
+      $msg = 'reload';
       return json_encode($msg);
     }
 
