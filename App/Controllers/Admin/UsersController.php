@@ -23,8 +23,11 @@ class UsersController extends Controller
       $users_for_list[] = $user;
     }
 
+    $countries = $countries = array_keys($this->countries('all'));;
+
     $context = [
       'users' => $users_for_list,
+      'countries' => $countries,
     ];
     return $this->view->render('admin/pages/users/users', $context);
   }
@@ -51,6 +54,129 @@ class UsersController extends Controller
       'countries_options' => $countries_options,
     ];
     return $this->view->render('admin/pages/users/user', $context);
+  }
+
+  public function filter() {
+
+    $gets = $this->request->gets();
+
+    $columns = $this->file->call('config/admin/users/columns.php');
+
+    foreach (array_keys($gets) as $name) {
+
+      if (isset($columns[$name])) {
+
+        $get = $columns[$name];
+
+        if (isset($get['type'])) {
+          $type = $get['type'];
+          $this->validator->input($name, 'get')->$type();
+        }
+        if (isset($get['date'])) {
+          $dateFormat = $get['date'];
+          $this->validator->input($name, 'get')->date($dateFormat['show']);
+
+          if (isset($get['dateRange'])) {
+            $this->validator->input($name, 'get')->dateRange($dateFormat['show'], $get['dateRange']);
+          }
+        }
+        if (isset($get['noUmlaut'])) {
+          $this->validator->input($name, 'get')->noUmlaut();
+        }
+        if (isset($get['noSpaceBetween'])) {
+          $this->validator->input($name, 'get')->noSpaceBetween();
+        }
+
+        if (isset($get['minLen'])) {
+          $this->validator->input($name, 'get')->minLen($get['minLen']);
+        }
+        if (isset($get['maxLen'])) {
+          $this->validator->input($name, 'get')->maxLen($get['maxLen']);
+        }
+
+        if (isset($get['containJust'])) {
+          $this->validator->input($name, 'get')->containJust($get['containJust']);
+        }
+      }
+    }
+
+    if ($this->validator->fails()) {
+
+      $msg = 'relaod';
+      return json_encode($msg);
+    }
+
+    $sex = $gets['sex'] ?? null;
+    $zip = $gets['zip'] ?? null;
+    $country = $gets['country'] ?? null;
+    $registration_from = $gets['registration_from'] ?? null;
+    $registration_to = $gets['registration_to'] ?? null;
+    $active = $gets['active'] ?? null;
+    $pending = $gets['pending'] ?? null;
+    $inactive = $gets['inactive'] ?? null;
+    $online = $gets['online'] ?? null;
+    $offline = $gets['offline'] ?? null;
+
+    $sql = '';
+    $wheres = [];
+
+    if ($active || $active == '1') {
+      $sql .= 'status = ? && ';
+      array_push($wheres, '2');
+    }
+    if ($pending || $pending == '1') {
+      $sql .= 'status = ? && ';
+      array_push($wheres, '1');
+    }
+    if ($inactive || $inactive == '1') {
+      $sql = 'status = ? && ';
+      array_push($wheres, '0');
+    }
+    if ($online || $online == '1') {
+      $sql .= 'is_login = ? && ';
+      array_push($wheres, '1');
+    }
+    if ($offline || $offline == '1') {
+      $sql .= 'is_login = ? && ';
+      array_push($wheres, '0');
+    }
+    if ($sex) {
+      $sql .= 'sex = ? && ';
+      array_push($wheres, $sex);
+    }
+    if ($zip) {
+      $sql .= 'zip = ? && ';
+      array_push($wheres, $zip);
+    }
+    if ($country) {
+      $sql .= 'country = ? && ';
+      array_push($wheres, $country);
+    }
+
+    $sql = substr($sql, 0, -4);
+
+    $users = $this->load->model('User')->filter($sql, $wheres);
+
+    $users_for_list = [];
+
+    foreach ($users as $user) {
+
+      $user->new = $this->isUserNew($user->registration);
+      $user->country_Icon = $this->countries($user->country);
+      $user->registration = $this->changeFormatDate($user->registration);
+
+      $user->last_login = $this->changeFormatDate($user->last_login);
+
+      $users_for_list[] = $user;
+    }
+
+    $countries = $countries = array_keys($this->countries('all'));;
+
+    $context = [
+      'users' => $users_for_list,
+      'countries' => $countries,
+    ];
+    return $this->view->render('admin/pages/users/users', $context);
   }
 
   public function update()

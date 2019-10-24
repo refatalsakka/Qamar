@@ -5,15 +5,64 @@ block title
 
 block styles
   link(href=adminCss + 'users' + ds + 'users.css', rel='stylesheet')
+  link(href=cssLibs + 'bootstrap-datepicker.min.css', rel='stylesheet')
 
 block scripts
   script(src=adminJs + 'users' + ds + 'users.js')
+  script(src=jsLibs + 'bootstrap-datepicker.min.js')
 
 block header-right-unser-profile
   a.btn(href=host + '/admin/users/new')
     i.fas.fa-user-plus
 
 block view
+  .filter
+    span.filter-icon
+      | Filter
+      i.fas.fa-chevron-up
+    form(action=host + '/admin/users/filter', method='post', autocomplete='off')
+      .row
+        .form-group.col-md-2
+          label.col-form-label Status
+          .col-form-label
+            .form-check.form-check-inline.mr-1
+              input.form-check-input#inline-checkbox1(type='checkbox', name='active', value='1')
+              label.form-check-label(for='inline-checkbox1') Ative
+            .form-check.form-check-inline.mr-1
+              input.form-check-input#inline-checkbox2(type='checkbox', name='pending', value='1')
+              label.form-check-label(for='inline-checkbox2') Pending
+            .form-check.form-check-inline.mr-1
+              input.form-check-input#inline-checkbox3(type='checkbox', name='inactive', value='1')
+              label.form-check-label(for='inline-checkbox3') Inactive
+            .form-check.form-check-inline.mr-1
+              input.form-check-input#inline-checkbox3(type='checkbox', name='online', value='1')
+              label.form-check-label(for='inline-checkbox3') Online
+            .form-check.form-check-inline.mr-1
+              input.form-check-input#inline-checkbox3(type='checkbox', name='offline', value='1')
+              label.form-check-label(for='inline-checkbox3') Offline
+        .form-group.col-md-2
+          label.col-form-label Sex
+          select.form-control#select1(name='sex')
+            option(value='0')
+            option(value='male') Male
+            option(value='female') Female
+        .form-group.col-md-2
+          label.col-form-label Code
+          input.form-control#postal-code(type='number', name='zip', placeholder='Postal Code')
+        .form-group.col-md-2
+          label.col-form-label Country
+          select.form-control#select1(name='country')
+            option(value='0')
+            each country in countries
+              option(value=country)= country
+        .form-group.col-md-4
+          label.col-form-label Register am
+          .row
+            .col-md-6
+              input.form-control#register-from(type='text', name='registration_from', placeholder='from')
+            .col-md-6
+              input.form-control#register-to(type='text', name='registration_to', placeholder='to', disabled)
+      button.btn.btn-secondary.mb-1(type='submit') Search
   table.table.table-responsive-sm.table-hover.table-outline.mb-0
     thead.thead-light
       tr
@@ -25,12 +74,10 @@ block view
         th.tr-users
           .md-form.search-input
             input.form-control#userInput(type='text', placeholder='User', aria-label='Search', autocomplete='off')
-        th.tr-country
-          .md-form.search-input
-            input.form-control#countryInput(type='text', placeholder='Country', aria-label='Search', autocomplete='off')
-        th.tr-zip
-          .md-form.search-input
-            input.form-control#zipInput(type='text', placeholder='ZIP', aria-label='Search', autocomplete='off')
+        th.text-center.tr-country
+          | Country
+        th.text-center.tr-zip
+          | Zip
         th.text-center.tr-status
           | Status
         th.text-center.tr-status

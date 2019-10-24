@@ -20,6 +20,13 @@ class Validation
   private $input;
 
   /**
+   * Input value
+   *
+   * @var string
+   */
+  private $value;
+
+  /**
    * Errors container
    *
    * @var array
@@ -36,9 +43,19 @@ class Validation
     $this->app = $app;
   }
 
-  public function input($input)
+  public function input($input, $post = 'post')
   {
     $this->input = $input;
+
+    if ($post !== 'get') {
+
+      $this->value = $this->app->request->post($this->input);
+
+    } else {
+
+      $this->value = $this->app->request->get($this->input);
+
+    }
 
     return $this;
   }
@@ -52,7 +69,7 @@ class Validation
    */
   public function require($msg = null)
   {
-    $value = $this->value($this->input);
+    $value = $this->value();
 
     if ($value === '' || $value === null) {
 
@@ -72,7 +89,7 @@ class Validation
    */
   public function email($msg = null)
   {
-    $value = $this->value($this->input);
+    $value = $this->value();
 
     if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
 
@@ -119,7 +136,7 @@ class Validation
    */
   public function number($msg = null)
   {
-    $value = $this->value($this->input);
+    $value = $this->value();
 
     if ($value) {
 
@@ -143,7 +160,7 @@ class Validation
    */
   public function date($format, $msg = null)
   {
-    $value = $this->value($this->input);
+    $value = $this->value();
 
     if ($value) {
 
@@ -170,7 +187,7 @@ class Validation
    */
   public function dateRange($format, array $range, $msg = null)
   {
-    $value = $this->value($this->input);
+    $value = $this->value();
 
     if ($value) {
 
@@ -201,7 +218,7 @@ class Validation
    */
   public function float($msg = null)
   {
-    $value = $this->value($this->input);
+    $value = $this->value();
 
     if (!is_float($value)) {
 
@@ -222,7 +239,7 @@ class Validation
    */
   public function text($msg = null)
   {
-    $value = $this->value($this->input);
+    $value = $this->value();
 
     if ($value) {
 
@@ -246,7 +263,7 @@ class Validation
    */
   public function textWithAllowNumber($msg = null)
   {
-    $value = $this->value($this->input);
+    $value = $this->value();
 
     if ($value) {
 
@@ -270,7 +287,7 @@ class Validation
    */
   public function noUmlaut($msg = null)
   {
-    $value = $this->value($this->input);
+    $value = $this->value();
 
     if ($value) {
 
@@ -301,9 +318,8 @@ class Validation
    */
   public function containJust($allowes, $msg = null)
   {
-    $value = $this->value($this->input);
-
-    if ($value) {
+    $value = $this->value();
+    if ($value || $value == 0) {
 
       if (!is_array($allowes) && $allowes !== '') {
 
@@ -400,7 +416,7 @@ class Validation
    */
   public function noSpaceBetween($msg = null)
   {
-    $value = $this->value($this->input);
+    $value = $this->value();
 
 
     if ($value) {
@@ -426,7 +442,7 @@ class Validation
    */
   public function minLen($length, $msg = null)
   {
-    $value = $this->value($this->input);
+    $value = $this->value();
 
     if ($value) {
 
@@ -451,7 +467,7 @@ class Validation
    */
   public function maxLen($length, $msg = null)
   {
-    $value = $this->value($this->input);
+    $value = $this->value();
 
     if ($value) {
 
@@ -475,9 +491,9 @@ class Validation
    */
   public function match($input, $msg = null)
   {
-    $valuePassword = $this->value($this->input);
+    $valuePassword = $this->value();
 
-    $valueConfirm = $this->value($input);
+    $valueConfirm = $this->app->request->post($input);
 
     if ($valuePassword && $valueConfirm) {
 
@@ -502,7 +518,7 @@ class Validation
    */
   public function unique(array $data, $msg = null)
   {
-    $value = $this->value($this->input);
+    $value = $this->value();
 
     list($table, $column) = $data;
 
@@ -567,9 +583,9 @@ class Validation
    * @param string $input
    * @return mixed
    */
-  private function value($input)
+  private function value()
   {
-    return $this->app->request->post($input);
+    return $this->value;
   }
 
 

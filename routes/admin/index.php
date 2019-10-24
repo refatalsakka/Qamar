@@ -28,12 +28,13 @@ $app->route->group($adminOptions, function($route) {
   //Users
   $route->package('/users', 'Users', [
     'add' => [
-      'ajax',
+      // 'ajax',
     ],
     'update' => [
       'ajax',
     ],
   ]);
+  $route->add('/users/filter', 'Users@filter', 'BOTH');
 
   // Profile
   $route->add('/profile', 'Profile', 'GET');

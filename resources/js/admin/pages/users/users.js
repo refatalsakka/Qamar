@@ -2,19 +2,51 @@
 /* eslint-disable guard-for-in */
 /* eslint-disable no-restricted-syntax */
 $(document).ready(() => {
+  // date picker
+  $('#register-from').datepicker({
+    format: 'dd M yyyy',
+    startDate: '01/01/2019',
+  });
+  $('#register-to').datepicker({
+    format: 'dd M yyyy',
+  });
+  $('#register-from').change(function () {
+    $('#register-to').val('');
+    if ($(this).val() !== '') {
+      $('#register-to').removeAttr('disabled');
+      const dataStart = $(this).val();
+      $('#register-to').datepicker('setStartDate', dataStart);
+    } else {
+      $('#register-to').attr('disabled', 'disabled');
+    }
+  });
+
+  let filterSection = false;
+  $('.filter-icon').click(function () {
+    let addClass;
+    let removeClass;
+    if (filterSection) {
+      addClass = 'fa-chevron-up';
+      removeClass = 'fa-chevron-down';
+      filterSection = false;
+    } else {
+      addClass = 'fa-chevron-down';
+      removeClass = 'fa-chevron-up';
+      filterSection = true;
+    }
+    $(this).find('svg').addClass(addClass);
+    $(this).find('svg').removeClass(removeClass);
+    $('.filter form').slideToggle();
+  });
+
   function filterUsersTable() {
     const idInput = $('#idInput').val().trim();
     const userInput = $('#userInput').val().trim();
-    const countryInput = $('#countryInput').val().trim();
-    const zipInput = $('#zipInput').val().trim();
 
     return $('table tbody tr').filter(function () {
       const id = $(this).find('.user-id strong').text().trim()
         .substr(1);
       const user = $(this).find('.user-name div a').text().trim();
-      let country = $(this).find('.user-country i').attr('data-country');
-      if (country) { country = country.trim(); }
-      const zip = $(this).find('.user-zip').text().trim();
 
       const filters = {
         id: {
@@ -28,18 +60,6 @@ $(document).ready(() => {
           value: userInput,
           inputLength: userInput.length,
           match: 'user',
-        },
-        country: {
-          input: 'countryInput',
-          value: countryInput,
-          inputLength: countryInput.length,
-          match: 'country',
-        },
-        zip: {
-          input: 'zipInput',
-          value: zipInput,
-          inputLength: zipInput.length,
-          match: 'zip',
         },
       };
 
