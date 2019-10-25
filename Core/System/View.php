@@ -60,7 +60,7 @@ class View
       'parameters' => $parameters,
       '_public' => $_public,
       'pages' => $pages,
-      'ds'    => DS,
+      'admin' => $this->app->load->model('Login')->user(),
     ];
 
     return $pug->render($file, $context);

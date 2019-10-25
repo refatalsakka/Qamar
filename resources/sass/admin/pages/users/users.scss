@@ -1,5 +1,7 @@
 @import "../../layout";
 
+@include disableBox;
+
 .filter {
   .filter-icon {
     cursor: pointer;

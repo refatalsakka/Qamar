@@ -4,11 +4,11 @@ block title
   title Users
 
 block styles
-  link(href=adminCss + 'users' + ds + 'users.css', rel='stylesheet')
+  link(href=adminCss + 'users/users.css', rel='stylesheet')
   link(href=cssLibs + 'bootstrap-datepicker.min.css', rel='stylesheet')
 
 block scripts
-  script(src=adminJs + 'users' + ds + 'users.js')
+  script(src=adminJs + 'users/users.js')
   script(src=jsLibs + 'bootstrap-datepicker.min.js')
 
 block header-right-unser-profile
@@ -19,39 +19,39 @@ block view
   .filter
     span.filter-icon
       | Filter
-      i.fas.fa-chevron-up
-    form(action=host + '/admin/users/filter', method='post', autocomplete='off')
+      i.fas.fa-chevron-down
+    form(action=host + '/admin/users/filter', method='GET', autocomplete='off')
       .row
         .form-group.col-md-2
           label.col-form-label Status
           .col-form-label
             .form-check.form-check-inline.mr-1
-              input.form-check-input#inline-checkbox1(type='checkbox', name='active', value='1')
-              label.form-check-label(for='inline-checkbox1') Ative
+              input.form-check-input#active-checkbox(type='checkbox', name='active', value='1')
+              label.form-check-label(for='active-checkbox') Active
             .form-check.form-check-inline.mr-1
-              input.form-check-input#inline-checkbox2(type='checkbox', name='pending', value='1')
-              label.form-check-label(for='inline-checkbox2') Pending
+              input.form-check-input#pending-checkbox(type='checkbox', name='pending', value='1')
+              label.form-check-label(for='pending-checkbox') Pending
             .form-check.form-check-inline.mr-1
-              input.form-check-input#inline-checkbox3(type='checkbox', name='inactive', value='1')
-              label.form-check-label(for='inline-checkbox3') Inactive
+              input.form-check-input#inactive-checkbox(type='checkbox', name='inactive', value='1')
+              label.form-check-label(for='inactive-checkbox') Inactive
             .form-check.form-check-inline.mr-1
-              input.form-check-input#inline-checkbox3(type='checkbox', name='online', value='1')
-              label.form-check-label(for='inline-checkbox3') Online
+              input.form-check-input#online-checkbox(type='checkbox', name='online', value='1')
+              label.form-check-label(for='online-checkbox') Online
             .form-check.form-check-inline.mr-1
-              input.form-check-input#inline-checkbox3(type='checkbox', name='offline', value='1')
-              label.form-check-label(for='inline-checkbox3') Offline
+              input.form-check-input#offline-checkbox(type='checkbox', name='offline', value='1')
+              label.form-check-label(for='offline-checkbox') Offline
         .form-group.col-md-2
           label.col-form-label Sex
-          select.form-control#select1(name='sex')
+          select.form-control.sex-select(name='sex')
             option(value='0')
             option(value='male') Male
             option(value='female') Female
         .form-group.col-md-2
           label.col-form-label Code
-          input.form-control#postal-code(type='number', name='zip', placeholder='Postal Code')
+          input.form-control.zip(type='number', name='zip', placeholder='ZIP')
         .form-group.col-md-2
           label.col-form-label Country
-          select.form-control#select1(name='country')
+          select.form-control.country-select(name='country')
             option(value='0')
             each country in countries
               option(value=country)= country
@@ -59,9 +59,9 @@ block view
           label.col-form-label Register am
           .row
             .col-md-6
-              input.form-control#register-from(type='text', name='registration_from', placeholder='from')
+              input.form-control.register-from(type='text', name='registration_from', placeholder='from')
             .col-md-6
-              input.form-control#register-to(type='text', name='registration_to', placeholder='to', disabled)
+              input.form-control.register-to(type='text', name='registration_to', placeholder='to', disabled)
       button.btn.btn-secondary.mb-1(type='submit') Search
   table.table.table-responsive-sm.table-hover.table-outline.mb-0
     thead.thead-light
@@ -92,7 +92,7 @@ block view
               - var imgDir = usersImgs
               if user.img === 'avatar.webp'
                 - var imgDir = logos
-              img.img-avatar(src=imgDir + user.img, alt='admin@bootstrapmaster.com')
+              img.img-avatar(src=imgDir + user.img, alt=user.fname + ' ' + user.lname)
               if user.is_login
                 span.avatar-status.badge-success
               else

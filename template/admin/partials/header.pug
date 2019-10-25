@@ -165,7 +165,10 @@ header.app-header.navbar
             strong View all messages
       li.nav-item.dropdown
         a.nav-link(data-toggle='dropdown', href='#', role='button', aria-haspopup='true', aria-expanded='false')
-          img.img-avatar(src=usersImgs + '6.webp', alt='admin@bootstrapmaster.com')
+          - var imgDir = usersImgs
+          if admin.img === 'avatar.webp'
+            - var imgDir = logos
+          img.img-avatar(src=imgDir + admin.img, alt=admin.fname + ' ' + admin.lname)
         .dropdown-menu.dropdown-menu-right
           .dropdown-header.text-center
             strong Account

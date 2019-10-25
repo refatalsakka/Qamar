@@ -10,23 +10,12 @@ class UsersController extends Controller
   {
     $users = $this->load->model('User')->users();
 
-    $users_for_list = [];
-
-    foreach ($users as $user) {
-
-      $user->new = $this->isUserNew($user->registration);
-      $user->country_Icon = $this->countries($user->country);
-      $user->registration = $this->changeFormatDate($user->registration);
-
-      $user->last_login = $this->changeFormatDate($user->last_login);
-
-      $users_for_list[] = $user;
-    }
+    $usersformatted = $this->formatUsers($users);
 
     $countries = $countries = array_keys($this->countries('all'));;
 
     $context = [
-      'users' => $users_for_list,
+      'users' => $usersformatted,
       'countries' => $countries,
     ];
     return $this->view->render('admin/pages/users/users', $context);
@@ -56,54 +45,35 @@ class UsersController extends Controller
     return $this->view->render('admin/pages/users/user', $context);
   }
 
+  public function formatUsers($users)
+  {
+    $users_for_list = [];
+
+    foreach ($users as $user) {
+
+      $user->new = $this->isUserNew($user->registration);
+      $user->country_Icon = $this->countries($user->country);
+      $user->registration = $this->changeFormatDate($user->registration);
+
+      $user->last_login = $this->changeFormatDate($user->last_login);
+
+      $users_for_list[] = $user;
+    }
+
+    return $users_for_list;
+  }
+
   public function filter() {
 
     $gets = $this->request->gets();
 
-    $columns = $this->file->call('config/admin/users/columns.php');
+    if (empty($gets)) {
 
-    foreach (array_keys($gets) as $name) {
+      $users = $this->load->model('User')->users();
 
-      if (isset($columns[$name])) {
+      $usersformatted = $this->formatUsers($users);
 
-        $get = $columns[$name];
-
-        if (isset($get['type'])) {
-          $type = $get['type'];
-          $this->validator->input($name, 'get')->$type();
-        }
-        if (isset($get['date'])) {
-          $dateFormat = $get['date'];
-          $this->validator->input($name, 'get')->date($dateFormat['show']);
-
-          if (isset($get['dateRange'])) {
-            $this->validator->input($name, 'get')->dateRange($dateFormat['show'], $get['dateRange']);
-          }
-        }
-        if (isset($get['noUmlaut'])) {
-          $this->validator->input($name, 'get')->noUmlaut();
-        }
-        if (isset($get['noSpaceBetween'])) {
-          $this->validator->input($name, 'get')->noSpaceBetween();
-        }
-
-        if (isset($get['minLen'])) {
-          $this->validator->input($name, 'get')->minLen($get['minLen']);
-        }
-        if (isset($get['maxLen'])) {
-          $this->validator->input($name, 'get')->maxLen($get['maxLen']);
-        }
-
-        if (isset($get['containJust'])) {
-          $this->validator->input($name, 'get')->containJust($get['containJust']);
-        }
-      }
-    }
-
-    if ($this->validator->fails()) {
-
-      $msg = 'relaod';
-      return json_encode($msg);
+      return json_encode($usersformatted);
     }
 
     $sex = $gets['sex'] ?? null;
@@ -120,42 +90,114 @@ class UsersController extends Controller
     $sql = '';
     $wheres = [];
 
-    if ($active || $active == '1') {
-      $sql .= 'status = ? && ';
-      array_push($wheres, '2');
+    if ($active && $active == '1') {
+
+        $sql .= 'status = ? AND ';
+        array_push($wheres, '2');
     }
-    if ($pending || $pending == '1') {
-      $sql .= 'status = ? && ';
+
+    if ($pending && $pending == '1') {
+
+      $sql .= 'status = ? AND ';
       array_push($wheres, '1');
     }
-    if ($inactive || $inactive == '1') {
-      $sql = 'status = ? && ';
+
+    if ($inactive && $inactive == '1') {
+
+      $sql .= 'status = ? AND ';
       array_push($wheres, '0');
+
     }
-    if ($online || $online == '1') {
-      $sql .= 'is_login = ? && ';
+
+    $count_status = substr_count($sql, 'status = ?');
+
+    if ($count_status > 1) {
+
+      $sql = str_replace('status = ? AND', 'status = ? OR', $sql);
+
+      $sql = rtrim($sql, 'OR ');
+
+      $sql .= ' AND ';
+    }
+
+    if ($online && $online == '1') {
+
+      $sql .= 'is_login = ? AND ';
       array_push($wheres, '1');
     }
-    if ($offline || $offline == '1') {
-      $sql .= 'is_login = ? && ';
+
+    if ($offline && $offline == '1') {
+
+      $sql .= 'is_login = ? AND ';
       array_push($wheres, '0');
     }
+
+    $count_is_login = substr_count($sql, 'is_login = ?');
+
+    if ($count_is_login > 1) {
+
+      $sql = str_replace('is_login = ? AND', 'is_login = ? OR', $sql);
+
+      $sql = rtrim($sql, 'OR ');
+
+      $sql .= ' AND ';
+    }
+
     if ($sex) {
-      $sql .= 'sex = ? && ';
+
+      $sql .= 'sex = ? AND ';
       array_push($wheres, $sex);
     }
+
     if ($zip) {
-      $sql .= 'zip = ? && ';
+
+      $sql .= 'zip = ? AND ';
       array_push($wheres, $zip);
     }
+
     if ($country) {
-      $sql .= 'country = ? && ';
+
+      $sql .= 'country = ? AND ';
       array_push($wheres, $country);
+    }
+
+    if ($registration_from) {
+
+      $registration_from = date("Y-m-d", strtotime($registration_from));
+
+      if (!$registration_to) {
+
+        $sql .= 'registration >= ? AND ';
+        array_push($wheres, $registration_from);
+
+      } else {
+
+        $registration_to = date("Y-m-d", strtotime($registration_to));
+
+        $sql .= 'registration BETWEEN ? AND ? AND ';
+        array_push($wheres, $registration_from);
+        array_push($wheres, $registration_to);
+      }
+    }
+
+    if ($sql == '') {
+
+      $users = $this->load->model('User')->users();
+
+      $usersformatted = $this->formatUsers($users);
+
+      return json_encode($usersformatted);
     }
 
     $sql = substr($sql, 0, -4);
 
     $users = $this->load->model('User')->filter($sql, $wheres);
+
+    if (!$users) {
+
+      $msg = 'no users';
+      return json_encode($msg);
+    }
 
     $users_for_list = [];
 
@@ -170,13 +212,8 @@ class UsersController extends Controller
       $users_for_list[] = $user;
     }
 
-    $countries = $countries = array_keys($this->countries('all'));;
-
-    $context = [
-      'users' => $users_for_list,
-      'countries' => $countries,
-    ];
-    return $this->view->render('admin/pages/users/users', $context);
+    $msg = $users_for_list;
+    return json_encode($msg);
   }
 
   public function update()

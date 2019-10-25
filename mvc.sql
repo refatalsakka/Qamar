@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 22, 2019 at 02:18 PM
+-- Generation Time: Oct 25, 2019 at 01:51 PM
 -- Server version: 5.7.24
 -- PHP Version: 7.2.11
 
@@ -21,8 +21,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `mvc`
 --
-CREATE DATABASE IF NOT EXISTS `mvc` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `mvc`;
 
 -- --------------------------------------------------------
 
@@ -59,11 +57,12 @@ INSERT INTO `activity` (`id`, `user_id`, `is_login`, `last_login`, `last_logout`
 (23, 32120018, 0, NULL, NULL),
 (24, 22150052, 0, NULL, NULL),
 (25, 58590052, 0, NULL, NULL),
-(26, 46510013, 0, NULL, NULL),
+(26, 46510013, 1, NULL, NULL),
 (28, 51660058, 0, NULL, NULL),
 (30, 19910038, 0, NULL, NULL),
 (32, 76490003, 0, NULL, NULL),
-(35, 382241, 0, NULL, NULL);
+(35, 382241, 0, NULL, NULL),
+(36, 3453423, 1, '2019-10-24 22:00:00', '2019-10-23 22:00:00');
 
 -- --------------------------------------------------------
 
@@ -137,7 +136,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `code`, `username`, `fname`, `lname`, `sex`, `birthday`, `email`, `password`, `img`, `registration`, `status`) VALUES
-(382241, '93350046201922221012', 'yazan', 'yazan', 'yazan', 'male', '2000-12-13', 'yazan@gmail.com', '0', 'avatar.webp', '2019-10-22 10:46:22', 1),
+(382241, '93350046201922221012', 'yazan', 'yazan', 'yazan', 'male', '2000-12-13', 'yazan@gmail.com', '0', 'avatar.webp', '2019-10-22 10:46:22', 2),
 (3453423, '34536543543', 'refatalsakka', 'refat', 'alsakka', 'male', '1998-01-01', 'refatalsakka@gmail.com', '$2y$10$RZo9ppJXMCQTN.xxI3kbpeOgFQV.tQnMALPX/IN8jKg5S9NRQweEG', 'avatar.webp', '2019-10-16 02:11:10', 2),
 (3980002, '03980043201917021010', 'nabil', 'nabil', 'nabil', 'male', '2004-12-28', 'nabil@gmail.com', '0', 'avatar.webp', '2019-10-17 08:43:02', 1),
 (4360010, '04360043201916101013', 'mahomoud', 'mahomoud', 'mahomoud', 'male', '2004-12-20', 'mahomoud@gmail.com', '0', 'avatar.webp', '2019-10-16 11:43:10', 1),
@@ -194,7 +193,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `activity`
 --
 ALTER TABLE `activity`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `address`

@@ -26,12 +26,6 @@ $(document).ready(() => {
     return error.length === 0;
   }
 
-  function checkTheInputsLength() {
-    const inputs = [...document.querySelectorAll('.form-control')];
-    const error = inputs.filter(input => input.value.length < input.dataset.minlength);
-    return error.length === 0;
-  }
-
   function animateAndMsg(msg) {
     appendAlert(msg);
 
@@ -71,7 +65,7 @@ $(document).ready(() => {
       beforeSend: () => {
         disableButton();
         addLoading();
-        if (!checkEmptyInputs() || !checkTheInputsLength()) {
+        if (!checkEmptyInputs()) {
           animateAndMsg('Please check the inputs');
           ableButton();
           removeLoading();
