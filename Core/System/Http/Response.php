@@ -80,7 +80,6 @@ class Response
   private function sendHeaders()
   {
     foreach ($this->headers as $header => $value) {
-
       header($header . ':' . $value);
     }
   }

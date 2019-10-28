@@ -122,7 +122,6 @@ class View
     $url =  $this->app->request->url();
 
     if ($url === '/') {return;}
-
     $parameters =  explode('/', $url);
     array_shift($parameters);
     $return = [];
@@ -137,7 +136,6 @@ class View
         'link' => $link,
       ];
     }
-
     return $return;
   }
 }

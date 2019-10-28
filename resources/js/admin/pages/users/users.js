@@ -99,7 +99,7 @@ $(document).ready(() => {
   function createUser(...args) {
     const user = args[0];
     const isNew = user.new ? '<span class="badge badge-success">new</span> ' : '';
-    const sex = user.sex === 'male' ? '<i class="fas fa-mars"></i>' : '<i class="fas fa-venus"></i>';
+    const gender = user.gender === 'male' ? '<i class="fas fa-mars"></i>' : '<i class="fas fa-venus"></i>';
     const zip = user.zip || '';
     let status = '';
     const img = user.img === 'avatar.webp' ? `imgs/logos/${user.img}` : `uploads/images/users/${user.img}`;
@@ -137,12 +137,9 @@ $(document).ready(() => {
           <i class="flag-icon h4 mb-0 ${user.country_Icon}" title="${user.country}" data-country="${user.country}"></i>
         </td>
         <td class="text-center user-zip">${zip}</td>
-        <td class="text-center user-status">
-          ${status}
-        </td>
-        <td class="text-center user-status">
-          ${sex}
-        </tr>
+        <td class="text-center user-status">${status}</td>
+        <td class="text-center user-status">${gender}</td>
+      </tr>
     `;
   }
 

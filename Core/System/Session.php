@@ -29,8 +29,7 @@ class Session
     ini_set('session.use_only_cookies', 1);
 
     if (! session_id()) {
-
-        session_start();
+      session_start();
     }
   }
 

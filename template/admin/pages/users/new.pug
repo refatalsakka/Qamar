@@ -32,8 +32,8 @@ block view
               label(for='email') Email
               input.form-control#email(type='text', name='email', placeholder='Enter your email')
             .form-group
-              label(for='sex') Sex
-              select.form-control#sex(name='sex')
+              label(for='gender') Gender
+              select.form-control#gender(name='gender')
                 option()
                 option(value='male') Male
                 option(value='female') Female
@@ -44,7 +44,7 @@ block view
             .form-group
               label(for='country') Country
               select.form-control#country(name='country')
-                option
+                option(value='')
                 each country in countries
                   option(value=country)= country
             .form-group

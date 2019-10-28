@@ -84,17 +84,12 @@ class File
     $file = $this->to($file);
 
     if (!$this->isSharing($file)) {
-
       if ($this->exists($file)) {
-
         $this->share($file, require $file);
-
       } else {
-
         throw new Exception("$file is not found");
       }
     }
-
     return $this->container[$file];
   }
 

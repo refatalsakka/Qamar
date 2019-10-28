@@ -59,12 +59,10 @@ class Url
   public function notfound($path = null)
   {
     if (!$path) {
-
       $path = '/404';
       // should be (ifAdmin()) insted isLogged
       // if ($this->app->request->isRequestToAdminManagement() && $this->app->load->model('Login')->isAdmin()) {
       if ($this->app->request->isRequestToAdminManagement() && $this->app->load->model('Login')->isLogged()) {
-
         $path = 'admin/404';
       }
     }

@@ -38,9 +38,7 @@ class Pages
   public function add($name, $link, $icon = null)
   {
     if (!$this->title) {
-
       if (!$icon) {
-
         $icon = 'icon-star';
       }
 
@@ -49,11 +47,8 @@ class Pages
         'link' => $link,
         'icon' => $icon
       ];
-
     } else {
-
       if (!$icon) {
-
         $icon = $this->icon;
       }
 
@@ -81,7 +76,6 @@ class Pages
     $this->title = $options['title'];
 
     if (!$options['icon']) {
-
       $options['icon'] = 'icon-star';
     }
 

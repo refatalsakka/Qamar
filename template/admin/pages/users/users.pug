@@ -41,8 +41,8 @@ block view
               input.form-check-input#offline-checkbox(type='checkbox', name='offline', value='1')
               label.form-check-label(for='offline-checkbox') Offline
         .form-group.col-md-2
-          label.col-form-label Sex
-          select.form-control.sex-select(name='sex')
+          label.col-form-label Gender
+          select.form-control.gender-select(name='gender')
             option(value='0')
             option(value='male') Male
             option(value='female') Female
@@ -81,7 +81,7 @@ block view
         th.text-center.tr-status
           | Status
         th.text-center.tr-status
-          | sex
+          | gender
     tbody
       each user in users
         tr
@@ -117,7 +117,7 @@ block view
             else if user.status === '2'
               span.badge.badge-success(data-status=user.status) Active
           td.text-center.user-status
-            if user.sex === 'male'
+            if user.gender === 'male'
               i.fas.fa-mars
-            else if user.sex === 'female'
+            else if user.gender === 'female'
               i.fas.fa-venus

@@ -36,12 +36,9 @@ abstract class Controller
   protected function countries($country)
   {
     $countries_icons = $this->file->call('config/icons.php')['flags'];
-
     if ($country === 'all') {
-
       return  $countries_icons;
     }
-
     return($country && isset($countries_icons[$country])) ? $countries_icons[$country] : null;
   }
 }

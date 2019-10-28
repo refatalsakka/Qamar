@@ -50,16 +50,13 @@ class UsersController extends Controller
     $users_for_list = [];
 
     foreach ($users as $user) {
-
       $user->new = $this->isUserNew($user->registration);
       $user->country_Icon = $this->countries($user->country);
       $user->registration = $this->changeFormatDate($user->registration);
-
       $user->last_login = $this->changeFormatDate($user->last_login);
 
       $users_for_list[] = $user;
     }
-
     return $users_for_list;
   }
 
@@ -68,15 +65,13 @@ class UsersController extends Controller
     $gets = $this->request->gets();
 
     if (empty($gets)) {
-
       $users = $this->load->model('User')->users();
 
       $usersformatted = $this->formatUsers($users);
-
       return json_encode($usersformatted);
     }
 
-    $sex = $gets['sex'] ?? null;
+    $gender = $gets['gender'] ?? null;
     $zip = $gets['zip'] ?? null;
     $country = $gets['country'] ?? null;
     $registration_from = $gets['registration_from'] ?? null;
@@ -91,43 +86,31 @@ class UsersController extends Controller
     $wheres = [];
 
     if ($active && $active == '1') {
-
-        $sql .= 'status = ? AND ';
-        array_push($wheres, '2');
+      $sql .= 'status = ? AND ';
+      array_push($wheres, '2');
     }
-
     if ($pending && $pending == '1') {
-
       $sql .= 'status = ? AND ';
       array_push($wheres, '1');
     }
-
     if ($inactive && $inactive == '1') {
-
       $sql .= 'status = ? AND ';
       array_push($wheres, '0');
-
     }
 
     $count_status = substr_count($sql, 'status = ?');
 
     if ($count_status > 1) {
-
       $sql = str_replace('status = ? AND', 'status = ? OR', $sql);
-
       $sql = rtrim($sql, 'OR ');
-
       $sql .= ' AND ';
     }
 
     if ($online && $online == '1') {
-
       $sql .= 'is_login = ? AND ';
       array_push($wheres, '1');
     }
-
     if ($offline && $offline == '1') {
-
       $sql .= 'is_login = ? AND ';
       array_push($wheres, '0');
     }
@@ -135,43 +118,31 @@ class UsersController extends Controller
     $count_is_login = substr_count($sql, 'is_login = ?');
 
     if ($count_is_login > 1) {
-
       $sql = str_replace('is_login = ? AND', 'is_login = ? OR', $sql);
-
       $sql = rtrim($sql, 'OR ');
-
       $sql .= ' AND ';
     }
 
-    if ($sex) {
-
-      $sql .= 'sex = ? AND ';
-      array_push($wheres, $sex);
+    if ($gender) {
+      $sql .= 'gender = ? AND ';
+      array_push($wheres, $gender);
     }
-
     if ($zip) {
-
       $sql .= 'zip = ? AND ';
       array_push($wheres, $zip);
     }
-
     if ($country) {
-
       $sql .= 'country = ? AND ';
       array_push($wheres, $country);
     }
 
     if ($registration_from) {
-
       $registration_from = date("Y-m-d", strtotime($registration_from));
 
       if (!$registration_to) {
-
         $sql .= 'registration >= ? AND ';
         array_push($wheres, $registration_from);
-
       } else {
-
         $registration_to = date("Y-m-d", strtotime($registration_to));
 
         $sql .= 'registration BETWEEN ? AND ? AND ';
@@ -181,7 +152,6 @@ class UsersController extends Controller
     }
 
     if ($sql == '') {
-
       $users = $this->load->model('User')->users();
 
       $usersformatted = $this->formatUsers($users);
@@ -194,7 +164,6 @@ class UsersController extends Controller
     $users = $this->load->model('User')->filter($sql, $wheres);
 
     if (!$users) {
-
       $msg = 'no users';
       return json_encode($msg);
     }
@@ -202,11 +171,9 @@ class UsersController extends Controller
     $users_for_list = [];
 
     foreach ($users as $user) {
-
       $user->new = $this->isUserNew($user->registration);
       $user->country_Icon = $this->countries($user->country);
       $user->registration = $this->changeFormatDate($user->registration);
-
       $user->last_login = $this->changeFormatDate($user->last_login);
 
       $users_for_list[] = $user;
@@ -225,7 +192,6 @@ class UsersController extends Controller
     $allows = $this->file->call('config/admin/users/update.php');
 
     if (!in_array($name, $allows)) {
-
       $msg = 'reload';
       return json_encode($msg);
     }
@@ -233,6 +199,7 @@ class UsersController extends Controller
     $columns = $this->file->call('config/admin/users/columns.php');
     $table = $columns[$name]['table'];
     $column = $columns[$name];
+    $filters = $columns[$name]['filters'];
     $value = $posts[$name];
     $id = userId();
     $user_id_table_name = $column['user_id_table_name'];
@@ -240,56 +207,20 @@ class UsersController extends Controller
     $current_value = $this->db->select($name)->from($table)->where($user_id_table_name . ' = ?', [$id])->fetch()->$name;
 
     if ($current_value === strtolower($value)) {
-
       $msg = null;
-
       $msg['success'] = strtolower($value);
-
       return json_encode($msg);
     }
 
-    if (isset($column['type'])) {
-      $type = $column['type'];
-      $this->validator->input($name)->$type();
-    }
-    if (isset($column['require'])) {
-      $this->validator->input($name)->require();
-    }
-    if (isset($column['unique'])) {
-      $this->validator->input($name)->unique([$table, $name]);
-    }
-    if (isset($column['noUmlaut'])) {
-      $this->validator->input($name)->noUmlaut();
-    }
-    if (isset($column['email'])) {
-      $this->validator->input($name)->email();
-    }
-    if (isset($column['date'])) {
-      $dateFormat = $column['date'];
-      $this->validator->input($name)->date($dateFormat['show']);
-
-      if (isset($column['dateRange'])) {
-        $this->validator->input($name)->dateRange($dateFormat['show'], $column['dateRange']);
+    foreach (array_keys($filters) as $filter) {
+      if ($filters[$filter] === true) {
+        $this->validator->input($name)->$filter();
+      } else {
+        $this->validator->input($name)->$filter($filters[$filter]);
       }
-    }
-    if (isset($column['noSpaceBetween'])) {
-      $this->validator->input($name)->noSpaceBetween();
-    }
-    if (isset($column['uppercaseNotAllowed'])) {
-      $value = strtolower($value);
-    }
-    if (isset($column['minLen'])) {
-      $this->validator->input($name)->minLen($column['minLen']);
-    }
-    if (isset($column['maxLen'])) {
-      $this->validator->input($name)->maxLen($column['maxLen']);
-    }
-    if (isset($column['containJust'])) {
-      $this->validator->input($name)->containJust($column['containJust']);
     }
 
     if ($this->validator->fails()) {
-
       $msg['error'] = $this->validator->getMsgs();
       return json_encode($msg);
     }
@@ -297,43 +228,35 @@ class UsersController extends Controller
     $user = $this->load->model('User')->get($id);
 
     if (!$user) {
-
       $msg = 'reload';
       return json_encode($msg);
     }
 
-    if (isset($column['date'])) {
-
-      $value = date($dateFormat['insert'], strtotime($value));
+    if (isset($filters['date'])) {
+      $value = date('Y-m-d', strtotime($value));
     }
 
     if ($value == '') {
-
       $value = null;
     }
 
     $update = $this->db->data($name, $value)->where($user_id_table_name . ' = ?', $id)->update($table);
 
     if (!$update) {
-
       $msg = 'reload';
       return json_encode($msg);
     }
 
     $msg = null;
-
     $msg['success'] = 'no text';
 
     if ($value) {
-
       $msg['success'] = _e($value);
 
-      if (isset($column['date'])) {
-
-        $msg['success'] = $this->changeFormatDate($value, [$dateFormat['insert'], $dateFormat['show']]);
+      if (isset($filters['date'])) {
+        $msg['success'] = $this->changeFormatDate($value, ['Y-m-d', 'd M Y']);
       }
     }
-
     return json_encode($msg);
   }
 
@@ -358,7 +281,6 @@ class UsersController extends Controller
     $allows = $this->file->call('config/admin/users/add.php');
 
     if (!array_equal($names, $allows)) {
-
       $msg = 'reload';
       return json_encode($msg);
     }
@@ -367,49 +289,18 @@ class UsersController extends Controller
     $table = $this->load->model('User')->getTable();
 
     foreach ($names as $name) {
+      $filters = $columns[$name]['filters'];
 
-      $column = $columns[$name];
-
-      if (isset($column['require'])) {
-        $this->validator->input($name)->require();
-      }
-      if (isset($column['type'])) {
-        $type = $column['type'];
-        $this->validator->input($name)->$type();
-      }
-      if (isset($column['date'])) {
-        $dateFormat = $column['date'];
-        $this->validator->input($name)->date($dateFormat['show']);
-
-        if (isset($column['dateRange'])) {
-          $this->validator->input($name)->dateRange($dateFormat['show'], $column['dateRange']);
+      foreach (array_keys($filters) as $filter) {
+        if ($filters[$filter] === true) {
+          $this->validator->input($name)->$filter();
+        } else {
+          $this->validator->input($name)->$filter($filters[$filter]);
         }
-      }
-      if (isset($column['unique'])) {
-        $this->validator->input($name)->unique([$table, $name]);
-      }
-      if (isset($column['noUmlaut'])) {
-        $this->validator->input($name)->noUmlaut();
-      }
-      if (isset($column['noSpaceBetween'])) {
-        $this->validator->input($name)->noSpaceBetween();
-      }
-      if (isset($column['uppercaseNotAllowed'])) {
-        $posts[$name] = strtolower($posts[$name]);
-      }
-      if (isset($column['minLen'])) {
-        $this->validator->input($name)->minLen($column['minLen']);
-      }
-      if (isset($column['maxLen'])) {
-        $this->validator->input($name)->maxLen($column['maxLen']);
-      }
-      if (isset($column['containJust'])) {
-        $this->validator->input($name)->containJust($column['containJust']);
       }
     }
 
     if ($this->validator->fails()) {
-
       $msg = $this->validator->getMsgs();
       return json_encode($msg);
     }
@@ -419,8 +310,8 @@ class UsersController extends Controller
     $username = $posts['username'];
     $fname = $posts['fname'];
     $lname = $posts['lname'];
-    $sex = $posts['sex'];
-    $birthday = date($dateFormat['insert'], strtotime($posts['birthday']));
+    $gender = $posts['gender'];
+    $birthday = date('Y-m-d', strtotime($posts['birthday']));
     $email = $posts['email'];
     $registration =  $this->changeFormatDate(microtime(true), ['U.u', 'Y-m-d H:i:s']);
 
@@ -430,14 +321,13 @@ class UsersController extends Controller
       'username' => $username,
       'fname' => $fname,
       'lname' => $lname,
-      'sex' => $sex,
+      'gender' => $gender,
       'birthday' => $birthday,
       'email' => $email,
       'registration' => $registration,
     ])->insert($table);
 
     if (!$insertInUser) {
-
       $msg = 'reload';
       return json_encode($msg);
     }
@@ -467,11 +357,9 @@ class UsersController extends Controller
     ])->insert('activity');
 
     if (!$insertInAddress || !$insertInActivity) {
-
       $msg = 'reload';
       return json_encode($msg);
     }
-
     $msg['success'] = $user_id;
     return json_encode($msg);
   }
@@ -491,15 +379,12 @@ class UsersController extends Controller
     $years = $year - $register_year;
 
     if ($years === 0) {
-
       $months = $month - $register_month;
 
       if ($months === 0) {
-
         $days = $day - $register_day;
 
         if ($days < 4) {
-
           return 1;
         }
       }

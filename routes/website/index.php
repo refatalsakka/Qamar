@@ -5,39 +5,58 @@ $app = app();
 // $app->route->add() to add to the Routes
 // $app->pages->add() to add to the Admin Panel
 
-$app->route->add('/', 'Website/Home');
-$app->route->add('/home', 'Website/Home', 'GET');
+// == Website's pages
+
+// Home
 $app->pages->add('home', '/home', 'icon-home');
 
 // Services
-$servicesOptions = [
-  'prefix' => '/services',
-  'controller' => 'Website',
-  'middleware' => [],
+$servicePagesptions = [
   'title' => 'services',
   'icon' => 'icon-support'
 ];
 
-$app->route->group($servicesOptions, function($route) {
-  $route->add('/', 'Services');
-});
-
-$app->pages->group($servicesOptions, function($route) {
+$app->pages->group($servicePagesptions, function($route) {
   $route->add('main', '/services');
 });
 
 // Contact
-$app->route->add('/contact', 'Website/Contact');
 $app->pages->add('contact', '/contact', 'icon-envelope');
 
-//Data Protection
-$app->route->add('/privacy', 'Website/privacy');
+// Privacy
 $app->pages->add('privacy', '/privacy', 'icon-shield');
 
-//Imprint
-$app->route->add('/imprint', 'Website/Imprint');
+// Imprint
 $app->pages->add('imprint', '/imprint', 'icon-info');
 
 // Not found
-$app->route->add('/404', 'Website/Notfound', 'GET');
 $app->pages->add('not found', '/404', 'fas fa-times');
+
+// == Website's routes
+if ($app->request->isRequestToAdminManagement()) return;
+
+$app->route->add('/', 'Website/Home');
+$app->route->add('/home', 'Website/Home', 'GET');
+
+// Services
+$servicesRouteptions = [
+  'prefix' => '/services',
+  'controller' => 'Website',
+  'middleware' => [],
+];
+
+$app->route->group($servicesRouteptions, function($route) {
+  $route->add('/', 'Services');
+});
+
+// Contact
+$app->route->add('/contact', 'Website/Contact');
+
+// Privacy
+$app->route->add('/privacy', 'Website/privacy');
+
+// Imprint
+$app->route->add('/imprint', 'Website/Imprint');
+
+// Not found
+$app->route->add('/404', 'Website/Notfound', 'GET');

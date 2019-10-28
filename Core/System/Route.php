@@ -89,7 +89,6 @@ class Route
     $url = $this->app->request->url();
 
     if (($this->prefix && $prefix !== $this->prefix) || ($prefix && strpos($url, $prefix) !== 0)) {
-
       return $this;
     }
 
@@ -147,15 +146,12 @@ class Route
   public function getProperRoute()
   {
     foreach ($this->routes as $route) {
-
       if ($this->isMatching($route['pattern']) && $this->isMatchingRequestMethod($route['method'])) {
-
         $this->current = $route;
 
         $continue = $this->continue($route['middleware']);
 
         if ($continue == static::NEXT) {
-
           list($controller, $method) = $route['action'];
 
           $arguments = $this->getArgumentsFor($route['pattern']);
@@ -164,7 +160,6 @@ class Route
 
           return $output;
         }
-
         break;
       }
     }
@@ -172,7 +167,6 @@ class Route
     $notfound = 'Website\Notfound';
 
     if ($this->app->request->isRequestToAdminManagement() && $this->app->load->model('Login')->isLogged()) {
-
       $notfound = 'Admin\Notfound';
     }
 
@@ -193,31 +187,23 @@ class Route
     $allowMethods = ['GET', 'POST'];
 
     if ($method == 'BOTH') {
-
       return $this->checkRequestMethodsBoth($allowMethods);
     }
 
     if (is_array($method)) {
-
       return $this->checkRequestMethodsArray($method, $allowMethods);
     }
-
     return $this->app->request->method() == $method;
   }
 
   private function checkRequestMethodsArray($methods = null, $allowMethods)
   {
     if (count($methods) == 1) {
-
       return $this->app->request->method() == $methods[0];
-
     } else {
-
       if (array_equal($methods, $allowMethods)) {
-
         return true;
       }
-
       return false;
     }
   }
@@ -225,10 +211,8 @@ class Route
   private function checkRequestMethodsBoth($allowMethods)
   {
     if (in_array($this->app->request->method(), $allowMethods)) {
-
       return true;
     }
-
     return false;
   }
 
@@ -257,33 +241,26 @@ class Route
     $middlewareClass = $middlewares[$middleware];
 
     if (!in_array($middlewareInterface, class_implements($middlewareClass))) {
-
       throw new Exception("$middlewareClass not Implement");
     }
 
     $middlewareObject = new $middlewareClass;
 
     $output = $middlewareObject->handle($this->app, static::NEXT);
-
     return $output;
   }
 
   private function continue($middlewares)
   {
     if (!empty($middlewares)) {
-
       foreach ($middlewares as $middleware) {
-
         $output = $this->middleware($middleware);
 
         if ($output !== static::NEXT) {
-
           return $output;
         }
-
       }
     }
-
     return static::NEXT;
   }
 }

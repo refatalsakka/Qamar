@@ -2,6 +2,7 @@
 
 $app = app();
 
+if (!$app->request->isRequestToAdminManagement()) return;
 // Rotes admins
 
 $adminOptions = [
@@ -28,7 +29,7 @@ $app->route->group($adminOptions, function($route) {
   //Users
   $route->package('/users', 'Users', [
     'add' => [
-      'ajax',
+      // 'ajax',
     ],
     'update' => [
       'ajax',

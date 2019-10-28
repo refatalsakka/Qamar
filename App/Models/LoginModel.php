@@ -15,17 +15,14 @@ class LoginModel extends Model
     $user = $this->where('username = ? ', $username)->fetch($this->table);
 
     if (!$user) {
-
       return false;
     }
 
     if (password_verify($password, $user->password)) {
-
       $this->user = $user;
 
       return true;
     }
-
     return false;
   }
 
@@ -38,22 +35,16 @@ class LoginModel extends Model
   public function isLogged()
   {
     if ($this->cookie->has('login')) {
-
       $code = $this->cookie->get('login');
-
     } elseif ($this->session->has('login')) {
-
       $code = $this->session->get('login');
-
     } else {
-
       return false;
     }
 
     $user = $this->where('code = ? ', $code)->fetch($this->table);
 
     if (!$user) {
-
       return false;
     }
 

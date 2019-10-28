@@ -64,7 +64,6 @@ class Pagination
     // must be number and should be more or equal than 1
 
     if (!is_numeric($page) OR $page < 1) {
-
       $page = 1;
     }
 

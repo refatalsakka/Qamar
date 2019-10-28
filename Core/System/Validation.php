@@ -48,22 +48,16 @@ class Validation
     $this->input = $input;
 
     if ($post !== 'get') {
-
       $this->value = $this->app->request->post($this->input);
-
     } else {
-
       $this->value = $this->app->request->get($this->input);
-
     }
-
     return $this;
   }
 
   /**
-   * Determine if the given input is not empty
+   * Determine if the input is not empty
    *
-   * @param string $input
    * @param string $msg
    * @return $this
    */
@@ -72,18 +66,27 @@ class Validation
     $value = $this->value();
 
     if ($value === '' || $value === null) {
-
       $msg = $msg ?: 'This input is required';
 
-        $this->addError($this->input, $msg);
+      $this->addError($this->input, $msg);
     }
     return $this;
   }
 
   /**
-   * Determine if the given input is valid email
+   * Call the function by given $type
    *
-   * @param string $input
+   * @param string $type
+   * @return function
+   */
+  public function type($type)
+  {
+    return $this->$type();
+  }
+
+  /**
+   * Determine if the input is valid email
+   *
    * @param string $msg
    * @return $this
    */
@@ -91,20 +94,19 @@ class Validation
   {
     $value = $this->value();
 
-    if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
+    if (!$value && $value != '0') return $this;
 
+    if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
       $msg = $msg ?: sprintf('%s is not valid Email', ucfirst($this->input));
 
       $this->addError($this->input, $msg);
     }
-
     return $this;
   }
 
   /**
-   * Determine if the given input is an image
+   * Determine if the input is an image
    *
-   * @param string $input
    * @param string $customErrorMessage
    * @return $this
    */
@@ -113,24 +115,20 @@ class Validation
     $file = $this->app->request->file($this->input);
 
     if (!$file->exists()) {
-
       return $this;
     }
 
     if (!$file->isImage()) {
-
       $msg = $msg ?: sprintf('%s Is not valid Image', ucfirst($this->input));
 
       $this->addError($this->input, $msg);
     }
-
     return $this;
   }
 
   /**
-   * Determine if the given input has number
+   * Determine if the input has number
    *
-   * @param string $input
    * @param string $msg
    * @return $this
    */
@@ -138,81 +136,90 @@ class Validation
   {
     $value = $this->value();
 
-    if ($value) {
+    if (!$value && $value != '0') return $this;
 
-      if (!is_numeric($value)) {
+    if (!is_numeric($value)) {
+      $msg = $msg ?: 'the Input must be number';
 
-        $msg = $msg ?: 'the Input must be number';
-
-        $this->addError($this->input, $msg);
-      }
+      $this->addError($this->input, $msg);
     }
-
     return $this;
   }
 
   /**
-   * Determine if the given input is date
+   * Determine if the input is a date
+   * Determine if the input between the range if the $options['start']
+   * or the $options ['end'] is exists
    *
-   * @param string $format
+   * @param string $options
    * @param string $msg
    * @return $this
    */
-  public function date($format, $msg = null)
+  public function date($options, $msg = null)
   {
     $value = $this->value();
 
-    if ($value) {
+    if (!$value && $value != '0') return $this;
 
-      $checkFormat = DateTime::createFromFormat($format, $value);
+    if (!is_array($options)) {
+      $format = $options;
+    } else {
+      $format = $options[0]['format'] ?? 'd M Y';
+      $start = $options[0]['start'] ?? null;
+      $end = $options[0]['end'] ?? null;
+    }
 
-      if (!$checkFormat) {
+    $checkFormat = DateTime::createFromFormat($format, $value);
 
-        $msg = $msg ?: 'the Input must be Date';
+    if (!$checkFormat) {
+      $msg = $msg ?: 'the Input must be Date';
+
+      $this->addError($this->input, $msg);
+
+      return $this;
+    }
+
+    if ($start && $end) {
+      $year = DateTime::createFromFormat($format, $value)->format('Y');
+
+      if ($year < $start  || $year > $end) {
+        $msg = $msg ?: 'The date must be between ' . $start  . ' and ' . $end;
 
         $this->addError($this->input, $msg);
+
+        return $this;
       }
     }
 
+    if ($start) {
+      $year = DateTime::createFromFormat($format, $value)->format('Y');
+
+      if ($year < $start) {
+        $msg = $msg ?: 'The date can\'t be under ' . $start;
+
+        $this->addError($this->input, $msg);
+
+        return $this;
+      }
+    }
+
+    if ($end) {
+      $year = DateTime::createFromFormat($format, $value)->format('Y');
+
+      if ($year > $end) {
+        $msg = $msg ?: 'The date can\'t be above ' . $end;
+
+        $this->addError($this->input, $msg);
+
+        return $this;
+      }
+    }
     return $this;
   }
 
   /**
-   * Determine if the given date in the given range
+   * Determine if the input has float value
    *
-   * @param string $format
-   * @param array $range
-   * @param string $msg
-   * @return $this
-   */
-  public function dateRange($format, array $range, $msg = null)
-  {
-    $value = $this->value();
-
-    if ($value) {
-
-      $checkFormat = DateTime::createFromFormat($format, $value);
-
-      if ($checkFormat) {
-
-        $year = DateTime::createFromFormat($format, $value)->format('Y');
-
-        if ($year < $range['start'] || $year > $range['end']) {
-
-          $msg = $msg ?: 'The date must be between ' . $range['start'] . ' and ' . $range['end'];
-
-          $this->addError($this->input, $msg);
-        }
-      }
-    }
-
-    return $this;
-  }
-
-  /**
-   * Determine if the given input has float value
-   *
-   * @param string $input
    * @param string $msg
    * @return $this
    */
@@ -220,20 +227,19 @@ class Validation
   {
     $value = $this->value();
 
-    if (!is_float($value)) {
+    if (!$value && $value != '0') return $this;
 
+    if (!is_float($value)) {
       $msg = $msg ?: sprintf('%s Accepts only floats', ucfirst($this->input));
 
       $this->addError($this->input, $msg);
     }
-
-    return $this;
+  return $this;
   }
 
   /**
-   * Determine if the given input has string
+   * Determine if the input has string
    *
-   * @param string $input
    * @param string $msg
    * @return $this
    */
@@ -241,23 +247,19 @@ class Validation
   {
     $value = $this->value();
 
-    if ($value) {
+    if (!$value && $value != '0') return $this;
 
-      if (is_numeric($value) || preg_match('~[0-9]~', $value) === 1) {
+    if (is_numeric($value) || preg_match('~[0-9]~', $value) === 1) {
+      $msg = $msg ?: 'the Input must be Text';
 
-        $msg = $msg ?: 'the Input must be Text';
-
-        $this->addError($this->input, $msg);
-      }
+      $this->addError($this->input, $msg);
     }
-
     return $this;
   }
 
   /**
-   * Determine if the given input has pure string
+   * Determine if the input has pure string
    *
-   * @param string $input
    * @param string $msg
    * @return $this
    */
@@ -265,23 +267,19 @@ class Validation
   {
     $value = $this->value();
 
-    if ($value) {
+    if (!$value && $value != '0') return $this;
 
-      if (is_numeric($value)) {
+    if (is_numeric($value)) {
+      $msg = $msg ?: 'the Input can\'t be jsut Number ';
 
-        $msg = $msg ?: 'the Input can\'t be jsut Number ';
-
-        $this->addError($this->input, $msg);
-      }
+      $this->addError($this->input, $msg);
     }
-
     return $this;
   }
 
   /**
-   * Determine if the given input has no umlaut charachter
+   * Determine if the input has no umlaut charachter
    *
-   * @param string $input
    * @param string $msg
    * @return $this
    */
@@ -289,22 +287,18 @@ class Validation
   {
     $value = $this->value();
 
-    if ($value) {
+    if (!$value && $value != '0') return $this;
 
-      $umlauts = 'Ŕ,Á,Â,Ă,Ä,Ĺ,Ç,Č,É,Ę,Ë,Ě,Í,Î,Ď,Ň,Ó,Ô,Ő,Ö,Ř,Ů,Ú,Ű,Ü,Ý,ŕ,á,â,ă,ä,ĺ,ç,č,é,ę,ë,ě,í,î,ď,đ,ň,ó,ô,ő,ö,ř,ů,ú,ű,ü,ý,˙,Ń,ń';
+    $umlauts = 'Ŕ,Á,Â,Ă,Ä,Ĺ,Ç,Č,É,Ę,Ë,Ě,Í,Î,Ď,Ň,Ó,Ô,Ő,Ö,Ř,Ů,Ú,Ű,Ü,Ý,ŕ,á,â,ă,ä,ĺ,ç,č,é,ę,ë,ě,í,î,ď,đ,ň,ó,ô,ő,ö,ř,ů,ú,ű,ü,ý,˙,Ń,ń';
 
-      $umlauts = explode(',', $umlauts);
+    $umlauts = explode(',', $umlauts);
 
-      foreach($umlauts as $umlaut) {
+    foreach($umlauts as $umlaut) {
+      if ((strpos($value, $umlaut) !== false)) {
+      $msg = $msg ?: 'the Input can\'t contain umlaut';
 
-        if ((strpos($value, $umlaut) !== false)) {
-
-        $msg = $msg ?: 'the Input can\'t contain umlaut';
-
-        $this->addError($this->input, $msg);
-        }
+      $this->addError($this->input, $msg);
       }
-
     }
     return $this;
   }
@@ -319,97 +313,76 @@ class Validation
   public function containJust($allowes, $msg = null)
   {
     $value = $this->value();
-    if ($value || $value == 0) {
 
-      if (!is_array($allowes) && $allowes !== '') {
+    if (!$value && $value != '0') return $this;
 
-        $allowes = [$allowes];
-      }
+    if (!is_array($allowes) && $allowes !== '') {
+      $allowes = [$allowes];
+    }
 
-      $path = null;
-      $indexes = null;
+    $path = null;
+    $indexes = null;
 
-      $files = [];
-      $final = [];
+    $files = [];
+    $final = [];
 
-      foreach($allowes as $key => $allow) {
+    foreach($allowes as $key => $allow) {
+      if (strpos($allow, 'path:') === 0) {
+        unset($allowes[$key]);
 
-        if (strpos($allow, 'path:') === 0) {
+        $path = substr($allow, 5);
 
-          unset($allowes[$key]);
+        $getFrom = 'value';
 
-          $path = substr($allow, 5);
-
-          $getFrom = 'value';
-
-          if (strpos($path, '::')) {
-
-            list($path, $getFrom) = explode('::', $path);
-          }
-
-          if (strpos($path, ':[')) {
-
-            list($path, $indexes) = explode(':[', $path);
-
-            $indexes = rtrim($indexes, ']');
-
-            if (strpos($indexes, '][')) {
-
-              $indexesInFiles = [];
-
-              $indexes = explode('][', $indexes);
-
-              foreach ($indexes as $index) {
-
-                if (!empty($indexesInFiles)) {
-
-                  $indexesInFiles = $indexesInFiles[$index];
-
-                } else {
-
-                  $indexesInFiles = $this->app->file->call($path . '.php')[$index];
-                }
-              }
-
-              $files += $indexesInFiles;
-
-            } else {
-
-              $files += $this->app->file->call($path . '.php')[$indexes];
-            }
-
-          } else {
-
-            $files += $this->app->file->call($path . '.php');
-          }
-
-          if ($getFrom === 'keys') {
-
-            $final += array_keys($files);
-          } else {
-
-            $final += array_values($files);
-          }
-
-        } else {
-
-          array_push($final, $allow);
+        if (strpos($path, '::')) {
+          list($path, $getFrom) = explode('::', $path);
         }
+
+        if (strpos($path, ':[')) {
+          list($path, $indexes) = explode(':[', $path);
+
+          $indexes = rtrim($indexes, ']');
+
+          if (strpos($indexes, '][')) {
+            $indexesInFiles = [];
+
+            $indexes = explode('][', $indexes);
+
+            foreach ($indexes as $index) {
+              if (!empty($indexesInFiles)) {
+                $indexesInFiles = $indexesInFiles[$index];
+
+              } else {
+                $indexesInFiles = $this->app->file->call($path . '.php')[$index];
+              }
+            }
+            $files += $indexesInFiles;
+          } else {
+            $files += $this->app->file->call($path . '.php')[$indexes];
+          }
+        } else {
+          $files += $this->app->file->call($path . '.php');
+        }
+        if ($getFrom === 'keys') {
+          $final += array_keys($files);
+        } else {
+          $final += array_values($files);
+        }
+      } else {
+        array_push($final, $allow);
       }
+    }
 
-      if (!in_array($value, $final)) {
+    if (!in_array($value, $final)) {
+      $msg = $msg ?: 'Wrong value';
 
-        $msg = $msg ?: 'Wrong value';
-
-        $this->addError($this->input, $msg);
-      }
-
+      $this->addError($this->input, $msg);
     }
     return $this;
   }
 
   /**
-   * Determine if the given input has spaces between the letters or the words
+   * Determine if the input has spaces between the letters or the words
    *
    * @param string $msg
    * @return $this
@@ -418,24 +391,19 @@ class Validation
   {
     $value = $this->value();
 
+    if (!$value && $value != '0') return $this;
 
-    if ($value) {
+    if (preg_match('/\s/', $value)) {
+      $msg = $msg ?: 'Spaces are not allow';
 
-      if (preg_match('/\s/', $value)) {
-
-        $msg = $msg ?: 'Spaces are not allow';
-
-        $this->addError($this->input, $msg);
-      }
+      $this->addError($this->input, $msg);
     }
-
     return $this;
   }
 
   /**
-   * Determine if the given input value should be at least the given length
+   * Determine if the input value should be at least the given length
    *
-   * @param string $input
    * @param int $length
    * @param string $msg
    * @return $this
@@ -444,23 +412,19 @@ class Validation
   {
     $value = $this->value();
 
-    if ($value) {
+    if (!$value && $value != '0') return $this;
 
-      if (strlen($value) < $length) {
+    if (strlen($value) < $length) {
+      $msg = $msg ?: 'This input must be at least ' . $length;
 
-        $msg = $msg ?: 'This input must be at least ' . $length;
-
-        $this->addError($this->input, $msg);
-      }
+      $this->addError($this->input, $msg);
     }
-
     return $this;
   }
 
   /**
-   * Determine if the given input value should be at most the given length
+   * Determine if the input value should be at most the given length
    *
-   * @param string $input
    * @param int $length
    * @param string $msg
    * @return $this
@@ -469,15 +433,24 @@ class Validation
   {
     $value = $this->value();
 
-    if ($value) {
+    if (!$value && $value != '0') return $this;
 
-      if (strlen($value) > $length) {
+    if (strlen($value) > $length) {
+      $msg = $msg ?: 'This must be ' . $length . ' or fewer';
 
-        $msg = $msg ?: 'This must be ' . $length . ' or fewer';
-
-        $this->addError($this->input, $msg);
-      }
+      $this->addError($this->input, $msg);
     }
+    return $this;
+  }
+
+  /**
+   * Change the value to lower case
+   *
+   * @return $this
+   */
+  public function uppercaseNotAllowed()
+  {
+    $this->value = strtolower($this->value);
 
     return $this;
   }
@@ -496,41 +469,40 @@ class Validation
     $valueConfirm = $this->app->request->post($input);
 
     if ($valuePassword && $valueConfirm) {
-
       if ($valuePassword !== $valueConfirm) {
-
         $msg = $msg ?: 'Passwords does not match';
 
         $this->addError('match', $msg);
       }
     }
-
     return $this;
   }
 
   /**
-   * Determine if the given input is unique in database
+   * Determine if the input is unique in database
    *
-   * @param string $input
    * @param array $data
    * @param string $msg
    * @return $this
    */
-  public function unique(array $data, $msg = null)
+  public function unique($data, $msg = null)
   {
     $value = $this->value();
 
-    list($table, $column) = $data;
+    if (is_array($data)) {
+      list($table, $column) = $data;
+    } else {
+      $table = $data;
+      $column = $this->input;
+    }
 
     $result = $this->app->db->select($column)->from($table)->where($column . ' = ? ', $value)->fetch();
 
     if ($result) {
-
       $msg = $msg ?: sprintf('%s is already exist', ucfirst($this->input));
 
       $this->addError($this->input, $msg);
     }
-
     return $this;
   }
 
@@ -578,9 +550,8 @@ class Validation
   }
 
   /**
-   * Get the value for the given input name
+   * Get the value for the input name
    *
-   * @param string $input
    * @return mixed
    */
   private function value()

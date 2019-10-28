@@ -6,7 +6,7 @@
     'inactive',
     'online',
     'offline',
-    'sex',
+    'gender',
     'zip',
     'country',
     'registration_from',

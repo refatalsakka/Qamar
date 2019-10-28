@@ -4,7 +4,7 @@ return [
   'username',
   'fname',
   'lname',
-  'sex',
+  'gender',
   'birthday',
   'email',
   'status',

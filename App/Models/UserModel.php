@@ -20,7 +20,7 @@ class UserModel extends Model
     users.username,
     users.fname,
     users.lname,
-    users.sex,
+    users.gender,
     users.registration,
     users.status,
     users.img,
@@ -36,7 +36,6 @@ class UserModel extends Model
     $exists = $this->exists($id);
 
     if (!$exists) {
-
       return $this->url->notfound();
     }
 
@@ -45,7 +44,7 @@ class UserModel extends Model
     users.username,
     users.fname,
     users.lname,
-    users.sex,
+    users.gender,
     users.birthday,
     users.email,
     users.password,
@@ -72,7 +71,7 @@ class UserModel extends Model
     users.username,
     users.fname,
     users.lname,
-    users.sex,
+    users.gender,
     users.registration,
     users.status,
     users.img,

@@ -122,7 +122,7 @@ CREATE TABLE `users` (
   `username` varchar(20) NOT NULL,
   `fname` varchar(20) NOT NULL,
   `lname` varchar(20) NOT NULL,
-  `sex` varchar(6) NOT NULL,
+  `gender` varchar(6) NOT NULL,
   `birthday` date NOT NULL,
   `email` varchar(50) NOT NULL,
   `password` varchar(250) NOT NULL DEFAULT '0',
@@ -135,7 +135,7 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `code`, `username`, `fname`, `lname`, `sex`, `birthday`, `email`, `password`, `img`, `registration`, `status`) VALUES
+INSERT INTO `users` (`id`, `code`, `username`, `fname`, `lname`, `gender`, `birthday`, `email`, `password`, `img`, `registration`, `status`) VALUES
 (382241, '93350046201922221012', 'yazan', 'yazan', 'yazan', 'male', '2000-12-13', 'yazan@gmail.com', '0', 'avatar.webp', '2019-10-22 10:46:22', 2),
 (3453423, '34536543543', 'refatalsakka', 'refat', 'alsakka', 'male', '1998-01-01', 'refatalsakka@gmail.com', '$2y$10$RZo9ppJXMCQTN.xxI3kbpeOgFQV.tQnMALPX/IN8jKg5S9NRQweEG', 'avatar.webp', '2019-10-16 02:11:10', 2),
 (3980002, '03980043201917021010', 'nabil', 'nabil', 'nabil', 'male', '2004-12-28', 'nabil@gmail.com', '0', 'avatar.webp', '2019-10-17 08:43:02', 1),
