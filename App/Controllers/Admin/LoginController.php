@@ -53,7 +53,7 @@ class LoginController extends Controller
 
     $login = $this->load->model('Login');
 
-    $valid = $login->isValidLogin($username, $password);
+    $valid = $login->isValidLogin($username, $password, 'admin');
 
     if ($valid) {
       $user = $login->user();

@@ -10,9 +10,13 @@ class LoginModel extends Model
 
   private $user;
 
-  public function isValidLogin($username, $password)
+  public function isValidLogin($username, $password, $userGroup = null)
   {
-    $user = $this->where('username = ? ', $username)->fetch($this->table);
+    if ($userGroup === 'admin') {
+      $user = $this->where('username = ? AND users_group_id != ?', [$username, 2])->fetch($this->table);
+    } else {
+      $user = $this->where('username = ? ', $username)->fetch($this->table);
+    }
 
     if (!$user) {
       return false;
