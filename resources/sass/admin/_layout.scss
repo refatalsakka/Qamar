@@ -3,6 +3,9 @@
 @import '../mixin/blockBox';
 
 // Global
+.success-bg {
+  background-color: #dbf2e3;
+}
 .error-input {
   border-color: #f27070 !important;
 }

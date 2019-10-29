@@ -1,15 +1,13 @@
-/* eslint-disable guard-for-in */
-/* eslint-disable no-restricted-syntax */
-// check if the string can be parsed to JSON
-function convertedToJson(data) {
-  try {
-    return JSON.parse(data);
-  } catch (error) {
-    return window.location.reload();
-  }
-}
-
 $(document).ready(() => {
+  // check if the string can be parsed to JSON
+  function convertedToJson(data) {
+    try {
+      return JSON.parse(data);
+    } catch (error) {
+      return window.location.reload();
+    }
+  }
+
   // date picker
   $('input.date').datepicker({
     format: 'dd M yyyy',

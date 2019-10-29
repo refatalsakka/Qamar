@@ -1,0 +1,33 @@
+.editable {
+  position: relative;
+
+  @include disableBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    svg, i {
+      display: block;
+    }
+  }
+
+  form {
+    display: flex;
+
+    div {
+      margin: 0 5px;
+
+      button {
+        margin-top: 5px;
+      }
+    }
+    div:first-child {
+      flex-grow: 2;
+      width: 80%;
+    }
+    div:last-child {
+      flex-grow: 1;
+      width: 20%;
+    }
+  }
+}

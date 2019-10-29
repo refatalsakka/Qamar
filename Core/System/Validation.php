@@ -56,6 +56,16 @@ class Validation
   }
 
   /**
+   * Get the value for the input name
+   *
+   * @return mixed
+   */
+  private function value()
+  {
+    return $this->value;
+  }
+
+  /**
    * Determine if the input is not empty
    *
    * @param string $msg
@@ -147,6 +157,26 @@ class Validation
   }
 
   /**
+   * Determine if the input has float value
+   *
+   * @param string $msg
+   * @return $this
+   */
+  public function float($msg = null)
+  {
+    $value = $this->value();
+
+    if (!$value && $value != '0') return $this;
+
+    if (!is_float($value)) {
+      $msg = $msg ?: sprintf('%s Accepts only floats', ucfirst($this->input));
+
+      $this->addError($this->input, $msg);
+    }
+    return $this;
+  }
+
+  /**
    * Determine if the input is a date
    * Determine if the input between the range if the $options['start']
    * or the $options ['end'] is exists
@@ -218,23 +248,23 @@ class Validation
   }
 
   /**
-   * Determine if the input has float value
+   * Determine if the input has string
    *
    * @param string $msg
    * @return $this
    */
-  public function float($msg = null)
+  public function pureText($msg = null)
   {
     $value = $this->value();
 
     if (!$value && $value != '0') return $this;
 
-    if (!is_float($value)) {
-      $msg = $msg ?: sprintf('%s Accepts only floats', ucfirst($this->input));
+    if (!preg_match('/^[A-Za-z]+$/', $value)) {
+      $msg = $msg ?: 'the Input must be pure Text';
 
       $this->addError($this->input, $msg);
     }
-  return $this;
+    return $this;
   }
 
   /**
@@ -249,7 +279,7 @@ class Validation
 
     if (!$value && $value != '0') return $this;
 
-    if (is_numeric($value) || preg_match('~[0-9]~', $value) === 1) {
+    if (!is_string($value)) {
       $msg = $msg ?: 'the Input must be Text';
 
       $this->addError($this->input, $msg);
@@ -263,19 +293,20 @@ class Validation
    * @param string $msg
    * @return $this
    */
-  public function textWithAllowNumber($msg = null)
-  {
-    $value = $this->value();
+  // public function textWithAllowing($allowes, $msg = null)
+  // {
+  //   $value = $this->value();
 
-    if (!$value && $value != '0') return $this;
+  //   if (!$value && $value != '0') return $this;
+  //   $test = implode($allowes);
 
-    if (is_numeric($value)) {
-      $msg = $msg ?: 'the Input can\'t be jsut Number ';
-
-      $this->addError($this->input, $msg);
-    }
-    return $this;
-  }
+  //   if (preg_match("/^[A-Za-z$test]+$/", $value) || !preg_match('/^[A-Za-z]+$/', $value)) {
+  //     $msg = $msg ?: 'Just numbers and charachters are allow';
+  //     pre($msg);
+  //     $this->addError($this->input, $msg);
+  //   }
+  //   return $this;
+  // }
 
   /**
    * Determine if the input has no umlaut charachter
@@ -402,6 +433,27 @@ class Validation
   }
 
   /**
+   * Determine if the input value should be at most the given length
+   *
+   * @param int $length
+   * @param string $msg
+   * @return $this
+   */
+  public function maxLen($length, $msg = null)
+  {
+    $value = $this->value();
+
+    if (!$value && $value != '0') return $this;
+
+    if (strlen($value) > $length) {
+      $msg = $msg ?: 'This must be ' . $length . ' or fewer';
+
+      $this->addError($this->input, $msg);
+    }
+    return $this;
+  }
+
+  /**
    * Determine if the input value should be at least the given length
    *
    * @param int $length
@@ -422,26 +474,6 @@ class Validation
     return $this;
   }
 
-  /**
-   * Determine if the input value should be at most the given length
-   *
-   * @param int $length
-   * @param string $msg
-   * @return $this
-   */
-  public function maxLen($length, $msg = null)
-  {
-    $value = $this->value();
-
-    if (!$value && $value != '0') return $this;
-
-    if (strlen($value) > $length) {
-      $msg = $msg ?: 'This must be ' . $length . ' or fewer';
-
-      $this->addError($this->input, $msg);
-    }
-    return $this;
-  }
 
   /**
    * Change the value to lower case
@@ -507,19 +539,6 @@ class Validation
   }
 
   /**
-   * Add custom message
-   *
-   * @param string $msg
-   * @return $this
-   */
-  public function message($msg = null)
-  {
-    $this->errors[] = $msg;
-
-    return $this;
-  }
-
-  /**
    * Determine if all inputs are valid
    *
    * @return bool
@@ -540,25 +559,14 @@ class Validation
   }
 
   /**
-   * Get all errors
+   * Determine if the given input has previous errors
    *
-   * @return array
+   * @param string $inputName
    */
-  public function getMsgs()
+  private function hasError($input)
   {
-    return $this->errors;
+    return array_key_exists($input, $this->errors);
   }
-
-  /**
-   * Get the value for the input name
-   *
-   * @return mixed
-   */
-  private function value()
-  {
-    return $this->value;
-  }
-
 
   /**
    * Add input error
@@ -570,18 +578,17 @@ class Validation
   public function addError($input, $msg)
   {
     if (!$this->hasError($input)) {
-
       $this->errors[$input] = $msg;
     }
   }
 
   /**
-   * Determine if the given input has previous errors
+   * Get all errors
    *
-   * @param string $inputName
+   * @return array
    */
-  private function hasError($input)
+  public function getMsgs()
   {
-    return array_key_exists($input, $this->errors);
+    return $this->errors;
   }
 }

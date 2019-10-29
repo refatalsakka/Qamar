@@ -9,6 +9,8 @@ block styles
 
 block scripts
   script(src=adminJs + 'users/user.js')
+  script(src=jsLibs + 'update.js')
+  script(src=jsLibs + 'check.js')
   script(src=jsLibs + 'bootstrap-datepicker.min.js')
 
 block header-right-unser-profile
@@ -31,20 +33,20 @@ block view
                   strong #{'#' + user.id}
               tr
                 td Username
-                td.editable(data-type='text', data-name='username')= user.username
+                td.editable#username(data-type='text', data-name='username')= user.username
               tr
                 td First Name
-                td.editable(data-type='text', data-name='fname')= user.fname
+                td.editable#fname(data-type='text', data-name='fname')= user.fname
               tr
                 td Last Name
-                td.editable(data-type='text', data-name='lname')= user.lname
+                td.editable#lname(data-type='text', data-name='lname')= user.lname
               tr
                 td Gender
-                td.editable(data-type='text', data-name='gender', data-tag='select', data-options='male,female')= user.gender
+                td.editable(data-name='gender', data-tag='select', data-options='male,female')= user.gender
               tr
               tr
                 td Birthday
-                td.editable(data-type='text', data-name='birthday', data-date=user.birthday)= user.birthday
+                td.editable#birthday(data-type='date', data-name='birthday')= user.birthday
               tr
                 td E-Mail
                 td.editable(data-type='text', data-name='email')= user.email
@@ -88,7 +90,7 @@ block view
             tbody
               tr
                 td Country
-                td.editable(data-type='text', data-name='country', data-tag='select', data-options=countries_options)= user.country
+                td.editable(data-name='country', data-tag='select', data-options=countries_options)= user.country
               tr
                 td State
                 td.editable(data-type='text', data-name='state')= user.state

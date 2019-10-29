@@ -1,6 +1,3 @@
-/* eslint-disable no-duplicate-case */
-/* eslint-disable no-fallthrough */
-/* eslint-disable default-case */
 // check if the string can be parsed to JSON
 function convertedToJson(data) {
   try {
@@ -10,8 +7,6 @@ function convertedToJson(data) {
   }
 }
 /* eslint-disable no-unused-vars */
-/* eslint-disable guard-for-in */
-/* eslint-disable no-restricted-syntax */
 $(document).ready(() => {
   // date picker
   $('.filter .register-from').datepicker({
@@ -89,7 +84,6 @@ $(document).ready(() => {
       code = code.slice(0, -4);
 
       if (code) {
-        // eslint-disable-next-line no-eval
         return eval(code);
       }
       return $(this);
@@ -115,6 +109,8 @@ $(document).ready(() => {
       case '2':
         status = '<span class="badge badge-success" data-status="2">Active</span>';
         break;
+      default:
+        status = '';
     }
     return `
       <tr>

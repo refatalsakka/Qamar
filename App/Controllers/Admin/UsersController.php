@@ -219,7 +219,7 @@ class UsersController extends Controller
         $this->validator->input($name)->$filter($filters[$filter]);
       }
     }
-
+    die;
     if ($this->validator->fails()) {
       $msg['error'] = $this->validator->getMsgs();
       return json_encode($msg);
