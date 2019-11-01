@@ -6,11 +6,12 @@ return [
     'user_id_table_name' => 'id',
     'filters' => [
       'require' => true,
-      'noUmlaut' => true,
+      'noUmlautsExcept' => [],
       'noSpaceBetween' => true,
-      'uppercaseNotAllowed' => true,
+      'noNumbers' => true,
+      'noCharachtersExcept' => ['_'],
+      'type' => 'text',
       'unique' => 'users',
-      'textWithAllowing' => ['_', '0-9'],
       'maxLen' => 20,
       'minLen' => 5,
     ],
@@ -20,9 +21,8 @@ return [
     'user_id_table_name' => 'id',
     'filters' => [
       'require' => true,
-      'noUmlaut' => true,
+      'noUmlautsExcept' => true,
       'noSpaceBetween' => true,
-      'uppercaseNotAllowed' => true,
       'type' => 'pureText',
       'maxLen' => 20,
       'minLen' => 3,
@@ -33,9 +33,8 @@ return [
     'user_id_table_name' => 'id',
     'filters' => [
       'require' => true,
-      'noUmlaut' => true,
+      'noUmlautsExcept' => true,
       'noSpaceBetween' => true,
-      'uppercaseNotAllowed' => true,
       'type' => 'pureText',
       'maxLen' => 20,
       'minLen' => 3,
@@ -67,10 +66,9 @@ return [
     'table' => 'users',
     'user_id_table_name' => 'id',
     'filters' => [
-      'type' => 'email',
       'require' => true,
+      'type' => 'email',
       'unique' => 'users',
-      'uppercaseNotAllowed' => true,
     ],
   ],
   'status' => [
@@ -85,7 +83,6 @@ return [
     'table' => 'address',
     'user_id_table_name' => 'user_id',
     'filters' => [
-      'uppercaseNotAllowed' => true,
       'containJust' => 'path:config/icons:[flags]::keys',
     ],
   ],
@@ -93,7 +90,6 @@ return [
     'table' => 'address',
     'user_id_table_name' => 'user_id',
     'filters' => [
-      'uppercaseNotAllowed' => true,
       'type' => 'pureText',
       'maxLen' => 20,
       'minLen' => 3,
@@ -112,7 +108,6 @@ return [
     'table' => 'address',
     'user_id_table_name' => 'user_id',
     'filters' => [
-      'uppercaseNotAllowed' => true,
       'type' => 'pureText',
       'maxLen' => 20,
       'minLen' => 3,
@@ -122,7 +117,6 @@ return [
     'table' => 'address',
     'user_id_table_name' => 'user_id',
     'filters' => [
-      'uppercaseNotAllowed' => true,
       'type' => 'pureText',
       'maxLen' => 20,
       'minLen' => 3,
@@ -141,7 +135,7 @@ return [
     'table' => 'address',
     'user_id_table_name' => 'user_id',
     'filters' => [
-      'type' => 'text',
+      'type' => 'comment',
       'maxLen' => 100,
       'minLen' => 5,
     ],

@@ -62,7 +62,7 @@ class Validation
    */
   private function value()
   {
-    return $this->value;
+    return mb_strtolower($this->value);
   }
 
   /**
@@ -248,7 +248,7 @@ class Validation
   }
 
   /**
-   * Determine if the input has string
+   * Determine if the input has simple text
    *
    * @param string $msg
    * @return $this
@@ -259,8 +259,8 @@ class Validation
 
     if (!$value && $value != '0') return $this;
 
-    if (!preg_match('/^[A-Za-z]+$/', $value)) {
-      $msg = $msg ?: 'the Input must be pure Text';
+    if (!preg_match('/^[a-zA-Z]+$/', $value)) {
+      $msg = $msg ?: 'Text must be pure Text';
 
       $this->addError($this->input, $msg);
     }
@@ -268,7 +268,7 @@ class Validation
   }
 
   /**
-   * Determine if the input has string
+   * Determine if the input has simple text
    *
    * @param string $msg
    * @return $this
@@ -293,20 +293,20 @@ class Validation
    * @param string $msg
    * @return $this
    */
-  // public function textWithAllowing($allowes, $msg = null)
-  // {
-  //   $value = $this->value();
+  public function noNumbers($msg = null)
+  {
+    $value = $this->value();
 
-  //   if (!$value && $value != '0') return $this;
-  //   $test = implode($allowes);
+    if (!$value && $value != '0') return $this;
 
-  //   if (preg_match("/^[A-Za-z$test]+$/", $value) || !preg_match('/^[A-Za-z]+$/', $value)) {
-  //     $msg = $msg ?: 'Just numbers and charachters are allow';
-  //     pre($msg);
-  //     $this->addError($this->input, $msg);
-  //   }
-  //   return $this;
-  // }
+    if (preg_match('~[0-9]~', $value)) {
+      $msg = $msg ?: 'Numbers are not allow';
+
+      $this->addError($this->input, $msg);
+    }
+
+    return $this;
+  }
 
   /**
    * Determine if the input has no umlaut charachter
@@ -314,22 +314,100 @@ class Validation
    * @param string $msg
    * @return $this
    */
-  public function noUmlaut($msg = null)
+  public function noUmlautsExcept($excepts = null, $msg = null)
   {
     $value = $this->value();
 
     if (!$value && $value != '0') return $this;
 
-    $umlauts = 'Ŕ,Á,Â,Ă,Ä,Ĺ,Ç,Č,É,Ę,Ë,Ě,Í,Î,Ď,Ň,Ó,Ô,Ő,Ö,Ř,Ů,Ú,Ű,Ü,Ý,ŕ,á,â,ă,ä,ĺ,ç,č,é,ę,ë,ě,í,î,ď,đ,ň,ó,ô,ő,ö,ř,ů,ú,ű,ü,ý,˙,Ń,ń';
+    $umlauts = 'á,â,ă,ä,ĺ,ç,č,é,ę,ë,ě,í,î,ď,đ,ň,ó,ô,ő,ö,ř,ů,ú,ű,ü,ý,ń,˙';
 
     $umlauts = explode(',', $umlauts);
 
+    if ((is_string($excepts) && $excepts !== '')) {
+      $excepts = explode(',', $excepts);
+    } else if (!is_array($excepts)) {
+      $excepts = [];
+    }
+
+    if ($excepts) {
+      $characters = [];
+
+      foreach($excepts as $character) {
+        $characters[] = mb_strtolower($character);
+      }
+      $excepts = $characters;
+    }
+
     foreach($umlauts as $umlaut) {
-      if ((strpos($value, $umlaut) !== false)) {
-      $msg = $msg ?: 'the Input can\'t contain umlaut';
+      if ((strpos($value, $umlaut) !== false && !in_array($umlaut, $excepts))) {
+        $excepts = implode('', $excepts);
+
+        $msg = $msg ?: 'the Input can\'t contain umlaut';
+
+        if ($excepts) {
+          $msg = $msg ?: 'Umlaus are not allow Except [ ' . $excepts . ' ]';
+        }
+        $this->addError($this->input, $msg);
+      }
+    }
+    return $this;
+  }
+
+  /**
+   * Determine if the input has pure string
+   *
+   * @param string $msg
+   * @return $this
+   */
+  public function noCharachtersExcept($excepts = null, $msg = null)
+  {
+    $value = $this->value();
+
+    if (!$value && $value != '0') return $this;
+
+    $umlauts = 'á,â,ă,ä,ĺ,ç,č,é,ę,ë,ě,í,î,ď,đ,ň,ó,ô,ő,ö,ř,ů,ú,ű,ü,ý,ń,˙';
+    $umlauts = implode('', explode(',', $umlauts));
+
+    if (!is_array($excepts)) {
+      $count_comma = substr_count($excepts, ',');
+
+      if ($count_comma && $count_comma > 1) {
+        $excepts = explode(',', $excepts);
+      } else {
+        $excepts = explode(' ', $excepts);
+      }
+    } else {
+      $excepts = implode('', $excepts);
+    }
+
+    if (!preg_match("/^[a-zA-Z0-9$umlauts$excepts]+$/", $value)) {
+      $msg = $msg ?: 'charachters are not allow except [ ' . $excepts . ' ]';
+
+      if ($excepts) {
+        $msg = $msg ?: 'charachters are not allow';
+      }
+      $this->addError($this->input, $msg);
+    }
+    return $this;
+  }
+
+  /**
+   * Determine if the input has spaces between the letters or the words
+   *
+   * @param string $msg
+   * @return $this
+   */
+  public function noSpaceBetween($msg = null)
+  {
+    $value = $this->value();
+
+    if (!$value && $value != '0') return $this;
+
+    if (preg_match('/\s/', $value)) {
+      $msg = $msg ?: 'Spaces are not allow';
 
       $this->addError($this->input, $msg);
-      }
     }
     return $this;
   }
@@ -341,14 +419,14 @@ class Validation
    * @param string $msg
    * @return $this
    */
-  public function containJust($allowes, $msg = null)
+  public function containJust($characters, $msg = null)
   {
     $value = $this->value();
 
     if (!$value && $value != '0') return $this;
 
-    if (!is_array($allowes) && $allowes !== '') {
-      $allowes = [$allowes];
+    if (!is_array($characters) && $characters !== '') {
+      $characters = [$characters];
     }
 
     $path = null;
@@ -357,11 +435,11 @@ class Validation
     $files = [];
     $final = [];
 
-    foreach($allowes as $key => $allow) {
-      if (strpos($allow, 'path:') === 0) {
-        unset($allowes[$key]);
+    foreach($characters as $key => $character) {
+      if (strpos($character, 'path:') === 0) {
+        unset($characters[$key]);
 
-        $path = substr($allow, 5);
+        $path = substr($character, 5);
 
         $getFrom = 'value';
 
@@ -400,32 +478,12 @@ class Validation
           $final += array_values($files);
         }
       } else {
-        array_push($final, $allow);
+        array_push($final, $character);
       }
     }
 
     if (!in_array($value, $final)) {
       $msg = $msg ?: 'Wrong value';
-
-      $this->addError($this->input, $msg);
-    }
-    return $this;
-  }
-
-  /**
-   * Determine if the input has spaces between the letters or the words
-   *
-   * @param string $msg
-   * @return $this
-   */
-  public function noSpaceBetween($msg = null)
-  {
-    $value = $this->value();
-
-    if (!$value && $value != '0') return $this;
-
-    if (preg_match('/\s/', $value)) {
-      $msg = $msg ?: 'Spaces are not allow';
 
       $this->addError($this->input, $msg);
     }
@@ -471,19 +529,6 @@ class Validation
 
       $this->addError($this->input, $msg);
     }
-    return $this;
-  }
-
-
-  /**
-   * Change the value to lower case
-   *
-   * @return $this
-   */
-  public function uppercaseNotAllowed()
-  {
-    $this->value = strtolower($this->value);
-
     return $this;
   }
 

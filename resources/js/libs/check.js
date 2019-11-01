@@ -1,3 +1,4 @@
+/* eslint-disable no-lonely-if */
 /* eslint-disable no-unused-vars */
 class Check {
   constructor(config) {
@@ -14,18 +15,23 @@ class Check {
         let args = this.elms[elm][method];
         if (typeof args === 'string' && args.includes(':')) {
           args = args.split(':');
-          this.self[method](args[0], args[1]);
+          this.self[method](args[1]);
         } else {
-          this.self[method](args);
+          // eslint-disable-next-line valid-typeof
+          if (typeof args === 'boolean') {
+            if (args !== false) {
+              this.self[method]();
+            }
+          } else {
+            this.self[method](args);
+          }
         }
       });
     }
     console.log(this.errors);
   }
 
-  require(arg, msg = null) {
-    if (!arg) return;
-
+  require(msg = null) {
     const value = this.elm.innerText;
 
     if (value === '' || value === null) {
@@ -34,16 +40,26 @@ class Check {
     }
   }
 
-  type(arg, msg = null) {
-    return this[arg](msg);
+  type(func, msg = null) {
+    return this[func](msg);
   }
 
-  // emal(msg = null){}
+  email(msg = null) {
+    const value = this.elm.innerText.toLowerCase();
 
-  image(arg, msg = null) {
-    if (!arg) return;
+    if (!value && value !== '0') return;
 
-    const file = this.elm.files[0].type.split('/')[0];
+    // eslint-disable-next-line no-useless-escape
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    if (!re.test(value)) {
+      msg = msg || 'E-Mail is not valid';
+      this.addError(this.name, msg);
+    }
+  }
+
+  image(msg = null) {
+    const file = this.elm.files[0].type.split('/')[0].toLowerCase();
 
     if (!file || file !== 'image') {
       msg = msg || 'it must be image';
@@ -56,23 +72,34 @@ class Check {
 
     if (!value && value !== '0') return;
 
-    if (!value.match(/^-{0,1}\d+$/)) {
+    // eslint-disable-next-line no-restricted-globals
+    if (isNaN(value)) {
       msg = msg || 'this inputs must be number';
       this.addError(this.name, msg);
     }
   }
 
-  // float(msg = null)
+  float(msg = null) {
+    const value = this.elm.innerText;
 
-  date(args) {
+    if (!value && value !== '0') return;
+
+    // eslint-disable-next-line eqeqeq
+    if ((value % 1) == 0) {
+      msg = msg || 'this inputs must be float';
+      this.addError(this.name, msg);
+    }
+  }
+
+  date(options) {
     const value = this.elm.innerText;
 
     if (!value && value !== '0') return;
 
     let msg = false;
 
-    if (!(args instanceof Object)) {
-      msg = args;
+    if (!(options instanceof Object)) {
+      msg = options;
     }
 
     if (new Date(value) === 'Invalid Date') {
@@ -81,8 +108,8 @@ class Check {
       return;
     }
 
-    if (args.start && args.end) {
-      let { start, end } = args;
+    if (options.start && options.end) {
+      let { start, end } = options;
       if (typeof start === 'string' && end.includes(':')) {
         start = start.split(':')[0];
       }
@@ -96,12 +123,12 @@ class Check {
       return;
     }
 
-    if (args.start) {
-      let year = args.start;
-      if (typeof args.start === 'string' && args.start.includes(':')) {
-        args.start = args.start.split(':');
-        year = args.start[0];
-        msg = args.start[1];
+    if (options.start) {
+      let year = options.start;
+      if (typeof options.start === 'string' && options.start.includes(':')) {
+        options.start = options.start.split(':');
+        year = options.start[0];
+        msg = options.start[1];
       }
       if (new Date(value).getFullYear() < year) {
         msg = msg || `the date cont be under ${year}`;
@@ -109,12 +136,12 @@ class Check {
       }
     }
 
-    if (args.end) {
-      let year = args.end;
-      if (typeof args.end === 'string' && args.end.includes(':')) {
-        args.end = args.end.split(':');
-        year = args.end[0];
-        msg = args.end[1];
+    if (options.end) {
+      let year = options.end;
+      if (typeof options.end === 'string' && options.end.includes(':')) {
+        options.end = options.end.split(':');
+        year = options.end[0];
+        msg = options.end[1];
       }
       if (new Date(value).getFullYear() > year) {
         msg = msg || `the date cont be above ${year}`;
@@ -123,37 +150,98 @@ class Check {
     }
   }
 
-  pureText(msg) {
-    const value = this.elm.innerText;
+  pureText(msg = null) {
+    const value = this.elm.innerText.toLowerCase();
 
     if (!value && value !== '0') return;
 
-    if (!value.match(/^[A-Za-z]*$/)) {
+    if (!/^[A-Za-z]*$/.test(value)) {
       msg = msg || 'this inputs must be text';
       this.addError(this.name, msg);
     }
   }
 
-  text(msg) {
-    const value = this.elm.innerText;
+  text(msg = null) {
+    const value = this.elm.innerText.toLowerCase();
 
     if (!value && value !== '0') return;
 
-    if (!value.match(/^[A-Za-z]*$/)) {
+    if (typeof value !== 'string') {
       msg = msg || 'this inputs must be text';
       this.addError(this.name, msg);
     }
   }
 
-  // textWithAllowing(allowes, msg = null)
+  noNumbers(msg = null) {
+    const value = this.elm.innerText;
 
-  // noUmlaut(msg = null)
+    if (!value && value !== '0') return;
 
-  // containJust(allowes, msg = null)
+    if (/\d/.test(value)) {
+      msg = msg || 'Numbers are not allow';
+      this.addError(this.name, msg);
+    }
+  }
 
-  noSpaceBetween(arg, msg = null) {
-    if (!arg) return;
+  noUmlautsExcept(excepts, msg = null) {
+    const value = this.elm.innerText.toLowerCase();
 
+    if (!value && value !== '0') return;
+
+    const umlauts = 'á,â,ă,ä,ĺ,ç,č,é,ę,ë,ě,í,î,ď,đ,ň,ó,ô,ő,ö,ř,ů,ú,ű,ü,ý,ń,˙';
+
+    if (typeof excepts === 'string' && excepts !== '') {
+      excepts = excepts.split(',');
+    } else if (!Array.isArray(excepts)) {
+      excepts = [];
+    }
+
+    if (excepts) {
+      excepts = excepts.map(chrachter => chrachter.toLowerCase());
+    }
+    // eslint-disable-next-line consistent-return
+    umlauts.split(',').forEach((umlaut) => {
+      if (value.indexOf(umlaut) >= 0 && excepts.indexOf(umlaut) < 0) {
+        msg = msg || 'Umlauts are not allow';
+        this.addError(this.name, msg);
+        return false;
+      }
+    });
+  }
+
+  noCharachtersExcept(excepts, msg = null) {
+    const value = this.elm.innerText.toLowerCase();
+
+    if (!value && value !== '0') return;
+
+    let umlauts = 'á,â,ă,ä,ĺ,ç,č,é,ę,ë,ě,í,î,ď,đ,ň,ó,ô,ő,ö,ř,ů,ú,ű,ü,ý,ń,˙';
+    umlauts = umlauts.split(',').join('');
+
+    if (!Array.isArray(excepts)) {
+      const countComma = (excepts.match(/,/g) || []).length;
+
+      if (countComma && countComma > 1) {
+        excepts = excepts.split(',').join('');
+      } else {
+        excepts = excepts.split(' ').join('');
+      }
+    } else {
+      excepts = excepts.join();
+    }
+
+    const re = new RegExp(`^[A-Za-z0-9${umlauts}${excepts}]*$`);
+
+    if (!re.test('ff_+,#d')) {
+      if (excepts) {
+        msg = msg || `charachters are not allow except [ ${excepts} ]`;
+      } else {
+        msg = msg || 'charachters are not allow';
+      }
+      this.addError(this.name, msg);
+    }
+  }
+
+  noSpaceBetween(msg = null) {
     const value = this.elm.innerText;
 
     if (!value && value !== '0') return;
@@ -164,39 +252,29 @@ class Check {
     }
   }
 
-  maxLen(arg, msg = null) {
-    if (!arg) return;
+  // containJust(allowes, msg = null)
 
+  maxLen(length, msg = null) {
     const value = this.elm.innerText;
 
     if (!value && value !== '0') return;
 
-    if (value.length > arg) {
-      msg = msg || `the value must maximum ${arg} charachter`;
+    if (value.length > length) {
+      msg = msg || `the value must maximum ${length} charachter`;
       this.addError(this.name, msg);
     }
   }
 
-  minLen(arg, msg = null) {
-    if (!arg) return;
-
+  minLen(length, msg = null) {
     const value = this.elm.innerText;
 
     if (!value && value !== '0') return;
 
-    if (value.length < arg) {
-      msg = msg || `the value must be minimum ${arg} charachter`;
+    if (value.length < length) {
+      msg = msg || `the value must be minimum ${length} charachter`;
       this.addError(this.name, msg);
     }
   }
-
-
-  uppercaseNotAllowed(arg) {
-    if (!arg) return;
-
-    this.elm.innerText = this.elm.innerText.toLocaleLowerCase();
-  }
-
 
   passes() {
     return !this.errors.length;
@@ -224,21 +302,15 @@ class Check {
 // eslint-disable-next-line no-new
 new Check({
   '#fname': {
-    type: 'text',
-    require: true,
+    type: 'pureText',
+    noNumbers: true,
+    noUmlautsExcept: [],
     noSpaceBetween: true,
-    uppercaseNotAllowed: true,
-    maxLen: 20,
-    minLen: 3,
-    // textWithAllowNumber: true,
+    noCharachtersExcept: ['_', '#'],
   },
   '#lname': {
     type: 'text',
-    require: true,
-    noSpaceBetween: true,
-    uppercaseNotAllowed: true,
-    maxLen: 20,
-    minLen: 3,
+
   },
   '#birthday': {
     require: true,

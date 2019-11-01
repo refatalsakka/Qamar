@@ -213,13 +213,15 @@ class UsersController extends Controller
     }
 
     foreach (array_keys($filters) as $filter) {
-      if ($filters[$filter] === true) {
-        $this->validator->input($name)->$filter();
+      if (gettype($filters[$filter]) === 'boolean') {
+        if ($filters[$filter] !== false) {
+          $this->validator->input($name)->$filter();
+        }
       } else {
         $this->validator->input($name)->$filter($filters[$filter]);
       }
     }
-    die;
+
     if ($this->validator->fails()) {
       $msg['error'] = $this->validator->getMsgs();
       return json_encode($msg);
