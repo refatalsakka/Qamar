@@ -231,7 +231,7 @@ class Check {
 
     const re = new RegExp(`^[A-Za-z0-9${umlauts}${excepts}]*$`);
 
-    if (!re.test('ff_+,#d')) {
+    if (!re.test(value)) {
       if (excepts) {
         msg = msg || `charachters are not allow except [ ${excepts} ]`;
       } else {
