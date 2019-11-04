@@ -43,15 +43,12 @@ class Validation
     $this->app = $app;
   }
 
-  public function input($input, $post = 'post')
+  public function input($input, $request = 'post')
   {
     $this->input = $input;
 
-    if ($post !== 'get') {
-      $this->value = $this->app->request->post($this->input);
-    } else {
-      $this->value = $this->app->request->get($this->input);
-    }
+    $this->value = $this->app->request->$request($this->input);
+
     return $this;
   }
 
@@ -191,13 +188,12 @@ class Validation
 
     if (!$value && $value != '0') return $this;
 
-    if (!is_array($options)) {
-      $format = $options;
-    } else {
-      $format = $options[0]['format'] ?? 'd M Y';
-      $start = $options[0]['start'] ?? null;
-      $end = $options[0]['end'] ?? null;
-    }
+    $options = json_encode($options);
+    $options = json_decode($options);
+
+    $format = $options->format ?? 'd M Y';
+    $start = $options->start ?? null;
+    $end = $options->end ?? null;
 
     $checkFormat = DateTime::createFromFormat($format, $value);
 
@@ -369,16 +365,19 @@ class Validation
     $umlauts = 'á,â,ă,ä,ĺ,ç,č,é,ę,ë,ě,í,î,ď,đ,ň,ó,ô,ő,ö,ř,ů,ú,ű,ü,ý,ń,˙';
     $umlauts = implode('', explode(',', $umlauts));
 
-    if (!is_array($excepts)) {
-      $count_comma = substr_count($excepts, ',');
+    if ($excepts) {
+      if (!is_array($excepts)) {
+        $count_comma = substr_count($excepts, ',');
 
-      if ($count_comma && $count_comma > 1) {
-        $excepts = explode(',', $excepts);
-      } else {
-        $excepts = explode(' ', $excepts);
+        if ($count_comma && $count_comma > 1) {
+          $excepts = explode(',', $excepts);
+        } else {
+          $excepts = explode(' ', $excepts);
+        }
       }
-    } else {
       $excepts = implode('', $excepts);
+    } else {
+      $excepts = '';
     }
 
     if (!preg_match("/^[a-zA-Z0-9$umlauts$excepts]+$/", $value)) {

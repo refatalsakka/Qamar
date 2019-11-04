@@ -76,21 +76,41 @@ class File
   /**
    * Require the given file
    *
-   * @param string $file
+   * @param string $path
    * @return mixed
    */
-  public function call($file)
+  public function call($path)
   {
-    $file = $this->to($file);
+    $path = $this->to($path);
 
-    if (!$this->isSharing($file)) {
-      if ($this->exists($file)) {
-        $this->share($file, require $file);
+    if (!$this->isSharing($path . ':file')) {
+      if ($this->exists($path)) {
+        $this->share($path . ':file', require $path);
       } else {
-        throw new Exception("$file is not found");
+        throw new Exception("$path is not found");
       }
     }
-    return $this->container[$file];
+    return $this->container[$path . ':file'];
+  }
+
+  /**
+   * Get file content
+   *
+   * @param string $path
+   * @return mixed
+   */
+  public function fileContent($path)
+  {
+    $path = $this->to($path);
+
+    if (!$this->isSharing($path . ':content')) {
+      if ($this->exists($path)) {
+        $this->share($path . ':content', file_get_contents($path));
+      } else {
+        throw new Exception("$path is not found");
+      }
+    }
+    return $this->container[$path . ':content'];
   }
 
  /**

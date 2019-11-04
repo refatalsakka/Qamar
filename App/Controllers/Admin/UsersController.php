@@ -189,20 +189,21 @@ class UsersController extends Controller
 
     $name = array_keys($posts)[0];
 
-    $allows = $this->file->call('config/admin/users/update.php');
+    $allows = $this->file->call('config/admin/users/pages/update.php');
 
     if (!in_array($name, $allows)) {
       $msg = 'reload';
       return json_encode($msg);
     }
 
-    $columns = $this->file->call('config/admin/users/columns.php');
-    $table = $columns[$name]['table'];
-    $column = $columns[$name];
-    $filters = $columns[$name]['filters'];
+    $columns = $this->file->fileContent('config/admin/users/columns.json');
+    $columns = json_decode($columns);
+    $table = $columns->$name->table;
+    $column = $columns->$name;
+    $filters = $columns->$name->filters;
     $value = $posts[$name];
     $id = userId();
-    $user_id_table_name = $column['user_id_table_name'];
+    $user_id_table_name = $column->user_id_table_name;
 
     $current_value = $this->db->select($name)->from($table)->where($user_id_table_name . ' = ?', [$id])->fetch()->$name;
 
@@ -212,13 +213,15 @@ class UsersController extends Controller
       return json_encode($msg);
     }
 
-    foreach (array_keys($filters) as $filter) {
-      if (gettype($filters[$filter]) === 'boolean') {
-        if ($filters[$filter] !== false) {
-          $this->validator->input($name)->$filter();
+    foreach ($filters as $func => $arg) {
+      if (method_exists($this->validator, $func) == 1) {
+        if (gettype($arg) === 'boolean') {
+          if ($arg) {
+            $this->validator->input($name)->$func();
+          }
+        } else {
+          $this->validator->input($name)->$func($arg);
         }
-      } else {
-        $this->validator->input($name)->$filter($filters[$filter]);
       }
     }
 
@@ -234,7 +237,7 @@ class UsersController extends Controller
       return json_encode($msg);
     }
 
-    if (isset($filters['date'])) {
+    if (isset($filters->date)) {
       $value = date('Y-m-d', strtotime($value));
     }
 
@@ -255,7 +258,7 @@ class UsersController extends Controller
     if ($value) {
       $msg['success'] = _e($value);
 
-      if (isset($filters['date'])) {
+      if (isset($filters->date)) {
         $msg['success'] = $this->changeFormatDate($value, ['Y-m-d', 'd M Y']);
       }
     }
@@ -280,24 +283,29 @@ class UsersController extends Controller
 
     $names = array_keys($posts);
 
-    $allows = $this->file->call('config/admin/users/add.php');
+    $allows = $this->file->call('config/admin/users/pages/add.php');
 
     if (!array_equal($names, $allows)) {
       $msg = 'reload';
       return json_encode($msg);
     }
 
-    $columns = $this->file->call('config/admin/users/columns.php');
+    $columns = $this->file->fileContent('config/admin/users/columns.json');
+    $columns = json_decode($columns);
     $table = $this->load->model('User')->getTable();
 
     foreach ($names as $name) {
-      $filters = $columns[$name]['filters'];
+      $filters = $columns->$name->filters;
 
-      foreach (array_keys($filters) as $filter) {
-        if ($filters[$filter] === true) {
-          $this->validator->input($name)->$filter();
-        } else {
-          $this->validator->input($name)->$filter($filters[$filter]);
+      foreach ($filters as $func => $arg) {
+        if (method_exists($this->validator, $func) == 1) {
+          if (gettype($arg) === 'boolean') {
+            if ($arg) {
+              $this->validator->input($name)->$func();
+            }
+          } else {
+            $this->validator->input($name)->$func($arg);
+          }
         }
       }
     }

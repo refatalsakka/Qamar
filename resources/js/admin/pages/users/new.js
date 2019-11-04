@@ -18,6 +18,7 @@ $(document).ready(() => {
   // ajax request for inputs
   $('form').submit(function (e) {
     e.preventDefault();
+
     const form = $(this);
     const action = form.attr('action');
 

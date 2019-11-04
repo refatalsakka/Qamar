@@ -13,32 +13,32 @@ $(document).ready(() => {
   }
 
   // check if the string can be parsed to JSON
-  // function convertedToJson(data) {
-  //   try {
-  //     return JSON.parse(data);
-  //   } catch (error) {
-  //     return window.location.reload();
-  //   }
-  // }
+  function convertedToJson(data) {
+    try {
+      return JSON.parse(data);
+    } catch (error) {
+      return window.location.reload();
+    }
+  }
 
   // add green background to td after insert successfully
   // then remove it after 3 second
-  // function addSuccessBg(td) {
-  //   td.addClass('success-bg');
-  //   setTimeout(() => {
-  //     td.removeClass('success-bg');
-  //   }, 3000);
-  // }
+  function addSuccessBg(td) {
+    td.addClass('success-bg');
+    setTimeout(() => {
+      td.removeClass('success-bg');
+    }, 3000);
+  }
 
   // append alert if not exists
   // if it is existing just change the message
-  // function appendAlert(td, msg) {
-  //   if (!$('.alert-danger')[0]) {
-  //     td.prepend(`<div class="alert alert-danger" role="alert">${msg}</div>`);
-  //   } else {
-  //     $('.alert-danger')[0].innerHTML = msg;
-  //   }
-  // }
+  function appendAlert(td, msg) {
+    if (!$('.alert-danger')[0]) {
+      td.prepend(`<div class="alert alert-danger" role="alert">${msg}</div>`);
+    } else {
+      $('.alert-danger')[0].innerHTML = msg;
+    }
+  }
 
   function createElm(elm) {
     // get the value from td
@@ -152,42 +152,42 @@ $(document).ready(() => {
     });
 
     // ajax request for inputs
-    // $('.form-editable').submit(function (e) {
-    //   e.preventDefault();
+    $('.form-editable').submit(function (e) {
+      e.preventDefault();
 
-    //   const form = $(this);
-    //   const action = form.attr('action');
-    //   const td = $(this).parents('.editable');
+      const form = $(this);
+      const action = form.attr('action');
+      const td = $(this).parents('.editable');
 
-    //   $.ajax({
-    //     type: 'POST',
-    //     url: action,
-    //     data: form.serialize(),
-    //     beforeSend: () => {
-    //       td.append('<div class="disable-box"><i class="fas fa-spinner loading"></i></div>');
-    //     },
-    //     success: (data) => {
-    //       const json = convertedToJson(data);
-    //       if (json.success) {
-    //         // "not text" means that it's let the input empty so it will be jsut empty
-    //         if (json.success === 'no text') {
-    //           td.html('');
-    //         } else {
-    //           td.html(json.success.trim());
-    //         }
-    //         addSuccessBg(td);
-    //       } else if (json.error) {
-    //         const input = Object.keys(json.error)[0];
-    //         appendAlert(td, json.error[input]);
-    //       } else {
-    //         window.location.reload();
-    //       }
-    //       td.find('.disable-box').remove();
-    //     },
-    //     fail: () => {
-    //       window.location.reload();
-    //     },
-    //   });
-    // });
+      $.ajax({
+        type: 'POST',
+        url: action,
+        data: form.serialize(),
+        beforeSend: () => {
+          td.append('<div class="disable-box"><i class="fas fa-spinner loading"></i></div>');
+        },
+        success: (data) => {
+          const json = convertedToJson(data);
+          if (json.success) {
+            // "not text" means that it's let the input empty so it will be jsut empty
+            if (json.success === 'no text') {
+              td.html('');
+            } else {
+              td.html(json.success.trim());
+            }
+            addSuccessBg(td);
+          } else if (json.error) {
+            const input = Object.keys(json.error)[0];
+            appendAlert(td, json.error[input]);
+          } else {
+            window.location.reload();
+          }
+          td.find('.disable-box').remove();
+        },
+        fail: () => {
+          window.location.reload();
+        },
+      });
+    });
   });
 });
