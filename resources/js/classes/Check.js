@@ -1,4 +1,3 @@
-/* eslint-disable consistent-return */
 /* eslint-disable no-unused-vars */
 class Check {
   constructor() {
@@ -37,8 +36,7 @@ class Check {
 
     if (!value && value !== '0') return this;
 
-    // eslint-disable-next-line no-useless-escape
-    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const re = /^(([^<>()\\[\]\\.,;:\s@"]+(\.[^<>()\\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     if (!re.test(value)) {
       msg = msg || 'E-Mail is not valid';
@@ -62,8 +60,7 @@ class Check {
 
     if (!value && value !== '0') return this;
 
-    // eslint-disable-next-line no-restricted-globals
-    if (isNaN(value)) {
+    if (Number.isNaN(Number(value))) {
       msg = msg || 'this inputs must be number';
       this.addError(this.id, msg);
     }
@@ -189,13 +186,18 @@ class Check {
       excepts = excepts.map(chrachter => chrachter.toLowerCase());
     }
 
-    umlauts.split(',').forEach((umlaut) => {
-      if (value.indexOf(umlaut) >= 0 && excepts.indexOf(umlaut) < 0) {
-        msg = msg || 'Umlauts are not allow';
-        this.addError(this.id, msg);
-        return false;
-      }
-    });
+    const BreakException = {};
+    try {
+      umlauts.split(',').forEach((umlaut) => {
+        if (value.indexOf(umlaut) >= 0 && excepts.indexOf(umlaut) < 0) {
+          msg = msg || 'Umlauts are not allow';
+          this.addError(this.id, msg);
+          throw BreakException;
+        }
+      });
+    } catch (e) {
+      if (e !== BreakException) throw e;
+    }
     return this;
   }
 
@@ -252,7 +254,7 @@ class Check {
 
     if (!value && value !== '0') return this;
 
-    console.log(characters);
+    return this;
   }
 
   maxLen(length, msg = null) {

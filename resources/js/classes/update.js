@@ -21,33 +21,12 @@ $(document).ready(() => {
     }
   }
 
-  // add green background to td after insert successfully
-  // then remove it after 3 second
-  function addSuccessBg(td) {
-    td.addClass('success-bg');
-    setTimeout(() => {
-      td.removeClass('success-bg');
-    }, 3000);
-  }
-
-  // append alert if not exists
-  // if it is existing just change the message
-  function appendAlert(td, msg) {
-    if (!$('.alert-danger')[0]) {
-      td.prepend(`<div class="alert alert-danger" role="alert">${msg}</div>`);
-    } else {
-      $('.alert-danger')[0].innerHTML = msg;
-    }
-  }
-
   function createElm(elm) {
-    // get the value from td
-    const value = $(elm).text();
-
     // attributes values
     const tag = $(elm).attr('data-tag') || 'input';
     const type = $(elm).attr('data-type') || 'text';
     const name = $(elm).attr('data-name');
+    const value = $(elm).attr('data-value') || $(elm).text();
 
     if (tag === 'input') {
       if (type === 'date') {
@@ -80,28 +59,29 @@ $(document).ready(() => {
     return false;
   }
 
-  // remove the background fronm td when clicking on the document
-  $(document).on('click', () => {
-    $('.editable').removeClass('success-bg');
-  });
+  function isElmOpen(elm) {
+    return $(elm).find('.form-editable').length > 0;
+  }
 
-  $('.editable').click(function (event) {
-    // check if the td is open before
-    // check that the user doesn't click on the buttons
-    if ($(this).find('.form-editable')[0] || $(event.target).is('btn-cl, btn-cl *, btn-sub, btn-sub *')) return;
+  function isClickOnElm(e) {
+    return $(e.target).is('.editable');
+  }
 
+  function closeAllElms() {
     // close all the elms that was opened
     $('.editable').each(function () {
       // get the value that storage in the data-text of the elm
       const text = $(this).find('.input-edit').attr('data-text');
       $(this).html(text);
     });
+  }
 
+  // create html form and insert the elm in it
+  function createFormInElm(elm) {
     const url = genetareAction('update');
-    const htmlCodeInput = createElm(this);
+    const htmlCodeInput = createElm(elm);
 
-    // create html form and insert the elm in it
-    $(this).html(`
+    $(elm).html(`
       <form class='form-editable' method='POST' action='${url}' autocomplete='off'>
         <div>
         ${htmlCodeInput}
@@ -112,6 +92,38 @@ $(document).ready(() => {
         </div>
       </form>
     `);
+  }
+
+  function closeElmOnClick() {
+    $('.btn-cl').click(function () {
+      const form = $(this).parents('.form-editable');
+      // check if the td is open
+      // if has form then the elm is open
+      if (form.length) {
+        const input = $(form).find('.input-edit');
+        if (input.length) {
+          // get the storge value
+          const text = $(input).attr('data-text');
+          // set the value in the elm
+          $(form).parents('.editable').html(text);
+        }
+      }
+    });
+  }
+
+  // remove the background fronm td when clicking on the document
+  $(document).on('click', (e) => {
+    if (!$(e.target).is('.editable, .editable *')) closeAllElms();
+  });
+
+  $('.editable').click(function (event) {
+    // check if the td is open before
+    // check that the user doesn't click on the buttons
+    if (isElmOpen(this) || !isClickOnElm(event)) return;
+
+    closeAllElms();
+
+    createFormInElm(this);
 
     // date picker
     $('.editable input.date').datepicker({
@@ -123,33 +135,7 @@ $(document).ready(() => {
     // focus on the elm
     $('.input-edit').focus();
 
-    // close elm
-    $('.btn-cl').click(function () {
-      const form = $(this).parents('.form-editable')[0];
-      // check if the td is open
-      // if has form then the elm is open
-      if (form) {
-        const input = $(form).find('.input-edit')[0];
-        if (input) {
-          // get the storge value
-          const text = $(input).attr('data-text');
-          const td = $(form).parents('.editable')[0];
-          $(td).html(text);
-        }
-      }
-    });
-
-    // close the elm when click outside the td
-    $(document).on('click', (e) => {
-      // check if the click outside the .editable
-      if (!$(e.target).is('.editable, .editable *')) {
-        // get the text from attribute data-text and put it again in .editable
-        $('.editable').each(function () {
-          const text = $(this).find('.input-edit').attr('data-text');
-          $(this).html(text);
-        });
-      }
-    });
+    closeElmOnClick();
 
     // ajax request for inputs
     $('.form-editable').submit(function (e) {
@@ -169,16 +155,26 @@ $(document).ready(() => {
         success: (data) => {
           const json = convertedToJson(data);
           if (json.success) {
+            let value = '';
             // "not text" means that it's let the input empty so it will be jsut empty
-            if (json.success === 'no text') {
-              td.html('');
-            } else {
-              td.html(json.success.trim());
-            }
-            addSuccessBg(td);
+            if (json.success !== 'no text') value = json.success.trim();
+            td.html(value);
+            td.attr('data-value', value);
+            // eslint-disable-next-line no-undef
+            const bg = new Background({
+              colorClass: 'success-bg',
+              removeAfter: 3000,
+            });
+            bg.add(td[0]);
           } else if (json.error) {
             const input = Object.keys(json.error)[0];
-            appendAlert(td, json.error[input]);
+            // eslint-disable-next-line no-undef
+            const alert = new Alert({
+              insertIn: td[0],
+              msg: json.error[input],
+              mood: 'danger',
+            });
+            alert.append();
           } else {
             window.location.reload();
           }

@@ -8,10 +8,12 @@ block styles
   link(href=cssLibs + 'bootstrap-datepicker.min.css', rel='stylesheet')
 
 block scripts
-  script(src=adminJs + 'users/user.js')
-  script(src=jsLibs + 'check.js')
-  script(src=jsLibs + 'update.js')
+  script(src=classes + 'Check.js')
+  script(src=classes + 'Alert.js')
+  script(src=classes + 'Background.js')
+  script(src=classes + 'update.js')
   script(src=jsLibs + 'bootstrap-datepicker.min.js')
+  script(src=adminJs + 'users/user.js')
 
 block header-right-unser-profile
   a.btn(href=host + '/admin/users/new')
@@ -33,23 +35,23 @@ block view
                   strong #{'#' + user.id}
               tr
                 td Username
-                td.editable#username(data-type='text', data-name='username')= user.username
+                td.editable#username(data-type='text', data-name='username', data-value=user.username)= user.username
               tr
                 td First Name
-                td.editable#fname(data-type='text', data-name='fname')= user.fname
+                td.editable#fname(data-type='text', data-name='fname', data-value=user.fname)= user.fname
               tr
                 td Last Name
-                td.editable#lname(data-type='text', data-name='lname')= user.lname
+                td.editable#lname(data-type='text', data-name='lname', data-value=user.lname)= user.lname
               tr
                 td Gender
-                td.editable(data-name='gender', data-tag='select', data-options='male,female')= user.gender
+                td.editable(data-name='gender', data-tag='select', data-options='male,female', data-value=user.gender)= user.gender
               tr
               tr
                 td Birthday
-                td.editable#birthday(data-type='date', data-name='birthday')= user.birthday
+                td.editable#birthday(data-type='date', data-name='birthday', data-value=user.birthday)= user.birthday
               tr
                 td E-Mail
-                td.editable(data-type='text', data-name='email')= user.email
+                td.editable(data-type='text', data-name='email', data-value=user.email)= user.email
               tr
                 td Password
                 td
@@ -90,25 +92,25 @@ block view
             tbody
               tr
                 td Country
-                td.editable(data-name='country', data-tag='select', data-options=countries_options)= user.country
+                td.editable(data-name='country', data-tag='select', data-options=countries_options, data-value=user.country)= user.country
               tr
                 td State
-                td.editable(data-type='text', data-name='state')= user.state
+                td.editable(data-type='text', data-name='state', data-value=user.state)= user.state
               tr
                 td Zip
-                td.editable(data-type='number', data-name='zip')= user.zip
+                td.editable(data-type='number', data-name='zip', data-value=user.zip)= user.zip
               tr
                 td City
-                td.editable(data-type='text', data-name='city')= user.city
+                td.editable(data-type='text', data-name='city', data-value=user.city)= user.city
               tr
                 td Street
-                td.editable(data-type='text', data-name='street')= user.street
+                td.editable(data-type='text', data-name='street', data-value=user.street)= user.street
               tr
                 td House Number
-                td.editable(data-type='number', data-name='house_number')= user.house_number
+                td.editable(data-type='number', data-name='house_number', data-value=user.house_number)= user.house_number
               tr
                 td Additional
-                td.editable(data-type='text', data-name='additional', data-tag='textarea')= user.additional
+                td.editable(data-type='text', data-name='additional', data-tag='textarea', data-value=user.additional)= user.additional
     .col-md-4
       .card
         .card-header
