@@ -2,7 +2,7 @@
 class Background {
   constructor(options) {
     this.elm = options.elm || false;
-    this.colorClass = options.colorClass;
+    this.colorClass = options.colorClass.trim(' ');
     this.addAfter = !Number.isNaN(Number(options.addAfter)) ? options.addAfter : false;
     this.removeAfter = !Number.isNaN(Number(options.removeAfter)) ? options.removeAfter : false;
   }
@@ -10,7 +10,7 @@ class Background {
   static formatElm(elm) {
     if (typeof elm === 'object') return elm;
 
-    return document.querySelector(`.${elm}`);
+    return document.querySelector(`.${elm.trim(' ')}`);
   }
 
   static formatClass(name, point = false) {
