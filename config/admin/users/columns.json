@@ -4,10 +4,13 @@
     "user_id_table_name" : "id",
     "filters" : {
       "require" : true,
-      "noUmlautsExcept" : [],
+      "noUmlautsExcept" : ["ä"],
       "noSpaceBetween" : true,
       "noNumbers" : true,
-      "noCharachtersExcept" : "_",
+      "noCharachtersExcept" : {
+        "excepts": "_",
+        "times": 1
+      },
       "type" : "text",
       "unique" : "users",
       "maxLen" : 20,

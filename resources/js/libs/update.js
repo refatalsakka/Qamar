@@ -13,7 +13,6 @@ $(document).ready(() => {
     return newUrl;
   }
 
-  // check if the string can be parsed to JSON
   function convertedToJson(data) {
     try {
       return JSON.parse(data);
@@ -23,12 +22,12 @@ $(document).ready(() => {
   }
 
   function createElm(elm) {
-    // attributes values
     const tag = $(elm).attr('data-tag') || 'input';
     let type = $(elm).attr('data-type') || 'text';
     const name = $(elm).attr('data-name');
     const value = $(elm).attr('data-value') || $(elm).text();
     const options = $(elm).attr('data-options');
+    const id = $(elm).attr('data-name');
     const classes = ['form-control', 'input-edit'];
 
     if (type === 'date') {
@@ -36,18 +35,18 @@ $(document).ready(() => {
       type = 'text';
     }
 
-    const statment = new CreateElm({
+    return new CreateElm({
       type,
       name,
       value,
+      id,
       classes,
       options,
       data: {
         value,
         type,
       },
-    });
-    return statment.create(tag);
+    }).create(tag);
   }
 
   function isElmOpen(elm) {
@@ -59,7 +58,6 @@ $(document).ready(() => {
   }
 
   function closeElms() {
-    // close all the elms that was opened
     return $('.editable').each(function () {
       // get the value that storage in the data-value of the elm
       const value = $(this).find('.input-edit').attr('data-value');
@@ -91,36 +89,37 @@ $(document).ready(() => {
     });
   }
 
-  let columns = null;
-  async function submit() {
-    const check = new Check();
-
-    if (!columns) {
-      columns = await $.when($.getJSON('../../../config/admin/users/columns.json', data => data)).then(data => data);
-    }
-
+  function submit(columns) {
     $('.form-editable').submit(function (e) {
       e.preventDefault();
 
-      for (const column in columns) {
-        const filters = columns[column].filters;
-        for (const [func, arg] of Object.entries(filters)) {
-          if (typeof check.input(column)[func] !== 'undefined') {
-            if (typeof arg === 'boolean') {
-              if (arg) {
-                check.input(column)[func]();
-              }
-            } else {
-              check.input(column)[func](arg);
+      const td = $(this).parents('.editable');
+      const check = new Check();
+      const column = $(this).find('.input-edit').attr('name');
+      const filters = columns[column].filters;
+
+      for (const [func, arg] of Object.entries(filters)) {
+        if (typeof check.input(column)[func] !== 'undefined') {
+          if (typeof arg === 'boolean') {
+            if (arg) {
+              check.input(column)[func]();
             }
+          } else {
+            check.input(column)[func](arg);
           }
         }
       }
-      console.log(check.getErrors());
+
+      // const errors = check.getErrors();
+      // if (errors[column]) {
+      //   return new Alert({
+      //     insertIn: td[0],
+      //     msg: errors[column],
+      //   }).append();
+      // }
 
       const form = $(this);
       const action = form.attr('action');
-      const td = $(this).parents('.editable');
 
       $.ajax({
         type: 'POST',
@@ -132,32 +131,34 @@ $(document).ready(() => {
         success: (data) => {
           const json = convertedToJson(data);
           if (json.success) {
-            let value = '';
             // "not text" means that it's let the input empty so it will be jsut empty
-            if (json.success !== 'no text') value = json.success.trim();
-            td.html(value);
-            td.attr('data-value', value);
-            new Background({
-              colorClass: 'success-bg',
-              removeAfter: 3000,
-            }).add(td[0]);
+            const value = (json.success !== 'no text') ? json.success.trim() : '';
+            td.html(value).attr('data-value', value);
+            new Background({ colorClass: 'success-bg', removeAfter: 3000 }).add(td[0]);
           } else if (json.error) {
             const input = Object.keys(json.error)[0];
-            new Alert({
-              insertIn: td[0],
-              msg: json.error[input],
-              mood: 'danger',
-            }).append();
+            new Alert({ insertIn: td[0], msg: json.error[input], mood: 'danger' }).append();
           } else {
             window.location.reload();
           }
           td.find('.disable-box').remove();
         },
-        fail: () => {
-          window.location.reload();
-        },
+        fail: () => window.location.reload(),
       });
+      return false;
     });
+  }
+
+  let columns = null;
+  function update() {
+    if (!columns) {
+      $.when($.getJSON('../../../config/admin/users/columns.json', data => data)).then((data) => {
+        columns = data;
+        return submit(columns);
+      });
+      return false;
+    }
+    return submit(columns);
   }
 
   $(document).on('click', (e) => {
@@ -184,6 +185,6 @@ $(document).ready(() => {
 
     closeElm();
 
-    submit();
+    update();
   });
 });

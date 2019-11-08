@@ -36,20 +36,20 @@ block view
                   strong #{'#' + user.id}
               tr
                 td Username
-                td.editable#username(data-type='text', data-name='username', data-value=user.username)= user.username
+                td.editable(data-type='text', data-name='username', data-value=user.username)= user.username
               tr
                 td First Name
-                td.editable#fname(data-type='text', data-name='fname', data-value=user.fname)= user.fname
+                td.editable(data-type='text', data-name='fname', data-value=user.fname)= user.fname
               tr
                 td Last Name
-                td.editable#lname(data-type='text', data-name='lname', data-value=user.lname)= user.lname
+                td.editable(data-type='text', data-name='lname', data-value=user.lname)= user.lname
               tr
                 td Gender
                 td.editable(data-name='gender', data-tag='select', data-options='male,female', data-value=user.gender)= user.gender
               tr
               tr
                 td Birthday
-                td.editable#birthday(data-type='date', data-name='birthday', data-value=user.birthday)= user.birthday
+                td.editable(data-type='date', data-name='birthday', data-value=user.birthday)= user.birthday
               tr
                 td E-Mail
                 td.editable(data-type='text', data-name='email', data-value=user.email)= user.email

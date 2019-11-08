@@ -73,7 +73,7 @@ class Validation
     $value = $this->value();
 
     if ($value === '' || $value === null) {
-      $msg = $msg ?: 'This input is required';
+      $msg = $msg ?: 'this field is required';
 
       $this->addError($this->input, $msg);
     }
@@ -104,7 +104,7 @@ class Validation
     if (!$value && $value != '0') return $this;
 
     if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
-      $msg = $msg ?: sprintf('%s is not valid Email', ucfirst($this->input));
+      $msg = $msg ?: 'e-mail is not valid';
 
       $this->addError($this->input, $msg);
     }
@@ -126,7 +126,7 @@ class Validation
     }
 
     if (!$file->isImage()) {
-      $msg = $msg ?: sprintf('%s Is not valid Image', ucfirst($this->input));
+      $msg = $msg ?: 'image is not valid';
 
       $this->addError($this->input, $msg);
     }
@@ -146,7 +146,7 @@ class Validation
     if (!$value && $value != '0') return $this;
 
     if (!is_numeric($value)) {
-      $msg = $msg ?: 'the Input must be number';
+      $msg = $msg ?: 'this field must be a number';
 
       $this->addError($this->input, $msg);
     }
@@ -166,7 +166,7 @@ class Validation
     if (!$value && $value != '0') return $this;
 
     if (!is_float($value)) {
-      $msg = $msg ?: sprintf('%s Accepts only floats', ucfirst($this->input));
+      $msg = $msg ?: "this field must be a float number";
 
       $this->addError($this->input, $msg);
     }
@@ -198,7 +198,7 @@ class Validation
     $checkFormat = DateTime::createFromFormat($format, $value);
 
     if (!$checkFormat) {
-      $msg = $msg ?: 'the Input must be Date';
+      $msg = $msg ?: 'this field must be a date';
 
       $this->addError($this->input, $msg);
 
@@ -209,7 +209,7 @@ class Validation
       $year = DateTime::createFromFormat($format, $value)->format('Y');
 
       if ($year < $start  || $year > $end) {
-        $msg = $msg ?: 'The date must be between ' . $start  . ' and ' . $end;
+        $msg = $msg ?: 'this field must be between ' . $start  . ' and ' . $end;
 
         $this->addError($this->input, $msg);
 
@@ -221,7 +221,7 @@ class Validation
       $year = DateTime::createFromFormat($format, $value)->format('Y');
 
       if ($year < $start) {
-        $msg = $msg ?: 'The date can\'t be under ' . $start;
+        $msg = $msg ?: 'the date can\'t be under ' . $start;
 
         $this->addError($this->input, $msg);
 
@@ -233,7 +233,7 @@ class Validation
       $year = DateTime::createFromFormat($format, $value)->format('Y');
 
       if ($year > $end) {
-        $msg = $msg ?: 'The date can\'t be above ' . $end;
+        $msg = $msg ?: 'the date can\'t be above ' . $end;
 
         $this->addError($this->input, $msg);
 
@@ -256,7 +256,7 @@ class Validation
     if (!$value && $value != '0') return $this;
 
     if (!preg_match('/^[a-zA-Z]+$/', $value)) {
-      $msg = $msg ?: 'Text must be pure Text';
+      $msg = $msg ?: 'this field must be just a text';
 
       $this->addError($this->input, $msg);
     }
@@ -276,7 +276,7 @@ class Validation
     if (!$value && $value != '0') return $this;
 
     if (!is_string($value)) {
-      $msg = $msg ?: 'the Input must be Text';
+      $msg = $msg ?: 'the field must be a text';
 
       $this->addError($this->input, $msg);
     }
@@ -296,7 +296,7 @@ class Validation
     if (!$value && $value != '0') return $this;
 
     if (preg_match('~[0-9]~', $value)) {
-      $msg = $msg ?: 'Numbers are not allow';
+      $msg = $msg ?: 'numbers are not allow';
 
       $this->addError($this->input, $msg);
     }
@@ -310,7 +310,7 @@ class Validation
    * @param string $msg
    * @return $this
    */
-  public function noUmlautsExcept($excepts = null, $msg = null)
+  public function noUmlautsExcept($excepts = [], $msg = null)
   {
     $value = $this->value();
 
@@ -338,11 +338,10 @@ class Validation
     foreach($umlauts as $umlaut) {
       if ((strpos($value, $umlaut) !== false && !in_array($umlaut, $excepts))) {
         $excepts = implode('', $excepts);
-
-        $msg = $msg ?: 'the Input can\'t contain umlaut';
-
         if ($excepts) {
-          $msg = $msg ?: 'Umlaus are not allow Except [ ' . $excepts . ' ]';
+          $msg = $msg ?: "just [ $excepts ] can be used";
+        } else {
+          $msg = $msg ?: 'umlauts are not allow';
         }
         $this->addError($this->input, $msg);
       }
@@ -356,7 +355,7 @@ class Validation
    * @param string $msg
    * @return $this
    */
-  public function noCharachtersExcept($excepts = null, $msg = null)
+  public function noCharachtersExcept($options = [], $msg = null)
   {
     $value = $this->value();
 
@@ -365,14 +364,25 @@ class Validation
     $umlauts = 'á,â,ă,ä,ĺ,ç,č,é,ę,ë,ě,í,î,ď,đ,ň,ó,ô,ő,ö,ř,ů,ú,ű,ü,ý,ń,˙';
     $umlauts = implode('', explode(',', $umlauts));
 
-    if ($excepts) {
+     $excepts = $options->excepts ?? [];
+     $times = $options->times ?? 1;
+
+     if ($excepts) {
       if (!is_array($excepts)) {
         $count_comma = substr_count($excepts, ',');
 
         if ($count_comma && $count_comma > 1) {
           $excepts = explode(',', $excepts);
         } else {
-          $excepts = explode(' ', $excepts);
+          $excepts = str_split($excepts);
+        }
+      }
+      foreach($excepts as $except) {
+        $count_charachter = substr_count($value, $except);
+        if ($count_charachter && $count_charachter > $times) {
+          $msg = $msg ?: "[ " .  implode(', ', $excepts) . "] can be used just $times times";
+          $this->addError($this->input, $msg);
+          return $this;
         }
       }
       $excepts = implode('', $excepts);
@@ -381,7 +391,7 @@ class Validation
     }
 
     if (!preg_match("/^[a-zA-Z0-9$umlauts$excepts]+$/", $value)) {
-      $msg = $msg ?: 'charachters are not allow except [ ' . $excepts . ' ]';
+      $msg = $msg ?: 'just [ ' . $excepts . ' ] can be used';
 
       if ($excepts) {
         $msg = $msg ?: 'charachters are not allow';
@@ -404,7 +414,7 @@ class Validation
     if (!$value && $value != '0') return $this;
 
     if (preg_match('/\s/', $value)) {
-      $msg = $msg ?: 'Spaces are not allow';
+      $msg = $msg ?: 'spaces are not allow';
 
       $this->addError($this->input, $msg);
     }
@@ -482,7 +492,7 @@ class Validation
     }
 
     if (!in_array($value, $final)) {
-      $msg = $msg ?: 'Wrong value';
+      $msg = $msg ?: 'wrong value';
 
       $this->addError($this->input, $msg);
     }
@@ -503,7 +513,7 @@ class Validation
     if (!$value && $value != '0') return $this;
 
     if (strlen($value) > $length) {
-      $msg = $msg ?: 'This must be ' . $length . ' or fewer';
+      $msg = $msg ?: "this field can be maximum $length charachter";
 
       $this->addError($this->input, $msg);
     }
@@ -524,7 +534,7 @@ class Validation
     if (!$value && $value != '0') return $this;
 
     if (strlen($value) < $length) {
-      $msg = $msg ?: 'This input must be at least ' . $length;
+      $msg = $msg ?: "this field can be minimum $length charachter";
 
       $this->addError($this->input, $msg);
     }
@@ -546,7 +556,7 @@ class Validation
 
     if ($valuePassword && $valueConfirm) {
       if ($valuePassword !== $valueConfirm) {
-        $msg = $msg ?: 'Passwords does not match';
+        $msg = $msg ?: 'passwords doesn\'t match';
 
         $this->addError('match', $msg);
       }

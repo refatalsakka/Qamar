@@ -14,14 +14,14 @@ class Check {
 
     if (!elm) return undefined;
 
-    return typeof elm === 'string' ? elm.innerText.toLowerCase() : elm.innerText;
+    return elm.value.toLowerCase();
   }
 
   require(msg = null) {
     const value = this.value();
 
     if (value === '' || value === null) {
-      msg = msg || 'this inputs is required';
+      msg = msg || 'this field is required';
       this.addError(this.id, msg);
     }
     return this;
@@ -39,7 +39,7 @@ class Check {
     const re = /^(([^<>()\\[\]\\.,;:\s@"]+(\.[^<>()\\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     if (!re.test(value)) {
-      msg = msg || 'E-Mail is not valid';
+      msg = msg || 'e-mail is not valid';
       this.addError(this.id, msg);
     }
     return this;
@@ -49,7 +49,7 @@ class Check {
     const file = this.id.files[0].type.split('/')[0].toLowerCase();
 
     if (!file || file !== 'image') {
-      msg = msg || 'it must be image';
+      msg = msg || 'image is not valid';
       this.addError(this.id, msg);
     }
     return this;
@@ -61,7 +61,7 @@ class Check {
     if (!value && value !== '0') return this;
 
     if (Number.isNaN(Number(value))) {
-      msg = msg || 'this inputs must be number';
+      msg = msg || 'this field must be number';
       this.addError(this.id, msg);
     }
     return this;
@@ -73,7 +73,7 @@ class Check {
     if (!value && value !== '0') return this;
 
     if ((value % 1) === 0) {
-      msg = msg || 'this inputs must be float';
+      msg = msg || 'this field must be a float number';
       this.addError(this.id, msg);
     }
     return this;
@@ -85,7 +85,7 @@ class Check {
     if (!value && value !== '0') return this;
 
     if (new Date(value) === 'Invalid Date') {
-      msg = msg || 'this inputs must be date';
+      msg = msg || 'this field must be date';
       this.addError(this.id, msg);
       return this;
     }
@@ -99,7 +99,7 @@ class Check {
         end = end.split(':')[0];
       }
       if (new Date(value).getFullYear() < start || new Date(value).getFullYear() > end) {
-        msg = `the date must be netween ${start} and ${end}`;
+        msg = `the field must be netween ${start} and ${end}`;
         this.addError(this.id, msg);
       }
       return this;
@@ -113,7 +113,7 @@ class Check {
         msg = options.start[1];
       }
       if (new Date(value).getFullYear() < year) {
-        msg = msg || `the date cont be under ${year}`;
+        msg = msg || `the date can't be under ${year}`;
         this.addError(this.id, msg);
       }
     }
@@ -139,7 +139,7 @@ class Check {
     if (!value && value !== '0') return this;
 
     if (!/^[A-Za-z]*$/.test(value)) {
-      msg = msg || 'this inputs must be text';
+      msg = msg || 'this field must be just a text';
       this.addError(this.id, msg);
     }
     return this;
@@ -151,7 +151,7 @@ class Check {
     if (!value && value !== '0') return this;
 
     if (typeof value !== 'string') {
-      msg = msg || 'this inputs must be text';
+      msg = msg || 'this field must be a text';
       this.addError(this.id, msg);
     }
     return this;
@@ -163,7 +163,7 @@ class Check {
     if (!value && value !== '0') return this;
 
     if (/\d/.test(value)) {
-      msg = msg || 'Numbers are not allow';
+      msg = msg || 'numbers are not allow';
       this.addError(this.id, msg);
     }
     return this;
@@ -190,7 +190,12 @@ class Check {
     try {
       umlauts.split(',').forEach((umlaut) => {
         if (value.indexOf(umlaut) >= 0 && excepts.indexOf(umlaut) < 0) {
-          msg = msg || 'Umlauts are not allow';
+          excepts = excepts.join(',');
+          if (excepts) {
+            msg = msg || `just [ ${excepts} ] can be used`;
+          } else {
+            msg = msg || 'umlauts are not allow';
+          }
           this.addError(this.id, msg);
           throw BreakException;
         }
@@ -201,13 +206,16 @@ class Check {
     return this;
   }
 
-  noCharachtersExcept(excepts = [], msg = null) {
+  noCharachtersExcept(options = [], msg = null) {
     const value = this.value();
 
     if (!value && value !== '0') return this;
 
     let umlauts = 'á,â,ă,ä,ĺ,ç,č,é,ę,ë,ě,í,î,ď,đ,ň,ó,ô,ő,ö,ř,ů,ú,ű,ü,ý,ń,˙';
     umlauts = umlauts.split(',').join('');
+
+    let excepts = options.excepts || [];
+    const times = options.times || 1;
 
     if (excepts) {
       if (!Array.isArray(excepts)) {
@@ -216,9 +224,19 @@ class Check {
         if (countComma && countComma > 1) {
           excepts = excepts.split(',');
         } else {
-          excepts = excepts.split(' ');
+          excepts = excepts.split('');
         }
       }
+      // eslint-disable-next-line consistent-return
+      excepts.forEach((except) => {
+        const test = new RegExp(except, 'g');
+        const countCharachter = value.match(test);
+        if (countCharachter && countCharachter.length > times) {
+          msg = msg || ` ${excepts.join(', ')} can be used just ${times} times`;
+          this.addError(this.id, msg);
+          return this;
+        }
+      });
       excepts = excepts.join('');
     } else {
       excepts = '';
@@ -228,7 +246,7 @@ class Check {
 
     if (!re.test(value)) {
       if (excepts) {
-        msg = msg || `charachters are not allow except [ ${excepts} ]`;
+        msg = msg || `just [ ${excepts} ] can be used`;
       } else {
         msg = msg || 'charachters are not allow';
       }
@@ -263,7 +281,7 @@ class Check {
     if (!value && value !== '0') return this;
 
     if (value.length > length) {
-      msg = msg || `the value must maximum ${length} charachter`;
+      msg = msg || `this field can be maximum ${length} charachter`;
       this.addError(this.id, msg);
     }
     return this;
@@ -275,11 +293,13 @@ class Check {
     if (!value && value !== '0') return this;
 
     if (value.length < length) {
-      msg = msg || `the value must be minimum ${length} charachter`;
+      msg = msg || `the field must be minimum ${length} charachter`;
       this.addError(this.id, msg);
     }
     return this;
   }
+
+  // match($input, $msg = null)
 
   passes() {
     return !this.errors.length;

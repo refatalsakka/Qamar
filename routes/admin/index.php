@@ -29,7 +29,7 @@ $app->route->group($adminOptions, function($route) {
   //Users
   $route->package('/users', 'Users', [
     'add' => [
-      // 'ajax',
+      'ajax',
     ],
     'update' => [
       // 'ajax',
