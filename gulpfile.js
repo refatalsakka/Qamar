@@ -32,12 +32,12 @@ const LIBS = {
         'node_modules/bootstrap/dist/css/bootstrap.min.css.map',
         'node_modules/@fortawesome/fontawesome-free/css/all.min.css',
         'node_modules/normalize.css/normalize.css',
-        'node_modules/@coreui/coreui/dist/css/coreui.min.css',
-        'node_modules/@coreui/coreui/dist/css/coreui.min.css.map',
         'node_modules/@coreui/icons/css/coreui-icons.min.css',
         'node_modules/@coreui/icons/css/coreui-icons.min.css.map',
         'node_modules/flag-icon-css/css/flag-icon.min.css',
         'node_modules/simple-line-icons/css/simple-line-icons.css',
+        'node_modules/@coreui/coreui/dist/css/coreui.min.css',
+        'node_modules/@coreui/coreui/dist/css/coreui.min.css.map',
         'node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css',
       ],
     },
@@ -67,8 +67,6 @@ const LIBS = {
         'node_modules/jquery/dist/jquery.min.js',
         'node_modules/popper.js/dist/umd/popper.min.js',
         'node_modules/popper.js/dist/umd/popper.min.js.map',
-        'node_modules/pace-progress/pace.min.js',
-        'node_modules/perfect-scrollbar/dist/perfect-scrollbar.min.js',
         'node_modules/@coreui/coreui/dist/js/coreui.min.js',
         'node_modules/@coreui/coreui/dist/js/coreui.min.js.map',
         'node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js',
@@ -158,7 +156,6 @@ async function libraries() {
   for (const LIB in LIBS) {
     LIBS[LIB].map((output) => {
       if (typeof output === 'object') {
-        // eslint-disable-next-line guard-for-in
         for (const extra in output) {
           output[extra].map(outputExtra => gulp
             .src(`${outputExtra}`)

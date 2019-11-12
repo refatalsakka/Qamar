@@ -89,34 +89,37 @@ $(document).ready(() => {
     });
   }
 
+  function checkInput(elm, columns) {
+    const check = new Check();
+    const column = $(elm).find('.input-edit').attr('name');
+    const filters = columns[column].filters;
+
+    for (const [func, arg] of Object.entries(filters)) {
+      if (typeof check.input(column)[func] !== 'undefined') {
+        if (typeof arg === 'boolean') {
+          if (arg) {
+            check.input(column)[func]();
+          }
+        } else {
+          check.input(column)[func](arg);
+        }
+      }
+    }
+
+    const errors = check.getErrors();
+
+    return errors[column] ? errors[column] : true;
+  }
+
   function submit(columns) {
     $('.form-editable').submit(function (e) {
       e.preventDefault();
 
       const td = $(this).parents('.editable');
-      const check = new Check();
-      const column = $(this).find('.input-edit').attr('name');
-      const filters = columns[column].filters;
 
-      for (const [func, arg] of Object.entries(filters)) {
-        if (typeof check.input(column)[func] !== 'undefined') {
-          if (typeof arg === 'boolean') {
-            if (arg) {
-              check.input(column)[func]();
-            }
-          } else {
-            check.input(column)[func](arg);
-          }
-        }
-      }
+      const check = checkInput(this, columns);
 
-      // const errors = check.getErrors();
-      // if (errors[column]) {
-      //   return new Alert({
-      //     insertIn: td[0],
-      //     msg: errors[column],
-      //   }).append();
-      // }
+      if (check !== true) return new Alert({ insertIn: td[0], msg: check }).append();
 
       const form = $(this);
       const action = form.attr('action');
@@ -150,17 +153,6 @@ $(document).ready(() => {
   }
 
   let columns = null;
-  function update() {
-    if (!columns) {
-      $.when($.getJSON('../../../config/admin/users/columns.json', data => data)).then((data) => {
-        columns = data;
-        return submit(columns);
-      });
-      return false;
-    }
-    return submit(columns);
-  }
-
   $(document).on('click', (e) => {
     // remove the background fronm td when clicking on the document
     if (!$(e.target).is('.editable, .editable *')) closeElms();
@@ -185,6 +177,13 @@ $(document).ready(() => {
 
     closeElm();
 
-    update();
+    if (!columns) {
+      $.ajaxSetup({ async: false });
+      $.getJSON('../../../config/admin/users/columns.json', (data) => {
+        columns = data;
+      });
+    }
+    // eslint-disable-next-line consistent-return
+    return submit(columns);
   });
 });

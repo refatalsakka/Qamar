@@ -68,8 +68,10 @@ class Validation
    * @param string $msg
    * @return $this
    */
-  public function require($msg = null)
+  public function require($call = true, $msg = null)
   {
+    if ($call === false) return $this;
+
     $value = $this->value();
 
     if ($value === '' || $value === null) {
@@ -97,8 +99,10 @@ class Validation
    * @param string $msg
    * @return $this
    */
-  public function email($msg = null)
+  public function email($call = true, $msg = null)
   {
+    if ($call === false) return $this;
+
     $value = $this->value();
 
     if (!$value && $value != '0') return $this;
@@ -117,8 +121,10 @@ class Validation
    * @param string $customErrorMessage
    * @return $this
    */
-  public function image($msg = null)
+  public function image($call = true, $msg = null)
   {
+    if ($call === false) return $this;
+
     $file = $this->app->request->file($this->input);
 
     if (!$file->exists()) {
@@ -139,8 +145,10 @@ class Validation
    * @param string $msg
    * @return $this
    */
-  public function number($msg = null)
+  public function number($call = true, $msg = null)
   {
+    if ($call === false) return $this;
+
     $value = $this->value();
 
     if (!$value && $value != '0') return $this;
@@ -159,8 +167,10 @@ class Validation
    * @param string $msg
    * @return $this
    */
-  public function float($msg = null)
+  public function float($call = true, $msg = null)
   {
+    if ($call === false) return $this;
+
     $value = $this->value();
 
     if (!$value && $value != '0') return $this;
@@ -182,8 +192,10 @@ class Validation
    * @param string $msg
    * @return $this
    */
-  public function date($options, $msg = null)
+  public function date($options = [], $msg = null)
   {
+    if ($options === false) return $this;
+
     $value = $this->value();
 
     if (!$value && $value != '0') return $this;
@@ -249,8 +261,10 @@ class Validation
    * @param string $msg
    * @return $this
    */
-  public function pureText($msg = null)
+  public function pureText($call = true, $msg = null)
   {
+    if ($call === false) return $this;
+
     $value = $this->value();
 
     if (!$value && $value != '0') return $this;
@@ -269,8 +283,10 @@ class Validation
    * @param string $msg
    * @return $this
    */
-  public function text($msg = null)
+  public function text($call = true, $msg = null)
   {
+    if ($call === false) return $this;
+
     $value = $this->value();
 
     if (!$value && $value != '0') return $this;
@@ -289,8 +305,10 @@ class Validation
    * @param string $msg
    * @return $this
    */
-  public function noNumbers($msg = null)
+  public function noNumbers($call = true, $msg = null)
   {
+    if ($call === false) return $this;
+
     $value = $this->value();
 
     if (!$value && $value != '0') return $this;
@@ -312,6 +330,8 @@ class Validation
    */
   public function noUmlautsExcept($excepts = [], $msg = null)
   {
+    if ($excepts === false) return $this;
+
     $value = $this->value();
 
     if (!$value && $value != '0') return $this;
@@ -357,6 +377,8 @@ class Validation
    */
   public function noCharachtersExcept($options = [], $msg = null)
   {
+    if ($options === false) return $this;
+
     $value = $this->value();
 
     if (!$value && $value != '0') return $this;
@@ -380,7 +402,7 @@ class Validation
       foreach($excepts as $except) {
         $count_charachter = substr_count($value, $except);
         if ($count_charachter && $count_charachter > $times) {
-          $msg = $msg ?: "[ " .  implode(', ', $excepts) . "] can be used just $times times";
+          $msg = $msg ?: "[ " .  implode(', ', $excepts) . " ] can be used just $times times";
           $this->addError($this->input, $msg);
           return $this;
         }
@@ -407,8 +429,10 @@ class Validation
    * @param string $msg
    * @return $this
    */
-  public function noSpaceBetween($msg = null)
+  public function noSpaces($call = true, $msg = null)
   {
+    if ($call === false) return $this;
+
     $value = $this->value();
 
     if (!$value && $value != '0') return $this;
@@ -428,8 +452,10 @@ class Validation
    * @param string $msg
    * @return $this
    */
-  public function containJust($characters, $msg = null)
+  public function containJust($characters = [], $msg = null)
   {
+    if ($characters === false) return $this;
+
     $value = $this->value();
 
     if (!$value && $value != '0') return $this;
@@ -506,8 +532,10 @@ class Validation
    * @param string $msg
    * @return $this
    */
-  public function maxLen($length, $msg = null)
+  public function maxLen($length = null, $msg = null)
   {
+    if ($length === false) return $this;
+
     $value = $this->value();
 
     if (!$value && $value != '0') return $this;
@@ -527,8 +555,10 @@ class Validation
    * @param string $msg
    * @return $this
    */
-  public function minLen($length, $msg = null)
+  public function minLen($length = null, $msg = null)
   {
+    if ($length === false) return $this;
+
     $value = $this->value();
 
     if (!$value && $value != '0') return $this;
@@ -550,6 +580,8 @@ class Validation
    */
   public function match($input, $msg = null)
   {
+    if ($input === false) return $this;
+
     $valuePassword = $this->value();
 
     $valueConfirm = $this->app->request->post($input);
@@ -571,9 +603,13 @@ class Validation
    * @param string $msg
    * @return $this
    */
-  public function unique($data, $msg = null)
+  public function unique($data = [], $msg = null)
   {
+    if ($data === false) return $this;
+
     $value = $this->value();
+
+    if (!$data) return $this;
 
     if (is_array($data)) {
       list($table, $column) = $data;
@@ -641,7 +677,7 @@ class Validation
    *
    * @return array
    */
-  public function getMsgs()
+  public function getErrors()
   {
     return $this->errors;
   }

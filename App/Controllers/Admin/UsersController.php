@@ -103,6 +103,7 @@ class UsersController extends Controller
     if ($count_status > 1) {
       $sql = str_replace('status = ? AND', 'status = ? OR', $sql);
       $sql = rtrim($sql, 'OR ');
+      $sql = "( $sql )";
       $sql .= ' AND ';
     }
 
@@ -120,6 +121,7 @@ class UsersController extends Controller
     if ($count_is_login > 1) {
       $sql = str_replace('is_login = ? AND', 'is_login = ? OR', $sql);
       $sql = rtrim($sql, 'OR ');
+      $sql = "( $sql )";
       $sql .= ' AND ';
     }
 
@@ -226,7 +228,7 @@ class UsersController extends Controller
     }
 
     if ($this->validator->fails()) {
-      $msg['error'] = $this->validator->getMsgs();
+      $msg['error'] = $this->validator->getErrors();
       return json_encode($msg);
     }
 
@@ -311,7 +313,7 @@ class UsersController extends Controller
     }
 
     if ($this->validator->fails()) {
-      $msg = $this->validator->getMsgs();
+      $msg = $this->validator->getErrors();
       return json_encode($msg);
     }
 

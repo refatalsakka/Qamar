@@ -17,7 +17,9 @@ class Check {
     return elm.value.toLowerCase();
   }
 
-  require(msg = null) {
+  require(call = true, msg = null) {
+    if (call === false) return this;
+
     const value = this.value();
 
     if (value === '' || value === null) {
@@ -31,7 +33,9 @@ class Check {
     return this[func](msg);
   }
 
-  email(msg = null) {
+  email(call = true, msg = null) {
+    if (call === false) return this;
+
     const value = this.value();
 
     if (!value && value !== '0') return this;
@@ -45,7 +49,9 @@ class Check {
     return this;
   }
 
-  image(msg = null) {
+  image(call = true, msg = null) {
+    if (call === false) return this;
+
     const file = this.id.files[0].type.split('/')[0].toLowerCase();
 
     if (!file || file !== 'image') {
@@ -55,7 +61,9 @@ class Check {
     return this;
   }
 
-  number(msg = null) {
+  number(call = true, msg = null) {
+    if (call === false) return this;
+
     const value = this.value();
 
     if (!value && value !== '0') return this;
@@ -67,7 +75,9 @@ class Check {
     return this;
   }
 
-  float(msg = null) {
+  float(call = true, msg = null) {
+    if (call === false) return this;
+
     const value = this.value();
 
     if (!value && value !== '0') return this;
@@ -80,6 +90,8 @@ class Check {
   }
 
   date(options, msg = null) {
+    if (options === false) return this;
+
     const value = this.value();
 
     if (!value && value !== '0') return this;
@@ -133,7 +145,9 @@ class Check {
     return this;
   }
 
-  pureText(msg = null) {
+  pureText(call = true, msg = null) {
+    if (call === false) return this;
+
     const value = this.value();
 
     if (!value && value !== '0') return this;
@@ -145,7 +159,9 @@ class Check {
     return this;
   }
 
-  text(msg = null) {
+  text(call = true, msg = null) {
+    if (call === false) return this;
+
     const value = this.value();
 
     if (!value && value !== '0') return this;
@@ -157,7 +173,9 @@ class Check {
     return this;
   }
 
-  noNumbers(msg = null) {
+  noNumbers(call = true, msg = null) {
+    if (call === false) return this;
+
     const value = this.value();
 
     if (!value && value !== '0') return this;
@@ -170,6 +188,8 @@ class Check {
   }
 
   noUmlautsExcept(excepts = [], msg = null) {
+    if (excepts === false) return this;
+
     const value = this.value();
 
     if (!value && value !== '0') return this;
@@ -207,6 +227,8 @@ class Check {
   }
 
   noCharachtersExcept(options = [], msg = null) {
+    if (options === false) return this;
+
     const value = this.value();
 
     if (!value && value !== '0') return this;
@@ -232,7 +254,7 @@ class Check {
         const test = new RegExp(except, 'g');
         const countCharachter = value.match(test);
         if (countCharachter && countCharachter.length > times) {
-          msg = msg || ` ${excepts.join(', ')} can be used just ${times} times`;
+          msg = msg || `[ ${excepts.join(', ')} ] can be used just ${times} times`;
           this.addError(this.id, msg);
           return this;
         }
@@ -255,7 +277,9 @@ class Check {
     return this;
   }
 
-  noSpaceBetween(msg = null) {
+  noSpaces(call = true, msg = null) {
+    if (call === false) return this;
+
     const value = this.value();
 
     if (!value && value !== '0') return this;
@@ -267,15 +291,29 @@ class Check {
     return this;
   }
 
-  containJust(characters, msg = null) {
+  containJust(characters = [], msg = null) {
+    if (characters === false) return this;
+
     const value = this.value();
 
     if (!value && value !== '0') return this;
 
+    if (typeof characters === 'string' && characters.indexOf('path:') === 0) return this;
+
+    if (!Array.isArray(characters) && value !== '') {
+      characters = [characters];
+    }
+
+    if (!characters.includes(value)) {
+      msg = msg || 'Wrong Value';
+      this.addError(this.id, msg);
+    }
     return this;
   }
 
-  maxLen(length, msg = null) {
+  maxLen(length = null, msg = null) {
+    if (length === false) return this;
+
     const value = this.value();
 
     if (!value && value !== '0') return this;
@@ -287,7 +325,9 @@ class Check {
     return this;
   }
 
-  minLen(length, msg = null) {
+  minLen(length = null, msg = null) {
+    if (length === false) return this;
+
     const value = this.value();
 
     if (!value && value !== '0') return this;
@@ -299,7 +339,32 @@ class Check {
     return this;
   }
 
+  unique(table = null, msg = null) {
+    if (table === false) return this;
+
+    const value = this.value();
+
+    // if (!value && value !== '0') return this;
+    // $.ajax({
+    //   type: 'POST',
+    //   url: '../../Core/callFunction.php',
+    //   dataType: 'json',
+    //   data: {
+    //     path: 'Core/System/',
+    //     className: 'Validation',
+    //     functionname: 'unique',
+    //     arguments: [[table, this.id]],
+    //   },
+    //   success: (data) => {
+    //     console.log(data);
+    //   },
+    // });
+
+    return this;
+  }
+
   // match($input, $msg = null)
+
 
   passes() {
     return !this.errors.length;
