@@ -22,7 +22,7 @@ block header-right-unser-profile
 
 block view
   .row
-    .col-md-4
+    .col-xl-5.col-lg-12
       .card
         .card-header
           i.fa.fa-align-justify
@@ -83,7 +83,7 @@ block view
                   td
                     if user.img !== 'avatar.webp'
                       img.img-thumbnail.target-img-box(src=usersImgs + user.img, alt='')
-    .col-md-4
+    .col-xl-4.col-lg-12
       .card
         .card-header
           i.fa.fa-align-justify
@@ -112,7 +112,7 @@ block view
               tr
                 td Additional
                 td.editable(data-type='text', data-name='additional', data-tag='textarea', data-value=user.additional)= user.additional
-    .col-md-4
+    .col-xl-3.col-lg-12
       .card
         .card-header
           i.fa.fa-align-justify

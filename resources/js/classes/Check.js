@@ -36,6 +36,8 @@ class Check {
   email(call = true, msg = null) {
     if (call === false) return this;
 
+    if (this.hasError(this.id)) return this;
+
     const value = this.value();
 
     if (!value && value !== '0') return this;
@@ -52,6 +54,8 @@ class Check {
   image(call = true, msg = null) {
     if (call === false) return this;
 
+    if (this.hasError(this.id)) return this;
+
     const file = this.id.files[0].type.split('/')[0].toLowerCase();
 
     if (!file || file !== 'image') {
@@ -63,6 +67,8 @@ class Check {
 
   number(call = true, msg = null) {
     if (call === false) return this;
+
+    if (this.hasError(this.id)) return this;
 
     const value = this.value();
 
@@ -78,6 +84,8 @@ class Check {
   float(call = true, msg = null) {
     if (call === false) return this;
 
+    if (this.hasError(this.id)) return this;
+
     const value = this.value();
 
     if (!value && value !== '0') return this;
@@ -92,11 +100,13 @@ class Check {
   date(options, msg = null) {
     if (options === false) return this;
 
+    if (this.hasError(this.id)) return this;
+
     const value = this.value();
 
     if (!value && value !== '0') return this;
 
-    if (new Date(value) === 'Invalid Date') {
+    if (Number.isNaN(new Date(value).getDay())) {
       msg = msg || 'this field must be date';
       this.addError(this.id, msg);
       return this;
@@ -148,6 +158,8 @@ class Check {
   pureText(call = true, msg = null) {
     if (call === false) return this;
 
+    if (this.hasError(this.id)) return this;
+
     const value = this.value();
 
     if (!value && value !== '0') return this;
@@ -161,6 +173,8 @@ class Check {
 
   text(call = true, msg = null) {
     if (call === false) return this;
+
+    if (this.hasError(this.id)) return this;
 
     const value = this.value();
 
@@ -176,6 +190,8 @@ class Check {
   noNumbers(call = true, msg = null) {
     if (call === false) return this;
 
+    if (this.hasError(this.id)) return this;
+
     const value = this.value();
 
     if (!value && value !== '0') return this;
@@ -189,6 +205,8 @@ class Check {
 
   noUmlautsExcept(excepts = [], msg = null) {
     if (excepts === false) return this;
+
+    if (this.hasError(this.id)) return this;
 
     const value = this.value();
 
@@ -228,6 +246,8 @@ class Check {
 
   noCharachtersExcept(options = [], msg = null) {
     if (options === false) return this;
+
+    if (this.hasError(this.id)) return this;
 
     const value = this.value();
 
@@ -280,6 +300,8 @@ class Check {
   noSpaces(call = true, msg = null) {
     if (call === false) return this;
 
+    if (this.hasError(this.id)) return this;
+
     const value = this.value();
 
     if (!value && value !== '0') return this;
@@ -293,6 +315,8 @@ class Check {
 
   containJust(characters = [], msg = null) {
     if (characters === false) return this;
+
+    if (this.hasError(this.id)) return this;
 
     const value = this.value();
 
@@ -314,6 +338,8 @@ class Check {
   maxLen(length = null, msg = null) {
     if (length === false) return this;
 
+    if (this.hasError(this.id)) return this;
+
     const value = this.value();
 
     if (!value && value !== '0') return this;
@@ -327,6 +353,8 @@ class Check {
 
   minLen(length = null, msg = null) {
     if (length === false) return this;
+
+    if (this.hasError(this.id)) return this;
 
     const value = this.value();
 
@@ -344,22 +372,24 @@ class Check {
 
     const value = this.value();
 
-    // if (!value && value !== '0') return this;
+    if (!value && value !== '0') return this;
+
+    // const form = $('form');
+    // const action = form.attr('action');
+
     // $.ajax({
     //   type: 'POST',
-    //   url: '../../Core/callFunction.php',
-    //   dataType: 'json',
-    //   data: {
-    //     path: 'Core/System/',
-    //     className: 'Validation',
-    //     functionname: 'unique',
-    //     arguments: [[table, this.id]],
-    //   },
+    //   url: action,
+    //   data: form.serialize(),
     //   success: (data) => {
-    //     console.log(data);
+    //     data = JSON.parse(data);
+    //     console.log(data[this.id]);
+    //     if (data[this.id]) {
+    //       msg = msg || data[this.id];
+    //       this.addError(this.id, msg);
+    //     }
     //   },
     // });
-
     return this;
   }
 

@@ -12,9 +12,9 @@
         "times": 1
       },
       "type" : "text",
-      "unique" : "users",
       "maxLen" : 20,
-      "minLen" : 5
+      "minLen" : 5,
+      "unique" : "users"
     }
   },
   "fname" : {

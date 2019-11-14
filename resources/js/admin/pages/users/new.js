@@ -1,3 +1,5 @@
+/* eslint-disable prefer-const */
+/* eslint-disable no-unused-vars */
 /* eslint-disable consistent-return */
 /* eslint-disable no-undef */
 $(document).ready(() => {
@@ -45,23 +47,40 @@ $(document).ready(() => {
     }
   }
 
+  let errorsJs = true;
   let columns = null;
-  // ajax request for inputs
+  const newValues = [];
+  const oldValues = [];
   $('form').submit(function (e) {
     e.preventDefault();
+
+    let continueToAjax = true;
 
     $('.error-msg').remove();
     $('input, textarea, select').removeClass('error-input');
 
-    if (!columns) {
-      $.ajaxSetup({ async: false });
-      $.getJSON('../../../config/admin/users/columns.json', (data) => {
-        columns = data;
-      });
-    }
-    const errors = checkInputs(columns);
+    [...$('form input, form select')].forEach((arr) => {
+      newValues[$(arr).attr('name')] = $(arr).val();
+    });
 
-    if (errors !== true) return showErros(errors);
+    for (const key in newValues) if (newValues[key] !== oldValues[key]) continueToAjax = false;
+
+    if (!continueToAjax) {
+      if (!columns) {
+        $.ajaxSetup({ async: false });
+        $.getJSON('../../../config/admin/users/columns.json', (data) => {
+          columns = data;
+        });
+      }
+
+      [...$('form input, form select')].forEach((arr) => {
+        oldValues[$(arr).attr('name')] = $(arr).val();
+      });
+
+      errorsJs = checkInputs(columns);
+    }
+
+    if (errorsJs !== true) return showErros(errorsJs);
 
     const form = $(this);
     const action = form.attr('action');
@@ -83,9 +102,7 @@ $(document).ready(() => {
           window.location.reload();
         }
 
-        for (const error in json) {
-          $(`#${error}`).addClass('error-input').after($(`<p class='error-msg'>${json[error]}</p>`).hide().fadeIn(200));
-        }
+        showErros(json);
 
         $(this).find('button').removeClass('prevent-click').html('Add');
         $('.disable-box').remove();

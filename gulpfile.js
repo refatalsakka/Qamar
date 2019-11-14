@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-syntax */
 const gulp = require('gulp');
 const { series } = require('gulp');
 const pugLint = require('gulp-pug-linter');
@@ -152,7 +151,6 @@ exports.imgmin = gulp.parallel(imgmin, imgmSvg);
 
 // Libraries Copy  ↪ 📁 node_modules/ Output ↪ 📁 public/ {js & css} /libs
 async function libraries() {
-  // eslint-disable-next-line guard-for-in
   for (const LIB in LIBS) {
     LIBS[LIB].map((output) => {
       if (typeof output === 'object') {
