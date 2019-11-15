@@ -135,7 +135,6 @@ $(document).ready(() => {
           const json = convertedToJson(data);
           if (json.success) {
             // "not text" means that it's let the input empty so it will be jsut empty
-            // eslint-disable-next-line no-unused-vars
             const value = (json.success !== 'no text') ? json.success.trim() : '';
             setTimeout(() => {
               td.html(value).attr('data-value', value);
