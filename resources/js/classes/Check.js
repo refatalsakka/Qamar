@@ -393,8 +393,24 @@ class Check {
     return this;
   }
 
-  // match($input, $msg = null)
+  match(input, msg = null) {
+    if (input === false) return this;
 
+    if (this.hasError(this.id)) return this;
+
+    const value = this.value();
+
+    const valueConfirm = document.querySelector(`#${input}`).value;
+
+    if (value && valueConfirm) {
+      if (value !== valueConfirm) {
+        msg = msg || 'passwords doesn\'t match';
+
+        this.addError(this.id, msg);
+      }
+    }
+    return this;
+  }
 
   passes() {
     return !this.errors.length;
@@ -409,9 +425,7 @@ class Check {
   }
 
   addError(id, msg) {
-    if (!this.hasError(id)) {
-      this.errors[id] = msg;
-    }
+    if (!this.hasError(id)) this.errors[id] = msg;
   }
 
   getErrors() {

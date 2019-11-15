@@ -103,6 +103,7 @@ class View
     $public = assets();
     $public = str_replace($dir, $host, $public);
     $public = str_replace('\\', '/', $public);
+    if (substr($public, -1) !== '/') $public = $public . '/';
 
     return $public;
   }

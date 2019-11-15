@@ -14,6 +14,7 @@ $(document).ready(() => {
 
   // date picker
   $('input.date').datepicker({
+    defaultViewDate: '01/01/1970',
     format: 'dd M yyyy',
     startDate: '01/01/1920',
     endDate: '31/12/2004',
@@ -98,13 +99,14 @@ $(document).ready(() => {
 
         if (json.success) {
           window.location = `${window.location.origin}/admin/users/${json.success}`;
-        } if (json === 'reload') {
+        }
+        if (json === 'reload') {
           window.location.reload();
         }
 
         showErros(json);
 
-        $(this).find('button').removeClass('prevent-click').html('Add');
+        form.find('button').removeClass('prevent-click').html('Add');
         $('.disable-box').remove();
       },
       fail: () => {

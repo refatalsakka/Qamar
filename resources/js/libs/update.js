@@ -129,22 +129,25 @@ $(document).ready(() => {
         url: action,
         data: form.serialize(),
         beforeSend: () => {
-          td.append('<div class="disable-box"><i class="fas fa-spinner loading"></i></div>');
+          td.append('<div class="disable-click"><i class="fas fa-spinner loading"></i></div>');
         },
         success: (data) => {
           const json = convertedToJson(data);
           if (json.success) {
             // "not text" means that it's let the input empty so it will be jsut empty
+            // eslint-disable-next-line no-unused-vars
             const value = (json.success !== 'no text') ? json.success.trim() : '';
-            td.html(value).attr('data-value', value);
-            new Background({ colorClass: 'success-bg', removeAfter: 3000 }).add(td[0]);
+            setTimeout(() => {
+              td.html(value).attr('data-value', value);
+              new Background({ colorClass: 'success-bg', removeAfter: 3000 }).add(td[0]);
+            }, 100);
           } else if (json.error) {
             const input = Object.keys(json.error)[0];
             new Alert({ insertIn: td[0], msg: json.error[input], mood: 'danger' }).append();
           } else {
             window.location.reload();
           }
-          td.find('.disable-box').remove();
+          // td.find('.disable-click').remove();
         },
         fail: () => window.location.reload(),
       });
@@ -168,6 +171,7 @@ $(document).ready(() => {
     createForm(this);
 
     $('.editable input.date').datepicker({
+      defaultViewDate: '01/01/1970',
       format: 'dd M yyyy',
       startDate: '01/01/1920',
       endDate: '31/12/2004',

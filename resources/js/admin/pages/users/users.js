@@ -83,9 +83,7 @@ $(document).ready(() => {
 
       code = code.slice(0, -4);
 
-      if (code) {
-        return eval(code);
-      }
+      if (code) return eval(code);
       return $(this);
     });
   }

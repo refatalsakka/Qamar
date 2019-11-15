@@ -104,17 +104,14 @@ exports.scriptsLint = scriptsLint;
 
 // Style lint Cehck ✅ Convert 🔂 Compresse 🔄 Output ↪ 📁 public/css
 async function styles() {
-  const DIRs = ['admin', 'website'];
-  return DIRs.forEach((dir) => {
-    gulp
-      .src(`${SASS_DIR}/${dir}/pages/**/*.scss`)
-      .pipe(sourcemaps.init({ loadMaps: true }))
-      .pipe(sass({ outputStyle: 'compressed' }))
-      .on('error', sass.logError)
-      .pipe(autoprefixer())
-      .pipe(sourcemaps.write())
-      .pipe(gulp.dest(`${CSS_PUBLIC_DIR}/${dir}`));
-  });
+  return gulp
+    .src([`${SASS_DIR}/**/*.scss`])
+    .pipe(sourcemaps.init({ loadMaps: true }))
+    .pipe(sass({ outputStyle: 'compressed' }))
+    .on('error', sass.logError)
+    .pipe(autoprefixer())
+    .pipe(sourcemaps.write())
+    .pipe(gulp.dest(`${CSS_PUBLIC_DIR}`));
 }
 exports.styles = series(styleLint, styles);
 

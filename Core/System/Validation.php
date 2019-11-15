@@ -582,12 +582,12 @@ class Validation
   {
     if ($input === false) return $this;
 
-    $valuePassword = $this->value();
+    $value = $this->value();
 
     $valueConfirm = $this->app->request->post($input);
 
-    if ($valuePassword && $valueConfirm) {
-      if ($valuePassword !== $valueConfirm) {
+    if ($value && $valueConfirm) {
+      if ($value !== $valueConfirm) {
         $msg = $msg ?: 'passwords doesn\'t match';
 
         $this->addError('match', $msg);

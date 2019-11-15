@@ -1,16 +1,5 @@
 .editable {
   position: relative;
-
-  @include disableBox {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    svg, i {
-      display: block;
-    }
-  }
-
   form {
     display: flex;
 
@@ -29,5 +18,15 @@
       flex-grow: 1;
       width: 20%;
     }
+  }
+}
+
+@include disableClick {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  svg, i {
+    display: block;
   }
 }
