@@ -99,8 +99,7 @@
     "user_id_table_name" : "user_id",
     "filters" : {
       "type" : "number",
-      "maxLen" : 5,
-      "minLen" : 5
+      "length" : 5
     }
   },
   "city" : {

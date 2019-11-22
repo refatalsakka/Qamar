@@ -1,6 +1,3 @@
-/* eslint-disable prefer-const */
-/* eslint-disable no-unused-vars */
-/* eslint-disable consistent-return */
 /* eslint-disable no-undef */
 $(document).ready(() => {
   // check if the string can be parsed to JSON
@@ -52,6 +49,7 @@ $(document).ready(() => {
   let columns = null;
   const newValues = [];
   const oldValues = [];
+  /* eslint-disable consistent-return */
   $('form').submit(function (e) {
     e.preventDefault();
 

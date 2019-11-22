@@ -1,5 +1,5 @@
 {
-  "name": "mvc-framework-php",
+  "name": "mvc-framework",
   "version": "1.0.0",
   "description": "",
   "scripts": {
@@ -18,6 +18,7 @@
     "url": "https://github.com/refatalsakka/mvc-framework-php/issues"
   },
   "homepage": "https://github.com/refatalsakka/mvc-framework-php#readme",
+  "publishConfig": { "registry": "https://npm.pkg.github.com/" },
   "dependencies": {
     "@coreui/coreui": "^2.1.12",
     "@coreui/icons": "0.3.0",

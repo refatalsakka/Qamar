@@ -74,7 +74,7 @@ class Check {
 
     if (!value && value !== '0') return this;
 
-    if (Number.isNaN(Number(value))) {
+    if (!/^\d+$/.test(value)) {
       msg = msg || 'this field must be number';
       this.addError(this.id, msg);
     }
@@ -330,6 +330,22 @@ class Check {
 
     if (!characters.includes(value)) {
       msg = msg || 'Wrong Value';
+      this.addError(this.id, msg);
+    }
+    return this;
+  }
+
+  length(length = null, msg = null) {
+    if (length === false) return this;
+
+    if (this.hasError(this.id)) return this;
+
+    const value = this.value();
+
+    if (!value && value !== '0') return this;
+
+    if (value.length !== length) {
+      msg = msg || `this field can be just ${length} charachter`;
       this.addError(this.id, msg);
     }
     return this;
