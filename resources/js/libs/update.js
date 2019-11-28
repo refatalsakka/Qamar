@@ -134,7 +134,7 @@ $(document).ready(() => {
         success: (data) => {
           const json = convertedToJson(data);
           if (json.success) {
-            // "not text" means that it's let the input empty so it will be jsut empty
+            // "not text" means that the input is empty
             const value = (json.success !== 'no text') ? json.success.trim() : '';
             setTimeout(() => {
               td.html(value).attr('data-value', value);

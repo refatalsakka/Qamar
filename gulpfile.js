@@ -44,6 +44,7 @@ const LIBS = {
       fonts: [
         'node_modules/font-awesome/fonts/*',
         'node_modules/simple-line-icons/fonts/*',
+        'node_modules/@coreui/icons/fonts/*',
       ],
     },
     {
