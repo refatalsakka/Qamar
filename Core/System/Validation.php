@@ -526,6 +526,29 @@ class Validation
   }
 
   /**
+   * Determine if the input value should equal length
+   *
+   * @param int $length
+   * @param string $msg
+   * @return $this
+   */
+  public function length($length = null, $msg = null)
+  {
+    if ($length === false) return $this;
+
+    $value = $this->value();
+
+    if (!$value && $value != '0') return $this;
+
+    if (strlen($value) !== $length) {
+      $msg = $msg ?: `this field can be just ${length} charachter`;
+
+      $this->addError($this->input, $msg);
+    }
+    return $this;
+  }
+
+  /**
    * Determine if the input value should be at most the given length
    *
    * @param int $length

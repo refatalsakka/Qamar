@@ -10,15 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/refatalsakka/mvc-framework-php"
+    "url": "https://github.com/refatalsakka/mvc-php"
   },
   "author": "Refat Alsakka",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/refatalsakka/mvc-framework-php/issues"
+    "url": "https://github.com/refatalsakka/mvc-php/issues"
   },
-  "homepage": "https://github.com/refatalsakka/mvc-framework-php#readme",
-  "publishConfig": { "registry": "https://npm.pkg.github.com/" },
+  "homepage": "https://github.com/refatalsakka/mvc-php#readme",
   "dependencies": {
     "@coreui/coreui": "^2.1.12",
     "@coreui/icons": "0.3.0",
