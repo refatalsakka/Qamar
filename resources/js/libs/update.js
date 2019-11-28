@@ -146,7 +146,7 @@ $(document).ready(() => {
           } else {
             window.location.reload();
           }
-          // td.find('.disable-click').remove();
+          td.find('.disable-click').remove();
         },
         fail: () => window.location.reload(),
       });
