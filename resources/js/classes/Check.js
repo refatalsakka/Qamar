@@ -383,32 +383,6 @@ class Check {
     return this;
   }
 
-  unique(table = null, msg = null) {
-    if (table === false) return this;
-
-    const value = this.value();
-
-    if (!value && value !== '0') return this;
-
-    // const form = $('form');
-    // const action = form.attr('action');
-
-    // $.ajax({
-    //   type: 'POST',
-    //   url: action,
-    //   data: form.serialize(),
-    //   success: (data) => {
-    //     data = JSON.parse(data);
-    //     console.log(data[this.id]);
-    //     if (data[this.id]) {
-    //       msg = msg || data[this.id];
-    //       this.addError(this.id, msg);
-    //     }
-    //   },
-    // });
-    return this;
-  }
-
   match(input, msg = null) {
     if (input === false) return this;
 
