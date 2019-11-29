@@ -115,13 +115,13 @@ $(document).ready(() => {
         <td class="text-center user-id"><strong>#${user.id}</strong></td>
         <td class="text-center">
           <div class="avatar">
-            <img class="img-avatar" src="http://localhost/public/${img}" alt="${user.fname} ${user.lname}">
+            <img class="img-avatar" src="${window.location.origin}/public/${img}" alt="${user.fname} ${user.lname}">
             <span class="avatar-status ${isLogin}"></span>
           </div>
         </td>
         <td class="user-name">
           <div>
-            <a href="http://localhost/admin/users/${user.id}">${user.fname} ${user.lname}</a>
+            <a href="${window.location.origin}/admin/users/${user.id}">${user.fname} ${user.lname}</a>
           </div>
           <div class="small text-muted">
           ${isNew} Registered: ${user.registration}
