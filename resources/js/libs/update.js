@@ -29,6 +29,7 @@ $(document).ready(() => {
     const options = $(elm).attr('data-options');
     const id = $(elm).attr('data-name');
     const classes = ['form-control', 'input-edit'];
+    const selected = $(elm).attr('data-value');
 
     if (type === 'date') {
       classes.push('date');
@@ -42,6 +43,7 @@ $(document).ready(() => {
       id,
       classes,
       options,
+      selected,
       data: {
         value,
         type,
