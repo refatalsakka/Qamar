@@ -27,21 +27,8 @@ $(document).ready(() => {
     }
   });
 
-  let filterSection = false;
   $('.filter-icon').click(function () {
-    let addClass;
-    let removeClass;
-    if (filterSection) {
-      addClass = 'fa-chevron-down';
-      removeClass = 'fa-chevron-up';
-      filterSection = false;
-    } else {
-      addClass = 'fa-chevron-up';
-      removeClass = 'fa-chevron-down';
-      filterSection = true;
-    }
-    $(this).find('svg').addClass(addClass);
-    $(this).find('svg').removeClass(removeClass);
+    $(this).find('svg, i').toggleClass('open');
     $('.filter form').slideToggle();
   });
 
@@ -128,7 +115,7 @@ $(document).ready(() => {
           </div>
         </td>
         <td class="text-center user-country">
-          <i class="flag-icon h4 mb-0 ${user.country_Icon}" title="${user.country}" data-country="${user.country}"></i>
+          <i class="flag-icon h4 mb-0 ${user.country_icon}" title="${user.country}" data-country="${user.country}"></i>
         </td>
         <td class="text-center user-zip">${zip}</td>
         <td class="text-center user-status">${status}</td>

@@ -1,12 +1,6 @@
 <?php
 
 return [
-  'db' => [
-    'server'  => 'localhost',
-    'dbname'  => 'mvc',
-    'dbuser'  => 'root',
-    'dbpass'  => ''
-  ],
   'website' => [
     'websiteLang'         => 'de',
     'websiteCharset'      => 'UTF-8',
@@ -15,5 +9,14 @@ return [
     'websiteAuth'         => 'Refat Alsakka',
     'websiteName'         => 'framework',
   ],
-  'env' => 'dev',
+  'db' => [
+    'server'  => 'localhost',
+    'dbname'  => 'mvc',
+    'dbuser'  => 'root',
+    'dbpass'  => '',
+  ],
+  'hash' => [
+    'algo' => PASSWORD_BCRYPT,
+  ],
+  'mode' => 'dev',
 ];

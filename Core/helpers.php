@@ -1,6 +1,7 @@
 <?php
 
 use System\Application;
+use System\File;
 
 if (!function_exists('pre')) {
   function pre($var)
@@ -21,7 +22,7 @@ if (!function_exists('array_get')) {
 if (!function_exists('app')) {
   function app()
   {
-    return Application::getInstance();
+    return Application::getInstance(new File(__DIR__));
   }
 }
 
@@ -46,24 +47,21 @@ if (!function_exists('getLastParameter')) {
 if (!function_exists('userId')) {
   function userId()
   {
-    $app = Application::getInstance();
-    return getLastParameter($app->request->baseUrl());
+    return getLastParameter(app()->request->baseUrl());
   }
 }
 
 if (!function_exists('url')) {
   function url($path)
   {
-    $app = Application::getInstance();
-    return $app->url->link($path);
+    return app()->url->link($path);
   }
 }
 
 if (!function_exists('assets')) {
   function assets($path = null)
   {
-    $app = Application::getInstance();
-    return $app->url->link('public' . DS . $path);
+    return app()->url->link('public' . DS . $path);
   }
 }
 

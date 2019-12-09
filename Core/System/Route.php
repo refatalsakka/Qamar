@@ -236,7 +236,7 @@ class Route
   {
     $middlewareInterface = 'App\Middlewares\MiddlewareIntrerface\MiddlewaresInterface';
 
-    $middlewares = $this->app->alias['middlewares'];
+    $middlewares = $this->app->file->call('config/alias.php')['middlewares'];
 
     $middlewareClass = $middlewares[$middleware];
 

@@ -34,11 +34,9 @@ class Application
   {
     $this->share('file', $file);
 
-    $this->handleErrors();
+    if ($this->file->call('config/error.php')) $this->handleErrors();
 
     $this->share('config', $this->file->call('config.php'));
-
-    $this->share('alias', $this->file->call('config/alias.php'));
 
     $this->loadHelpers();
   }
@@ -71,7 +69,6 @@ class Application
 
       $run->prependHandler($jsonHandler);
     }
-
     $run->register();
   }
 
@@ -81,9 +78,10 @@ class Application
    * @param \System\File $file
    * @return \System\Application
    */
-  public static function getInstance($file = null)
+  public static function getInstance($file)
   {
-    return self::$instance = is_null(self::$instance) ? new static($file) : self::$instance;
+    self::$instance = is_null(self::$instance) ? new static($file) : self::$instance;
+    return self::$instance;
   }
 
   /**
@@ -97,9 +95,7 @@ class Application
 
     $this->request->prepareUrl();
 
-    foreach (glob("routes/**/*.php") as $route) {
-      $this->file->call($route);
-    }
+    foreach (glob("routes/**/*.php") as $route) $this->file->call($route);
 
     $output = $this->route->getProperRoute();
 
@@ -115,7 +111,7 @@ class Application
    */
   public function coreClasses()
   {
-    return $this->alias['classes'];
+    return $this->file->call('config/alias.php')['classes'];
   }
 
   /**
@@ -127,9 +123,7 @@ class Application
    */
   public function share($key, $value)
   {
-    if ($value instanceof Closure) {
-      $value = call_user_func($value, $this);
-    }
+    if ($value instanceof Closure) $value = call_user_func($value, $this);
     $this->container[$key] = $value;
   }
 

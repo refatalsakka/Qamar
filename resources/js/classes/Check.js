@@ -203,8 +203,8 @@ class Check {
     return this;
   }
 
-  noUmlautsExcept(excepts = [], msg = null) {
-    if (excepts === false) return this;
+  noUmlauts(call = true, msg = null) {
+    if (call === false) return this;
 
     if (this.hasError(this.id)) return this;
 
@@ -212,40 +212,19 @@ class Check {
 
     if (!value && value !== '0') return this;
 
-    const umlauts = 'á,â,ă,ä,ĺ,ç,č,é,ę,ë,ě,í,î,ď,đ,ň,ó,ô,ő,ö,ř,ů,ú,ű,ü,ý,ń,˙';
+    const umlauts = 'á,â,ă,ä,ĺ,ç,č,é,ę,ë,ě,í,î,ď,đ,ň,ó,ô,ő,ö,ř,ů,ú,ű,ü,ý,ń,˙'.split(',').join('');
 
-    if (typeof excepts === 'string' && excepts !== '') {
-      excepts = excepts.split(',');
-    } else if (!Array.isArray(excepts)) {
-      excepts = [];
-    }
+    const re = new RegExp(`[${umlauts}]`, 'gi');
 
-    if (excepts) {
-      excepts = excepts.map(chrachter => chrachter.toLowerCase());
-    }
-
-    const BreakException = {};
-    try {
-      umlauts.split(',').forEach((umlaut) => {
-        if (value.indexOf(umlaut) >= 0 && excepts.indexOf(umlaut) < 0) {
-          excepts = excepts.join(',');
-          if (excepts) {
-            msg = msg || `just [ ${excepts} ] can be used`;
-          } else {
-            msg = msg || 'umlauts are not allow';
-          }
-          this.addError(this.id, msg);
-          throw BreakException;
-        }
-      });
-    } catch (e) {
-      if (e !== BreakException) throw e;
+    if (re.test(value)) {
+      msg = msg || 'umlauts are not allow';
+      this.addError(this.id, msg);
     }
     return this;
   }
 
-  noCharachtersExcept(options = [], msg = null) {
-    if (options === false) return this;
+  noCharExcept(excepts = {}, msg = null) {
+    if (excepts === false || excepts === {}) return this;
 
     if (this.hasError(this.id)) return this;
 
@@ -253,42 +232,97 @@ class Check {
 
     if (!value && value !== '0') return this;
 
-    let umlauts = 'á,â,ă,ä,ĺ,ç,č,é,ę,ë,ě,í,î,ď,đ,ň,ó,ô,ő,ö,ř,ů,ú,ű,ü,ý,ń,˙';
-    umlauts = umlauts.split(',').join('');
+    const umlauts = 'á,â,ă,ä,ĺ,ç,č,é,ę,ë,ě,í,î,ď,đ,ň,ó,ô,ő,ö,ř,ů,ú,ű,ü,ý,ń,˙'.split(',').join('');
 
-    let excepts = options.excepts || [];
-    const times = options.times || 1;
+    let chars = null;
+    let times = null;
+    let atFirst = null;
+    let atEnd = null;
+    let between = null;
 
-    if (excepts) {
-      if (!Array.isArray(excepts)) {
-        const countComma = (excepts.match(/,/g) || []).length;
-
-        if (countComma && countComma > 1) {
-          excepts = excepts.split(',');
+    if (Array.isArray(excepts) && excepts.length) {
+      chars = excepts.join('');
+    } else if (typeof excepts === 'string') {
+      if (/,/g.test(excepts) && excepts.match(/,/g).length > 1) {
+        chars = `\\${chars.split(',').join('\\')}`;
+      } else {
+        chars = `\\${chars.split('').join('\\')}`;
+      }
+    } else if (typeof excepts === 'object' && !Array.isArray(excepts)) {
+      chars = excepts.chars;
+      if (Array.isArray(chars)) {
+        chars = chars.join('');
+      } else if (typeof chars === 'string') {
+        if (/,/g.test(chars) && chars.match(/,/g).length > 1) {
+          chars = `\\${chars.split('').join('\\')}`;
         } else {
-          excepts = excepts.split('');
+          chars = `\\${chars.split('').join('\\')}`;
         }
       }
-      // eslint-disable-next-line consistent-return
-      excepts.forEach((except) => {
-        const test = new RegExp(except, 'g');
-        const countCharachter = value.match(test);
-        if (countCharachter && countCharachter.length > times) {
-          msg = msg || `[ ${excepts.join(', ')} ] can be used just ${times} times`;
-          this.addError(this.id, msg);
-          return this;
-        }
-      });
-      excepts = excepts.join('');
+      times = excepts.times || null;
+      atFirst = excepts.atFirst;
+      atEnd = excepts.atEnd;
+      between = excepts.between;
     } else {
-      excepts = '';
+      chars = '';
     }
 
-    const re = new RegExp(`^[A-Za-z0-9${umlauts}${excepts}]*$`);
+    if (times > 0) {
+      let splitChars = chars;
+      if (chars.length > 1) {
+        splitChars = `\\${chars.split('').join('|\\')}`;
+      }
+      const re1 = new RegExp(`(${splitChars})`, 'g');
+      if (value.match(re1) && value.match(re1).length > times) {
+        msg = msg || 'charachters are too many';
+        this.addError(this.id, msg);
+        return this;
+      }
+    }
 
-    if (!re.test(value)) {
-      if (excepts) {
-        msg = msg || `just [ ${excepts} ] can be used`;
+    if (atFirst === false) {
+      let splitChars = chars;
+      if (chars.length > 1) {
+        splitChars = `\\${chars.split('').join('|\\')}`;
+      }
+      const re2 = new RegExp(`^(${splitChars}|\\s+\\${splitChars})`, 'g');
+      if (re2.test(value)) {
+        msg = msg || 'charachters cant be in the first';
+        this.addError(this.id, msg);
+        return this;
+      }
+    }
+
+    if (atEnd === false) {
+      let splitChars = chars;
+      if (chars.length > 1) {
+        splitChars = `\\${chars.split('').join('|\\')}`;
+      }
+      const re3 = new RegExp(`(${splitChars}|\\${splitChars}\\s+)$`, 'g');
+      if (re3.test(value)) {
+        msg = msg || 'charachters cant be in the end';
+        this.addError(this.id, msg);
+        return this;
+      }
+    }
+
+    if (between === false) {
+      let splitChars = chars;
+      if (chars.length > 1) {
+        splitChars = `\\${chars.split('').join('|\\')}`;
+      }
+      const re3 = new RegExp(`.+(${splitChars}).+[^\\s]`, 'g');
+      if (re3.test(value)) {
+        msg = msg || 'charachters cant be between';
+        this.addError(this.id, msg);
+        return this;
+      }
+    }
+
+    const re5 = new RegExp(`^[A-Za-z0-9\\s${umlauts}${chars}]*$`);
+    if (!re5.test(value)) {
+      if (chars) {
+        msg = msg || `just [ ${chars} ] can be used`;
       } else {
         msg = msg || 'charachters are not allow';
       }
@@ -306,7 +340,7 @@ class Check {
 
     if (!value && value !== '0') return this;
 
-    if (value.trim().includes(' ')) {
+    if (/\s/.test(value)) {
       msg = msg || 'Spaces are not allow';
       this.addError(this.id, msg);
     }

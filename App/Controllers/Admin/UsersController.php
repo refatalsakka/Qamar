@@ -3,6 +3,7 @@
 namespace App\Controllers\Admin;
 
 use System\Controller as Controller;
+use RandomLib\Factory as Factory;
 
 class UsersController extends Controller
 {
@@ -12,7 +13,7 @@ class UsersController extends Controller
 
     $usersformatted = $this->formatUsers($users);
 
-    $countries = $countries = array_keys($this->countries('all'));;
+    $countries = $this->countries('all', 'name');
 
     $context = [
       'users' => $usersformatted,
@@ -34,8 +35,9 @@ class UsersController extends Controller
     $user->last_login = $this->changeFormatDate($user->last_login);
     $user->last_logout = $this->changeFormatDate($user->last_logout);
     $user->birthday = $this->changeFormatDate($user->birthday, ['Y-m-d', 'd M Y']);
+    $user->country_icon = $this->countries($user->country);
 
-    $countries = array_keys($this->countries('all'));
+    $countries = $this->countries('all', 'name');
     $countries_options = implode(',', $countries);
 
     $context = [
@@ -51,7 +53,7 @@ class UsersController extends Controller
 
     foreach ($users as $user) {
       $user->new = $this->isUserNew($user->registration);
-      $user->country_Icon = $this->countries($user->country);
+      $user->country_icon = $this->countries($user->country);
       $user->registration = $this->changeFormatDate($user->registration);
       $user->last_login = $this->changeFormatDate($user->last_login);
 
@@ -174,7 +176,7 @@ class UsersController extends Controller
 
     foreach ($users as $user) {
       $user->new = $this->isUserNew($user->registration);
-      $user->country_Icon = $this->countries($user->country);
+      $user->country_icon = $this->countries($user->country);
       $user->registration = $this->changeFormatDate($user->registration);
       $user->last_login = $this->changeFormatDate($user->last_login);
 
@@ -209,9 +211,10 @@ class UsersController extends Controller
 
     $current_value = $this->db->select($name)->from($table)->where($user_id_table_name . ' = ?', [$id])->fetch()->$name;
 
-    if ($current_value === strtolower($value)) {
-      $msg = null;
-      $msg['success'] = strtolower($value);
+    if ($value == '') $value = null;
+
+    if (($current_value === strtolower($value)) || ($value == null && $current_value == null)) {
+      $msg['same'] = $value ? strtolower($value) : '';
       return json_encode($msg);
     }
 
@@ -239,13 +242,7 @@ class UsersController extends Controller
       return json_encode($msg);
     }
 
-    if (isset($filters->date)) {
-      $value = date('Y-m-d', strtotime($value));
-    }
-
-    if ($value == '') {
-      $value = null;
-    }
+    if (isset($filters->date)) $value = date('Y-m-d', strtotime($value));
 
     $update = $this->db->data($name, $value)->where($user_id_table_name . ' = ?', $id)->update($table);
 
@@ -254,14 +251,14 @@ class UsersController extends Controller
       return json_encode($msg);
     }
 
-    $msg = null;
-    $msg['success'] = 'no text';
-
-    if ($value) {
-      $msg['success'] = _e($value);
-
+    if ($name === 'country') {
+      $msg['country'] = [
+        $value => $this->countries($value),
+      ];
+    } else {
+      $msg['text'] = _e($value);
       if (isset($filters->date)) {
-        $msg['success'] = $this->changeFormatDate($value, ['Y-m-d', 'd M Y']);
+        $msg['text'] = $this->changeFormatDate($value, ['Y-m-d', 'd M Y']);
       }
     }
     return json_encode($msg);
@@ -269,10 +266,7 @@ class UsersController extends Controller
 
   public function new()
   {
-    $countries = $this->countries('all');
-
-    $countries = array_keys($countries);
-
+    $countries = $this->countries('all', 'name');
     $context = [
       'countries' => $countries,
     ];
@@ -317,8 +311,10 @@ class UsersController extends Controller
       return json_encode($msg);
     }
 
-    $user_id = substr($this->changeFormatDate(microtime(true), ['U.u', 'us']) * rand(), 0, 6);
-    $code = $this->changeFormatDate(microtime(true), ['U.u', 'uiYdsmH']);
+    $factory = new Factory;
+
+    $user_id = $factory->getMediumStrengthGenerator()->generateString(8, '0123456789');
+    $code =$factory->getMediumStrengthGenerator()->generateString(20, '0123456789abcdefghijklmnopqrstuvwxyz');
     $username = $posts['username'];
     $fname = $posts['fname'];
     $lname = $posts['lname'];
@@ -396,7 +392,7 @@ class UsersController extends Controller
       if ($months === 0) {
         $days = $day - $register_day;
 
-        if ($days < 4) {
+        if ($days < 1) {
           return 1;
         }
       }

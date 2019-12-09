@@ -45,7 +45,6 @@ $(document).ready(() => {
       options,
       selected,
       data: {
-        value,
         type,
       },
     }).create(tag);
@@ -59,14 +58,6 @@ $(document).ready(() => {
     return $(e.target).is('.editable');
   }
 
-  function closeElms() {
-    return $('.editable').each(function () {
-      // get the value that storage in the data-value of the elm
-      const value = $(this).find('.input-edit').attr('data-value');
-      $(this).html(value);
-    });
-  }
-
   // create html form and insert the elm in it
   function createForm(elm) {
     const url = genetareAction('update');
@@ -78,16 +69,33 @@ $(document).ready(() => {
     $(elm).html(form);
   }
 
+  function closeElms() {
+    return $('.editable').each(function () {
+      // get the value that storage in the data-value of the elm
+      const name = $(this).attr('data-name');
+      const icon = $(this).attr('data-icon');
+      const value = $(this).attr('data-value') || '';
+      if (name === 'country') {
+        $(this).html(`<i class="flag-icon h4 mb-0 ${icon}" title="${value}"></i>${value}`);
+      } else {
+        $(this).html(value);
+      }
+    });
+  }
+
   function closeElm() {
     return $('.btn-cl').click(function () {
-      const form = $(this).parents('.form-editable');
-      // check if the td is open
-      if (!form.length) return;
-      const input = $(form).find('.input-edit');
+      const editable = $(this).parents('.editable');
       // get the storge value
-      const value = $(input).attr('data-value');
+      const name = $(editable).attr('data-name');
+      const icon = $(editable).attr('data-icon');
+      const value = $(editable).attr('data-value') || '';
       // set the value in the elm
-      $(form).parents('.editable').html(value);
+      if (name === 'country') {
+        $(editable).html(`<i class="flag-icon h4 mb-0 ${icon}" title="${value}"></i>`);
+      } else {
+        $(editable).html('.editable').html(value);
+      }
     });
   }
 
@@ -120,7 +128,6 @@ $(document).ready(() => {
       const td = $(this).parents('.editable');
 
       const check = checkInput(this, columns);
-
       if (check !== true) return new Alert({ insertIn: td[0], msg: check }).append();
 
       const form = $(this);
@@ -135,14 +142,22 @@ $(document).ready(() => {
         },
         success: (data) => {
           const json = convertedToJson(data);
-          if (json.success) {
-            // "not text" means that the input is empty
-            const value = (json.success !== 'no text') ? json.success.trim() : '';
+          if (json.text !== undefined) {
             setTimeout(() => {
-              td.html(value).attr('data-value', value);
+              td.html(json.text).attr('data-value', json.text);
               new Background({ colorClass: 'success-bg', removeAfter: 3000 }).add(td[0]);
             }, 100);
-          } else if (json.error) {
+          } else if (json.same !== undefined) {
+            closeElms();
+          } else if (json.country !== undefined) {
+            setTimeout(() => {
+              td
+                .html(`<i class="flag-icon h4 mb-0 ${Object.values(json.country)[0]}" title="${Object.keys(json.country)[0]}"></i>${Object.keys(json.country)[0]}`)
+                .attr('data-value', Object.keys(json.country)[0])
+                .attr('data-icon', Object.values(json.country)[0]);
+              new Background({ colorClass: 'success-bg', removeAfter: 3000 }).add(td[0]);
+            }, 100);
+          } else if (json.error !== undefined) {
             const input = Object.keys(json.error)[0];
             new Alert({ insertIn: td[0], msg: json.error[input], mood: 'danger' }).append();
           } else {
@@ -168,7 +183,6 @@ $(document).ready(() => {
     if (isElmOpen(this) || !isClickOnElm(event)) return;
 
     closeElms();
-
     createForm(this);
 
     $('.editable input.date').datepicker({

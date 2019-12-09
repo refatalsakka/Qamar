@@ -1,11 +1,17 @@
 @import "../../layout";
 @import "../../../libs/update.scss";
 
+td:not([data-name="email"]) {
+  text-transform: capitalize;
+
+  .flag-icon {
+    margin-right: 5px;
+  }
+}
 .img-thumbnail {
   cursor: pointer;
   user-select: none;
 }
-
 .img-box {
   display: none;
   position: fixed;

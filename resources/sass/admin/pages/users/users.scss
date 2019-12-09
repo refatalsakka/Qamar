@@ -6,9 +6,12 @@
   .filter-icon {
     cursor: pointer;
 
-    svg {
+    svg,li {
       font-size: 10px;
       margin-left: 5px;
+    }
+    li.open, svg.open {
+      transform: rotateX(180deg);
     }
   }
 

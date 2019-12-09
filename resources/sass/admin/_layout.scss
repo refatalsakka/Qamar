@@ -2,6 +2,10 @@
 @import '../mixin/mediaQueries';
 @import '../mixin/disableClick';
 
+body {
+  font-family: 'Roboto Condensed', sans-serif;
+}
+
 // Global
 .success-bg {
   background-color: #dbf2e3;
@@ -18,6 +22,7 @@
 .loading {
   animation: loading .6s infinite linear;
 }
+
 @keyframes loading {
   0% {
     transform: rotate(0);

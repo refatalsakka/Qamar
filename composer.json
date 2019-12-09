@@ -3,7 +3,8 @@
   "description": "",
   "require": {
     "filp/whoops": "^2.4",
-    "pug-php/pug": "^3.2"
+    "pug-php/pug": "^3.2",
+    "ircmaxell/random-lib": "^1.2"
   },
   "autoload": {
     "psr-4": {

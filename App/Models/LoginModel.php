@@ -18,13 +18,10 @@ class LoginModel extends Model
       $user = $this->where('username = ? ', $username)->fetch($this->table);
     }
 
-    if (!$user) {
-      return false;
-    }
+    if (!$user) return false;
 
-    if (password_verify($password, $user->password)) {
+    if ($this->hash->passwordCheck($password, $user->password)) {
       $this->user = $user;
-
       return true;
     }
     return false;
@@ -34,7 +31,6 @@ class LoginModel extends Model
   {
     return $this->user;
   }
-
 
   public function isLogged()
   {

@@ -4,12 +4,15 @@
     "user_id_table_name" : "id",
     "filters" : {
       "require" : true,
-      "noUmlautsExcept" : [],
       "noSpaces" : true,
-      "noNumbers" : true,
-      "noCharachtersExcept" : {
-        "excepts": "_",
-        "times": 1
+      "noNumbers": true,
+      "noUmlauts": true,
+      "noCharExcept" : {
+        "chars": "_",
+        "times": 2,
+        "atFirst": false,
+        "atEnd": false,
+        "between": true
       },
       "type" : "text",
       "maxLen" : 20,
@@ -22,9 +25,11 @@
     "user_id_table_name" : "id",
     "filters" : {
       "require" : true,
-      "noUmlautsExcept" : [],
       "noSpaces" : true,
-      "type" : "pureText",
+      "noNumbers": true,
+      "noUmlauts": true,
+      "noCharExcept" : {},
+      "type" : "text",
       "maxLen" : 20,
       "minLen" : 3
     }
@@ -34,9 +39,11 @@
     "user_id_table_name" : "id",
     "filters" : {
       "require" : true,
-      "noUmlautsExcept" : [],
       "noSpaces" : true,
-      "type" : "pureText",
+      "noNumbers": true,
+      "noUmlauts": true,
+      "noCharExcept" : {},
+      "type" : "text",
       "maxLen" : 20,
       "minLen" : 3
     }
@@ -89,7 +96,8 @@
     "table" : "address",
     "user_id_table_name" : "user_id",
     "filters" : {
-      "type" : "pureText",
+      "noNumbers": true,
+      "noCharExcept" : {},
       "maxLen" : 20,
       "minLen" : 3
     }
@@ -106,7 +114,9 @@
     "table" : "address",
     "user_id_table_name" : "user_id",
     "filters" : {
-      "type" : "pureText",
+      "noNumbers": true,
+      "noCharExcept" : {},
+      "type" : "text",
       "maxLen" : 20,
       "minLen" : 3
     }
@@ -115,7 +125,15 @@
     "table" : "address",
     "user_id_table_name" : "user_id",
     "filters" : {
-      "type" : "pureText",
+      "noNumbers": true,
+      "noCharExcept" : {
+        "chars": ",.",
+        "times": 1,
+        "atFirst": false,
+        "atEnd": true,
+        "between": false
+      },
+      "type" : "text",
       "maxLen" : 20,
       "minLen" : 3
     }

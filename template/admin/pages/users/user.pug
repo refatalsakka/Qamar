@@ -93,7 +93,9 @@ block view
             tbody
               tr
                 td Country
-                td.editable(data-name='country', data-tag='select', data-options=countries_options, data-value=user.country)= user.country
+                td.editable(data-name='country', data-tag='select', data-options=countries_options, data-value=user.country, data-icon=user.country_icon)
+                  i.flag-icon.h4.mb-0(title=user.country, class=user.country_icon)
+                  = user.country
               tr
                 td State
                 td.editable(data-type='text', data-name='state', data-value=user.state)= user.state

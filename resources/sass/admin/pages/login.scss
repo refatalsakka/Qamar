@@ -3,6 +3,7 @@
 .wrong {
   animation: wrong .3s 1;
 }
+
 @keyframes wrong {
   0% {
     transform: translateX(10px);
@@ -26,7 +27,6 @@
     transform: translateX(0);
   }
 }
-
 
 .main {
   margin: 0 !important;

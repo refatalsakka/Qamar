@@ -65,6 +65,7 @@ class Validation
   /**
    * Determine if the input is not empty
    *
+   * @param bool $call
    * @param string $msg
    * @return $this
    */
@@ -96,6 +97,7 @@ class Validation
   /**
    * Determine if the input is valid email
    *
+   * @param bool $call
    * @param string $msg
    * @return $this
    */
@@ -118,6 +120,7 @@ class Validation
   /**
    * Determine if the input is an image
    *
+   * @param bool $call
    * @param string $customErrorMessage
    * @return $this
    */
@@ -127,9 +130,7 @@ class Validation
 
     $file = $this->app->request->file($this->input);
 
-    if (!$file->exists()) {
-      return $this;
-    }
+    if (!$file->exists()) return $this;
 
     if (!$file->isImage()) {
       $msg = $msg ?: 'image is not valid';
@@ -142,6 +143,7 @@ class Validation
   /**
    * Determine if the input has number
    *
+   * @param bool $call
    * @param string $msg
    * @return $this
    */
@@ -164,6 +166,7 @@ class Validation
   /**
    * Determine if the input has float value
    *
+   * @param bool $call
    * @param string $msg
    * @return $this
    */
@@ -258,28 +261,7 @@ class Validation
   /**
    * Determine if the input has simple text
    *
-   * @param string $msg
-   * @return $this
-   */
-  public function pureText($call = true, $msg = null)
-  {
-    if ($call === false) return $this;
-
-    $value = $this->value();
-
-    if (!$value && $value != '0') return $this;
-
-    if (!preg_match('/^[a-zA-Z]+$/', $value)) {
-      $msg = $msg ?: 'this field must be just a text';
-
-      $this->addError($this->input, $msg);
-    }
-    return $this;
-  }
-
-  /**
-   * Determine if the input has simple text
-   *
+   * @param bool $call
    * @param string $msg
    * @return $this
    */
@@ -302,6 +284,7 @@ class Validation
   /**
    * Determine if the input has pure string
    *
+   * @param bool $call
    * @param string $msg
    * @return $this
    */
@@ -325,46 +308,25 @@ class Validation
   /**
    * Determine if the input has no umlaut charachter
    *
+   * @param bool $call
    * @param string $msg
    * @return $this
    */
-  public function noUmlautsExcept($excepts = [], $msg = null)
+  public function noUmlauts($call = true, $msg = null)
   {
-    if ($excepts === false) return $this;
+    if ($call === false) return $this;
 
     $value = $this->value();
 
     if (!$value && $value != '0') return $this;
 
     $umlauts = 'á,â,ă,ä,ĺ,ç,č,é,ę,ë,ě,í,î,ď,đ,ň,ó,ô,ő,ö,ř,ů,ú,ű,ü,ý,ń,˙';
-
     $umlauts = explode(',', $umlauts);
+    $umlauts = implode('', $umlauts);
 
-    if ((is_string($excepts) && $excepts !== '')) {
-      $excepts = explode(',', $excepts);
-    } else if (!is_array($excepts)) {
-      $excepts = [];
-    }
-
-    if ($excepts) {
-      $characters = [];
-
-      foreach($excepts as $character) {
-        $characters[] = mb_strtolower($character);
-      }
-      $excepts = $characters;
-    }
-
-    foreach($umlauts as $umlaut) {
-      if ((strpos($value, $umlaut) !== false && !in_array($umlaut, $excepts))) {
-        $excepts = implode('', $excepts);
-        if ($excepts) {
-          $msg = $msg ?: "just [ $excepts ] can be used";
-        } else {
-          $msg = $msg ?: 'umlauts are not allow';
-        }
-        $this->addError($this->input, $msg);
-      }
+    if (preg_match("/[$umlauts]/", $value)) {
+      $msg = $msg ?: 'umlauts are not allow';
+      $this->addError($this->input, $msg);
     }
     return $this;
   }
@@ -372,60 +334,65 @@ class Validation
   /**
    * Determine if the input has pure string
    *
+   * @param array $options
    * @param string $msg
    * @return $this
    */
-  public function noCharachtersExcept($options = [], $msg = null)
-  {
-    if ($options === false) return $this;
+  // public function charachter($options = [], $msg = null)
+  // {
+  //   if ($options === false) return $this;
 
-    $value = $this->value();
+  //   $value = $this->value();
 
-    if (!$value && $value != '0') return $this;
+  //   if (!$value && $value != '0') return $this;
 
-    $umlauts = 'á,â,ă,ä,ĺ,ç,č,é,ę,ë,ě,í,î,ď,đ,ň,ó,ô,ő,ö,ř,ů,ú,ű,ü,ý,ń,˙';
-    $umlauts = implode('', explode(',', $umlauts));
+  //   $umlauts = 'á,â,ă,ä,ĺ,ç,č,é,ę,ë,ě,í,î,ď,đ,ň,ó,ô,ő,ö,ř,ů,ú,ű,ü,ý,ń,˙';
+  //   $umlauts = explode(',', $umlauts);
+  //   $umlauts = implode('', $umlauts);
 
-     $excepts = $options->excepts ?? [];
-     $times = $options->times ?? 1;
+  //    $excepts = $options->excepts ?? [];
+  //    $times = $options->times ?? null;
 
-     if ($excepts) {
-      if (!is_array($excepts)) {
-        $count_comma = substr_count($excepts, ',');
+  //    if ($excepts) {
+  //     if (!is_array($excepts)) {
+  //       $count_comma = substr_count($excepts, ',');
 
-        if ($count_comma && $count_comma > 1) {
-          $excepts = explode(',', $excepts);
-        } else {
-          $excepts = str_split($excepts);
-        }
-      }
-      foreach($excepts as $except) {
-        $count_charachter = substr_count($value, $except);
-        if ($count_charachter && $count_charachter > $times) {
-          $msg = $msg ?: "[ " .  implode(', ', $excepts) . " ] can be used just $times times";
-          $this->addError($this->input, $msg);
-          return $this;
-        }
-      }
-      $excepts = implode('', $excepts);
-    } else {
-      $excepts = '';
-    }
+  //       if ($count_comma && $count_comma > 1) {
+  //         $excepts = explode(',', $excepts);
+  //       } else {
+  //         $excepts = str_split($excepts);
+  //       }
+  //     }
+  //     if ($times) {
+  //       foreach($excepts as $except) {
+  //         $count_charachter = substr_count($value, $except);
+  //         if ($count_charachter && $count_charachter > $times) {
+  //           $msg = $msg ?: "[ " .  implode(', ', $excepts) . " ] can be used just $times times";
+  //           $this->addError($this->input, $msg);
+  //           return $this;
+  //         }
+  //       }
+  //       $excepts = implode('', $excepts);
+  //     }
+  //   } else {
+  //     $excepts = '';
+  //   }
 
-    if (!preg_match("/^[a-zA-Z0-9$umlauts$excepts]+$/", $value)) {
-      $msg = $msg ?: 'just [ ' . $excepts . ' ] can be used';
-
-      if ($excepts) {
-        $msg = $msg ?: 'charachters are not allow';
-      }
-      $this->addError($this->input, $msg);
-    }
-    return $this;
-  }
+  //   if (!preg_match("/^[a-zA-Z0-9$umlauts$excepts]+$/", $value)) {
+  //     if ($excepts) {
+  //       $msg = $msg ?: 'just [ ' . $excepts . ' ] can be used';
+  //     } else {
+  //       $msg = $msg ?: 'charachters are not allow';
+  //     }
+  //     $this->addError($this->input, $msg);
+  //   }
+  //   return $this;
+  // }
 
   /**
    * Determine if the input has spaces between the letters or the words
    *
+   * @param bool $call
    * @param string $msg
    * @return $this
    */
@@ -448,7 +415,7 @@ class Validation
   /**
    * Determine if the given input has the value that are passed
    *
-   * @param $allow
+   * @param array $characters
    * @param string $msg
    * @return $this
    */
@@ -674,7 +641,7 @@ class Validation
   /**
    * Determine if the given input has previous errors
    *
-   * @param string $inputName
+   * @param string $input
    */
   private function hasError($input)
   {
@@ -685,14 +652,12 @@ class Validation
    * Add input error
    *
    * @param string $inputName
-   * @param string $errorMessage
+   * @param string $msg
    * @return void
    */
   public function addError($input, $msg)
   {
-    if (!$this->hasError($input)) {
-      $this->errors[$input] = $msg;
-    }
+    if (!$this->hasError($input)) $this->errors[$input] = $msg;
   }
 
   /**

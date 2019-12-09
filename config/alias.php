@@ -15,6 +15,7 @@ return [
     'paginatio' =>  'System\\Paginatio',
     'view'      =>  'System\\View',
     'pages'     =>  'System\\Pages',
+    'hash'      =>  'System\\Hash',
   ],
   'middlewares' => [
     'auth'        => 'App\\Middlewares\\AuthenticateMiddleware',

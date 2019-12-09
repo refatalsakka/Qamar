@@ -106,8 +106,8 @@ block view
                 | &nbsp;
               | Registered: #{user.registration}
           td.text-center.user-country
-            if user.country_Icon
-              i.flag-icon.h4.mb-0(title=user.country, class=user.country_Icon, data-country=user.country)
+            if user.country_icon
+              i.flag-icon.h4.mb-0(title=user.country, class=user.country_icon, data-country=user.country)
           td.text-center.user-zip= user.zip
           td.text-center.user-status
             if user.status === '0'
