@@ -234,7 +234,7 @@ class Check {
 
     const umlauts = 'á,â,ă,ä,ĺ,ç,č,é,ę,ë,ě,í,î,ď,đ,ň,ó,ô,ő,ö,ř,ů,ú,ű,ü,ý,ń,˙'.split(',').join('');
 
-    let chars = null;
+    let chars = '';
     let times = null;
     let atFirst = null;
     let atEnd = null;
@@ -244,9 +244,9 @@ class Check {
       chars = excepts.join('');
     } else if (typeof excepts === 'string') {
       if (/,/g.test(excepts) && excepts.match(/,/g).length > 1) {
-        chars = `\\${chars.split(',').join('\\')}`;
+        chars = `\\${excepts.split(',').join('\\')}`;
       } else {
-        chars = `\\${chars.split('').join('\\')}`;
+        chars = `\\${excepts.split('').join('\\')}`;
       }
     } else if (typeof excepts === 'object' && !Array.isArray(excepts)) {
       chars = excepts.chars;
@@ -254,7 +254,7 @@ class Check {
         chars = chars.join('');
       } else if (typeof chars === 'string') {
         if (/,/g.test(chars) && chars.match(/,/g).length > 1) {
-          chars = `\\${chars.split('').join('\\')}`;
+          chars = `\\${chars.split(',').join('\\')}`;
         } else {
           chars = `\\${chars.split('').join('\\')}`;
         }
@@ -263,14 +263,12 @@ class Check {
       atFirst = excepts.atFirst;
       atEnd = excepts.atEnd;
       between = excepts.between;
-    } else {
-      chars = '';
     }
 
     if (times > 0) {
       let splitChars = chars;
-      if (chars.length > 1) {
-        splitChars = `\\${chars.split('').join('|\\')}`;
+      if (splitChars.length > 1) {
+        splitChars = `\\${splitChars.split('').join('|\\')}`;
       }
       const re1 = new RegExp(`(${splitChars})`, 'g');
       if (value.match(re1) && value.match(re1).length > times) {
@@ -282,8 +280,8 @@ class Check {
 
     if (atFirst === false) {
       let splitChars = chars;
-      if (chars.length > 1) {
-        splitChars = `\\${chars.split('').join('|\\')}`;
+      if (splitChars.length > 1) {
+        splitChars = `\\${splitChars.split('').join('|\\')}`;
       }
       const re2 = new RegExp(`^(${splitChars}|\\s+\\${splitChars})`, 'g');
       if (re2.test(value)) {
@@ -295,8 +293,8 @@ class Check {
 
     if (atEnd === false) {
       let splitChars = chars;
-      if (chars.length > 1) {
-        splitChars = `\\${chars.split('').join('|\\')}`;
+      if (splitChars.length > 1) {
+        splitChars = `\\${splitChars.split('').join('|\\')}`;
       }
       const re3 = new RegExp(`(${splitChars}|\\${splitChars}\\s+)$`, 'g');
       if (re3.test(value)) {
@@ -308,10 +306,10 @@ class Check {
 
     if (between === false) {
       let splitChars = chars;
-      if (chars.length > 1) {
-        splitChars = `\\${chars.split('').join('|\\')}`;
+      if (splitChars.length > 1) {
+        splitChars = `\\${splitChars.split('').join('|\\')}`;
       }
-      const re3 = new RegExp(`.+(${splitChars}).+[^\\s]`, 'g');
+      const re3 = new RegExp(`.+(${splitChars})(.+|\\s)`, 'g');
       if (re3.test(value)) {
         msg = msg || 'charachters cant be between';
         this.addError(this.id, msg);
@@ -322,6 +320,7 @@ class Check {
     const re5 = new RegExp(`^[A-Za-z0-9\\s${umlauts}${chars}]*$`);
     if (!re5.test(value)) {
       if (chars) {
+        chars = chars.split('\\').join(' ');
         msg = msg || `just [ ${chars} ] can be used`;
       } else {
         msg = msg || 'charachters are not allow';
