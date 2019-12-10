@@ -127,7 +127,7 @@
     "filters" : {
       "noNumbers": true,
       "noCharExcept" : {
-        "chars": ",.",
+        "chars": ".",
         "times": 1,
         "atFirst": false,
         "atEnd": true,
