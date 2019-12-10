@@ -334,60 +334,130 @@ class Validation
   /**
    * Determine if the input has pure string
    *
-   * @param array $options
+   * @param array $excepts
    * @param string $msg
    * @return $this
    */
-  // public function charachter($options = [], $msg = null)
-  // {
-  //   if ($options === false) return $this;
+  public function noCharExcept($excepts, $msg = null)
+  {
+    if ($excepts === false) return $this;
 
-  //   $value = $this->value();
+    $value = $this->value();
 
-  //   if (!$value && $value != '0') return $this;
+    if (!$value && $value != '0') return $this;
 
-  //   $umlauts = 'á,â,ă,ä,ĺ,ç,č,é,ę,ë,ě,í,î,ď,đ,ň,ó,ô,ő,ö,ř,ů,ú,ű,ü,ý,ń,˙';
-  //   $umlauts = explode(',', $umlauts);
-  //   $umlauts = implode('', $umlauts);
+    $umlauts = 'á,â,ă,ä,ĺ,ç,č,é,ę,ë,ě,í,î,ď,đ,ň,ó,ô,ő,ö,ř,ů,ú,ű,ü,ý,ń,˙';
+    $umlauts = explode(',', $umlauts);
+    $umlauts = implode('', $umlauts);
 
-  //    $excepts = $options->excepts ?? [];
-  //    $times = $options->times ?? null;
+    $chars = '';
+    $times = null;
+    $atFirst = null;
+    $atEnd = null;
+    $between = null;
 
-  //    if ($excepts) {
-  //     if (!is_array($excepts)) {
-  //       $count_comma = substr_count($excepts, ',');
+    if (is_array($excepts) && count($excepts)) {
+      $chars = implode('', $excepts);
+    } else if (gettype($excepts) === 'string') {
+      if (preg_match('/,/', $excepts) && preg_match_all('/,/', $excepts) > 1) {
+        $chars = explode(',', $excepts);
+        $chars = "\\" . implode('\\', $chars);
+      } else {
+        $chars = str_split($excepts);
+        $chars = "\\" . implode('\\', $chars);
+      }
+    } else if (gettype($excepts) === 'object' && !is_array($excepts)) {
+      $chars = $excepts->chars;
+      if (is_array($chars)) {
+        $chars = explode(',', $chars);
+      } else if (gettype($chars) === 'string') {
+        if (preg_match('/,/', $chars) && preg_match_all('/,/', $chars) > 1) {
+          $chars = explode(',', $chars);
+          $chars = "\\" . implode('\\', $chars);
+        } else {
+          $chars = str_split($chars);
+          $chars = "\\" . implode('\\', $chars);
+        }
+      }
+      $times = $excepts->times ?? null;
+      $atFirst = $excepts->atFirst;
+      $atEnd = $excepts->atEnd;
+      $between = $excepts->between;
+    }
 
-  //       if ($count_comma && $count_comma > 1) {
-  //         $excepts = explode(',', $excepts);
-  //       } else {
-  //         $excepts = str_split($excepts);
-  //       }
-  //     }
-  //     if ($times) {
-  //       foreach($excepts as $except) {
-  //         $count_charachter = substr_count($value, $except);
-  //         if ($count_charachter && $count_charachter > $times) {
-  //           $msg = $msg ?: "[ " .  implode(', ', $excepts) . " ] can be used just $times times";
-  //           $this->addError($this->input, $msg);
-  //           return $this;
-  //         }
-  //       }
-  //       $excepts = implode('', $excepts);
-  //     }
-  //   } else {
-  //     $excepts = '';
-  //   }
+    if ($times > 0) {
+      $splitChars = $chars;
+      if (strlen($splitChars) > 1) {
+        $splitChars = str_split($splitChars);
+        $splitChars = "\\" . implode('|\\', $splitChars);
+      }
+      $re1 = "/($splitChars)/";
+      if (preg_match($re1, $value) && preg_match_all($re1, $value) > $times) {
+        $msg = $msg ?: 'charachters are too many';
 
-  //   if (!preg_match("/^[a-zA-Z0-9$umlauts$excepts]+$/", $value)) {
-  //     if ($excepts) {
-  //       $msg = $msg ?: 'just [ ' . $excepts . ' ] can be used';
-  //     } else {
-  //       $msg = $msg ?: 'charachters are not allow';
-  //     }
-  //     $this->addError($this->input, $msg);
-  //   }
-  //   return $this;
-  // }
+        $this->addError($this->input, $msg);
+        return $this;
+      }
+    }
+
+    if ($atFirst === false) {
+      $splitChars = $chars;
+      if (strlen($splitChars) > 1) {
+        $splitChars = str_split($splitChars);
+        $splitChars = "\\" . implode('|\\', $splitChars);
+      }
+      $re2 = "/^($splitChars"."|\\s+\\$splitChars)/";
+      if (preg_match_all($re2, $value)) {
+        $msg = $msg ?: 'charachters cant be in the first';
+
+        $this->addError($this->input, $msg);
+        return $this;
+      }
+    }
+
+    if ($atEnd === false) {
+      $splitChars = $chars;
+      if (strlen($splitChars) > 1) {
+        $splitChars = str_split($splitChars);
+        $splitChars = "\\" . implode('|\\', $splitChars);
+      }
+      $re3 = "/($splitChars"."|\\$splitChars\\s+)$/";
+      if (preg_match_all($re3, $value)) {
+        $msg = $msg ?: 'charachters cant be in the end';
+
+        $this->addError($this->input, $msg);
+        return $this;
+      }
+    }
+
+    if ($between === false) {
+      $splitChars = $chars;
+      if (strlen($splitChars) > 1) {
+        $splitChars = str_split($splitChars);
+        $splitChars = "\\" . implode('|\\', $splitChars);
+      }
+      $re4 = "/.+(${splitChars})(.+|\\s)/";
+      if (preg_match_all($re4, $value)) {
+        $msg = $msg ?: 'charachters cant be between';
+
+        $this->addError($this->input, $msg);
+        return $this;
+      }
+    }
+
+    $re5 = "/^[A-Za-z0-9\\s${umlauts}${chars}]*$/";
+    if (!preg_match($re5, $value)) {
+      if ($chars) {
+        $chars =  explode('\\', $chars);
+        $chars =  implode(' ', $chars);
+        $msg = $msg ?: "just [ $chars ] can be used";
+      } else {
+        $msg = $msg ?: "charachters are not allow";
+      }
+      $this->addError($this->input, $msg);
+    }
+    return $this;
+  }
 
   /**
    * Determine if the input has spaces between the letters or the words
