@@ -36,18 +36,6 @@ class Application
 
     if ($this->file->call('config/error.php')) $this->handleErrors();
 
-    $this->share('config', $this->file->call('config.php'));
-
-    $this->loadHelpers();
-  }
-
-  /**
-   * Load helpers.php file
-   *
-   * @return void
-   */
-  private function loadHelpers()
-  {
     $this->file->call('Core/helpers.php');
   }
 
@@ -92,6 +80,8 @@ class Application
   public function run()
   {
     $this->session->start();
+
+    $this->share('config', $this->file->call('config.php'));
 
     $this->request->prepareUrl();
 
