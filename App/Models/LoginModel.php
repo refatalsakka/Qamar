@@ -18,9 +18,7 @@ class LoginModel extends Model
       $user = $this->where('username = ? ', $username)->fetch($this->table);
     }
 
-    if (!$user) return false;
-
-    if ($this->hash->passwordCheck($password, $user->password)) {
+    if ($user && $this->hash->passwordCheck($password, $user->password)) {
       $this->user = $user;
       return true;
     }
@@ -44,9 +42,7 @@ class LoginModel extends Model
 
     $user = $this->where('code = ? ', $code)->fetch($this->table);
 
-    if (!$user) {
-      return false;
-    }
+    if (!$user) return false;
 
     $this->user = $user;
 
