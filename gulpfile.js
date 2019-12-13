@@ -150,7 +150,7 @@ exports.imgmin = gulp.parallel(imgmin, imgmSvg);
 // Libraries Copy  ↪ 📁 node_modules/ Output ↪ 📁 public/ {js & css} /libs
 async function libraries() {
   for (const LIB in LIBS) {
-    LIBS[LIB].map((output) => {
+    for (const output of LIBS[LIB]) {
       if (typeof output === 'object') {
         for (const extra in output) {
           output[extra].map(outputExtra => gulp
@@ -162,8 +162,9 @@ async function libraries() {
           .src(`${output}`)
           .pipe(gulp.dest(`public/${LIB}`));
       }
-    });
+    }
   }
+  return false;
 }
 exports.libraries = libraries;
 
