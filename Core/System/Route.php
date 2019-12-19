@@ -40,7 +40,6 @@ class Route
       'method'      => $requestMethos,
       'middleware'  => $middleware
     ];
-
     $this->routes[] = $routes;
 
     return $this;
@@ -49,34 +48,23 @@ class Route
   private function setPrefix($url)
   {
     if ($this->prefix && $this->prefix !== '/') {
-
       $url = $this->prefix . $url;
-
       $url = rtrim($url, '/');
     }
-
     return $url;
   }
 
   private function setAction($action)
   {
-    if ($this->basController) {
-
-      $action = $this->basController . '/' . $action;
-    }
+    if ($this->basController) $action = $this->basController . '/' . $action;
 
     return $action;
   }
 
   private function setMiddleware($middleware)
   {
-    if (!is_array($middleware)) {
-
-      $middleware = [$middleware];
-    }
-
+    if (!is_array($middleware)) $middleware = [$middleware];
     $middleware = array_merge($this->groupMiddleware, $middleware);
-
     return $middleware;
   }
 
@@ -91,7 +79,6 @@ class Route
     if (($this->prefix && $prefix !== $this->prefix) || ($prefix && strpos($url, $prefix) !== 0)) {
       return $this;
     }
-
     $this->prefix = $prefix;
     $this->basController = $controller;
     $this->groupMiddleware = $middleware;
@@ -103,7 +90,7 @@ class Route
 
   public function package($url, $controller, $middlewares = [])
   {
-    $this->add("$url", "$controller");
+    $this->add($url, $controller);
 
     $row = isset($middlewares['row']) ? $middlewares['row'] : [];
     $this->add("$url/:id", "$controller@row", 'GET', $row);
@@ -128,18 +115,14 @@ class Route
     $pattern = '#^';
     $pattern .= str_replace([':text', ':id'], ['([a-zA-Z0-9-]+)', '(\d+)'], strtolower($url));
     $pattern .= '$#';
-
     return $pattern;
   }
 
   public function getAction($action)
   {
     $action = str_replace('/', '\\', $action);
-
     $action = (strpos($action, '@') != 0) ? $action : $action . '@index';
-
     $action = explode('@', $action);
-
     return $action;
   }
 
@@ -156,27 +139,22 @@ class Route
 
           $arguments = $this->getArgumentsFor($route['pattern']);
 
-          $output = (string) $this->app->load->action($controller, $method, $arguments);
-
-          return $output;
+          return (string) $this->app->load->action($controller, $method, $arguments);
         }
         break;
       }
     }
-
     $notfound = 'Website\Notfound';
 
     if ($this->app->request->isRequestToAdminManagement() && $this->app->load->model('Login')->isLogged()) {
       $notfound = 'Admin\Notfound';
     }
-
     return (string) $this->app->load->action($notfound, 'index', []);
   }
 
   public function isMatching($pattern)
   {
     $url = $this->app->request->url();
-
     $url = strtolower($url);
 
     return preg_match($pattern, $url);
@@ -243,11 +221,9 @@ class Route
     if (!in_array($middlewareInterface, class_implements($middlewareClass))) {
       throw new Exception("$middlewareClass not Implement");
     }
-
     $middlewareObject = new $middlewareClass;
 
-    $output = $middlewareObject->handle($this->app, static::NEXT);
-    return $output;
+    return $middlewareObject->handle($this->app, static::NEXT);
   }
 
   private function continue($middlewares)

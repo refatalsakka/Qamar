@@ -32,7 +32,7 @@ $app->route->group($adminOptions, function($route) {
       'ajax',
     ],
     'update' => [
-      // 'ajax',
+      'ajax',
     ],
   ]);
   $route->add('/users/filter', 'Users@filter', 'GET');

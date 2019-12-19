@@ -127,6 +127,7 @@ $(document).ready(() => {
 
       const td = $(this).parents('.editable');
 
+      // eslint-disable-next-line no-unused-vars
       const check = checkInput(this, columns);
       if (check !== true) return new Alert({ insertIn: td[0], msg: check }).append();
 

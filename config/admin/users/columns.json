@@ -6,13 +6,15 @@
       "require" : true,
       "noSpaces" : true,
       "noNumbers": true,
-      "noUmlauts": true,
-      "noCharExcept" : {
-        "chars": "_",
-        "times": 2,
-        "atFirst": false,
-        "atEnd": false,
-        "between": true
+      "characters" : {
+        "chars": {
+          "value": "_",
+          "times": 2,
+          "atFirst": false,
+          "atEnd": false,
+          "between": true
+        },
+        "languages": "english"
       },
       "type" : "text",
       "maxLen" : 20,
@@ -28,7 +30,7 @@
       "noSpaces" : true,
       "noNumbers": true,
       "noUmlauts": true,
-      "noCharExcept" : {},
+      "characters" : {},
       "type" : "text",
       "maxLen" : 20,
       "minLen" : 3
@@ -42,7 +44,7 @@
       "noSpaces" : true,
       "noNumbers": true,
       "noUmlauts": true,
-      "noCharExcept" : {},
+      "characters" : {},
       "type" : "text",
       "maxLen" : 20,
       "minLen" : 3
@@ -97,7 +99,7 @@
     "user_id_table_name" : "user_id",
     "filters" : {
       "noNumbers": true,
-      "noCharExcept" : {},
+      "characters" : {},
       "maxLen" : 20,
       "minLen" : 3
     }
@@ -115,7 +117,7 @@
     "user_id_table_name" : "user_id",
     "filters" : {
       "noNumbers": true,
-      "noCharExcept" : {},
+      "characters" : {},
       "type" : "text",
       "maxLen" : 20,
       "minLen" : 3
@@ -126,7 +128,7 @@
     "user_id_table_name" : "user_id",
     "filters" : {
       "noNumbers": true,
-      "noCharExcept" : {
+      "characters" : {
         "chars": ".",
         "times": 1,
         "atFirst": false,

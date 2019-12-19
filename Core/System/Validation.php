@@ -305,30 +305,17 @@ class Validation
     return $this;
   }
 
-  /**
-   * Determine if the input has no umlaut charachter
-   *
-   * @param bool $call
-   * @param string $msg
-   * @return $this
-   */
-  public function noUmlauts($call = true, $msg = null)
+  private function languages($language)
   {
-    if ($call === false) return $this;
-
-    $value = $this->value();
-
-    if (!$value && $value != '0') return $this;
-
-    $umlauts = 'á,â,ă,ä,ĺ,ç,č,é,ę,ë,ě,í,î,ď,đ,ň,ó,ô,ő,ö,ř,ů,ú,ű,ü,ý,ń,˙';
-    $umlauts = explode(',', $umlauts);
-    $umlauts = implode('', $umlauts);
-
-    if (preg_match("/[$umlauts]/", $value)) {
-      $msg = $msg ?: 'umlauts are not allow';
-      $this->addError($this->input, $msg);
-    }
-    return $this;
+    $languages = [
+      'all' => '\\p{L}',
+      'arabic' =>  '\\x{0621}-\\x{064A}\\x{0660}-\\x{0669} ُ ْ َ ِ ّ~ ً ٍ ٌ',
+      'english' => 'a-z',
+      'spanish' => 'a-zñ',
+      'french' => 'a-zàâçéèêëîïôûùüÿñæœ',
+      'german' => 'a-zäüöß',
+    ];
+    return $languages[$language];
   }
 
   /**
@@ -338,7 +325,7 @@ class Validation
    * @param string $msg
    * @return $this
    */
-  public function noCharExcept($excepts, $msg = null)
+  public function characters($excepts, $msg = null)
   {
     if ($excepts === false) return $this;
 
@@ -346,48 +333,65 @@ class Validation
 
     if (!$value && $value != '0') return $this;
 
-    $umlauts = 'á,â,ă,ä,ĺ,ç,č,é,ę,ë,ě,í,î,ď,đ,ň,ó,ô,ő,ö,ř,ů,ú,ű,ü,ý,ń,˙';
-    $umlauts = explode(',', $umlauts);
-    $umlauts = implode('', $umlauts);
-
     $chars = '';
     $times = null;
     $atFirst = null;
     $atEnd = null;
     $between = null;
+    $langsRegex = '';
+    $languages = '';
 
-    if (is_array($excepts) && count($excepts)) {
-      $chars = implode('', $excepts);
-    } else if (gettype($excepts) === 'string') {
-      if (preg_match('/,/', $excepts) && preg_match_all('/,/', $excepts) > 1) {
-        $chars = explode(',', $excepts);
-        $chars = "\\" . implode('\\', $chars);
-      } else {
-        $chars = str_split($excepts);
-        $chars = "\\" . implode('\\', $chars);
-      }
-    } else if (gettype($excepts) === 'object' && !is_array($excepts)) {
-      $chars = $excepts->chars;
-      if (is_array($chars)) {
-        $chars = explode(',', $chars);
-      } else if (gettype($chars) === 'string') {
-        if (preg_match('/,/', $chars) && preg_match_all('/,/', $chars) > 1) {
-          $chars = explode(',', $chars);
+    if (is_object($excepts) && count((array) $excepts)) {
+      if (is_string($excepts->chars)) {
+        if (preg_match('/,/', $excepts->chars) && preg_match_all('/,/', $excepts->chars) > 1) {
+          $chars = explode(',', $excepts->chars);
           $chars = "\\" . implode('\\', $chars);
         } else {
-          $chars = str_split($chars);
+          $chars = str_split($excepts->chars);
           $chars = "\\" . implode('\\', $chars);
         }
+      } else if (is_object($excepts->chars) && count((array) $excepts->chars)) {
+        $chars = $excepts->chars->value;
+        if (is_array($chars)) {
+          $chars = implode('', $chars);
+        } else if (is_string($chars)) {
+          if (preg_match('/,/', $chars) && preg_match_all('/,/', $chars) > 1) {
+            $chars = explode(',', $chars);
+            $chars = "\\" . implode('\\', $chars);
+          } else {
+            $chars = str_split($chars);
+            $chars = "\\" . implode('\\', $chars);
+          }
+        }
+        $times = $excepts->chars->times ?? null;
+        $atFirst = $excepts->chars->atFirst;
+        $atEnd = $excepts->chars->atEnd;
+        $between = $excepts->chars->between;
       }
-      $times = $excepts->times ?? null;
-      $atFirst = $excepts->atFirst;
-      $atEnd = $excepts->atEnd;
-      $between = $excepts->between;
+
+      if (is_array($excepts->languages)) {
+        foreach($excepts->languages as $language) {
+          $langsRegex .= $this->languages(trim($language));
+          $languages .= "$language, ";
+        }
+        $languages = rtrim($languages, ", ");
+      } else if (is_string($excepts->languages)) {
+        if (preg_match('/,/', $excepts->languages) && preg_match_all('/,/', $excepts->languages)) {
+          foreach(explode(',', $excepts->languages) as $language) {
+            $langsRegex .= $this->languages(trim($language));
+            $languages .= "$language, ";
+          }
+          $languages = rtrim($languages, ", ");
+        } else {
+          $langsRegex = $this->languages(trim($excepts->languages));
+          $languages = $excepts->languages;
+        }
+      }
     }
 
     if ($times > 0) {
       $splitChars = $chars;
-      if (strlen($splitChars) > 1) {
+      if (strlen($chars) > 1) {
         $splitChars = str_split($splitChars);
         $splitChars = "\\" . implode('|\\', $splitChars);
       }
@@ -402,7 +406,7 @@ class Validation
 
     if ($atFirst === false) {
       $splitChars = $chars;
-      if (strlen($splitChars) > 1) {
+      if (strlen($chars) > 1) {
         $splitChars = str_split($splitChars);
         $splitChars = "\\" . implode('|\\', $splitChars);
       }
@@ -417,7 +421,7 @@ class Validation
 
     if ($atEnd === false) {
       $splitChars = $chars;
-      if (strlen($splitChars) > 1) {
+      if (strlen($chars) > 1) {
         $splitChars = str_split($splitChars);
         $splitChars = "\\" . implode('|\\', $splitChars);
       }
@@ -432,7 +436,7 @@ class Validation
 
     if ($between === false) {
       $splitChars = $chars;
-      if (strlen($splitChars) > 1) {
+      if (strlen($chars) > 1) {
         $splitChars = str_split($splitChars);
         $splitChars = "\\" . implode('|\\', $splitChars);
       }
@@ -445,15 +449,23 @@ class Validation
       }
     }
 
-    $re5 = "/^[A-Za-z0-9\\s${umlauts}${chars}]*$/";
-    if (!preg_match($re5, $value)) {
-      if ($chars) {
-        $chars =  explode('\\', $chars);
-        $chars =  implode(' ', $chars);
-        $msg = $msg ?: "just [ $chars ] can be used";
-      } else {
-        $msg = $msg ?: "charachters are not allow";
+    if ($langsRegex) {
+      if ($languages !== 'all' && preg_match_all('/a-z/i', $langsRegex) > 1) {
+        $langsRegex = preg_replace('/a-z/i', '', $langsRegex);
+        $langsRegex .= 'a-z';
       }
+    } else {
+      $languages = 'english';
+      $langsRegex = $this->languages('english');
+    }
+
+    $re5 = "/^[0-9\\s$chars$langsRegex]*$/u";
+    if (!preg_match($re5, $value)) {
+      $chars =  explode('\\', $chars);
+      $chars =  implode('', $chars);
+      $chars = $chars ? "[ $chars ] and" : '';
+      $languages = $languages ? "[ $languages ]" : '';
+      $msg = $msg ?: "just $chars $languages letters can be used";
       $this->addError($this->input, $msg);
     }
     return $this;
