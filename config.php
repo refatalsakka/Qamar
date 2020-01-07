@@ -2,12 +2,12 @@
 
 return [
   'website' => [
-    'websiteLang'         => 'de',
-    'websiteCharset'      => 'UTF-8',
-    'websiteDecsription'  => 'Nice Framework',
-    'websiteKeywords'     => 'framework',
-    'websiteAuth'         => 'Refat Alsakka',
-    'websiteName'         => 'framework',
+    'lang'         => 'de',
+    'charset'      => 'UTF-8',
+    'decsription'  => 'Nice Framework',
+    'keywords'     => 'framework',
+    'auth'         => 'Refat Alsakka',
+    'name'         => 'framework',
   ],
   'db' => [
     'server'  => 'localhost',
@@ -16,7 +16,8 @@ return [
     'dbpass'  => '',
   ],
   'hash' => [
-    'algo' => PASSWORD_BCRYPT,
+    'password' => PASSWORD_BCRYPT,
+    'main'     => 'sha256',
   ],
   'mode' => 'dev',
 ];

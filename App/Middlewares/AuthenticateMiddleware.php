@@ -23,13 +23,9 @@ class AuthenticateMiddleware implements Middleware
     ];
 
     if ($login->isLogged()) {
-      if (in_array($request, $pagesWhenLogout)) {
-        return $app->url->redirectTo('/admin');
-      }
+      if (in_array($request, $pagesWhenLogout)) return $app->url->redirectTo('/admin');
     } else {
-      if (!in_array($request, $pagesWhenLogout)) {
-        return $app->url->redirectTo('/admin/login');
-      }
+      if (!in_array($request, $pagesWhenLogout)) return $app->url->redirectTo('/admin/login');
     }
     return $next;
   }

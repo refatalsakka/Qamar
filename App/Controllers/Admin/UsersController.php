@@ -314,7 +314,7 @@ class UsersController extends Controller
     $factory = new Factory;
 
     $user_id = $factory->getMediumStrengthGenerator()->generateString(8, '0123456789');
-    $code =$factory->getMediumStrengthGenerator()->generateString(20, '0123456789abcdefghijklmnopqrstuvwxyz');
+    $code = $factory->getMediumStrengthGenerator()->generateString(20, '0123456789abcdefghijklmnopqrstuvwxyz');
     $username = $posts['username'];
     $fname = $posts['fname'];
     $lname = $posts['lname'];
