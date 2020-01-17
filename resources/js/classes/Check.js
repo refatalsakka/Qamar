@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars */
-class Check {
+export default class Check {
   constructor() {
     this.errors = [];
   }

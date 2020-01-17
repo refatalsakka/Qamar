@@ -1,3 +1,5 @@
+// eslint-disable-next-line import/extensions
+import Check from '../classes/Check.js';
 /* eslint-disable no-undef */
 $(document).ready(() => {
   // generate action URL

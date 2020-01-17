@@ -8,11 +8,11 @@ block styles
   link(href=cssLibs + 'bootstrap-datepicker.min.css', rel='stylesheet')
 
 block scripts
-  script(src=classes + 'Check.js')
+  //- script(src=classes + 'Check.js')
   script(src=classes + 'Alert.js')
   script(src=classes + 'Background.js')
   script(src=classes + 'CreateElm.js')
-  script(src=jsLibs + 'update.js')
+  script(src=jsLibs + 'update.js', type='module')
   script(src=jsLibs + 'bootstrap-datepicker.min.js')
   script(src=adminJs + 'users/user.js')
 
