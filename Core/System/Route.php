@@ -129,7 +129,7 @@ class Route
   public function getProperRoute()
   {
     foreach ($this->routes as $route) {
-      if ($this->isMatching($route['pattern']) && $this->isMatchingRequestMethod($route['method'])) {
+      if ($this->fullMatch($route['pattern'], $route['method'])) {
         $this->current = $route;
 
         $continue = $this->continue($route['middleware']);
@@ -144,6 +144,11 @@ class Route
         break;
       }
     }
+    return $this->notFound();
+  }
+
+  private function notFound()
+  {
     $notfound = 'Website\Notfound';
 
     if ($this->app->request->isRequestToAdminManagement() && $this->app->load->model('Login')->isLogged()) {
@@ -152,7 +157,12 @@ class Route
     return (string) $this->app->load->action($notfound, 'index', []);
   }
 
-  public function isMatching($pattern)
+  private function fullMatch($pattern, $method)
+  {
+    return $this->isMatchingPattern($pattern) && $this->isMatchingRequestMethod($method);
+  }
+
+  private function isMatchingPattern($pattern)
   {
     $url = $this->app->request->url();
     $url = strtolower($url);

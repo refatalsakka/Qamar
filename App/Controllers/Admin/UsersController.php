@@ -62,7 +62,9 @@ class UsersController extends Controller
     return $users_for_list;
   }
 
-  public function filter() {
+  public function filter()
+  {
+    $msg = null;
 
     $gets = $this->request->gets();
 
@@ -189,6 +191,8 @@ class UsersController extends Controller
 
   public function update()
   {
+    $msg = null;
+
     $posts = $this->request->posts();
 
     $name = array_keys($posts)[0];
@@ -275,6 +279,8 @@ class UsersController extends Controller
 
   public function add()
   {
+    $msg = null;
+
     $posts = $this->request->posts();
 
     $names = array_keys($posts);
