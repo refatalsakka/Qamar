@@ -13,7 +13,7 @@ $(document).ready(() => {
   $('input.date').datepicker({
     defaultViewDate: '01/01/1970',
     format: 'dd M yyyy',
-    startDate: '01/01/1920',
+    startDate: '01/01/1820',
     endDate: '31/12/2004',
   });
 

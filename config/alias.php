@@ -16,6 +16,7 @@ return [
     'view'      =>  'System\\View',
     'pages'     =>  'System\\Pages',
     'hash'      =>  'System\\Hash',
+    'Date'      =>  'System\\Date',
   ],
   'middlewares' => [
     'auth'        => 'App\\Middlewares\\AuthenticateMiddleware',

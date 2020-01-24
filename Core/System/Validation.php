@@ -2,6 +2,7 @@
 
 namespace System;
 use DateTime;
+use System\Date;
 
 class Validation
 {
@@ -206,56 +207,31 @@ class Validation
     $options = json_encode($options);
     $options = json_decode($options);
 
-    $format = $options->format ?? 'd M Y';
-    $start = $options->start ?? null;
-    $end = $options->end ?? null;
+    extract($this->dateMethods($options));
 
-    $checkFormat = DateTime::createFromFormat($format, $value);
+    $date = new Date($options, $value);
 
-    if (!$checkFormat) {
-      $msg = $msg ?: 'this field must be a date';
-
+    if (!$date->$method()) {
       $this->addError($this->input, $msg);
-
-      return $this;
-    }
-
-    if ($start && $end) {
-      $year = DateTime::createFromFormat($format, $value)->format('Y');
-
-      if ($year < $start  || $year > $end) {
-        $msg = $msg ?: 'this field must be between ' . $start  . ' and ' . $end;
-
-        $this->addError($this->input, $msg);
-
-        return $this;
-      }
-    }
-
-    if ($start) {
-      $year = DateTime::createFromFormat($format, $value)->format('Y');
-
-      if ($year < $start) {
-        $msg = $msg ?: 'the date can\'t be under ' . $start;
-
-        $this->addError($this->input, $msg);
-
-        return $this;
-      }
-    }
-
-    if ($end) {
-      $year = DateTime::createFromFormat($format, $value)->format('Y');
-
-      if ($year > $end) {
-        $msg = $msg ?: 'the date can\'t be above ' . $end;
-
-        $this->addError($this->input, $msg);
-
-        return $this;
-      }
     }
     return $this;
+  }
+
+  private function dateMethods($options)
+  {
+    $method = null;
+    $msg = null;
+    if ($options->start && $options->end) {
+      $method = 'isDateBetween';
+      $msg = 'this field must be between ' . $options->start  . ' and ' . $options->end;
+    } elseif ($options->start) {
+      $method = 'minimum';
+      $msg = 'the date can\'t be under ' . $options->start;
+    } elseif ($options->end) {
+      $method = 'maximum';
+      $msg = 'the date can\'t be above ' . $options->end;
+    }
+    return array ('method' => $method,'msg'=> $msg);
   }
 
   /**

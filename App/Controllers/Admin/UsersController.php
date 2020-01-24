@@ -10,9 +10,7 @@ class UsersController extends Controller
   public function index()
   {
     $users = $this->load->model('User')->users();
-
     $usersformatted = $this->formatUsers($users);
-
     $countries = $this->countries('all', 'name');
 
     $context = [
@@ -25,9 +23,7 @@ class UsersController extends Controller
   public function row()
   {
     $id = userId();
-
     $model = $this->load->model('User');
-
     $user = $model->user($id);
 
     $user->new = $this->isUserNew($user->registration);
@@ -65,7 +61,6 @@ class UsersController extends Controller
   public function filter()
   {
     $msg = null;
-
     $gets = $this->request->gets();
 
     if (empty($gets)) {
@@ -192,11 +187,8 @@ class UsersController extends Controller
   public function update()
   {
     $msg = null;
-
     $posts = $this->request->posts();
-
     $name = array_keys($posts)[0];
-
     $allows = $this->file->call('config/admin/users/pages/update.php');
 
     if (!in_array($name, $allows)) {
@@ -280,11 +272,8 @@ class UsersController extends Controller
   public function add()
   {
     $msg = null;
-
     $posts = $this->request->posts();
-
     $names = array_keys($posts);
-
     $allows = $this->file->call('config/admin/users/pages/add.php');
 
     if (!array_equal($names, $allows)) {
