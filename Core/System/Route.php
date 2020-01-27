@@ -56,14 +56,17 @@ class Route
 
   private function setAction($action)
   {
-    if ($this->basController) $action = $this->basController . '/' . $action;
-
+    if ($this->basController) {
+      $action = $this->basController . '/' . $action;
+    }
     return $action;
   }
 
   private function setMiddleware($middleware)
   {
-    if (!is_array($middleware)) $middleware = [$middleware];
+    if (!is_array($middleware)) {
+      $middleware = [$middleware];
+    }
     $middleware = array_merge($this->groupMiddleware, $middleware);
     return $middleware;
   }

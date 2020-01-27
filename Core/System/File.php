@@ -113,7 +113,7 @@ class File
     return $this->container[$path . ':content'];
   }
 
- /**
+  /**
    * Generate full path to the given path
    *
    * @param string $path

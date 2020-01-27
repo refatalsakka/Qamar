@@ -42,7 +42,9 @@ class LoginModel extends Model
 
     $user = $this->where('code = ? ', $code)->fetch($this->table);
 
-    if (!$user) return false;
+    if (!$user) {
+      return false;
+    }
 
     $this->user = $user;
 

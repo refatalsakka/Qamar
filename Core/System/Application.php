@@ -34,7 +34,9 @@ class Application
   {
     $this->share('file', $file);
 
-    if ($this->file->call('config/error.php')) $this->handleErrors();
+    if ($this->file->call('config/error.php')) {
+      $this->handleErrors();
+    }
 
     $this->file->call('Core/helpers.php');
   }
@@ -85,7 +87,9 @@ class Application
 
     $this->request->prepareUrl();
 
-    foreach (glob("routes/**/*.php") as $route) $this->file->call($route);
+    foreach (glob("routes/**/*.php") as $route) {
+      $this->file->call($route);
+    }
 
     $output = $this->route->getProperRoute();
 
@@ -117,7 +121,7 @@ class Application
     $this->container[$key] = $value;
   }
 
- /**
+  /**
    * Get shared value
    *
    * @param string $key

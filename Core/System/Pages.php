@@ -38,16 +38,18 @@ class Pages
   public function add($name, $link, $icon = null)
   {
     if (!$this->title) {
-      if (!$icon) $icon = 'icon-star';
-
+      if (!$icon) {
+        $icon = 'icon-star';
+      }
       $this->pages[] = [
         'name' => $name,
         'link' => $link,
         'icon' => $icon
       ];
     } else {
-      if (!$icon) $icon = $this->icon;
-
+      if (!$icon) {
+        $icon = $this->icon;
+      }
       $page = [
         'name' => $name,
         'link' => $link,
@@ -70,8 +72,9 @@ class Pages
   {
     $this->title = $options['title'];
 
-    if (!$options['icon']) $options['icon'] = 'icon-star';
-
+    if (!$options['icon']) {
+      $options['icon'] = 'icon-star';
+    }
     $this->icon = $options['icon'];
 
     $this->pages[$this->title] = [
@@ -79,7 +82,6 @@ class Pages
       'icon'  => $options['icon'],
       'linkedPages' => []
     ];
-
     $callback($this);
 
     $this->cleanTitle();

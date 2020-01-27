@@ -42,7 +42,9 @@ class Database
   {
     $this->app = $app;
 
-    if (!$this->isConnected()) $this->connect();
+    if (!$this->isConnected()) {
+      $this->connect();
+    }
   }
 
   private function isConnected()
@@ -92,7 +94,7 @@ class Database
   {
     $args = func_get_args()[0];
 
-    foreach($args as $join) {
+    foreach ($args as $join) {
       $sql[] = $join[0] . ' ON ' . $this->table . '.' . $join[1] . ' = ' . $join[0] . '.' . $join[2];
     }
     $this->joins = $sql;
@@ -104,7 +106,9 @@ class Database
   {
     $sql = array_shift($bindings);
 
-    if (is_array($bindings[0])) $bindings = $bindings[0];
+    if (is_array($bindings[0])) {
+      $bindings = $bindings[0];
+    }
 
     $this->addToBindings($bindings);
 
@@ -156,7 +160,9 @@ class Database
 
   public function fetch($table = null)
   {
-    if ($table) $this->table($table);
+    if ($table) {
+      $this->table($table);
+    }
 
     $sql = $this->fetchStatment();
 
@@ -173,7 +179,9 @@ class Database
 
   public function fetchAll($table = null)
   {
-    if ($table) $this->table($table);
+    if ($table) {
+      $this->table($table);
+    }
 
     $sql = $this->fetchStatment();
 
@@ -197,7 +205,9 @@ class Database
     $sql .= ' FROM ' . $this->table . ' ';
 
     if (!empty($this->joins)) {
-      foreach ($this->joins as $join) $sql .= 'LEFT JOIN ' . $join . ' ';
+      foreach ($this->joins as $join) {
+        $sql .= 'LEFT JOIN ' . $join . ' ';
+      }
     }
 
     if (!empty($this->wheres)) {
@@ -258,10 +268,11 @@ class Database
 
   public function insert($table = null)
   {
-    if ($table) $this->table($table);
+    if ($table) {
+      $this->table($table);
+    }
 
     $sql = 'INSERT INTO ' . $this->table . ' SET ';
-
     $sql .= $this->setField();
 
     $this->query($sql, $this->bindings);
@@ -273,13 +284,16 @@ class Database
 
   public function update($table = null)
   {
-    if ($table) $this->table($table);
+    if ($table) {
+      $this->table($table);
+    }
 
     $sql = 'UPDATE ' . $this->table . ' SET ';
-
     $sql .= $this->setField();
 
-    if (!empty($this->wheres)) $sql .= ' WHERE ' . implode('', $this->wheres);
+    if (!empty($this->wheres)) {
+      $sql .= ' WHERE ' . implode('', $this->wheres);
+    }
 
     $this->query($sql, $this->bindings);
 
@@ -288,11 +302,15 @@ class Database
 
   public function delete($table = null)
   {
-    if ($table) $this->table($table);
+    if ($table) {
+      $this->table($table);
+    }
 
     $sql = 'DELETE FROM ' . $this->table . ' ';
 
-    if (!empty($this->wheres)) $sql .= ' WHERE ' . implode('', $this->wheres);
+    if (!empty($this->wheres)) {
+      $sql .= ' WHERE ' . implode('', $this->wheres);
+    }
 
     $this->query($sql, $this->bindings);
 
@@ -303,8 +321,9 @@ class Database
   {
     $sql = '';
 
-    foreach ($this->data as $key => $value) $sql .= '`' . $key . '` = ? ,';
-
+    foreach ($this->data as $key => $value) {
+      $sql .= '`' . $key . '` = ? ,';
+    }
     $sql = rtrim($sql, ' ,');
 
     return $sql;
@@ -323,7 +342,9 @@ class Database
   {
     $sql = array_shift($bindings);
 
-    if (count($bindings) == 1 and is_array($bindings[0])) $bindings = $bindings[0];
+    if (count($bindings) == 1 and is_array($bindings[0])) {
+      $bindings = $bindings[0];
+    }
 
     try {
       $query = $this->connection()->prepare($sql);

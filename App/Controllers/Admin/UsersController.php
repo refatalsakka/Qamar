@@ -207,7 +207,9 @@ class UsersController extends Controller
 
     $current_value = $this->db->select($name)->from($table)->where($user_id_table_name . ' = ?', [$id])->fetch()->$name;
 
-    if ($value == '') $value = null;
+    if ($value == '') {
+      $value = null;
+    }
 
     if (($current_value === strtolower($value)) || ($value == null && $current_value == null)) {
       $msg['same'] = $value ? strtolower($value) : '';
@@ -238,7 +240,9 @@ class UsersController extends Controller
       return json_encode($msg);
     }
 
-    if (isset($filters->date)) $value = date('Y-m-d', strtotime($value));
+    if (isset($filters->date)) {
+      $value = date('Y-m-d', strtotime($value));
+    }
 
     $update = $this->db->data($name, $value)->where($user_id_table_name . ' = ?', $id)->update($table);
 
@@ -316,7 +320,7 @@ class UsersController extends Controller
     $gender = $posts['gender'];
     $birthday = date('Y-m-d', strtotime($posts['birthday']));
     $email = $posts['email'];
-    $registration =  $this->changeFormatDate(microtime(true), ['U.u', 'Y-m-d H:i:s']);
+    $registration = $this->changeFormatDate(microtime(true), ['U.u', 'Y-m-d H:i:s']);
 
     $insertInUser = $this->db->data([
       'id' => $user_id,
@@ -369,7 +373,9 @@ class UsersController extends Controller
 
   private function isUserNew($date)
   {
-    if (!$date) {return;}
+    if (!$date) {
+      return;
+    }
 
     $register_year = $this->changeFormatDate($date, ['Y-m-d H:i:s', 'Y']);
     $register_month = $this->changeFormatDate($date, ['Y-m-d H:i:s', 'm']);

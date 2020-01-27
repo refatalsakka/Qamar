@@ -224,7 +224,7 @@ class Validation
     $msg = null;
     if ($options->start && $options->end) {
       $method = 'isDateBetween';
-      $msg = 'this field must be between ' . $options->start  . ' and ' . $options->end;
+      $msg = 'this field must be between ' . $options->start . ' and ' . $options->end;
     } elseif ($options->start) {
       $method = 'minimum';
       $msg = 'the date can\'t be under ' . $options->start;
@@ -232,7 +232,7 @@ class Validation
       $method = 'maximum';
       $msg = 'the date can\'t be above ' . $options->end;
     }
-    return array ('method' => $method,'msg'=> $msg);
+    return array('method' => $method, 'msg'=> $msg);
   }
 
   /**
@@ -314,7 +314,7 @@ class Validation
       "value" => $value,
     ]);
 
-    foreach($methods as $method => $options) {
+    foreach ($methods as $method => $options) {
       if (call_user_func_array(array($this, $method), $options[0])) {
         $msg = $msg ?: $options[1];
         $this->addError($this->input, $msg);
@@ -343,8 +343,8 @@ class Validation
 
   private function charactersFormatCharsMsg($chars)
   {
-    $chars =  explode('\\', $chars);
-    $chars =  implode('', $chars);
+    $chars = explode('\\', $chars);
+    $chars = implode('', $chars);
     $chars = $chars ? "[ $chars ] and" : '';
     return $chars;
   }
@@ -388,7 +388,7 @@ class Validation
   {
     if ($atFirst === false) {
       $chars = $this->charactersFormatCharsRegex($chars);
-      $re = "/^($chars"."|\\s+\\$chars)/";
+      $re = "/^($chars" . "|\\s+\\$chars)/";
       if (preg_match_all($re, $value)) {
         return true;
       }
@@ -400,7 +400,7 @@ class Validation
   {
     if ($atEnd === false) {
       $chars = $this->charactersFormatCharsRegex($chars);
-      $re = "/($chars"."|\\$chars\\s+)$/";
+      $re = "/($chars" . "|\\$chars\\s+)$/";
       if (preg_match_all($re, $value)) {
         return true;
       }
@@ -468,7 +468,7 @@ class Validation
     $files = [];
     $final = [];
 
-    foreach($characters as $key => $character) {
+    foreach ($characters as $key => $character) {
       if (strpos($character, 'path:') === 0) {
         unset($characters[$key]);
 

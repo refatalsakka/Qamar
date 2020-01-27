@@ -103,8 +103,9 @@ class View
     $public = assets();
     $public = str_replace($dir, $host, $public);
     $public = str_replace('\\', '/', $public);
-    if (substr($public, -1) !== '/') $public = $public . '/';
-
+    if (substr($public, -1) !== '/') {
+      $public = $public . '/';
+    }
     return $public;
   }
 
@@ -120,10 +121,12 @@ class View
    */
   private function parameters()
   {
-    $url =  $this->app->request->url();
+    $url = $this->app->request->url();
 
-    if ($url === '/') {return;}
-    $parameters =  explode('/', $url);
+    if ($url === '/') {
+      return;
+    }
+    $parameters = explode('/', $url);
     array_shift($parameters);
     $return = [];
 

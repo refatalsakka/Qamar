@@ -81,8 +81,4 @@ class UserModel extends Model
     activity.last_login
     ', $this->table, [['address', 'id', 'user_id'], ['activity', 'id', 'user_id']])->where($sql, $wheres)->orderBy('users.registration', 'DESC')->fetchAll();
   }
-
-  public function insert() {
-
-  }
 }

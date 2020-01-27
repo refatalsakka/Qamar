@@ -115,7 +115,7 @@ class Loader
   {
     $controller .= strpos($controller, 'Controller') ? '' : 'Controller';
 
-    $controller = 'App\\Controllers\\'. $controller;
+    $controller = 'App\\Controllers\\' . $controller;
 
     return $controller;
   }

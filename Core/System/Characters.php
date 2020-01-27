@@ -4,14 +4,14 @@ namespace System;
 
 class Characters
 {
-   private $excepts;
-   private $chars;
-   private $times;
-   private $atFirst;
-   private $atEnd;
-   private $between;
-   private $langsRegex;
-   private $languages;
+  private $excepts;
+  private $chars;
+  private $times;
+  private $atFirst;
+  private $atEnd;
+  private $between;
+  private $langsRegex;
+  private $languages;
 
   /**
    * Constructor
@@ -102,7 +102,7 @@ class Characters
       'french' => 'a-zàâçéèêëîïôûùüÿñæœ',
       'german' => 'a-zäüöß',
     ];
-    return $languages[$language] ?? die('no language');
+    return $languages[$language] ?? $languages['english'];
   }
 
   private function isLangsAnArray()
@@ -125,7 +125,7 @@ class Characters
     $loopLangs = $comma ? explode(',', $this->languages) : $this->languages;
     $langsRegex = '';
     $languages = '';
-    foreach($loopLangs as $language) {
+    foreach ($loopLangs as $language) {
       $langsRegex .= $this->languagesArray(trim($language));
       $languages .= "$language, ";
     }

@@ -28,7 +28,9 @@ class Session
   {
     ini_set('session.use_only_cookies', 1);
 
-    if (! session_id()) session_start();
+    if (!session_id()) {
+      session_start();
+    }
   }
 
   /**
@@ -50,7 +52,7 @@ class Session
    * @param mixed $default
    * @return mixed
    */
-  public function get($key , $default = null)
+  public function get($key, $default = null)
   {
     return array_get($_SESSION, $key, $default);
   }

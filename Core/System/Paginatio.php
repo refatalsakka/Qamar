@@ -63,7 +63,7 @@ class Pagination
     // just to make sure that the passed query string parameter page
     // must be number and should be more or equal than 1
 
-    if (!is_numeric($page) OR $page < 1) {
+    if (!is_numeric($page) or $page < 1) {
       $page = 1;
     }
 

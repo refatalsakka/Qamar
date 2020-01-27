@@ -98,7 +98,9 @@ class Cookie
    */
   public function destroy()
   {
-    foreach (array_keys($this->all()) as $key) $this->remove($key);
+    foreach (array_keys($this->all()) as $key) {
+      $this->remove($key);
+    }
     unset($_COOKIE);
   }
 }

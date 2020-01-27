@@ -35,8 +35,8 @@ class LoginController extends Controller
       return json_encode($msg);
     }
 
-    $username =  $this->request->post('username');
-    $password =  $this->request->post('password');
+    $username = $this->request->post('username');
+    $password = $this->request->post('password');
     $remember = false;
 
     if (in_array('remeberme', array_keys($posts))) {

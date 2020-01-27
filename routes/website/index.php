@@ -33,7 +33,9 @@ $app->pages->add('imprint', '/imprint', 'icon-info');
 $app->pages->add('not found', '/404', 'fas fa-times');
 
 // == Website's routes
-if ($app->request->isRequestToAdminManagement()) return;
+if ($app->request->isRequestToAdminManagement()) {
+  return;
+}
 
 $app->route->add('/', 'Website/Home');
 $app->route->add('/home', 'Website/Home', 'GET');
