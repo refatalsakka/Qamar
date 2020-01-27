@@ -132,8 +132,8 @@ class View
 
     foreach ($parameters as $parameter) {
       $name = $parameter;
-      $length =  strpos($url, $parameter) + strlen($parameter);
-      $link =  substr($url, 0, $length);
+      $length = strpos($url, $parameter) + strlen($parameter);
+      $link = substr($url, 0, $length);
 
       $return[] = [
         'name' => $name,

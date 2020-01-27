@@ -314,12 +314,8 @@ class Validation
       "value" => $value,
     ]);
 
-    foreach ($methods as $method => $options) {
-      if (call_user_func_array(array($this, $method), $options[0])) {
-        $msg = $msg ?: $options[1];
-        $this->addError($this->input, $msg);
-        return $this;
-      }
+    if ($this->checkForErrorsInCharactersMethods($methods, $msg)) {
+      return $this;
     }
 
     $re = "/^[0-9\\s$chars$langsRegex]*$/u";
@@ -418,6 +414,18 @@ class Validation
       }
       return false;
     }
+  }
+
+  private function checkForErrorsInCharactersMethods($methods, $msg)
+  {
+    foreach ($methods as $method => $options) {
+      if (call_user_func_array(array($this, $method), $options[0])) {
+        $msg = $msg ?: $options[1];
+        $this->addError($this->input, $msg);
+        return true;
+      }
+    }
+    return false;
   }
 
   /**
