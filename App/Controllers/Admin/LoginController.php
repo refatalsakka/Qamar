@@ -16,57 +16,84 @@ class LoginController extends Controller
 
   public function submit()
   {
+    $msg = [];
     $posts = $this->request->posts();
 
-    $names = array_keys($posts);
-
-    if (!in_array('remeberme', $names)) {
-      array_push($names, 'remeberme');
-    }
-
-    $allows = [
-      'username',
-      'password',
-      'remeberme',
-    ];
-
-    if (!array_equal($names, $allows)) {
+    if (!$this->checkParameters($posts)) {
       $msg['error'] = 'reload';
       return json_encode($msg);
     }
+    extract($this->setVariables($posts));
 
-    $username = $this->request->post('username');
-    $password = $this->request->post('password');
-    $remember = false;
-
-    if (in_array('remeberme', array_keys($posts))) {
-      $remember = true;
-    }
-
-    $this->validator->input('username')->require();
-    $this->validator->input('password')->require();
-
-    if ($this->validator->fails()) {
+    if ($this->areInputsEmpty()) {
       $msg['error'] = 'Please check the inputs';
       return json_encode($msg);
     }
 
     $login = $this->load->model('Login');
-
     $valid = $login->isValidLogin($username, $password, 'admin');
 
     if ($valid) {
       $user = $login->user();
 
-      $this->session->set('login', $user->code);
+      $this->setUserCode($user, $remember);
 
-      if ($remember) {
-        $this->cookie->set('login', $user->code);
-      }
       $msg['success'] = true;
       return json_encode($msg);
     }
     $msg['error'] = 'Username or Passowrd is invalid';
     return json_encode($msg);
+  }
+
+  private function checkParameters($posts)
+  {
+    $names = array_keys($posts);
+    if (!in_array('remeberme', $names)) {
+      array_push($names, 'remeberme');
+    }
+    $allows = [
+      'username',
+      'password',
+      'remeberme',
+    ];
+    if (array_equal($names, $allows)) {
+      return true;
+    }
+    return false;
+  }
+
+  private function setVariables($posts)
+  {
+    $username = $posts['username'];
+    $password = $posts['password'];
+    $remember = false;
+    if (in_array('remeberme', array_keys($posts))) {
+      $remember = true;
+    }
+    return [
+      'username' => $username,
+      'password' => $password,
+      'remember' => $remember,
+    ];
+  }
+
+  private function areInputsEmpty()
+  {
+    $this->validator->input('username')->require();
+    $this->validator->input('password')->require();
+
+    if ($this->validator->fails()) {
+      return true;
+    }
+    return false;
+  }
+
+  private function setUserCode($user, $remember)
+  {
+    $this->session->set('login', $user->code);
+
+    if ($remember) {
+      $this->cookie->set('login', $user->code);
+    }
   }
 }
