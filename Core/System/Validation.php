@@ -1,8 +1,9 @@
 <?php
 
 namespace System;
-use DateTime;
+
 use System\Date;
+use System\Characters;
 
 class Validation
 {
@@ -209,7 +210,7 @@ class Validation
 
     extract($this->dateMethods($options));
 
-    $date = new Date($options, $value);
+    $date = new Date($value, $options);
 
     if (!$date->$method()) {
       $this->addError($this->input, $msg);
@@ -281,19 +282,6 @@ class Validation
     return $this;
   }
 
-  private function languages($language)
-  {
-    $languages = [
-      'all' => '\\p{L}',
-      'arabic' =>  '\\x{0621}-\\x{064A}\\x{0660}-\\x{0669} ُ ْ َ ِ ّ~ ً ٍ ٌ',
-      'english' => 'a-z',
-      'spanish' => 'a-zñ',
-      'french' => 'a-zàâçéèêëîïôûùüÿñæœ',
-      'german' => 'a-zäüöß',
-    ];
-    return $languages[$language];
-  }
-
   /**
    * Determine if the input has pure string
    *
@@ -309,142 +297,127 @@ class Validation
 
     if (!$value && $value != '0') return $this;
 
-    $chars = '';
-    $times = null;
-    $atFirst = null;
-    $atEnd = null;
-    $between = null;
-    $langsRegex = '';
-    $languages = '';
+    $characters = new Characters($excepts);
+    $chars = $characters->getChars();
+    $langsRegex = $characters->getLangsRegex();
+    $languages = $characters->getLanguages();
+    $times = $characters->getTimes();
+    $atFirst = $characters->getAtFirst();
+    $atEnd = $characters->getAtEnd();
+    $between = $characters->getBetween();
+    $methods = $this->charactersMethods([
+      "times" => $times,
+      "atFirst" => $atFirst,
+      "atEnd" => $atEnd,
+      "between" => $between,
+      "chars" => $chars,
+      "value" => $value,
+    ]);
 
-    if (is_object($excepts) && count((array) $excepts)) {
-      if (is_string($excepts->chars)) {
-        if (preg_match('/,/', $excepts->chars) && preg_match_all('/,/', $excepts->chars) > 1) {
-          $chars = explode(',', $excepts->chars);
-          $chars = "\\" . implode('\\', $chars);
-        } else {
-          $chars = str_split($excepts->chars);
-          $chars = "\\" . implode('\\', $chars);
-        }
-      } else if (is_object($excepts->chars) && count((array) $excepts->chars)) {
-        $chars = $excepts->chars->value;
-        if (is_array($chars)) {
-          $chars = implode('', $chars);
-        } else if (is_string($chars)) {
-          if (preg_match('/,/', $chars) && preg_match_all('/,/', $chars) > 1) {
-            $chars = explode(',', $chars);
-            $chars = "\\" . implode('\\', $chars);
-          } else {
-            $chars = str_split($chars);
-            $chars = "\\" . implode('\\', $chars);
-          }
-        }
-        $times = $excepts->chars->times ?? null;
-        $atFirst = $excepts->chars->atFirst;
-        $atEnd = $excepts->chars->atEnd;
-        $between = $excepts->chars->between;
-      }
-
-      if (is_array($excepts->languages)) {
-        foreach($excepts->languages as $language) {
-          $langsRegex .= $this->languages(trim($language));
-          $languages .= "$language, ";
-        }
-        $languages = rtrim($languages, ", ");
-      } else if (is_string($excepts->languages)) {
-        if (preg_match('/,/', $excepts->languages) && preg_match_all('/,/', $excepts->languages)) {
-          foreach(explode(',', $excepts->languages) as $language) {
-            $langsRegex .= $this->languages(trim($language));
-            $languages .= "$language, ";
-          }
-          $languages = rtrim($languages, ", ");
-        } else {
-          $langsRegex = $this->languages(trim($excepts->languages));
-          $languages = $excepts->languages;
-        }
-      }
-    }
-
-    if ($times > 0) {
-      $splitChars = $chars;
-      if (strlen($chars) > 1) {
-        $splitChars = str_split($splitChars);
-        $splitChars = "\\" . implode('|\\', $splitChars);
-      }
-      $re1 = "/($splitChars)/";
-      if (preg_match($re1, $value) && preg_match_all($re1, $value) > $times) {
-        $msg = $msg ?: 'charachters are too many';
-
+    foreach($methods as $method => $options) {
+      if (call_user_func_array(array($this, $method), $options[0])) {
+        $msg = $msg ?: $options[1];
         $this->addError($this->input, $msg);
         return $this;
       }
     }
 
-    if ($atFirst === false) {
-      $splitChars = $chars;
-      if (strlen($chars) > 1) {
-        $splitChars = str_split($splitChars);
-        $splitChars = "\\" . implode('|\\', $splitChars);
-      }
-      $re2 = "/^($splitChars"."|\\s+\\$splitChars)/";
-      if (preg_match_all($re2, $value)) {
-        $msg = $msg ?: 'charachters cant be in the first';
-
-        $this->addError($this->input, $msg);
-        return $this;
-      }
-    }
-
-    if ($atEnd === false) {
-      $splitChars = $chars;
-      if (strlen($chars) > 1) {
-        $splitChars = str_split($splitChars);
-        $splitChars = "\\" . implode('|\\', $splitChars);
-      }
-      $re3 = "/($splitChars"."|\\$splitChars\\s+)$/";
-      if (preg_match_all($re3, $value)) {
-        $msg = $msg ?: 'charachters cant be in the end';
-
-        $this->addError($this->input, $msg);
-        return $this;
-      }
-    }
-
-    if ($between === false) {
-      $splitChars = $chars;
-      if (strlen($chars) > 1) {
-        $splitChars = str_split($splitChars);
-        $splitChars = "\\" . implode('|\\', $splitChars);
-      }
-      $re4 = "/.+(${splitChars})(.+|\\s)/";
-      if (preg_match_all($re4, $value)) {
-        $msg = $msg ?: 'charachters cant be between';
-
-        $this->addError($this->input, $msg);
-        return $this;
-      }
-    }
-
-    if ($langsRegex) {
-      if ($languages !== 'all' && preg_match_all('/a-z/i', $langsRegex) > 1) {
-        $langsRegex = preg_replace('/a-z/i', '', $langsRegex);
-        $langsRegex .= 'a-z';
-      }
-    } else {
-      $languages = 'english';
-      $langsRegex = $this->languages('english');
-    }
-
-    $re5 = "/^[0-9\\s$chars$langsRegex]*$/u";
-    if (!preg_match($re5, $value)) {
-      $chars =  explode('\\', $chars);
-      $chars =  implode('', $chars);
-      $chars = $chars ? "[ $chars ] and" : '';
+    $re = "/^[0-9\\s$chars$langsRegex]*$/u";
+    if (!preg_match($re, $value)) {
+      $chars = $this->charactersFormatCharsMsg($chars);
       $languages = $languages ? "[ $languages ]" : '';
       $msg = $msg ?: "just $chars $languages letters can be used";
       $this->addError($this->input, $msg);
     }
     return $this;
+  }
+
+  private function charactersFormatCharsRegex($chars)
+  {
+    if (strlen($chars) > 1) {
+      $chars = str_split($chars);
+      $chars = "\\" . implode('|\\', $chars);
+    }
+    return $chars;
+  }
+
+  private function charactersFormatCharsMsg($chars)
+  {
+    $chars =  explode('\\', $chars);
+    $chars =  implode('', $chars);
+    $chars = $chars ? "[ $chars ] and" : '';
+    return $chars;
+  }
+
+  private function charactersMethods($args)
+  {
+    extract($args);
+    return [
+      'charactersTimes' => [
+        [$times, $chars, $value],
+        'charachters are too many',
+      ],
+      'charactersAtFirst' => [
+        [$atFirst, $chars, $value],
+        'charachters cant be at the first',
+      ],
+      'charactersAtEnd' => [
+        [$atEnd, $chars, $value],
+        'charachters cant be at the end',
+      ],
+      'charactersBetween' => [
+        [$between, $chars, $value],
+        'charachters cant be between',
+      ],
+    ];
+  }
+
+  private function charactersTimes($times, $chars, $value)
+  {
+    if ($times > 0) {
+      $chars = $this->charactersFormatCharsRegex($chars);
+      $re = "/($chars)/";
+      if (preg_match($re, $value) && preg_match_all($re, $value) > $times) {
+        return true;
+      }
+      return false;
+    }
+  }
+
+  private function charactersAtFirst($atFirst, $chars, $value)
+  {
+    if ($atFirst === false) {
+      $chars = $this->charactersFormatCharsRegex($chars);
+      $re = "/^($chars"."|\\s+\\$chars)/";
+      if (preg_match_all($re, $value)) {
+        return true;
+      }
+      return false;
+    }
+  }
+
+  private function charactersAtEnd($atEnd, $chars, $value)
+  {
+    if ($atEnd === false) {
+      $chars = $this->charactersFormatCharsRegex($chars);
+      $re = "/($chars"."|\\$chars\\s+)$/";
+      if (preg_match_all($re, $value)) {
+        return true;
+      }
+      return false;
+    }
+  }
+
+  private function charactersBetween($between, $chars, $value)
+  {
+    if ($between === false) {
+      $chars = $this->charactersFormatCharsRegex($chars);
+      $re = "/.+(${chars})(.+|\\s)/";
+      if (preg_match_all($re, $value)) {
+        return true;
+      }
+      return false;
+    }
   }
 
   /**

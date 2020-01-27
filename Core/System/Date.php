@@ -15,7 +15,7 @@ class Date
    * Constructor
    *
    */
-  public function __construct($options, $value)
+  public function __construct($value, $options = [])
   {
     $this->start = $options->start ?? null;
     $this->end = $options->end ?? null;

@@ -15,6 +15,7 @@ $(document).ready(() => {
     return newUrl;
   }
 
+  // eslint-disable-next-line no-unused-vars
   function convertedToJson(data) {
     try {
       return JSON.parse(data);
@@ -101,6 +102,7 @@ $(document).ready(() => {
     });
   }
 
+  // eslint-disable-next-line no-unused-vars
   function checkInput(elm, columns) {
     const check = new Check();
     const column = $(elm).find('.input-edit').attr('name');
@@ -123,55 +125,9 @@ $(document).ready(() => {
     return errors[column] ? errors[column] : true;
   }
 
+  // eslint-disable-next-line no-unused-vars
   function submit(columns) {
-    $('.form-editable').submit(function (e) {
-      e.preventDefault();
 
-      const td = $(this).parents('.editable');
-
-      // eslint-disable-next-line no-unused-vars
-      const check = checkInput(this, columns);
-      if (check !== true) return new Alert({ insertIn: td[0], msg: check }).append();
-
-      const form = $(this);
-      const action = form.attr('action');
-
-      $.ajax({
-        type: 'POST',
-        url: action,
-        data: form.serialize(),
-        beforeSend: () => {
-          td.append('<div class="disable-click"><i class="fas fa-spinner loading"></i></div>');
-        },
-        success: (data) => {
-          const json = convertedToJson(data);
-          if (json.text !== undefined) {
-            setTimeout(() => {
-              td.html(json.text).attr('data-value', json.text);
-              new Background({ colorClass: 'success-bg', removeAfter: 3000 }).add(td[0]);
-            }, 100);
-          } else if (json.same !== undefined) {
-            closeElms();
-          } else if (json.country !== undefined) {
-            setTimeout(() => {
-              td
-                .html(`<i class="flag-icon h4 mb-0 ${Object.values(json.country)[0]}" title="${Object.keys(json.country)[0]}"></i>${Object.keys(json.country)[0]}`)
-                .attr('data-value', Object.keys(json.country)[0])
-                .attr('data-icon', Object.values(json.country)[0]);
-              new Background({ colorClass: 'success-bg', removeAfter: 3000 }).add(td[0]);
-            }, 100);
-          } else if (json.error !== undefined) {
-            const input = Object.keys(json.error)[0];
-            new Alert({ insertIn: td[0], msg: json.error[input], mood: 'danger' }).append();
-          } else {
-            window.location.reload();
-          }
-          td.find('.disable-click').remove();
-        },
-        fail: () => window.location.reload(),
-      });
-      return false;
-    });
   }
 
   let columns = null;

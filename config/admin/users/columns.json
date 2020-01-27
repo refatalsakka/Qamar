@@ -14,7 +14,7 @@
           "atEnd": false,
           "between": true
         },
-        "languages": "english"
+        "languages": "german,english"
       },
       "type" : "text",
       "maxLen" : 20,
