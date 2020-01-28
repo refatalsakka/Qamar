@@ -20,7 +20,7 @@ class Characters
   public function __construct($excepts)
   {
     $this->excepts = $excepts;
-    $this->chars = $this->excepts->chars->value ?? $this->excepts->chars;
+    $this->chars = $this->excepts->chars->value ?? $this->excepts->chars->chars ?? null;
     $this->times = $this->excepts->chars->times ?? null;
     $this->atFirst = $this->excepts->chars->atFirst ?? null;
     $this->atEnd = $this->excepts->chars->atEnd ?? null;

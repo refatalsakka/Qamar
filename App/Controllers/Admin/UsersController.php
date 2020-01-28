@@ -187,6 +187,12 @@ class UsersController extends Controller
   public function update()
   {
     $msg = null;
+    $id = userId();
+
+    if (!$this->isUserNotFound($id)) {
+      $msg = 'reload';
+      return json_encode($msg);
+    }
     $posts = $this->request->posts();
     $name = array_keys($posts)[0];
     $allows = $this->file->call('config/admin/users/pages/update.php');
@@ -195,27 +201,63 @@ class UsersController extends Controller
       $msg = 'reload';
       return json_encode($msg);
     }
-
     $columns = $this->file->fileContent('config/admin/users/columns.json');
     $columns = json_decode($columns);
     $table = $columns->$name->table;
     $column = $columns->$name;
     $filters = $columns->$name->filters;
-    $value = $posts[$name];
-    $id = userId();
+    $value = ($posts[$name] == '') ? null : isset($filters->date) ? date('Y-m-d', strtotime($posts[$name])) : $posts[$name];
     $user_id_table_name = $column->user_id_table_name;
 
-    $current_value = $this->db->select($name)->from($table)->where($user_id_table_name . ' = ?', [$id])->fetch()->$name;
-
-    if ($value == '') {
-      $value = null;
-    }
-
-    if (($current_value === strtolower($value)) || ($value == null && $current_value == null)) {
+    if ($this->isValuesAreTheSame($name, $table, $user_id_table_name, $id, $value)) {
       $msg['same'] = $value ? strtolower($value) : '';
       return json_encode($msg);
     }
+    if ($this->validatorFails($filters, $name)) {
+      $msg['error'] = $this->validator->getErrors();
+      return json_encode($msg);
+    }
+    if (!$this->updateUser($name, $value, $user_id_table_name, $id, $table)) {
+      $msg = 'reload';
+      return json_encode($msg);
+    }
+    $msg = $this->userUpdateMsg($name, $value, $filters);
+    return json_encode($msg);
+  }
 
+  private function userUpdateMsg($name, $value, $filters)
+  {
+    if ($name === 'country') {
+      $msg['country'] = [
+        $value => $this->countries($value),
+      ];
+    } else {
+      $msg['text'] = isset($filters->date) ? $this->changeFormatDate($value, ['Y-m-d', 'd M Y']) : _e($value);
+    }
+    return $msg;
+  }
+
+  private function updateUser($name, $value, $user_id_table_name, $id, $table)
+  {
+    return $this->db->data($name, $value)->where($user_id_table_name . ' = ?', $id)->update($table);
+  }
+
+  private function isUserNotFound($id)
+  {
+    return $this->load->model('User')->get($id);
+  }
+
+  private function isValuesAreTheSame($name, $table, $user_id_table_name, $id, $value)
+  {
+    $current_value = $this->db->select($name)->from($table)->where($user_id_table_name . ' = ?', [$id])->fetch()->$name;
+    if (($current_value === strtolower($value)) || ($value == null && $current_value == null)) {
+      return true;
+    }
+    return false;
+  }
+
+  private function validatorFails($filters, $name)
+  {
     foreach ($filters as $func => $arg) {
       if (method_exists($this->validator, $func) == 1) {
         if (gettype($arg) === 'boolean') {
@@ -227,41 +269,7 @@ class UsersController extends Controller
         }
       }
     }
-
-    if ($this->validator->fails()) {
-      $msg['error'] = $this->validator->getErrors();
-      return json_encode($msg);
-    }
-
-    $user = $this->load->model('User')->get($id);
-
-    if (!$user) {
-      $msg = 'reload';
-      return json_encode($msg);
-    }
-
-    if (isset($filters->date)) {
-      $value = date('Y-m-d', strtotime($value));
-    }
-
-    $update = $this->db->data($name, $value)->where($user_id_table_name . ' = ?', $id)->update($table);
-
-    if (!$update) {
-      $msg = 'reload';
-      return json_encode($msg);
-    }
-
-    if ($name === 'country') {
-      $msg['country'] = [
-        $value => $this->countries($value),
-      ];
-    } else {
-      $msg['text'] = _e($value);
-      if (isset($filters->date)) {
-        $msg['text'] = $this->changeFormatDate($value, ['Y-m-d', 'd M Y']);
-      }
-    }
-    return json_encode($msg);
+    return $this->validator->fails();
   }
 
   public function new()

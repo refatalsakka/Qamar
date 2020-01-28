@@ -19,7 +19,7 @@ class Date
   {
     $this->start = $options->start ?? null;
     $this->end = $options->end ?? null;
-    $this->format = $$options->format ?? 'd M Y';
+    $this->format = $options->format ?? 'd M Y';
     $this->value = $value;
     $this->year = DateTime::createFromFormat($this->format, $this->value)->format('Y');
   }
