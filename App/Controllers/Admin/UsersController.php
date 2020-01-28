@@ -52,7 +52,6 @@ class UsersController extends Controller
       $user->country_icon = $this->countries($user->country);
       $user->registration = $this->changeFormatDate($user->registration);
       $user->last_login = $this->changeFormatDate($user->last_login);
-
       $users_for_list[] = $user;
     }
     return $users_for_list;
@@ -65,7 +64,6 @@ class UsersController extends Controller
 
     if (empty($gets)) {
       $users = $this->load->model('User')->users();
-
       $usersformatted = $this->formatUsers($users);
       return json_encode($usersformatted);
     }
@@ -176,7 +174,6 @@ class UsersController extends Controller
       $user->country_icon = $this->countries($user->country);
       $user->registration = $this->changeFormatDate($user->registration);
       $user->last_login = $this->changeFormatDate($user->last_login);
-
       $users_for_list[] = $user;
     }
 
@@ -211,32 +208,38 @@ class UsersController extends Controller
     ]);
 
     $error = $this->checkForErrorsInUpdateMethods($methods);
+
     if ($error) {
       return json_encode($error);
     }
-
     $msg = $this->userUpdateMsg($name, $value, $filters);
     return json_encode($msg);
   }
 
   private function checkForErrorsInUpdateMethods($methods)
   {
-    $msg = null;
     foreach ($methods as $method => $options) {
       if (call_user_func_array(array($this, $method), $options[0]) == false) {
-        if (array_keys($options[1])[0] === 'msg') {
-          $msg = array_values($options[1]);
-        } else {
-          if (array_keys($options[1])[0] === 'error') {
-            $msg['error'] = $this->validator->getErrors();
-          } else {
-            $msg[array_keys($options[1])[0]] = array_values($options[1]);
-          }
-        }
-        return $msg;
+        return $this->updateErrorMsg($options);
       }
     }
     return false;
+  }
+
+  private function updateErrorMsg($options)
+  {
+    $msg = null;
+
+    if (array_keys($options[1])[0] === 'msg') {
+      $msg = array_values($options[1]);
+    } else {
+      if (array_keys($options[1])[0] === 'error') {
+        $msg['error'] = $this->validator->getErrors();
+      } else {
+        $msg[array_keys($options[1])[0]] = array_values($options[1]);
+      }
+    }
+    return $msg;
   }
 
   private function updateMethods($args)

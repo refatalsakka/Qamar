@@ -547,7 +547,6 @@ class Validation
 
     if (!in_array($value, $final)) {
       $msg = $msg ?: 'wrong value';
-
       $this->addError($this->input, $msg);
     }
     return $this;
