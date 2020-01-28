@@ -302,15 +302,20 @@ class Validation
     if ($this->checkForErrorsInCharactersMethods($methods, $msg)) {
       return $this;
     }
-
     $re = "/^[0-9\\s$chars$langsRegex]*$/u";
     if (!preg_match($re, $value)) {
-      $chars = $this->charactersFormatCharsMsg($chars);
-      $languages = $languages ? "[ $languages ]" : '';
-      $msg = $msg ?: "just $chars $languages letters can be used";
+      $msg = $this->charactersMsg($chars, $languages, $msg);
       $this->addError($this->input, $msg);
     }
     return $this;
+  }
+
+  private function charactersMsg($chars, $languages, $msg)
+  {
+    $chars = $this->charactersFormatCharsMsg($chars);
+    $languages = $languages ? "[ $languages ]" : '';
+    $msg = $msg ?: "just $chars $languages letters can be used";
+    return $msg;
   }
 
   private function charactersFormatCharsRegex($chars)

@@ -186,7 +186,6 @@ class UsersController extends Controller
 
   public function update()
   {
-    $msg = null;
     $id = userId();
 
     $posts = $this->request->posts();
