@@ -52,7 +52,7 @@ class Response
    * Set the response Headers
    *
    * @param string $header
-   * @param mixed value
+   * @param mixed $value
    * @return void
    */
   public function setHeader($header, $value)

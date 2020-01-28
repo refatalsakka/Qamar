@@ -93,7 +93,7 @@ class Database
   public function join()
   {
     $args = func_get_args()[0];
-
+    $sql = null;
     foreach ($args as $join) {
       $sql[] = $join[0] . ' ON ' . $this->table . '.' . $join[1] . ' = ' . $join[0] . '.' . $join[2];
     }

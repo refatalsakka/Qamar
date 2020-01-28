@@ -76,8 +76,7 @@ class Cookie
    */
   public function remove($key)
   {
-    $this->set($key, null, -1, '/');
-
+    $this->set($key, null, -1);
     unset($_COOKIE[$key]);
   }
 

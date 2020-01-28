@@ -89,7 +89,7 @@ class Validation
    * Call the function by given $type
    *
    * @param string $type
-   * @return function
+   * @return @method
    */
   public function type($type)
   {

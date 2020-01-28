@@ -5,11 +5,11 @@ use DateTime;
 
 class Date
 {
-   private $start;
-   private $end;
-   private $format;
-   private $value;
-   private $year;
+  private $start;
+  private $end;
+  private $format;
+  private $value;
+  private $year;
 
   /**
    * Constructor

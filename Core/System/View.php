@@ -80,14 +80,13 @@ class View
    * Generate the path
    *
    * @param string $path
-   * @param array $dir
+   * @param string $dir
    * @return string
    */
   private function filePath($path, $dir)
   {
     $file = str_replace(['/', '\\'], DS, $path);
     $file = $dir . DS . 'template' . DS . $file . '.pug';
-
     return $file;
   }
 

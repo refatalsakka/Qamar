@@ -33,7 +33,7 @@ class File
   /**
    * Root
    *
-   * @return @var $root
+   * @return $root
    */
   public function root()
   {
