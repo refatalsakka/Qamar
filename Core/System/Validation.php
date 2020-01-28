@@ -297,22 +297,7 @@ class Validation
 
     if (!$value && $value != '0') return $this;
 
-    $characters = new Characters($excepts);
-    $chars = $characters->getChars();
-    $langsRegex = $characters->getLangsRegex();
-    $languages = $characters->getLanguages();
-    $times = $characters->getTimes();
-    $atFirst = $characters->getAtFirst();
-    $atEnd = $characters->getAtEnd();
-    $between = $characters->getBetween();
-    $methods = $this->charactersMethods([
-      "times" => $times,
-      "atFirst" => $atFirst,
-      "atEnd" => $atEnd,
-      "between" => $between,
-      "chars" => $chars,
-      "value" => $value,
-    ]);
+    extract($this->charactersvariables($excepts, $value));
 
     if ($this->checkForErrorsInCharactersMethods($methods, $msg)) {
       return $this;
@@ -343,6 +328,38 @@ class Validation
     $chars = implode('', $chars);
     $chars = $chars ? "[ $chars ] and" : '';
     return $chars;
+  }
+
+  private function charactersvariables($excepts, $value)
+  {
+    $characters = new Characters($excepts);
+    $chars = $characters->getChars();
+    $langsRegex = $characters->getLangsRegex();
+    $languages = $characters->getLanguages();
+    $times = $characters->getTimes();
+    $atFirst = $characters->getAtFirst();
+    $atEnd = $characters->getAtEnd();
+    $between = $characters->getBetween();
+    $methods = $this->charactersMethods([
+      "times" => $times,
+      "atFirst" => $atFirst,
+      "atEnd" => $atEnd,
+      "between" => $between,
+      "chars" => $chars,
+      "value" => $value,
+    ]);
+
+    return [
+      'characters' => $characters,
+      'chars' => $chars,
+      'langsRegex' => $langsRegex,
+      'languages' => $languages,
+      'times' => $times,
+      'atFirst' => $atFirst,
+      'atEnd' => $atEnd,
+      'between' => $between,
+      'methods' => $methods,
+    ];
   }
 
   private function charactersMethods($args)
