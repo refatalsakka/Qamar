@@ -229,7 +229,7 @@ class Request
    * Get the uploaded file object for the given input
    *
    * @param string $input
-   * @return  System\Http\UploadeFile
+   * @return System\Http\UploadeFile\
    */
   public function file($input)
   {

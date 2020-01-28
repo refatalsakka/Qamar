@@ -189,18 +189,10 @@ class UsersController extends Controller
     $msg = null;
     $id = userId();
 
-    if (!$this->isUserNotFound($id)) {
-      $msg = 'reload';
-      return json_encode($msg);
-    }
     $posts = $this->request->posts();
     $name = array_keys($posts)[0];
     $allows = $this->file->call('config/admin/users/pages/update.php');
 
-    if (!in_array($name, $allows)) {
-      $msg = 'reload';
-      return json_encode($msg);
-    }
     $columns = $this->file->fileContent('config/admin/users/columns.json');
     $columns = json_decode($columns);
     $table = $columns->$name->table;
@@ -209,24 +201,84 @@ class UsersController extends Controller
     $value = ($posts[$name] == '') ? null : isset($filters->date) ? date('Y-m-d', strtotime($posts[$name])) : $posts[$name];
     $user_id_table_name = $column->user_id_table_name;
 
-    if ($this->isValuesAreTheSame($name, $table, $user_id_table_name, $id, $value)) {
-      $msg['same'] = $value ? strtolower($value) : '';
-      return json_encode($msg);
+    $methods = $this->updateMethods([
+      'id' => $id,
+      'name' => $name,
+      'allows' => $allows,
+      'table' => $table,
+      'user_id_table_name' => $user_id_table_name,
+      'value' => $value,
+      'filters' => $filters,
+    ]);
+
+    $error = $this->checkForErrorsInUpdateMethods($methods);
+    if ($error) {
+      return json_encode($error);
     }
-    if ($this->validatorFails($filters, $name)) {
-      $msg['error'] = $this->validator->getErrors();
-      return json_encode($msg);
-    }
-    if (!$this->updateUser($name, $value, $user_id_table_name, $id, $table)) {
-      $msg = 'reload';
-      return json_encode($msg);
-    }
+
     $msg = $this->userUpdateMsg($name, $value, $filters);
     return json_encode($msg);
   }
 
+  private function checkForErrorsInUpdateMethods($methods)
+  {
+    $msg = null;
+    foreach ($methods as $method => $options) {
+      if (call_user_func_array(array($this, $method), $options[0]) == false) {
+        if (array_keys($options[1])[0] === 'msg') {
+          $msg = array_values($options[1]);
+        } else {
+          if (array_keys($options[1])[0] === 'error') {
+            $msg['error'] = $this->validator->getErrors();
+          } else {
+            $msg[array_keys($options[1])[0]] = array_values($options[1]);
+          }
+        }
+        return $msg;
+      }
+    }
+    return false;
+  }
+
+  private function updateMethods($args)
+  {
+    extract($args);
+    return [
+      'isUserFound' => [
+        [$id],
+        ['msg' => 'reload'],
+      ],
+      'checkPostParameters' => [
+        [$name, $allows],
+        ['msg' => 'reload'],
+      ],
+      'isValueChanged' => [
+        [$name, $table, $user_id_table_name, $id, $value],
+        ['same' => $value ? strtolower($value) : ''],
+      ],
+      'validatorPasses' => [
+        [$filters, $name],
+        ['error' => ''],
+      ],
+      'updateUser' => [
+        [$name, $value, $user_id_table_name, $id, $table],
+        ['msg' => 'reload'],
+      ],
+    ];
+  }
+
+  private function checkPostParameters($name, $allows)
+  {
+    if (!in_array($name, $allows)) {
+      return false;
+    }
+    return true;
+  }
+
   private function userUpdateMsg($name, $value, $filters)
   {
+    $msg = null;
+
     if ($name === 'country') {
       $msg['country'] = [
         $value => $this->countries($value),
@@ -242,21 +294,21 @@ class UsersController extends Controller
     return $this->db->data($name, $value)->where($user_id_table_name . ' = ?', $id)->update($table);
   }
 
-  private function isUserNotFound($id)
+  private function isUserFound($id)
   {
     return $this->load->model('User')->get($id);
   }
 
-  private function isValuesAreTheSame($name, $table, $user_id_table_name, $id, $value)
+  private function isValueChanged($name, $table, $user_id_table_name, $id, $value)
   {
     $current_value = $this->db->select($name)->from($table)->where($user_id_table_name . ' = ?', [$id])->fetch()->$name;
     if (($current_value === strtolower($value)) || ($value == null && $current_value == null)) {
-      return true;
+      return false;
     }
-    return false;
+    return true;
   }
 
-  private function validatorFails($filters, $name)
+  private function validatorPasses($filters, $name)
   {
     foreach ($filters as $func => $arg) {
       if (method_exists($this->validator, $func) == 1) {
@@ -269,7 +321,7 @@ class UsersController extends Controller
         }
       }
     }
-    return $this->validator->fails();
+    return $this->validator->passes();
   }
 
   public function new()
