@@ -29,15 +29,15 @@ $app->route->group($adminOptions, function($route) {
   $route->add('/settings', 'Settings');
 
   //Users
-  $route->package('/users', 'Users', [
+  $route->package('/users', 'User\User', [
     'add' => [
-      'ajax',
+      // 'ajax',
     ],
     'update' => [
       // 'ajax',
     ],
   ]);
-  $route->add('/users/filter', 'Users@filter', 'GET');
+  $route->add('/users/filter', 'User\User@search', 'GET');
 
   // Profile
   $route->add('/profile', 'Profile', 'GET');

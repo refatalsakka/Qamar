@@ -33,7 +33,6 @@ $(document).ready(() => {
         }
       }
     }
-
     const errors = check.getErrors();
 
     return Object.keys(errors).length ? errors : true;
