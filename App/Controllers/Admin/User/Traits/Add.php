@@ -21,12 +21,7 @@ trait Add
     $msg = null;
     $posts = $this->request->posts();
     $names = array_keys($posts);
-    $allows = $this->file->call('config/admin/users/pages/add.php');
 
-    if (!$this->checkPostParametersAdd($names, $allows)) {
-      $msg = 'reload';
-      return json_encode($msg);
-    }
     if (!$this->checkAddValidator($names)) {
       $msg = $this->validator->getErrors();
       return json_encode($msg);
@@ -133,13 +128,5 @@ trait Add
       'user_id' => $user_id,
       'code' => $code,
     ];
-  }
-
-  private function checkPostParametersAdd($names, $allows)
-  {
-    if (!array_equal($names, $allows)) {
-      return false;
-    }
-    return true;
   }
 }

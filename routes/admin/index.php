@@ -32,9 +32,11 @@ $app->route->group($adminOptions, function($route) {
   $route->package('/users', 'User\User', [
     'add' => [
       // 'ajax',
+      'userAdd',
     ],
     'update' => [
       // 'ajax',
+      'userUpdate',
     ],
   ]);
   $route->add('/users/filter', 'User\User@search', 'GET');

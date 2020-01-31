@@ -10,8 +10,6 @@ trait Update
 
     $posts = $this->request->posts();
     $name = array_keys($posts)[0];
-    $allows = $this->file->call('config/admin/users/pages/update.php');
-
     $columns = $this->getUserConfigColumns();
     $table = $columns->$name->table;
     $column = $columns->$name;
@@ -22,7 +20,6 @@ trait Update
     $methods = $this->updateMethodsToCheckBeforeContinue([
       'id' => $id,
       'name' => $name,
-      'allows' => $allows,
       'table' => $table,
       'user_id_table_name' => $user_id_table_name,
       'value' => $value,
@@ -72,10 +69,6 @@ trait Update
         [$id],
         ['msg' => 'reload'],
       ],
-      'checkPostParametersUpdate' => [
-        [$name, $allows],
-        ['msg' => 'reload'],
-      ],
       'isValueChanged' => [
         [$name, $table, $user_id_table_name, $id, $value],
         ['same' => $value ? strtolower($value) : ''],
@@ -119,14 +112,6 @@ trait Update
   {
     $current_value = $this->db->select($name)->from($table)->where($user_id_table_name . ' = ?', [$id])->fetch()->$name;
     if (($current_value === strtolower($value)) || ($value == null && $current_value == null)) {
-      return false;
-    }
-    return true;
-  }
-
-  private function checkPostParametersUpdate($name, $allows)
-  {
-    if (!in_array($name, $allows)) {
       return false;
     }
     return true;

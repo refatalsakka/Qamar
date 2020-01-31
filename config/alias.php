@@ -22,5 +22,7 @@ return [
     'auth'        => 'App\\Middlewares\\AuthenticateMiddleware',
     'ajax'        => 'App\\Middlewares\\AjaxMiddleware',
     'permissions' => 'App\\Middlewares\\PermissionsMiddleware',
+    'userAdd'     => 'App\\Middlewares\\User\\AddMiddleware',
+    'userUpdate'  => 'App\\Middlewares\\User\\UpdateMiddleware',
   ]
 ];
