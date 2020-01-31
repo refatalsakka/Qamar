@@ -13,44 +13,16 @@ trait Search
       $usersformatted = $this->formatUsers($users);
       return json_encode($usersformatted);
     }
-
-    $gender = $gets['gender'] ?? null;
-    $zip = $gets['zip'] ?? null;
-    $country = $gets['country'] ?? null;
-    $registration_from = $gets['registration_from'] ?? null;
-    $registration_to = $gets['registration_to'] ?? null;
-    $active = $gets['active'] ?? null;
-    $pending = $gets['pending'] ?? null;
-    $inactive = $gets['inactive'] ?? null;
-    $online = $gets['online'] ?? null;
-    $offline = $gets['offline'] ?? null;
-
-    $sql = '';
-    $wheres = [];
-
-    list($sql, $wheres) = $this->active($active, $sql, $wheres);
-    list($sql, $wheres) = $this->pending($pending, $sql, $wheres);
-    list($sql, $wheres) = $this->inactive($inactive, $sql, $wheres);
-    $sql = $this->formatStatus($sql);
-    list($sql, $wheres) = $this->online($online, $sql, $wheres);
-    list($sql, $wheres) = $this->offline($offline, $sql, $wheres);
-    $sql = $this->formatLogin($sql);
-    list($sql, $wheres) = $this->gender($gender, $sql, $wheres);
-    list($sql, $wheres) = $this->zip($zip, $sql, $wheres);
-    list($sql, $wheres) = $this->country($country, $sql, $wheres);
-    list($sql, $wheres) = $this->registration($registration_from, $registration_to, $sql, $wheres);
-
-    $sql = $this->formatSql($sql);
+    list($sql, $wheres) = $this->generateSql($gets);
 
     if ($sql == '') {
       $users = $this->load->model('User')->users();
       $usersformatted = $this->formatUsers($users);
       return json_encode($usersformatted);
     }
-
     $users = $this->load->model('User')->filter($sql, $wheres);
-
     $msg = null;
+
     if (!$users) {
       $msg = 'no users';
       return json_encode($msg);
@@ -172,8 +144,23 @@ trait Search
     return [$sql, $wheres];
   }
 
-  private function formatSql($sql)
+  private function generateSql($gets)
   {
-    return $sql ? substr($sql, 0, -4) : $sql;
+    $sql = '';
+    $wheres = [];
+
+    list($sql, $wheres) = $this->active($gets['active'] ?? null, $sql, $wheres);
+    list($sql, $wheres) = $this->pending($gets['pending'] ?? null, $sql, $wheres);
+    list($sql, $wheres) = $this->inactive($gets['inactive'] ?? null, $sql, $wheres);
+    $sql = $this->formatStatus($sql);
+    list($sql, $wheres) = $this->online($gets['online'] ?? null, $sql, $wheres);
+    list($sql, $wheres) = $this->offline($gets['offline'] ?? null, $sql, $wheres);
+    $sql = $this->formatLogin($sql);
+    list($sql, $wheres) = $this->gender($gets['gender'] ?? null, $sql, $wheres);
+    list($sql, $wheres) = $this->zip($gets['zip'] ?? null, $sql, $wheres);
+    list($sql, $wheres) = $this->country($gets['country'] ?? null, $sql, $wheres);
+    list($sql, $wheres) = $this->registration($gets['registration_from'] ?? null, $gets['registration_to'] ?? null, $sql, $wheres);
+
+    return [$sql ? substr($sql, 0, -4) : $sql, $wheres];
   }
 }
