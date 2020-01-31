@@ -27,26 +27,19 @@ trait Add
       $msg = 'reload';
       return json_encode($msg);
     }
-    $columns = $this->file->fileContent('config/admin/users/columns.json');
-    $columns = json_decode($columns);
-    $table = $this->load->model('User')->getTable();
-
-    if (!$this->checkAddValidator($names, $columns)) {
+    if (!$this->checkAddValidator($names)) {
       $msg = $this->validator->getErrors();
       return json_encode($msg);
     }
     extract($this->generateUserIdCode());
 
-    $insertPersonalInfo = $this->insertPersonalInfo($posts, $table, $user_id, $code);
+    $table = $this->load->model('User')->getTable();
 
-    if (!$insertPersonalInfo) {
-      $msg = 'reload';
-      return json_encode($msg);
-    }
+    $insertPersonalInfo = $this->insertPersonalInfo($posts, $table, $user_id, $code);
     $insertInAddress = $this->insertUserAddress($posts, $user_id);
     $insertUserActivities = $this->insertUserActivities($user_id);
 
-    if (!$insertInAddress || !$insertUserActivities) {
+    if (!$insertPersonalInfo || !$insertInAddress || !$insertUserActivities) {
       $msg = 'reload';
       return json_encode($msg);
     }
@@ -54,8 +47,10 @@ trait Add
     return json_encode($msg);
   }
 
-  private function checkAddValidator($names, $columns)
+  private function checkAddValidator($names)
   {
+    $columns = $this->getUserConfigColumns();
+
     foreach ($names as $name) {
       $filters = $columns->$name->filters;
       $this->validatorPasses($filters, $name);
@@ -84,17 +79,39 @@ trait Add
     ])->insert($table);
   }
 
+  private function setNullToUserAddressWhenEmpty($posts)
+  {
+    $array = [
+      'country' => $posts['country'],
+      'state' => $posts['state'],
+      'city' => $posts['city'],
+      'zip' => $posts['zip'],
+      'street' => $posts['street'],
+      'house_number' => $posts['house_number'],
+      'additional' => $posts['additional'],
+    ];
+    foreach($array as $key => $value) {
+      if (!$value) {
+        $value = null;
+      }
+      $array[$key] = $value;
+    }
+    return $array;
+  }
+
   private function insertUserAddress($posts, $user_id)
   {
+    $posts = $this->setNullToUserAddressWhenEmpty($posts);
+
     return $this->db->data([
       'user_id' => $user_id,
-      'country' => $posts['country'] ?: null,
-      'state' => $posts['state'] ?: null,
-      'city' => $posts['city'] ?: null,
-      'zip' => $posts['zip'] ?: null,
-      'street' => $posts['street'] ?: null,
-      'house_number' => $posts['house_number'] ?: null,
-      'additional' => $posts['additional'] ?: null,
+      'country' => $posts['country'],
+      'state' => $posts['state'],
+      'city' => $posts['city'],
+      'zip' => $posts['zip'],
+      'street' => $posts['street'],
+      'house_number' => $posts['house_number'],
+      'additional' => $posts['additional'],
     ])->insert('address');
   }
 

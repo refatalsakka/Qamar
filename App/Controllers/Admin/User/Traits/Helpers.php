@@ -62,4 +62,10 @@ trait Helpers
     }
     return $this->validator->passes();
   }
+
+  private function getUserConfigColumns()
+  {
+    $columns = $this->file->fileContent('config/admin/users/columns.json');
+    return json_decode($columns);
+  }
 }

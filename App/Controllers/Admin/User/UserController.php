@@ -12,7 +12,7 @@ use App\Controllers\Admin\User\Traits\Search;
 
 class UserController extends Controller
 {
-  use Helpers,Show,Add,Update,Search {
+  use Helpers, Show, Add, Update, Search {
     // Add::checkPostParameters as checkPostParametersAdd;
     // Update::checkPostParameters as checkPostParametersUpdate;
   }

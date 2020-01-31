@@ -12,8 +12,7 @@ trait Update
     $name = array_keys($posts)[0];
     $allows = $this->file->call('config/admin/users/pages/update.php');
 
-    $columns = $this->file->fileContent('config/admin/users/columns.json');
-    $columns = json_decode($columns);
+    $columns = $this->getUserConfigColumns();
     $table = $columns->$name->table;
     $column = $columns->$name;
     $filters = $columns->$name->filters;
