@@ -124,17 +124,14 @@ $(document).ready(() => {
     return errors[column] ? errors[column] : true;
   }
 
-  // eslint-disable-next-line no-unused-vars
   function submit(columns) {
-    // eslint-disable-next-line no-unused-vars
     $('.form-editable').submit(function (e) {
-      // e.preventDefault();
+      e.preventDefault();
 
       const td = $(this).parents('.editable');
 
-      // eslint-disable-next-line no-unused-vars
-      // const check = checkInput(this, columns);
-      // if (check !== true) return new Alert({ insertIn: td[0], msg: check }).append();
+      const check = checkInput(this, columns);
+      if (check !== true) return new Alert({ insertIn: td[0], msg: check }).append();
 
       const form = $(this);
       const action = form.attr('action');
@@ -151,7 +148,7 @@ $(document).ready(() => {
           if (json.text !== undefined) {
             setTimeout(() => {
               td.html(json.text).attr('data-value', json.text);
-              new Background({ colorClass: 'success-bg', removeAfter: 3000 }).add(td[0]);
+              new Background({ elm: td[0], class: 'success-bg' }).addAfter().removeAfter(3000);
             }, 100);
           } else if (json.same !== undefined) {
             closeElms();
@@ -161,7 +158,7 @@ $(document).ready(() => {
                 .html(`<i class="flag-icon h4 mb-0 ${Object.values(json.country)[0]}" title="${Object.keys(json.country)[0]}"></i>${Object.keys(json.country)[0]}`)
                 .attr('data-value', Object.keys(json.country)[0])
                 .attr('data-icon', Object.values(json.country)[0]);
-              new Background({ colorClass: 'success-bg', removeAfter: 3000 }).add(td[0]);
+              new Background({ elm: td[0], class: 'success-bg' }).addAfter().removeAfter(3000);
             }, 100);
           } else if (json.error !== undefined) {
             const input = Object.keys(json.error)[0];
@@ -182,7 +179,7 @@ $(document).ready(() => {
     // remove the background fronm td when clicking on the document
     if (!$(e.target).is('.editable, .editable *')) closeElms();
     // remove bg
-    new Background({ colorClass: 'success-bg' }).removeAll();
+    new Background({ class: 'success-bg' }).removeAllAfter();
   });
 
   $('.editable').click(function (event) {
