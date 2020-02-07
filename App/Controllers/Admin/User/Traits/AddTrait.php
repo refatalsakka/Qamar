@@ -4,7 +4,7 @@ namespace App\Controllers\Admin\User\Traits;
 
 use RandomLib\Factory as Factory;
 
-trait Add
+trait AddTrait
 {
   public function new()
   {

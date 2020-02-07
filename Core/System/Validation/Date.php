@@ -1,6 +1,7 @@
 <?php
 
-namespace System;
+namespace System\Validation;
+
 use DateTime;
 
 class Date

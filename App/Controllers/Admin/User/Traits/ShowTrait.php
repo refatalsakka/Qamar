@@ -3,7 +3,7 @@
 namespace App\Controllers\Admin\User\Traits;
 
 
-trait Show
+trait ShowTrait
 {
   public function index()
   {

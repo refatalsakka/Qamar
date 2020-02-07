@@ -1,11 +1,12 @@
 <?php
 
-namespace System;
+namespace System\Validation;
 
-use System\Date;
-use System\Characters;
+use System\Application;
+use System\Validation\Date;
+use System\Validation\Characters;
 
-class Validation
+class Validator
 {
   /**
    * Application Object

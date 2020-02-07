@@ -2,7 +2,7 @@
 
 namespace App\Controllers\Admin\User\Traits;
 
-trait Search
+trait SearchTrait
 {
   public function search()
   {

@@ -2,7 +2,7 @@
 
 namespace App\Controllers\Admin\User\Traits;
 
-trait Helpers
+trait HelpersTrait
 {
   private function formatUsers($users)
   {

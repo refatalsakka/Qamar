@@ -2,7 +2,7 @@
 
 namespace App\Controllers\Admin\User\Traits;
 
-trait Update
+trait UpdateTrait
 {
   public function update()
   {
