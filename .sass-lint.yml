@@ -1,7 +1,7 @@
 # Linter Options
 options:
   # Don't merge default rules
-  merge-default-rules: false
+  merge-default-rules: true
   # Set the formatter to 'html'
   # formatter: html
   # Output file instead of logging results
@@ -10,10 +10,8 @@ options:
   max-warnings: 50
 # File Options
 files:
-  include: 'sass/**/*.s+(a|c)ss'
-  ignore:
-    - 'sass/vendor/**/*.*'
-    - 'sass/node_modules/**/*.*'
+  include: 'resources/sass/**/*.s+(a|c)ss'
+  ignore: 'node_modules/**/*.*'
 # Rule Configuration
 rules:
   extends-before-mixins: 2
