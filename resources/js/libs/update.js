@@ -37,7 +37,6 @@ $(document).ready(() => {
       classes.push('date');
       type = 'text';
     }
-
     return new CreateElm({
       type,
       name,
@@ -118,9 +117,7 @@ $(document).ready(() => {
         }
       }
     }
-
     const errors = check.getErrors();
-
     return errors[column] ? errors[column] : true;
   }
 
@@ -176,7 +173,6 @@ $(document).ready(() => {
 
   let columns = null;
   $(document).on('click', (e) => {
-    // remove the background fronm td when clicking on the document
     if (!$(e.target).is('.editable, .editable *')) closeElms();
     // remove bg
     new Background({ class: 'success-bg' }).removeAllAfter();

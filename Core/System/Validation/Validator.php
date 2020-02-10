@@ -5,6 +5,7 @@ namespace System\Validation;
 use System\Application;
 use System\Validation\Date;
 use System\Validation\Characters;
+use System\Validation\AllowedCharacters;
 
 class Validator
 {
@@ -493,60 +494,10 @@ class Validator
       $characters = [$characters];
     }
 
-    $path = null;
-    $indexes = null;
+    $allowedCharacters = new AllowedCharacters($this->app, $characters);
+    $characters = $allowedCharacters->getCharacters($characters);
 
-    $files = [];
-    $final = [];
-
-    foreach ($characters as $key => $character) {
-      if (strpos($character, 'path:') === 0) {
-        unset($characters[$key]);
-
-        $path = substr($character, 5);
-
-        $getFrom = 'value';
-
-        if (strpos($path, '::')) {
-          list($path, $getFrom) = explode('::', $path);
-        }
-
-        if (strpos($path, ':[')) {
-          list($path, $indexes) = explode(':[', $path);
-
-          $indexes = rtrim($indexes, ']');
-
-          if (strpos($indexes, '][')) {
-            $indexesInFiles = [];
-
-            $indexes = explode('][', $indexes);
-
-            foreach ($indexes as $index) {
-              if (!empty($indexesInFiles)) {
-                $indexesInFiles = $indexesInFiles[$index];
-
-              } else {
-                $indexesInFiles = $this->app->file->call($path . '.php')[$index];
-              }
-            }
-            $files += $indexesInFiles;
-          } else {
-            $files += $this->app->file->call($path . '.php')[$indexes];
-          }
-        } else {
-          $files += $this->app->file->call($path . '.php');
-        }
-        if ($getFrom === 'keys') {
-          $final += array_keys($files);
-        } else {
-          $final += array_values($files);
-        }
-      } else {
-        array_push($final, $character);
-      }
-    }
-
-    if (!in_array($value, $final)) {
+    if (!in_array($value, $characters)) {
       $msg = $msg ?: 'wrong value';
       $this->addError($this->input, $msg);
     }
