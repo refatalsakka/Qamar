@@ -1,5 +1,6 @@
 .editable {
   position: relative;
+
   form {
     display: flex;
 
@@ -10,23 +11,30 @@
         margin-top: 5px;
       }
     }
-    div:first-child {
-      flex-grow: 2;
-      width: 80%;
+
+    div {
+      &:first-child {
+        flex-grow: 2;
+        width: 80%;
+      }
     }
-    div:last-child {
-      flex-grow: 1;
-      width: 20%;
+
+    div {
+      &:last-child {
+        flex-grow: 1;
+        width: 20%;
+      }
     }
   }
 }
 
-@include disableClick {
+@include disable-click {
   display: flex;
   justify-content: center;
   align-items: center;
 
-  svg, i {
+  svg,
+  i {
     display: block;
   }
 }

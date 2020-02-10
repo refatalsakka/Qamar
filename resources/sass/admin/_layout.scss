@@ -10,15 +10,19 @@ body {
 .success-bg {
   background-color: #dbf2e3;
 }
+
 .error-input {
   border-color: #f27070 !important;
 }
+
 .error-msg {
   color: #f27070 !important;
 }
+
 .prevent-click {
   pointer-events: none;
 }
+
 .loading {
   animation: loading .6s infinite linear;
 }
@@ -27,14 +31,17 @@ body {
   0% {
     transform: rotate(0);
   }
+
   100% {
     transform: rotate(360deg);
   }
 }
 
 // Dashboard
-ol.breadcrumb {
-  li {
-    text-transform: capitalize;
+ol {
+  &.breadcrumb {
+    li {
+      text-transform: capitalize;
+    }
   }
 }

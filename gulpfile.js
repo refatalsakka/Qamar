@@ -103,6 +103,8 @@ function scriptsLint() {
 }
 exports.scriptsLint = scriptsLint;
 
+exports.testLint = gulp.parallel(templateLint, styleLint, scriptsLint);
+
 // Style lint Cehck ✅ Convert 🔂 Compresse 🔄 Output ↪ 📁 public/css
 async function styles() {
   return gulp
@@ -196,8 +198,6 @@ exports.watchScripts = watchScripts;
 
 // Run the main Plugins ▶
 exports.default = gulp.parallel(watchStyles, watchScripts, watchTemplate);
-
-exports.test = gulp.parallel(templateLint, styleLint, scriptsLint);
 
 // Build the Plugins 🔥
 gulp.task('build', gulp.series(templateLint, series(styleLint, styles), series(scriptsLint, scripts), series(imgmin, imgmSvg, libraries)));

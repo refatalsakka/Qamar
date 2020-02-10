@@ -1,17 +1,19 @@
-@import "../../layout";
-@import "../../../libs/update.scss";
+@import '../../layout';
+@import '../../../libs/update';
 
-td:not([data-name="email"]) {
-  // text-transform: capitalize;
-
-  .flag-icon {
-    margin-right: 5px;
+td {
+  &:not([data-name='email']) {
+    .flag-icon {
+      margin-right: 5px;
+    }
   }
 }
+
 .img-thumbnail {
   cursor: pointer;
   user-select: none;
 }
+
 .img-box {
   display: none;
   position: fixed;
@@ -20,7 +22,7 @@ td:not([data-name="email"]) {
   height: 100%;
   width: 100%;
   z-index: 10001;
-  background: #00000085;
+  background: #000;
 
   .img-card {
     display: flex;
@@ -42,6 +44,7 @@ td:not([data-name="email"]) {
         box-sizing: content-box;
         cursor: pointer;
       }
+
       img {
         width: 100%;
         user-select: none;

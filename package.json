@@ -7,11 +7,11 @@
     "eslint:fix": "node_modules/.bin/eslint resources/js/ --fix",
     "build": "gulp build",
     "server": "gulp server",
-    "test": "gulp test"
+    "testLint": "gulp testLint"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run test",
+      "pre-commit": "npm run testLint",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
