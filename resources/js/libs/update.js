@@ -1,5 +1,4 @@
-// eslint-disable-next-line import/extensions
-// import Check from '../classes/Check.js';
+import Validator from '../classes/Validator';
 /* eslint-disable no-undef */
 $(document).ready(() => {
   // generate action URL
@@ -101,23 +100,23 @@ $(document).ready(() => {
   }
 
   // eslint-disable-next-line no-unused-vars
-  function checkInput(elm, columns) {
-    const check = new Check();
+  function validatorInput(elm, columns) {
+    const validator = new Validator();
     const column = $(elm).find('.input-edit').attr('name');
     const filters = columns[column].filters;
 
     for (const [func, arg] of Object.entries(filters)) {
-      if (typeof check.input(column)[func] !== 'undefined') {
+      if (typeof validator.input(column)[func] !== 'undefined') {
         if (typeof arg === 'boolean') {
           if (arg) {
-            check.input(column)[func]();
+            validator.input(column)[func]();
           }
         } else {
-          check.input(column)[func](arg);
+          validator.input(column)[func](arg);
         }
       }
     }
-    const errors = check.getErrors();
+    const errors = validator.getErrors();
     return errors[column] ? errors[column] : true;
   }
 
@@ -127,8 +126,8 @@ $(document).ready(() => {
 
       const td = $(this).parents('.editable');
 
-      const check = checkInput(this, columns);
-      if (check !== true) return new Alert({ insertIn: td[0], msg: check }).append();
+      const validator = validatorInput(this, columns);
+      if (validator !== true) return new Alert({ insertIn: td[0], msg: validator }).append();
 
       const form = $(this);
       const action = form.attr('action');

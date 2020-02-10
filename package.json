@@ -8,6 +8,12 @@
     "build": "gulp build",
     "server": "gulp server"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run eslint",
+      "pre-push": "npm run eslint"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/refatalsakka/mvc-php"
@@ -54,6 +60,7 @@
     "gulp-sass-lint": "^1.4.0",
     "gulp-sourcemaps": "^2.6.5",
     "gulp-uglify": "^3.0.2",
+    "husky": "^4.2.1",
     "pug-lint": "^2.6.0",
     "pug-lint-config-clock": "^2.0.0",
     "puglint-stylish": "^1.1.0",

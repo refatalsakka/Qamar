@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-class Check {
+class Validator {
   constructor() {
     this.errors = [];
   }
@@ -358,26 +358,25 @@ class Check {
     return this;
   }
 
-  // eslint-disable-next-line no-unused-vars
   containJust(characters = [], msg = null) {
-    // if (characters === false) return this;
+    if (characters === false) return this;
 
-    // if (this.hasError(this.id)) return this;
+    if (this.hasError(this.id)) return this;
 
-    // const value = this.value();
+    const value = this.value();
 
-    // if (!value && value !== '0') return this;
+    if (!value && value !== '0') return this;
 
-    // if (typeof characters === 'string' && characters.indexOf('path:') === 0) return this;
+    if (typeof characters === 'string' && characters.indexOf('path:') === 0) return this;
 
-    // if (!Array.isArray(characters) && value !== '') {
-    //   characters = [characters];
-    // }
+    if (!Array.isArray(characters) && value !== '') {
+      characters = [characters];
+    }
 
-    // if (!characters.includes(value)) {
-    //   msg = msg || 'Wrong Value';
-    //   this.addError(this.id, msg);
-    // }
+    if (!characters.includes(value)) {
+      msg = msg || 'Wrong Value';
+      this.addError(this.id, msg);
+    }
     return this;
   }
 

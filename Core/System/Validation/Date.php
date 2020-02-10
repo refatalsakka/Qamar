@@ -2,6 +2,7 @@
 
 namespace System\Validation;
 
+use System\Application;
 use DateTime;
 
 class Date
