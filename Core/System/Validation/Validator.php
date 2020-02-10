@@ -490,12 +490,8 @@ class Validator
 
     if (!$value && $value != '0') return $this;
 
-    if (!is_array($characters) && $characters !== '') {
-      $characters = [$characters];
-    }
-
     $allowedCharacters = new AllowedCharacters($this->app, $characters);
-    $characters = $allowedCharacters->getCharacters($characters);
+    $characters = $allowedCharacters->getCharacters();
 
     if (!in_array($value, $characters)) {
       $msg = $msg ?: 'wrong value';

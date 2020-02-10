@@ -12,8 +12,9 @@ class AllowedCharacters
   public function __construct(Application $app, $characters)
   {
     $this->app = $app;
-    $this->characters = $characters;
-    $this->checkCharacters($characters);
+    $this->characters = (!is_array($characters) && $characters !== '') ? [$characters] : $characters;
+
+    $this->checkCharacters($this->characters);
   }
 
   private function isLink($character)
@@ -76,7 +77,6 @@ class AllowedCharacters
   private function formatCharacters($characters, $key, $character)
   {
     list($path, $getFrom) = $this->formatPath($character);
-    $indexes = null;
     $files = [];
 
     unset($characters[$key]);
