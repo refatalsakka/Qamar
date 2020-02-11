@@ -3,18 +3,18 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "eslint:fix": "node_modules/.bin/eslint resources/js/ --fix",
+    "sasslint": "sass-lint -v -q",
+    "sasslint:fix": "sass-lint-auto-fix --config-sass-lint .sass-lint.yml",
+    "eslint": "eslint resources/js/",
+    "eslint:fix": "eslint resources/js/ --fix",
+    "testlint": "gulp testlint",
     "build": "gulp build",
-    "server": "gulp server",
-    "testLint": "gulp testLint"
+    "server": "gulp server"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "npm run eslint && npm run eslint"
     }
-  },
-  "lint-staged": {
-    "*.js": ["npm run testLint", "git add"]
   },
   "repository": {
     "type": "git",
@@ -66,7 +66,8 @@
     "pug-lint": "^2.6.0",
     "pug-lint-config-clock": "^2.0.0",
     "puglint-stylish": "^1.1.0",
-    "sass-lint": "^1.13.1"
+    "sass-lint": "^1.13.1",
+    "sass-lint-auto-fix": "^0.21.0"
   },
   "browserslist": [
     "last 2 version",

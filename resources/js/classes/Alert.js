@@ -11,14 +11,14 @@ class Alert {
   static formatElm(elm) {
     if (typeof elm === 'object') return elm;
 
-    // elm = elm.trim(' ');
+    elm = elm.trim(' ');
 
-    // if (elm.indexOf(':') > -1) {
-    //   const [select, name] = elm.split(':');
-    //   if (select === 'id') return document.querySelector(`#${name.trim(' ')}`);
-    //   return document.querySelector(`.${name.trim(' ')}`);
-    // }
-    // return document.querySelector(`.${elm}`);
+    if (elm.indexOf(':') > -1) {
+      const [select, name] = elm.split(':');
+      if (select === 'id') return document.querySelector(`#${name.trim(' ')}`);
+      return document.querySelector(`.${name.trim(' ')}`);
+    }
+    return document.querySelector(`.${elm}`);
   }
 
   defasult() {

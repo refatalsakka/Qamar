@@ -76,14 +76,14 @@ const LIBS = {
 };
 
 // Check Templates pug-lint Cehck ✅
-function templateLint() {
+function templatelint() {
   return gulp.src(`${TEMPLATE_DIR}/**/*.pug`)
     .pipe(pugLint({ reporter: 'puglint-stylish' }));
 }
-exports.templateLint = templateLint;
+exports.templatelint = templatelint;
 
 // Check Style sass-lint Cehck ✅
-function styleLint() {
+function stylelint() {
   return gulp.src(`${SASS_DIR}/**/*.scss`)
     .pipe(sassLint({
       configFile: '.sass-lint.yml',
@@ -91,19 +91,19 @@ function styleLint() {
     .pipe(sassLint.format())
     .pipe(sassLint.failOnError());
 }
-exports.styleLint = styleLint;
+exports.stylelint = stylelint;
 
 // Check JavaScript eslint Cehck ✅
-function scriptsLint() {
+function scriptslint() {
   return gulp
     .src(`${JAVASCRIPT_DIR}/**/*.js`)
     .pipe(eslint())
     .pipe(eslint.format())
     .pipe(eslint.failAfterError());
 }
-exports.scriptsLint = scriptsLint;
+exports.scriptslint = scriptslint;
 
-exports.testLint = gulp.parallel(templateLint, styleLint, scriptsLint);
+exports.testlint = gulp.parallel(templatelint, stylelint, scriptslint);
 
 // Style lint Cehck ✅ Convert 🔂 Compresse 🔄 Output ↪ 📁 public/css
 async function styles() {
@@ -116,7 +116,7 @@ async function styles() {
     .pipe(sourcemaps.write())
     .pipe(gulp.dest(`${CSS_PUBLIC_DIR}`));
 }
-exports.styles = series(styleLint, styles);
+exports.styles = series(stylelint, styles);
 
 // JavaScript lint Cehck ✅ Convert 🔂 Compresse 🔄 Output ↪ 📁 public/js
 async function scripts() {
@@ -128,7 +128,7 @@ async function scripts() {
     .pipe(sourcemaps.write())
     .pipe(gulp.dest(`${JS_PUBLIC_DIR}`));
 }
-exports.scripts = series(scriptsLint, scripts);
+exports.scripts = series(scriptslint, scripts);
 
 // Copy SVG Output ↪ 📁 public/imgs
 async function imgmSvg() {
@@ -180,19 +180,19 @@ exports.server = server;
 
 // Check pug-lint Cehck ✅ Watch ⏳ // Output via PHP
 function watchTemplate() {
-  return gulp.watch(`${TEMPLATE_DIR}/**/*.pug`, templateLint);
+  return gulp.watch(`${TEMPLATE_DIR}/**/*.pug`, templatelint);
 }
 exports.watchTemplate = watchTemplate;
 
 // Check lint-sass Cehck ✅ Compress 🔄 Output ↪ public/css 📁 Watch ⏳
 function watchStyles() {
-  return gulp.watch(`${SASS_DIR}/**/*.scss`, series(styleLint, styles));
+  return gulp.watch(`${SASS_DIR}/**/*.scss`, series(stylelint, styles));
 }
 exports.watchStyles = watchStyles;
 
 // Check lint-js Cehck ✅ Compress 🔄 Output ↪ public/js 📁 Watch ⏳
 function watchScripts() {
-  return gulp.watch(`${JAVASCRIPT_DIR}/**/*.js`, series(scriptsLint, scripts));
+  return gulp.watch(`${JAVASCRIPT_DIR}/**/*.js`, series(scriptslint, scripts));
 }
 exports.watchScripts = watchScripts;
 
@@ -200,4 +200,4 @@ exports.watchScripts = watchScripts;
 exports.default = gulp.parallel(watchStyles, watchScripts, watchTemplate);
 
 // Build the Plugins 🔥
-gulp.task('build', gulp.series(templateLint, series(styleLint, styles), series(scriptsLint, scripts), series(imgmin, imgmSvg, libraries)));
+gulp.task('build', gulp.series(templatelint, series(stylelint, styles), series(scriptslint, scripts), series(imgmin, imgmSvg, libraries)));
