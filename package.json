@@ -14,7 +14,7 @@
     }
   },
   "lint-staged": {
-    "resources/*.(pug|js|scss)": ["npm run testLint", "git commit"]
+    "*.js": ["npm run testLint", "git commit"]
   },
   "repository": {
     "type": "git",
