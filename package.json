@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "eslint": "node_modules/.bin/eslint resources/js/",
     "eslint:fix": "node_modules/.bin/eslint resources/js/ --fix",
     "build": "gulp build",
     "server": "gulp server",
@@ -11,9 +10,11 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run testLint",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+      "pre-commit": "lint-staged"
     }
+  },
+  "lint-staged": {
+    "resources/*.(pug|js|scss)": ["npm run testLint", "git commit"]
   },
   "repository": {
     "type": "git",
