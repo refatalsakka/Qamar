@@ -1,8 +1,8 @@
 const gulp = require('gulp');
 const { series } = require('gulp');
-const pugLint = require('gulp-pug-linter');
+const puglint = require('gulp-pug-linter');
 const sass = require('gulp-sass');
-const sassLint = require('gulp-sass-lint');
+const sasslint = require('gulp-sass-lint');
 const eslint = require('gulp-eslint');
 const autoprefixer = require('gulp-autoprefixer');
 const imagemin = require('gulp-imagemin');
@@ -14,7 +14,7 @@ const rename = require('gulp-rename');
 const imagesConvert = require('gulp-images-convert');
 
 // Folders 📁
-const TEMPLATE_DIR = 'resources/template';
+const TEMPLATE_DIR = 'template';
 const SASS_DIR = 'resources/sass';
 const JAVASCRIPT_DIR = 'resources/js';
 const IMGAGES_DIR = 'resources/imgs';
@@ -78,18 +78,18 @@ const LIBS = {
 // Check Templates pug-lint Cehck ✅
 function templatelint() {
   return gulp.src(`${TEMPLATE_DIR}/**/*.pug`)
-    .pipe(pugLint({ reporter: 'puglint-stylish' }));
+    .pipe(puglint({ reporter: 'puglint-stylish' }));
 }
 exports.templatelint = templatelint;
 
 // Check Style sass-lint Cehck ✅
 function stylelint() {
   return gulp.src(`${SASS_DIR}/**/*.scss`)
-    .pipe(sassLint({
+    .pipe(sasslint({
       configFile: '.sass-lint.yml',
     }))
-    .pipe(sassLint.format())
-    .pipe(sassLint.failOnError());
+    .pipe(sasslint.format())
+    .pipe(sasslint.failOnError());
 }
 exports.stylelint = stylelint;
 
@@ -103,7 +103,7 @@ function scriptslint() {
 }
 exports.scriptslint = scriptslint;
 
-exports.testlint = gulp.parallel(templatelint, stylelint, scriptslint);
+exports.testlint = gulp.series(templatelint, stylelint, scriptslint);
 
 // Style lint Cehck ✅ Convert 🔂 Compresse 🔄 Output ↪ 📁 public/css
 async function styles() {

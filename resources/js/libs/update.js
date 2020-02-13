@@ -10,8 +10,7 @@ $(document).ready(() => {
     const { origin } = url;
     const { pathname } = url;
     const id = pathname.split('/').pop();
-    const newUrl = `${origin}${pathname.slice(0, pathname.length - id.length)}${method}/${id}`;
-    return newUrl;
+    return `${origin}${pathname.slice(0, pathname.length - id.length)}${method}/${id}`;
   }
 
   function convertedToJson(data) {

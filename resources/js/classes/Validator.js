@@ -1,5 +1,6 @@
 // eslint-disable-next-line no-unused-vars
-class Validator {
+// eslint-disable-next-line import/prefer-default-export
+export class Validator {
   constructor() {
     this.errors = [];
   }

@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
+    "puglint": "gulp templatelint",
     "sasslint": "sass-lint -v -q",
     "sasslint:fix": "sass-lint-auto-fix --config-sass-lint .sass-lint.yml",
     "eslint": "eslint resources/js/",
@@ -13,7 +14,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run eslint && npm run sasslint"
+      "pre-commit": "npm run testlint"
     }
   },
   "repository": {
