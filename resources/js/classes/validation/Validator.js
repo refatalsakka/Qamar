@@ -1,6 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-// eslint-disable-next-line import/prefer-default-export
-export class Validator {
+class Validator {
   constructor() {
     this.errors = [];
   }
@@ -98,7 +97,8 @@ export class Validator {
     return this;
   }
 
-  date(options, msg = null) {
+  // eslint-disable-next-line no-unused-vars
+  date(options, msg) {
     if (options === false) return this;
 
     if (this.hasError(this.id)) return this;
@@ -107,51 +107,18 @@ export class Validator {
 
     if (!value && value !== '0') return this;
 
-    if (Number.isNaN(new Date(value).getDay())) {
-      msg = msg || 'this field must be date';
+    // eslint-disable-next-line no-undef
+    const date = new DateV(value, options);
+
+    if (!date.isAdate()) {
+      msg = msg || 'this field must be a Date JS';
       this.addError(this.id, msg);
       return this;
     }
+    const { method, msgMethod } = date.constructor.dateMethods(options);
 
-    if (options.start && options.end) {
-      let { start, end } = options;
-      if (typeof start === 'string' && end.includes(':')) {
-        start = start.split(':')[0];
-      }
-      if (typeof end === 'string' && end.includes(':')) {
-        end = end.split(':')[0];
-      }
-      if (new Date(value).getFullYear() < start || new Date(value).getFullYear() > end) {
-        msg = `the field must be netween ${start} and ${end}`;
-        this.addError(this.id, msg);
-      }
-      return this;
-    }
-
-    if (options.start) {
-      let year = options.start;
-      if (typeof options.start === 'string' && options.start.includes(':')) {
-        options.start = options.start.split(':');
-        year = options.start[0];
-        msg = options.start[1];
-      }
-      if (new Date(value).getFullYear() < year) {
-        msg = msg || `the date can't be under ${year}`;
-        this.addError(this.id, msg);
-      }
-    }
-
-    if (options.end) {
-      let year = options.end;
-      if (typeof options.end === 'string' && options.end.includes(':')) {
-        options.end = options.end.split(':');
-        year = options.end[0];
-        msg = options.end[1];
-      }
-      if (new Date(value).getFullYear() > year) {
-        msg = msg || `the date cont be above ${year}`;
-        this.addError(this.id, msg);
-      }
+    if (!date[method]()) {
+      this.addError(this.id, msg || msgMethod);
     }
     return this;
   }
@@ -359,7 +326,7 @@ export class Validator {
     return this;
   }
 
-  containJust(characters = [], msg = null) {
+  alloweJust(characters = [], msg = null) {
     if (characters === false) return this;
 
     if (this.hasError(this.id)) return this;

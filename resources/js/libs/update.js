@@ -1,5 +1,9 @@
-import Validator from '../classes/Validator';
 /* eslint-disable no-undef */
+// import Alert from '../classes/Alert';
+// import Background from '../classes/Background';
+// import CreateElm from '../classes/CreateElm';
+// import Validator from '../classes/validation/Validator';
+
 $(document).ready(() => {
   // generate action URL
   // problem is the url is like http://localhost/admin/users/00000
@@ -119,14 +123,15 @@ $(document).ready(() => {
     return errors[column] ? errors[column] : true;
   }
 
+  // eslint-disable-next-line no-unused-vars
   function submit(columns) {
     $('.form-editable').submit(function (e) {
       e.preventDefault();
 
       const td = $(this).parents('.editable');
 
-      const validator = validatorInput(this, columns);
-      if (validator !== true) return new Alert({ insertIn: td[0], msg: validator }).append();
+      // const validator = validatorInput(this, columns);
+      // if (validator !== true) return new Alert({ insertIn: td[0], msg: validator }).append();
 
       const form = $(this);
       const action = form.attr('action');
@@ -182,12 +187,12 @@ $(document).ready(() => {
     closeElms();
     createForm(this);
 
-    $('.editable input.date').datepicker({
-      defaultViewDate: '01/01/1970',
-      format: 'dd M yyyy',
-      startDate: '01/01/1920',
-      endDate: '31/12/2004',
-    });
+    // $('.editable input.date').datepicker({
+    //   defaultViewDate: '01/01/1970',
+    //   format: 'dd M yyyy',
+    //   startDate: '01/01/1920',
+    //   endDate: '31/12/2004',
+    // });
 
     $('.input-edit').focus();
 

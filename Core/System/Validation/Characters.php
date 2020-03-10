@@ -17,7 +17,7 @@ class Characters
    * Constructor
    *
    */
-  public function __construct($excepts)
+  public function __construct($excepts, $value)
   {
     $this->excepts = $excepts;
     $this->chars = $this->excepts->chars->value ?? $this->excepts->chars->chars ?? null;
@@ -27,6 +27,7 @@ class Characters
     $this->between = $this->excepts->chars->between ?? null;
     $this->languages = $this->excepts->languages ?? 'english';
     $this->langsRegex = $this->excepts->languages ?? $this->languagesArray('english');
+    $this->value = $value ?? null;
 
     $this->setChars();
     $this->setLanguages();
@@ -85,11 +86,6 @@ class Characters
         $this->chars = $this->formatCharsArray();
       }
     }
-  }
-
-  public function getChars()
-  {
-    return $this->chars;
   }
 
   private function languagesArray($language)
@@ -163,31 +159,128 @@ class Characters
     }
   }
 
-  public function getLanguages()
+  public function variables()
   {
-    return $this->languages;
+    $chars = $this->chars;
+    $langsRegex = $this->langsRegex;
+    $languages = $this->languages;
+    $times = $this->times;
+    $atFirst = $this->atFirst;
+    $atEnd = $this->atEnd;
+    $between = $this->between;
+    $methods = $this->charactersMethods([
+      "times" => $times,
+      "atFirst" => $atFirst,
+      "atEnd" => $atEnd,
+      "between" => $between,
+      "chars" => $chars,
+      "value" => $this->value,
+    ]);
+    return [
+      'chars' => $chars,
+      'langsRegex' => $langsRegex,
+      'languages' => $languages,
+      'times' => $times,
+      'atFirst' => $atFirst,
+      'atEnd' => $atEnd,
+      'between' => $between,
+      'methods' => $methods,
+    ];
   }
 
-  public function getLangsRegex()
+  private function charactersMethods($args)
   {
-    return $this->langsRegex;
+    extract($args);
+    return [
+      'charactersTimes' => [
+        [$times, $chars, $value],
+        'charachters are too many',
+      ],
+      'charactersAtFirst' => [
+        [$atFirst, $chars, $value],
+        'charachters cant be at the first',
+      ],
+      'charactersAtEnd' => [
+        [$atEnd, $chars, $value],
+        'charachters cant be at the end',
+      ],
+      'charactersBetween' => [
+        [$between, $chars, $value],
+        'charachters cant be between',
+      ],
+    ];
   }
 
-  public function getTimes()
+  private function charactersFormatCharsRegex($chars)
   {
-    return $this->times;
+    if (strlen($chars) > 1) {
+      $chars = str_split($chars);
+      $chars = "\\" . implode('|\\', $chars);
+    }
+    return $chars;
   }
-  public function getAtFirst()
+
+  public function charactersAtFirst($atFirst, $chars, $value)
   {
-    return $this->atFirst;
+    if ($atFirst === false) {
+      $chars = $this->charactersFormatCharsRegex($chars);
+      $re = "/^($chars" . "|\\s+\\$chars)/";
+      if (preg_match_all($re, $value)) {
+        return true;
+      }
+      return false;
+    }
   }
-  public function getAtEnd()
+
+  private function charactersFormatCharsMsg($chars)
   {
-    return $this->atEnd;
+    $chars = explode('\\', $chars);
+    $chars = implode('', $chars);
+    $chars = $chars ? "[ $chars ] and" : '';
+    return $chars;
   }
-  public function getBetween()
+
+  public function charactersAtEnd($atEnd, $chars, $value)
   {
-    return $this->between;
+    if ($atEnd === false) {
+      $chars = $this->charactersFormatCharsRegex($chars);
+      $re = "/($chars" . "|\\$chars\\s+)$/";
+      if (preg_match_all($re, $value)) {
+        return true;
+      }
+      return false;
+    }
+  }
+
+  public function charactersBetween($between, $chars, $value)
+  {
+    if ($between === false) {
+      $chars = $this->charactersFormatCharsRegex($chars);
+      $re = "/.+(${chars})(.+|\\s)/";
+      if (preg_match_all($re, $value)) {
+        return true;
+      }
+      return false;
+    }
+  }
+
+  public function charactersTimes($times, $chars, $value)
+  {
+    if ($times > 0) {
+      $chars = $this->charactersFormatCharsRegex($chars);
+      $re = "/($chars)/";
+      if (preg_match($re, $value) && preg_match_all($re, $value) > $times) {
+        return true;
+      }
+      return false;
+    }
+  }
+
+  public function charactersMsg($chars, $languages, $msg)
+  {
+    $chars = $this->charactersFormatCharsMsg($chars);
+    $languages = $languages ? "[ $languages ]" : '';
+    return $msg ?: "just $chars $languages letters can be used";
   }
 }
 

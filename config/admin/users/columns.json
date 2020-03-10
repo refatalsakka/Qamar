@@ -14,7 +14,7 @@
           "atEnd": false,
           "between": true
         },
-        "languages": "german,english"
+        "languages": "english"
       },
       "type" : "text",
       "maxLen" : 20,
@@ -55,7 +55,7 @@
     "user_id_table_name" : "id",
     "filters" : {
       "require" : true,
-      "containJust" : ["male", "female"]
+      "alloweJust" : ["male", "female"]
     }
   },
   "birthday" : {
@@ -84,14 +84,14 @@
     "user_id_table_name" : "id",
     "filters" : {
       "require" : true,
-      "containJust" : [0, 1, 2]
+      "alloweJust" : [0, 1, 2]
     }
   },
   "country" : {
     "table" : "address",
     "user_id_table_name" : "user_id",
     "filters" : {
-      "containJust" : "path:config/icons:[flags]::keys"
+      "alloweJust" : "path:config/icons:[flags]::keys"
     }
   },
   "state" : {

@@ -2,10 +2,9 @@
 
 namespace System\Validation;
 
-use System\Application;
 use DateTime;
 
-class Date
+class DateV
 {
   private $start;
   private $end;
@@ -19,11 +18,11 @@ class Date
    */
   public function __construct($value, $options = [])
   {
-    $this->start = $options->start ?? null;
-    $this->end = $options->end ?? null;
     $this->format = $options->format ?? 'd M Y';
     $this->value = $value;
-    $this->year = DateTime::createFromFormat($this->format, $this->value)->format('Y');
+    $this->start = $options->start ?? null;
+    $this->end = $options->end ?? null;
+    $this->year = ($this->isAdate()) ? DateTime::createFromFormat($this->format, $this->value)->format('Y') : null;
   }
 
   public function isAdate()
@@ -46,7 +45,7 @@ class Date
 
   public function minimum($start = null)
   {
-    $this->start = $this->start ?? $start;
+    $this->start = $this->start || $start;
 
     if ($this->year < $this->start) {
       return false;
@@ -56,11 +55,29 @@ class Date
 
   public function maximum($end = null)
   {
-    $this->end = $this->end ?? $end;
+    $this->end = $this->end || $end;
 
     if ($this->year > $this->end) {
       return false;
     }
     return true;
+  }
+
+  public function dateMethods($options)
+  {
+    $method = null;
+    $msg = null;
+
+    if (isset($options->start) && isset($options->end)) {
+      $method = 'isDateBetween';
+      $msg = 'this field must be between ' . $options->start . ' and ' . $options->end;
+    } elseif (isset($options->start)) {
+      $method = 'minimum';
+      $msg = 'the date can\'t be under ' . $options->start;
+    } elseif (isset($options->end)) {
+      $method = 'maximum';
+      $msg = 'the date can\'t be above ' . $options->end;
+    }
+    return array('method' => $method, 'msg' => $msg);
   }
 }

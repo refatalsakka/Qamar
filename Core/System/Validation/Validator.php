@@ -3,9 +3,9 @@
 namespace System\Validation;
 
 use System\Application;
-use System\Validation\Date;
+use System\Validation\DateV;
 use System\Validation\Characters;
-use System\Validation\AllowedCharacters;
+use System\Validation\AlloweJust;
 
 class Validator
 {
@@ -210,31 +210,19 @@ class Validator
     $options = json_encode($options);
     $options = json_decode($options);
 
-    extract($this->dateMethods($options));
+    $date = new DateV($value, $options);
 
-    $date = new Date($value, $options);
+    if (!$date->isAdate()) {
+      $msg = $msg ?: "this field must be a Date";
+      $this->addError($this->input, $msg);
+      return $this;
+    }
+    extract($date->dateMethods($options));
 
     if (!$date->$method()) {
       $this->addError($this->input, $msg);
     }
     return $this;
-  }
-
-  private function dateMethods($options)
-  {
-    $method = null;
-    $msg = null;
-    if ($options->start && $options->end) {
-      $method = 'isDateBetween';
-      $msg = 'this field must be between ' . $options->start . ' and ' . $options->end;
-    } elseif ($options->start) {
-      $method = 'minimum';
-      $msg = 'the date can\'t be under ' . $options->start;
-    } elseif ($options->end) {
-      $method = 'maximum';
-      $msg = 'the date can\'t be above ' . $options->end;
-    }
-    return array('method' => $method, 'msg'=> $msg);
   }
 
   /**
@@ -280,7 +268,6 @@ class Validator
 
       $this->addError($this->input, $msg);
     }
-
     return $this;
   }
 
@@ -299,157 +286,24 @@ class Validator
 
     if (!$value && $value != '0') return $this;
 
-    extract($this->charactersvariables($excepts, $value));
+    $characters = new Characters($excepts, $value);
 
-    if ($this->checkForErrorsInCharactersMethods($methods, $msg)) {
-      return $this;
+    extract($characters->variables());
+
+    foreach ($methods as $method => $options) {
+      if (call_user_func_array(array($characters, $method), $options[0])) {
+        $msg = $msg ?: $options[1];
+        $this->addError($this->input, $msg);
+        return $this;
+      }
     }
     $re = "/^[0-9\\s$chars$langsRegex]*$/u";
+
     if (!preg_match($re, $value)) {
-      $msg = $this->charactersMsg($chars, $languages, $msg);
+      $msg = $characters->charactersMsg($chars, $languages, $msg);
       $this->addError($this->input, $msg);
     }
     return $this;
-  }
-
-  private function charactersMsg($chars, $languages, $msg)
-  {
-    $chars = $this->charactersFormatCharsMsg($chars);
-    $languages = $languages ? "[ $languages ]" : '';
-    $msg = $msg ?: "just $chars $languages letters can be used";
-    return $msg;
-  }
-
-  private function charactersFormatCharsRegex($chars)
-  {
-    if (strlen($chars) > 1) {
-      $chars = str_split($chars);
-      $chars = "\\" . implode('|\\', $chars);
-    }
-    return $chars;
-  }
-
-  private function charactersFormatCharsMsg($chars)
-  {
-    $chars = explode('\\', $chars);
-    $chars = implode('', $chars);
-    $chars = $chars ? "[ $chars ] and" : '';
-    return $chars;
-  }
-
-  private function charactersvariables($excepts, $value)
-  {
-    $characters = new Characters($excepts);
-    $chars = $characters->getChars();
-    $langsRegex = $characters->getLangsRegex();
-    $languages = $characters->getLanguages();
-    $times = $characters->getTimes();
-    $atFirst = $characters->getAtFirst();
-    $atEnd = $characters->getAtEnd();
-    $between = $characters->getBetween();
-    $methods = $this->charactersMethods([
-      "times" => $times,
-      "atFirst" => $atFirst,
-      "atEnd" => $atEnd,
-      "between" => $between,
-      "chars" => $chars,
-      "value" => $value,
-    ]);
-
-    return [
-      'characters' => $characters,
-      'chars' => $chars,
-      'langsRegex' => $langsRegex,
-      'languages' => $languages,
-      'times' => $times,
-      'atFirst' => $atFirst,
-      'atEnd' => $atEnd,
-      'between' => $between,
-      'methods' => $methods,
-    ];
-  }
-
-  private function charactersMethods($args)
-  {
-    extract($args);
-    return [
-      'charactersTimes' => [
-        [$times, $chars, $value],
-        'charachters are too many',
-      ],
-      'charactersAtFirst' => [
-        [$atFirst, $chars, $value],
-        'charachters cant be at the first',
-      ],
-      'charactersAtEnd' => [
-        [$atEnd, $chars, $value],
-        'charachters cant be at the end',
-      ],
-      'charactersBetween' => [
-        [$between, $chars, $value],
-        'charachters cant be between',
-      ],
-    ];
-  }
-
-  private function charactersTimes($times, $chars, $value)
-  {
-    if ($times > 0) {
-      $chars = $this->charactersFormatCharsRegex($chars);
-      $re = "/($chars)/";
-      if (preg_match($re, $value) && preg_match_all($re, $value) > $times) {
-        return true;
-      }
-      return false;
-    }
-  }
-
-  private function charactersAtFirst($atFirst, $chars, $value)
-  {
-    if ($atFirst === false) {
-      $chars = $this->charactersFormatCharsRegex($chars);
-      $re = "/^($chars" . "|\\s+\\$chars)/";
-      if (preg_match_all($re, $value)) {
-        return true;
-      }
-      return false;
-    }
-  }
-
-  private function charactersAtEnd($atEnd, $chars, $value)
-  {
-    if ($atEnd === false) {
-      $chars = $this->charactersFormatCharsRegex($chars);
-      $re = "/($chars" . "|\\$chars\\s+)$/";
-      if (preg_match_all($re, $value)) {
-        return true;
-      }
-      return false;
-    }
-  }
-
-  private function charactersBetween($between, $chars, $value)
-  {
-    if ($between === false) {
-      $chars = $this->charactersFormatCharsRegex($chars);
-      $re = "/.+(${chars})(.+|\\s)/";
-      if (preg_match_all($re, $value)) {
-        return true;
-      }
-      return false;
-    }
-  }
-
-  private function checkForErrorsInCharactersMethods($methods, $msg)
-  {
-    foreach ($methods as $method => $options) {
-      if (call_user_func_array(array($this, $method), $options[0])) {
-        $msg = $msg ?: $options[1];
-        $this->addError($this->input, $msg);
-        return true;
-      }
-    }
-    return false;
   }
 
   /**
@@ -482,7 +336,7 @@ class Validator
    * @param string $msg
    * @return $this
    */
-  public function containJust($characters = [], $msg = null)
+  public function alloweJust($characters = [], $msg = null)
   {
     if ($characters === false) return $this;
 
@@ -490,7 +344,7 @@ class Validator
 
     if (!$value && $value != '0') return $this;
 
-    $allowedCharacters = new AllowedCharacters($this->app, $characters);
+    $allowedCharacters = new AlloweJust($this->app, $characters);
     $characters = $allowedCharacters->getCharacters();
 
     if (!in_array($value, $characters)) {
