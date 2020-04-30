@@ -4,7 +4,7 @@ namespace System\Validation;
 
 class Characters
 {
-  private $excepts;
+  private $object;
   private $chars;
   private $times;
   private $atFirst;
@@ -17,25 +17,25 @@ class Characters
    * Constructor
    *
    */
-  public function __construct($excepts, $value)
+  public function __construct($object, $value)
   {
-    $this->excepts = $excepts;
-    $this->chars = $this->excepts->chars->value ?? $this->excepts->chars->chars ?? null;
-    $this->times = $this->excepts->chars->times ?? null;
-    $this->atFirst = $this->excepts->chars->atFirst ?? null;
-    $this->atEnd = $this->excepts->chars->atEnd ?? null;
-    $this->between = $this->excepts->chars->between ?? null;
-    $this->languages = $this->excepts->languages ?? 'english';
-    $this->langsRegex = $this->excepts->languages ?? $this->languagesArray('english');
+    $this->object = $object;
+    $this->chars = $this->object->chars->value ?? $this->object->chars->chars ?? null;
+    $this->times = $this->object->chars->times ?? null;
+    $this->atFirst = $this->object->chars->atFirst ?? null;
+    $this->atEnd = $this->object->chars->atEnd ?? null;
+    $this->between = $this->object->chars->between ?? null;
+    $this->languages = $this->object->languages ?? 'english';
+    $this->langsRegex = $this->object->languages ?? $this->languagesArray('english');
     $this->value = $value ?? null;
 
     $this->setChars();
     $this->setLanguages();
   }
 
-  private function isExcepts()
+  private function isObject()
   {
-    return is_object($this->excepts) && count((array) $this->excepts);
+    return is_object($this->object) && count((array) $this->object);
   }
 
   private function isCharsString()
@@ -65,11 +65,7 @@ class Characters
 
   private function formatCharsString()
   {
-    if ($this->canCharsSeparateViaComma()) {
-      return $this->formatCharsViaComma(true);
-    } else {
-      return $this->formatCharsViaComma(false);
-    }
+    return $this->formatCharsViaComma($this->canCharsSeparateViaComma());
   }
 
   private function formatCharsArray()
@@ -79,7 +75,7 @@ class Characters
 
   private function setChars()
   {
-    if ($this->isExcepts()) {
+    if ($this->isObject()) {
       if ($this->isCharsString()) {
         $this->chars = $this->formatCharsString();
       } else if ($this->isCharsAnArray()) {
@@ -280,7 +276,7 @@ class Characters
   {
     $chars = $this->charactersFormatCharsMsg($chars);
     $languages = $languages ? "[ $languages ]" : '';
-    return $msg ?: "just $chars $languages letters can be used";
+    return $msg ?: "just $chars $languages letters can be used PHP";
   }
 }
 

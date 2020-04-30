@@ -303,7 +303,7 @@ class Validator {
     if (!re5.test(value)) {
       chars = chars ? `[ ${chars.split('\\').join(' ')} ] and` : '';
       languages = (languages && languages !== 'all') ? `[ ${languages} ]` : '';
-      msg = msg || `just ${chars} ${languages} letters can be used`;
+      msg = msg || `just ${chars} ${languages} letters can be used javaScript`;
 
       this.addError(this.id, msg);
     }
@@ -326,7 +326,7 @@ class Validator {
     return this;
   }
 
-  alloweJust(characters = [], msg = null) {
+  allowJust(characters = [], msg = null) {
     if (characters === false) return this;
 
     if (this.hasError(this.id)) return this;

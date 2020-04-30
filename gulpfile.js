@@ -197,7 +197,7 @@ function watchScripts() {
 exports.watchScripts = watchScripts;
 
 // Run the main Plugins ▶
-exports.default = gulp.parallel(watchStyles, watchScripts, watchTemplate);
+exports.watch = gulp.parallel(watchStyles, watchScripts, watchTemplate);
 
 // Build the Plugins 🔥
 gulp.task('build', gulp.series(templatelint, series(stylelint, styles), series(scriptslint, scripts), series(imgmin, imgmSvg, libraries)));

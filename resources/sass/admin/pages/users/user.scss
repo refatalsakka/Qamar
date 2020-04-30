@@ -9,9 +9,12 @@ td {
   }
 }
 
+.editable {
+  cursor: pointer;
+}
+
 .img-thumbnail {
   cursor: pointer;
-  user-select: none;
 }
 
 .img-box {

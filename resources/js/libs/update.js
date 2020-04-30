@@ -130,8 +130,8 @@ $(document).ready(() => {
 
       const td = $(this).parents('.editable');
 
-      // const validator = validatorInput(this, columns);
-      // if (validator !== true) return new Alert({ insertIn: td[0], msg: validator }).append();
+      const validator = validatorInput(this, columns);
+      if (validator !== true) return new Alert({ insertIn: td[0], msg: validator }).append();
 
       const form = $(this);
       const action = form.attr('action');
@@ -187,12 +187,12 @@ $(document).ready(() => {
     closeElms();
     createForm(this);
 
-    // $('.editable input.date').datepicker({
-    //   defaultViewDate: '01/01/1970',
-    //   format: 'dd M yyyy',
-    //   startDate: '01/01/1920',
-    //   endDate: '31/12/2004',
-    // });
+    $('.editable input.date').datepicker({
+      defaultViewDate: '01/01/1970',
+      format: 'dd M yyyy',
+      startDate: '01/01/1920',
+      endDate: '31/12/2004',
+    });
 
     $('.input-edit').focus();
 

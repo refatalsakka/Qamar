@@ -4,7 +4,7 @@ namespace System\Validation;
 
 use System\Application;
 
-class AlloweJust
+class AllowJust
 {
   private $app;
   private $characters;

@@ -55,7 +55,7 @@
     "user_id_table_name" : "id",
     "filters" : {
       "require" : true,
-      "alloweJust" : ["male", "female"]
+      "allowJust" : ["male", "female"]
     }
   },
   "birthday" : {
@@ -84,14 +84,14 @@
     "user_id_table_name" : "id",
     "filters" : {
       "require" : true,
-      "alloweJust" : [0, 1, 2]
+      "allowJust" : [0, 1, 2]
     }
   },
   "country" : {
     "table" : "address",
     "user_id_table_name" : "user_id",
     "filters" : {
-      "alloweJust" : "path:config/icons:[flags]::keys"
+      "allowJust" : "path:config/icons:[flags]::keys"
     }
   },
   "state" : {

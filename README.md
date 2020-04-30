@@ -99,9 +99,9 @@ $ gulp libraries
 $ gulp server
 ```
 
-**Run the main Plugins** ▶
+**Watch all** ▶
 ```sh
-$ gulp default
+$ gulp watch
 ```
 
 **Building and runing the Plugins in one Command** 🔥
