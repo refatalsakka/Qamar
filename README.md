@@ -58,7 +58,7 @@ $ npm run lint:js
 ```
 
 **Check Pugjs fix-lint**
-*There is no.*
+*There is no yet.*
 
 **Check SCSS fix-lint**
 ```sh
