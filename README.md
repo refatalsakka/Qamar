@@ -42,30 +42,32 @@ $ npm install
 $ composser install
 ```
 
-**Check Pugjs lint**
+**Check Pugjs Lint**
 ```sh
 $ npm run lint:pug
 ```
 
-**Check SCSS lint**
+**Check SCSS Lint**
 ```sh
 $ npm run lint:sass
 ```
 
-**Check JavaScript lint**
+**Check JavaScript Lint**
 ```sh
 $ npm run lint:js
 ```
 
-**Check Pugjs fix-lint**
+**Fix Pugjs Lint**
+```sh
 *There is no yet.*
+```
 
-**Check SCSS fix-lint**
+**Fix SCSS Lint**
 ```sh
 $ npm run lint:sass:fix
 ```
 
-**Check JavaScript fix-lint**
+**Fix JavaScript Lint**
 ```sh
 $ npm run lint:js:fix
 ```
@@ -83,8 +85,9 @@ $ npm run js
 *If there was any lint error, the function will not complate.*
 
 **Convert to HTM**
+```sh
 *There is no HTML. PHP will automatically convert it to HTML.*
-
+```
 
 **Watch Pug**
 ```sh
@@ -110,7 +113,7 @@ $ npm run watch:js
 $ npm run watch
 ```
 
-**Compress Images, Convert to .wepb, Output public/imgs**
+**Compress Images, Convert to .png, Output public/imgs**
 ```sh
 $ npm run imgs
 ```
