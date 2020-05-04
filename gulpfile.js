@@ -1,9 +1,11 @@
 const gulp = require('gulp');
 const { series } = require('gulp');
+
 const puglint = require('gulp-pug-linter');
 const sass = require('gulp-sass');
 const sasslint = require('gulp-sass-lint');
 const eslint = require('gulp-eslint');
+
 const autoprefixer = require('gulp-autoprefixer');
 const imagemin = require('gulp-imagemin');
 const sourcemaps = require('gulp-sourcemaps');
@@ -11,6 +13,7 @@ const uglify = require('gulp-uglify');
 const browsersync = require('browser-sync').create();
 const rename = require('gulp-rename');
 const imagesConvert = require('gulp-images-convert');
+
 const webpack = require('webpack');
 const webpackStream = require('webpack-stream');
 const path = require('path');
@@ -148,7 +151,7 @@ function scriptslint() {
 }
 exports.scriptslint = scriptslint;
 
-exports.testlint = gulp.series(templatelint, stylelint, scriptslint);
+exports.lint = gulp.series(templatelint, stylelint, scriptslint);
 
 // Style lint Cehck ✅ Convert 🔂 Compresse 🔄 Output ↪ 📁 public/css
 async function styles() {

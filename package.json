@@ -3,19 +3,21 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "puglint": "gulp templatelint",
-    "sasslint": "sass-lint -v -q",
-    "sasslint:fix": "sass-lint-auto-fix --config-sass-lint .sass-lint.yml",
-    "eslint": "eslint resources/js/",
-    "eslint:fix": "eslint resources/js/ --fix",
-    "testlint": "gulp testlint",
+    "gitty": "node gitty.js",
+    "lint": "gulp lint",
+    "lint:pug": "gulp templatelint",
+    "lint:sass": "sass-lint -v -q",
+    "lint:sass:fix": "sass-lint-auto-fix --config-sass-lint .sass-lint.yml",
+    "lint:js": "eslint resources/js/",
+    "lint:js:fix": "eslint resources/js/ --fix",
     "build": "gulp build",
+    "imgmin": "gulp imgmin",
+    "libraries": "gulp libraries",
+    "watch": "gulp watch",
+    "watch:pug": "gulp watchTemplate",
+    "watch:sass": "gulp watchStyles",
+    "watch:js": "gulp watchScripts",
     "server": "gulp server"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run testlint"
-    }
   },
   "repository": {
     "type": "git",
