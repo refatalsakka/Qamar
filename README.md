@@ -42,74 +42,90 @@ $ npm install
 $ composser install
 ```
 
-#### Gulpjs
-
-To build and run the Plugins
-
-**Check Style lint**
+**Check Pugjs lint**
 ```sh
-$ gulp styleLint
+$ npm run lint:pug
 ```
 
-**Check Javascript lint**
+**Check SCSS lint**
 ```sh
-$ gulp scriptsLint
+$ npm run lint:sass
+```
+
+**Check JavaScript lint**
+```sh
+$ npm run lint:js
+```
+
+**Check Pugjs fix-lint**
+*There is no.*
+
+**Check SCSS fix-lint**
+```sh
+$ npm run lint:sass:fix
+```
+
+**Check JavaScript fix-lint**
+```sh
+$ npm run lint:js:fix
 ```
 
 **Convert to SCSS, Compresse, Output public/css**
 ```sh
-$ gulp styles
-```
-
-**Convert to JS5, Compresse, Output public/js**
-```sh
-$ gulp scripts
+$ npm run sass
 ```
 *If there was any lint error, the function will not complate.*
 
+**Convert to JS5, Compresse, Output public/js**
+```sh
+$ npm run js
+```
+*If there was any lint error, the function will not complate.*
+
+**Convert to HTM**
+*There is no HTML. PHP will automatically convert it to HTML.*
+
+
 **Watch Pug**
 ```sh
-$ gulp templateLint
+$ npm run watch:pug
 ```
 
 **Watch CSS**
 ```sh
-$ gulp watchStyles
-```
-
-**Watch JavaScript**
-```sh
-$ gulp watchScripts
+$ npm run watch:sass
 ```
 *Watch will stop if any error being detected.*
 *After fix the error, the function will work automatically again*
 
+**Watch JavaScript**
+```sh
+$ npm run watch:js
+```
+*Watch will stop if any error being detected.*
+*After fix the error, the function will work automatically again*
+
+**Watch all** ▶
+```sh
+$ npm run watch
+```
+
 **Compress Images, Convert to .wepb, Output public/imgs**
 ```sh
-$ gulp imgmin
+$ npm run imgs
 ```
 
 **Copy Libraries from node_modules to public/ {js & css} /libs**
 ```sh
-$ gulp libraries
+$ npm run libs
 ```
 
 **Start Server**
 ```sh
-$ gulp server
-```
-
-**Watch all** ▶
-```sh
-$ gulp watch
+$ npm run server
 ```
 
 **Building and runing the Plugins in one Command** 🔥
-
-```sh
-$ gulp build
-```
-**OR**
 ```sh
 $ npm run build
 ```
