@@ -1,4 +1,6 @@
+import Validator from '../../../classes/validation/Validator';
 /* eslint-disable no-undef */
+
 $(document).ready(() => {
   // check if the string can be parsed to JSON
   function convertedToJson(data) {
@@ -18,7 +20,7 @@ $(document).ready(() => {
   });
 
   function checkInputs(columns) {
-    const check = new Check();
+    const check = new Validator();
     for (const column in columns) {
       const filters = columns[column].filters;
       for (const [func, arg] of Object.entries(filters)) {

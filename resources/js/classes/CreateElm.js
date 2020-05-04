@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 // eslint-disable-next-line no-unused-vars
-class CreateElm {
+export default class CreateElm {
   constructor(options) {
     this.tag = options.tag || '';
     this.name = options.name || '';

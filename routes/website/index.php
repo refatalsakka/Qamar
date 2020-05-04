@@ -33,12 +33,11 @@ $app->pages->add('imprint', '/imprint', 'icon-info');
 $app->pages->add('not found', '/404', 'fas fa-times');
 
 // == Website's routes
-if ($app->request->isRequestToAdminManagement()) {
-  return;
-}
+if ($app->request->isRequestToAdminManagement()) return;
+
 
 $app->route->add('/', 'Website/Home');
-$app->route->add('/home', 'Website/Home', 'GET');
+$app->route->add('/home', 'Website/Home');
 
 // Services
 $servicesRouteptions = [
@@ -59,6 +58,3 @@ $app->route->add('/privacy', 'Website/privacy');
 
 // Imprint
 $app->route->add('/imprint', 'Website/Imprint');
-
-// Not found
-$app->route->add('/404', 'Website/Notfound', 'GET');

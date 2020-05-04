@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-class Background {
+export default class Background {
   constructor(options) {
     if (options) {
       this.elm = Background.formatElm(options.elm);

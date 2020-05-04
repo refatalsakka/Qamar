@@ -8,10 +8,12 @@ const autoprefixer = require('gulp-autoprefixer');
 const imagemin = require('gulp-imagemin');
 const sourcemaps = require('gulp-sourcemaps');
 const uglify = require('gulp-uglify');
-const babel = require('gulp-babel');
 const browsersync = require('browser-sync').create();
 const rename = require('gulp-rename');
 const imagesConvert = require('gulp-images-convert');
+const webpack = require('webpack');
+const webpackStream = require('webpack-stream');
+const webapckJsConfig = require('./webpack.config.js').webapckJsConfig;
 
 // Folders 📁
 const TEMPLATE_DIR = 'template';
@@ -122,8 +124,8 @@ exports.styles = series(stylelint, styles);
 async function scripts() {
   return gulp
     .src(`${JAVASCRIPT_DIR}/**/*.js`)
+    .pipe(webpackStream(webapckJsConfig), webpack)
     .pipe(sourcemaps.init({ loadMaps: true }))
-    .pipe(babel())
     .pipe(uglify())
     .pipe(sourcemaps.write())
     .pipe(gulp.dest(`${JS_PUBLIC_DIR}`));
@@ -141,7 +143,7 @@ exports.imgmSvg = imgmSvg;
 // Images Compress 🔄 Convert to .WEPB 🔂 Output ↪ 📁 public/imgs
 async function imgmin() {
   return gulp
-    .src(`${IMGAGES_DIR}/**/*.+(jpg|png|webp)`)
+    .src(`${IMGAGES_DIR}/**/*.+(jpg|jpeg|png|webp)`)
     .pipe(imagemin())
     .pipe(imagesConvert({ targetType: 'webp' }))
     .pipe(rename({ extname: '.webp' }))

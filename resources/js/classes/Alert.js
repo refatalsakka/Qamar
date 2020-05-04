@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-class Alert {
+export default class Alert {
   constructor(options) {
     this.insertIn = Alert.formatElm(options.insertIn);
     this.msg = options.msg;

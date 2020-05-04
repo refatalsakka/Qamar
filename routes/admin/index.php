@@ -2,9 +2,8 @@
 
 $app = app();
 
-if (!$app->request->isRequestToAdminManagement()) {
-  return;
-}
+if (!$app->request->isRequestToAdminManagement()) return;
+
 // Rotes admins
 
 $adminOptions = [

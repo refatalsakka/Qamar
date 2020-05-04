@@ -1,8 +1,8 @@
 /* eslint-disable no-undef */
-// import Alert from '../classes/Alert';
-// import Background from '../classes/Background';
-// import CreateElm from '../classes/CreateElm';
-// import Validator from '../classes/validation/Validator';
+import Alert from '../classes/Alert';
+import Background from '../classes/Background';
+import CreateElm from '../classes/CreateElm';
+import Validator from '../classes/validation/Validator';
 
 $(document).ready(() => {
   // generate action URL
