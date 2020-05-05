@@ -8,7 +8,7 @@
     "lint:sass": "gulp stylelint",
     "lint:js": "gulp scriptslint",
     "lint:fix:sass": "sass-lint-auto-fix --config-sass-lint .sass-lint.yml",
-    "lint:lint:js": "eslint resources/js/ --fix",
+    "lint:fix:js": "eslint resources/js/ --fix",
     "watch": "gulp watch",
     "watch:pug": "gulp watchTemplate",
     "watch:sass": "gulp watchStyles",
