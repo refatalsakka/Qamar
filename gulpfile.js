@@ -66,9 +66,11 @@ const TEMPLATE_DIR = 'template';
 const SASS_DIR = 'resources/sass';
 const JAVASCRIPT_DIR = 'resources/js';
 const IMGAGES_DIR = 'resources/imgs';
+const FONTS_DIR = 'resources/sass/fonts';
 const CSS_PUBLIC_DIR = 'public/css';
 const JS_PUBLIC_DIR = 'public/js';
 const IMG_PUBLIC_DIR = 'public/imgs';
+const FONTS_PUBLIC_DIR = 'public/css/fonts';
 
 // Files 🗄
 const LIBS = {
@@ -197,6 +199,14 @@ async function imgmin() {
 }
 exports.imgmin = gulp.parallel(imgmin, imgmSvg);
 
+// Fonts ↪ 📁 public/imgs
+async function fonts() {
+  return gulp
+    .src(`${FONTS_DIR}/**/*.ttf`)
+    .pipe(gulp.dest(`${FONTS_PUBLIC_DIR}`));
+}
+exports.fonts = fonts;
+
 // Libraries Copy  ↪ 📁 node_modules/ Output ↪ 📁 public/ {js & css} /libs
 async function libraries() {
   for (const LIB in LIBS) {
@@ -248,4 +258,4 @@ exports.watchScripts = watchScripts;
 exports.watch = gulp.parallel(watchStyles, watchScripts, watchTemplate);
 
 // Build the Plugins 🔥
-gulp.task('build', gulp.series(templatelint, series(stylelint, styles), series(scriptslint, scripts), series(imgmin, imgmSvg, libraries)));
+gulp.task('build', gulp.series(templatelint, series(stylelint, styles), series(scriptslint, scripts), series(imgmin, imgmSvg, fonts, libraries)));
