@@ -34,7 +34,7 @@ $app->route->group($adminOptions, function($route) {
       'userAdd',
     ],
     'update' => [
-      // 'ajax',
+      'ajax',
       'userUpdate',
     ],
   ]);

@@ -1,5 +1,7 @@
 @import '../layout';
 
+$boxshadowcolor: #c8cccf;
+
 .wrong {
   animation: wrong .3s 1;
 }
@@ -48,7 +50,7 @@
 }
 
 .card-group {
-  box-shadow: 0 0 10px #c8cccf;
+  box-shadow: 0 0 10px $boxshadowcolor;
 }
 
 .logo {

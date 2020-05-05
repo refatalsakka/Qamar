@@ -1,6 +1,9 @@
 @import '../../layout';
 @import '../../../libs/update';
 
+$black: #000;
+$white: #fff;
+
 td {
   &:not([data-name='email']) {
     .flag-icon {
@@ -25,7 +28,7 @@ td {
   height: 100%;
   width: 100%;
   z-index: 10001;
-  background: #000;
+  background: $black;
 
   .img-card {
     display: flex;
@@ -41,7 +44,7 @@ td {
         position: relative;
         bottom: -27px;
         left: 6px;
-        background: #fff;
+        background: $white;
         border-radius: 5px;
         padding: 3px;
         box-sizing: content-box;

@@ -2,21 +2,24 @@
 @import '../mixin/mediaQueries';
 @import '../mixin/disableClick';
 
+$errorcolor: #f27070;
+$successcolor: #dbf2e3;
+
 body {
   font-family: 'Roboto Condensed', sans-serif;
 }
 
 // Global
 .success-bg {
-  background-color: #dbf2e3;
+  background-color: $successcolor;
 }
 
 .error-input {
-  border-color: #f27070 !important;
+  border-color: $errorcolor !important;
 }
 
 .error-msg {
-  color: #f27070 !important;
+  color: $errorcolor !important;
 }
 
 .prevent-click {

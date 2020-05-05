@@ -14,6 +14,10 @@ files:
   ignore: 'node_modules/**/*.*'
 # Rule Configuration
 rules:
+  nesting-depth:
+  - 2
+  -
+    max-depth: 3
   extends-before-mixins: 2
   extends-before-declarations: 2
   placeholder-in-extend: 2

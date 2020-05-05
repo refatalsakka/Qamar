@@ -2,6 +2,9 @@
 
 @include disable-click;
 
+$white: #fff;
+$yellow: #ffc107;
+
 .filter {
   .filter-icon {
     cursor: pointer;
@@ -26,7 +29,7 @@
 }
 
 table {
-  background: #fff;
+  background: $white;
 
   .search-input {
     input {
@@ -36,8 +39,8 @@ table {
     }
 
     &:focus {
-      border-bottom: 1px solid #ffc107;
-      box-shadow: 0 1px 0 0 #ffc107 !important;
+      border-bottom: 1px solid $yellow;
+      box-shadow: 0 1px 0 0 $yellow !important;
     }
   }
 

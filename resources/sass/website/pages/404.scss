@@ -1,4 +1,9 @@
-@import "../layout";
+@import '../layout';
+
+$white: #fff;
+$black: #343434;
+$blue: #669dd1;
+$yellow: #ffc83d;
 
 body {
   background-image: url('/public/imgs/website/404/404.webp');
@@ -22,18 +27,17 @@ body {
 
   > div {
     text-align: center;
-    color: #343434;
+    color: $black;
 
-    p.quote {
-      color: #669dd1;
-      background: #ffc83d;
+    .quote {
+      color: $blue;
+      background: $yellow;
       padding: 14px;
-      text-shadow: 0 0 0 10px #fff;
-      text-shadow: -1px 0 7px #fff;
+      text-shadow: -1px 0 7px $white;
     }
   }
 
   a {
-    color: #fff;
+    color: $white;
   }
 }

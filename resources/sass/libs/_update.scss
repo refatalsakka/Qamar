@@ -7,22 +7,18 @@
     div {
       margin: 0 5px;
 
-      button {
-        margin-top: 5px;
-      }
-    }
-
-    div {
       &:first-child {
         flex-grow: 2;
         width: 80%;
       }
-    }
 
-    div {
       &:last-child {
         flex-grow: 1;
         width: 20%;
+      }
+
+      button {
+        margin-top: 5px;
       }
     }
   }
