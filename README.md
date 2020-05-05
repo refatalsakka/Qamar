@@ -43,17 +43,17 @@ $ npm run build
 
 **Check Pugjs Lint**
 ```sh
-$ npm run lint:pug
+$ npm run pug:lint
 ```
 
 **Check SCSS Lint**
 ```sh
-$ npm run lint:sass
+$ npm run sass:lint
 ```
 
 **Check JavaScript Lint**
 ```sh
-$ npm run lint:js
+$ npm run js:lint
 ```
 
 **Fix Pugjs Lint**
@@ -63,12 +63,12 @@ $ npm run lint:js
 
 **Fix SCSS Lint**
 ```sh
-$ npm run lint:sass:fix
+$ npm run sass:lint:fix
 ```
 
 **Fix JavaScript Lint**
 ```sh
-$ npm run lint:js:fix
+$ npm run js:lint:fix
 ```
 
 **Convert to SCSS, Compresse, Output public/css**
