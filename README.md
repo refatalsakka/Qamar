@@ -34,12 +34,13 @@
 
 #### Task Runers
 
-Install the dependencies and devDependencies
+Install the dependencies and devDependencies 🔥
 
 ```sh
 $ cd framewwork
 $ npm install
 $ composser install
+$ npm run build
 ```
 
 **Check Pugjs Lint**
@@ -126,9 +127,4 @@ $ npm run libs
 **Start Server**
 ```sh
 $ npm run server
-```
-
-**Building and runing the Plugins in one Command** 🔥
-```sh
-$ npm run build
 ```
