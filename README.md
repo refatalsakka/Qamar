@@ -32,8 +32,6 @@
 
 ### How to Install
 
-#### Task Runers
-
 Install the dependencies and devDependencies 🔥
 
 ```sh

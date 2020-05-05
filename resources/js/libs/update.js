@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import Alert from '../classes/Alert';
 import Background from '../classes/Background';
 import CreateElm from '../classes/CreateElm';
