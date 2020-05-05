@@ -4,9 +4,20 @@ const args = process.argv;
 process.argv.splice(0, 2);
 const str = args.join(' ');
 
-function cb(err) {
-  return err ? console.log(err) : null;
+function cbcommit(err) {
+  if (err) {
+    console.log(err);
+    return;
+  }
+  console.log('done');
 }
 
-exec('git add .', cb);
-exec(`git commit -m "${str}"`, cb);
+function cbadd(err) {
+  if (err) {
+    console.log(err);
+    return;
+  }
+  exec(`git commit -m "${str}"`, cbcommit);
+}
+
+exec('git add .', cbadd);
