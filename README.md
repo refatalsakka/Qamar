@@ -93,6 +93,11 @@ $ npm run js
 *There is no HTML. PHP will automatically convert it to HTML.*
 ```
 
+**Watch all** ▶
+```sh
+$ npm run watch
+```
+
 **Watch Pug**
 ```sh
 $ npm run watch:pug
@@ -111,11 +116,6 @@ $ npm run watch:js
 ```
 *Watch will stop if any error being detected.*
 *After fix the error, the function will work automatically again*
-
-**Watch all** ▶
-```sh
-$ npm run watch
-```
 
 **Compress Images, Convert to .png, Output public/imgs**
 ```sh
