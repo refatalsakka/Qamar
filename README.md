@@ -122,7 +122,7 @@ $ npm run watch
 $ npm run imgs
 ```
 
-**Copy Libraries from node_modules to public/ {js & css} /libs**
+**Copy Libraries from node_modules to public/libs**
 ```sh
 $ npm run libs
 ```
