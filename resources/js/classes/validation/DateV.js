@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 export default class DateV {
   constructor(value, options = []) {
     this.format = options.format || 'd M Y';
