@@ -41,19 +41,24 @@ $ composser install
 $ npm run build
 ```
 
+**Check Lint**
+```sh
+$ npm run lint
+```
+
 **Check Pugjs Lint**
 ```sh
-$ npm run pug:lint
+$ npm run lint:pug
 ```
 
 **Check SCSS Lint**
 ```sh
-$ npm run sass:lint
+$ npm run lint:sass
 ```
 
 **Check JavaScript Lint**
 ```sh
-$ npm run js:lint
+$ npm run lint:js
 ```
 
 **Fix Pugjs Lint**
@@ -63,17 +68,17 @@ $ npm run js:lint
 
 **Fix SCSS Lint**
 ```sh
-$ npm run sass:lint:fix
+$ npm run lint:fix:sass
 ```
 
 **Fix JavaScript Lint**
 ```sh
-$ npm run js:lint:fix
+$ npm run lint:fix:js
 ```
 
 **Convert to SCSS, Compresse, Output public/css**
 ```sh
-$ npm run sass
+$ npm run scss
 ```
 *If there was any lint error, the function will not complate.*
 
@@ -125,4 +130,9 @@ $ npm run libs
 **Start Server**
 ```sh
 $ npm run server
+```
+
+**Quick Git Commit**
+```sh
+$ npm run gitty *message*
 ```

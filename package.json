@@ -13,7 +13,7 @@
     "watch:pug": "gulp watchTemplate",
     "watch:sass": "gulp watchStyles",
     "watch:js": "gulp watchScripts",
-    "sass": "gulp styles",
+    "scss": "gulp styles",
     "js": "gulp scripts",
     "imgs": "gulp imgmin",
     "libs": "gulp libraries",
