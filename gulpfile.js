@@ -7,11 +7,11 @@ const sasslint = require('gulp-sass-lint');
 const eslint = require('gulp-eslint');
 
 const autoprefixer = require('gulp-autoprefixer');
-const imagemin = require('gulp-imagemin');
 const sourcemaps = require('gulp-sourcemaps');
 const uglify = require('gulp-uglify');
 const browsersync = require('browser-sync').create();
 const rename = require('gulp-rename');
+const imagemin = require('gulp-imagemin');
 const imagesConvert = require('gulp-images-convert');
 
 const webpack = require('webpack');
@@ -59,7 +59,6 @@ const webapckJsConfig = {
     ],
   },
 };
-
 
 // Folders 📁
 const TEMPLATE_DIR = 'template';
@@ -193,8 +192,8 @@ async function imgmin() {
   return gulp
     .src(`${IMGAGES_DIR}/**/*.+(jpg|jpeg|png|webp)`)
     .pipe(imagemin())
-    .pipe(imagesConvert({ targetType: 'webp' }))
-    .pipe(rename({ extname: '.webp' }))
+    .pipe(imagesConvert({ targetType: 'png' }))
+    .pipe(rename({ extname: '.png' }))
     .pipe(gulp.dest(`${IMG_PUBLIC_DIR}`));
 }
 exports.imgmin = gulp.parallel(imgmin, imgmSvg);
