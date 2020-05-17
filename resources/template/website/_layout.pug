@@ -1,0 +1,33 @@
+//- imgs folder
+- var imgs        = _public + 'imgs/'
+- var logos       = imgs    + 'logos/'
+- var websiteImgs = imgs    + 'website/'
+//- imgs folder
+- var imgs        = _public + 'imgs/'
+- var logos       = imgs    + 'logos/'
+- var websiteImgs = imgs    + 'website/'
+//- uploads folders
+- var uploads     = _public + 'uploads/'
+- var usersImgs   = uploads + 'images/users/'
+//- css folder
+- var css         = _public + 'css/'
+- var cssWebsite  = css     + 'website/'
+- var cssLibs     = css     + 'libs/'
+//- js folder
+- var js          = _public + 'js/'
+- var jsWebsite   = js      + 'website/'
+- var jsLibs      = js      + 'libs/'
+- var classes     = js      + 'classes/'
+block varibles
+
+<!DOCTYPE html>
+html(lang=lang)
+  head
+    include partials/head.pug
+    link(href=cssWebsite + 'libraries.css' rel='stylesheet')
+    block styles
+  body
+    block view
+    include partials/footer.pug
+    block scripts
+

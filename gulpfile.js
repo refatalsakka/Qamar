@@ -22,26 +22,22 @@ const webapckJsConfig = {
   mode: 'development',
   entry: {
     // Website JS Files
-    'website/script.js': './resources/js/website/script.js',
-    'website/pages/home.js': './resources/js/website/pages/home.js',
-    'website/pages/contact.js': './resources/js/website/pages/contact.js',
-    'website/pages/imprint.js': './resources/js/website/pages/imprint.js',
-    'website/pages/privacy.js': './resources/js/website/pages/privacy.js',
-    'website/pages/services.js': './resources/js/website/pages/services.js',
-    'website/pages/404.js': './resources/js/website/pages/404.js',
+    'website/home.js': './resources/js/website/home.js',
+    'website/contact.js': './resources/js/website/contact.js',
+    'website/imprint.js': './resources/js/website/imprint.js',
+    'website/privacy.js': './resources/js/website/privacy.js',
+    'website/services.js': './resources/js/website/services.js',
+    'website/404.js': './resources/js/website/404.js',
 
     // Admin JS Files
-    'admin/script.js': './resources/js/admin/script.js',
-    'admin/pages/home.js': './resources/js/admin/pages/home.js',
-    'admin/pages/login.js': './resources/js/admin/pages/login.js',
-    'admin/pages/profile.js': './resources/js/admin/pages/profile.js',
-    'admin/pages/settings.js': './resources/js/admin/pages/settings.js',
-    'admin/pages/users/user.js': './resources/js/admin/pages/users/user.js',
-    'admin/pages/users/users.js': './resources/js/admin/pages/users/users.js',
-    'admin/pages/users/new.js': './resources/js/admin/pages/users/new.js',
-
-    // Libs JS Files
-    'libs/update.js': './resources/js/libs/update.js',
+    'admin/home.js': './resources/js/admin/home.js',
+    'admin/login.js': './resources/js/admin/login.js',
+    'admin/profile.js': './resources/js/admin/profile.js',
+    'admin/settings.js': './resources/js/admin/settings.js',
+    'admin/users/user.js': './resources/js/admin/users/user.js',
+    'admin/users/users.js': './resources/js/admin/users/users.js',
+    'admin/users/new.js': './resources/js/admin/users/new.js',
+    'admin/userGroups.js': './resources/js/admin/userGroups.js',
   },
   output: {
     path: path.resolve(__dirname, 'public/'),
@@ -76,49 +72,24 @@ const LIBS = {
   css: [
     {
       libs: [
-        'node_modules/bootstrap/dist/css/bootstrap.min.css',
-        'node_modules/bootstrap/dist/css/bootstrap.min.css.map',
-        'node_modules/@fortawesome/fontawesome-free/css/all.min.css',
-        'node_modules/normalize.css/normalize.css',
-        'node_modules/@coreui/icons/css/coreui-icons.min.css',
-        'node_modules/@coreui/icons/css/coreui-icons.min.css.map',
-        'node_modules/flag-icon-css/css/flag-icon.min.css',
-        'node_modules/simple-line-icons/css/simple-line-icons.css',
-        'node_modules/@coreui/coreui/dist/css/coreui.min.css',
-        'node_modules/@coreui/coreui/dist/css/coreui.min.css.map',
         'node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css',
       ],
     },
     {
       fonts: [
-        'node_modules/font-awesome/fonts/*',
-        'node_modules/simple-line-icons/fonts/*',
-        'node_modules/@coreui/icons/fonts/*',
+        'node_modules/font-awesome/fonts/**/*',
+        'node_modules/simple-line-icons/fonts/**/*',
+        'node_modules/@coreui/icons/fonts/**/*',
       ],
     },
     {
       webfonts: [
-        'node_modules/@fortawesome/fontawesome-free/webfonts/*',
+        'node_modules/@fortawesome/fontawesome-free/webfonts/**/*',
       ],
     },
     {
       flags: [
         'node_modules/flag-icon-css/flags/**/*',
-      ],
-    },
-  ],
-  js: [
-    {
-      libs: [
-        'node_modules/bootstrap/dist/js/bootstrap.min.js',
-        'node_modules/bootstrap/dist/js/bootstrap.min.js.map',
-        'node_modules/@fortawesome/fontawesome-free/js/all.min.js',
-        'node_modules/jquery/dist/jquery.min.js',
-        'node_modules/popper.js/dist/umd/popper.min.js',
-        'node_modules/popper.js/dist/umd/popper.min.js.map',
-        'node_modules/@coreui/coreui/dist/js/coreui.min.js',
-        'node_modules/@coreui/coreui/dist/js/coreui.min.js.map',
-        'node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js',
       ],
     },
   ],
@@ -192,8 +163,8 @@ async function imgmin() {
   return gulp
     .src(`${IMGAGES_DIR}/**/*.+(jpg|jpeg|png|webp)`)
     .pipe(imagemin())
-    .pipe(imagesConvert({ targetType: 'png' }))
-    .pipe(rename({ extname: '.png' }))
+    .pipe(imagesConvert({ targetType: 'webp' }))
+    .pipe(rename({ extname: '.webp' }))
     .pipe(gulp.dest(`${IMG_PUBLIC_DIR}`));
 }
 exports.imgmin = gulp.parallel(imgmin, imgmSvg);

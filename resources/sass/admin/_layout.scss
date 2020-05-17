@@ -1,3 +1,16 @@
+@import '../../../node_modules/flag-icon-css/sass/flag-icon';
+
+@import '../../../node_modules/simple-line-icons/scss/simple-line-icons';
+
+@import '../../../node_modules/bootstrap/scss/bootstrap';
+
+@import '../../../node_modules/@coreui/icons/scss/coreui-icons';
+@import '../../../node_modules/@coreui/coreui/scss/coreui';
+
+@import '../../../node_modules/@fortawesome/fontawesome-free/scss/fontawesome';
+@import '../../../node_modules/@fortawesome/fontawesome-free/scss/solid';
+@import '../../../node_modules/@fortawesome/fontawesome-free/scss/brands';
+
 // Mixins
 @import '../mixin/mediaQueries';
 @import '../mixin/disableClick';

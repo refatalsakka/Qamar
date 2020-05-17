@@ -1,0 +1,41 @@
+.sidebar
+  nav.sidebar-nav
+    ul.nav
+      li.nav-item
+        a.nav-link(href='/admin')
+          i.nav-icon.icon-speedometer
+          |  Dashboard
+      if !starter
+        li.nav-title
+          | Main
+        li.nav-item
+          a.nav-link(href='/admin/users')
+            i.nav-icon.icon-user
+            |  Users
+      li.nav-item
+        a.nav-link(href='/admin/user-groups')
+          i.nav-icon.icon-user
+          |  User Groups
+      li.nav-item.nav-dropdown
+        a.nav-link.nav-dropdown-toggle(href='#')
+          i.nav-icon.icon-docs
+          |  Pages
+        ul.nav-dropdown-items
+          each page in pages
+            if page.linkedPages
+              li.nav-item.nav-dropdown
+                a.nav-link.nav-dropdown-toggle(href='#')
+                  i.nav-icon(class=page.icon)
+                  = page.title
+                ul.nav-dropdown-items
+                  each linkedpage in page.linkedPages
+                    li.nav-item
+                      a.nav-link(href=linkedpage.link)
+                        i.nav-icon(class=linkedpage.icon)
+                        = linkedpage.name
+            else
+              li.nav-item
+                a.nav-link(href=page.link)
+                  i.nav-icon(class=page.icon)
+                  = page.name
+  button.sidebar-minimizer.brand-minimizer(type='button')

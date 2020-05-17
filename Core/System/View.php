@@ -35,8 +35,8 @@ class View
   {
     $pug = new Pug(array(
       'pretty' => true,
-      'cache' => 'template' . DS . 'cache',
-      'basedir' => 'template',
+      'cache' => 'resources/template' . DS . 'cache',
+      'basedir' => 'resources/template',
       'upToDateCheck' => false,
     ));
 
@@ -86,7 +86,9 @@ class View
   private function filePath($path, $dir)
   {
     $file = str_replace(['/', '\\'], DS, $path);
-    $file = $dir . DS . 'template' . DS . $file . '.pug';
+
+    $file = $dir . DS . 'resources/template' . DS . $file . '.pug';
+
     return $file;
   }
 
@@ -100,11 +102,15 @@ class View
   private function _public($dir, $host)
   {
     $public = assets();
+
     $public = str_replace($dir, $host, $public);
+
     $public = str_replace('\\', '/', $public);
+
     if (substr($public, -1) !== '/') {
       $public = $public . '/';
     }
+
     return $public;
   }
 
@@ -122,23 +128,27 @@ class View
   {
     $url = $this->app->request->url();
 
-    if ($url === '/') {
-      return;
-    }
+    if ($url === '/') return;
+
     $parameters = explode('/', $url);
+
     array_shift($parameters);
-    $return = [];
+
+    $results = [];
 
     foreach ($parameters as $parameter) {
-      $name = $parameter;
+      $name = str_replace('-', ' ', $parameter);;
+
       $length = strpos($url, $parameter) + strlen($parameter);
+
       $link = substr($url, 0, $length);
 
-      $return[] = [
+      $results[] = [
         'name' => $name,
         'link' => $link,
       ];
     }
-    return $return;
+
+    return $results;
   }
 }

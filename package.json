@@ -7,6 +7,7 @@
     "lint:pug": "gulp templatelint",
     "lint:sass": "gulp stylelint",
     "lint:js": "gulp scriptslint",
+    "lint:fix": "eslint resources/js/ --fix && sass-lint-auto-fix --config-sass-lint .sass-lint.yml",
     "lint:fix:sass": "sass-lint-auto-fix --config-sass-lint .sass-lint.yml",
     "lint:fix:js": "eslint resources/js/ --fix",
     "watch": "gulp watch",
@@ -40,6 +41,7 @@
     "flag-icon-css": "^3.4.6",
     "jquery": "^3.5.1",
     "normalize.css": "^8.0.1",
+    "perfect-scrollbar": "^1.5.0",
     "popper.js": "^1.16.1",
     "simple-line-icons": "2.4.1"
   },

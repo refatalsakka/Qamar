@@ -14,13 +14,11 @@ $adminOptions = [
 
 $app->route->group($adminOptions, function($route) {
 
-  // Not found
-  $route->add('/404', 'Notfound', 'GET');
-
-  $route->add('/', 'Home', 'GET');
+  // Home
+  $route->add('/', 'Home');
 
   //Login
-  $route->add('/login', 'Login', 'GET');
+  $route->add('/login', 'Login');
   $route->add('/submit', 'Login@submit', 'POST');
   $route->add('/logout', 'Logout');
 
@@ -38,8 +36,11 @@ $app->route->group($adminOptions, function($route) {
       'userUpdate',
     ],
   ]);
-  $route->add('/users/filter', 'User\User@search', 'GET');
+  $route->add('/users/filter', 'User\User@search');
 
   // Profile
-  $route->add('/profile', 'Profile', 'GET');
+  $route->add('/profile', 'Profile');
+
+  // User Groups
+  $route->add('/user-groups', 'UserGroups');
 });

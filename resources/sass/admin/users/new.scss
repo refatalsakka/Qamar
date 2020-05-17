@@ -1,0 +1,8 @@
+$fa-font-path: '../../webfonts';
+$flag-icon-css-path: '../../flags';
+$simple-line-font-path: '../../fonts/';
+$coreui-icons-font-path: '../../fonts';
+
+@import '../layout';
+
+@include disable-click;

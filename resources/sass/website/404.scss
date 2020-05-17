@@ -1,0 +1,43 @@
+@import './layout';
+
+$white: #fff;
+$black: #343434;
+$blue: #669dd1;
+$yellow: #ffc83d;
+
+body {
+  background-image: url('/public/imgs/website/404/404.webp');
+  background-size: cover;
+}
+
+.notfound {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 90vh;
+
+  h1 {
+    font-size: 125px;
+    font-family: cursive;
+    @include custom-width(591px) {
+      font-size: 105px;
+    }
+  }
+
+  > div {
+    text-align: center;
+    color: $black;
+
+    .quote {
+      color: $blue;
+      background: $yellow;
+      padding: 14px;
+      text-shadow: -1px 0 7px $white;
+    }
+  }
+
+  a {
+    color: $white;
+  }
+}
