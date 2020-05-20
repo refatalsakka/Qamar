@@ -161,7 +161,7 @@ exports.imgmSvg = imgmSvg;
 // Images Compress 🔄 Convert to .WEPB 🔂 Output ↪ 📁 public/imgs
 async function imgmin() {
   return gulp
-    .src(`${IMGAGES_DIR}/**/*.+(jpg|jpeg|png|webp)`)
+    .src(`${IMGAGES_DIR}/**/*.+(jpg|jpeg|png|webp|gif)`)
     .pipe(imagemin())
     .pipe(imagesConvert({ targetType: 'webp' }))
     .pipe(rename({ extname: '.webp' }))

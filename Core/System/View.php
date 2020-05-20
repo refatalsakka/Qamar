@@ -87,7 +87,7 @@ class View
   {
     $file = str_replace(['/', '\\'], DS, $path);
 
-    $file = $dir . DS . 'resources/template' . DS . $file . '.pug';
+    $file = $dir . DS . 'template' . DS . $file . '.pug';
 
     return $file;
   }

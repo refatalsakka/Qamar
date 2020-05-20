@@ -1,1 +1,0 @@
-a:3:{i:0;s:61:"C:\laragon\www\mvc-php\resources\template\website\_layout.pug";i:1;s:67:"C:\laragon\www\mvc-php\resources\template\website\partials\head.pug";i:2;s:69:"C:\laragon\www\mvc-php\resources\template\website\partials\footer.pug";}
