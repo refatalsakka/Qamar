@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "lint": "gulp lint",
+    "lint": "gulp templatelint && gulp stylelint && gulp scriptslint",
     "lint:pug": "gulp templatelint",
     "lint:sass": "gulp stylelint",
     "lint:js": "gulp scriptslint",
