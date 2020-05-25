@@ -1,5 +1,5 @@
 {
   "hooks": {
-    "pre-add": "npm run lint"
+    "pre-commit": "npm run lint"
   },
 }
