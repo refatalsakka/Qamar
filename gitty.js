@@ -12,12 +12,12 @@ function cbpush(err) {
   console.log('done');
 }
 
-function cbcommit(err, test1, test2) {
+function cbcommit(err, test1) {
   if (err) {
     console.log(err);
     return;
   }
-  console.log(test1, test2);
+  console.log(test1);
   exec('git push', cbpush);
 }
 
