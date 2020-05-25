@@ -12,20 +12,20 @@ function cbpush(err) {
   console.log('done');
 }
 
-function cbcommit(err) {
-  if (err) {
-    console.log(err);
-    return;
-  }
-  exec('git push', cbpush);
-}
-
-function cbadd(err, test1, test2) {
+function cbcommit(err, test1, test2) {
   if (err) {
     console.log(err);
     return;
   }
   console.log(test1, test2);
+  exec('git push', cbpush);
+}
+
+function cbadd(err) {
+  if (err) {
+    console.log(err);
+    return;
+  }
   exec(`git commit -m "${str}"`, cbcommit);
 }
 
