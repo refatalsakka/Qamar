@@ -17,7 +17,7 @@ function cbcommit(err, info1, info2) {
     console.log(err);
     return;
   }
-  console.log(info1, info2);
+  console.log(info2, info1);
   exec('git push', cbpush);
 }
 
