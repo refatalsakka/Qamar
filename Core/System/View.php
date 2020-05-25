@@ -35,8 +35,8 @@ class View
   {
     $pug = new Pug(array(
       'pretty' => true,
-      'cache' => 'resources/template' . DS . 'cache',
-      'basedir' => 'resources/template',
+      'cache' => 'template' . DS . 'cache',
+      'basedir' => 'template',
       'upToDateCheck' => false,
     ));
 
