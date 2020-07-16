@@ -14,14 +14,11 @@ return [
     'validator' =>  'System\\Validation\\Validator',
     'paginatio' =>  'System\\Paginatio',
     'view'      =>  'System\\View',
-    'pages'     =>  'System\\Pages',
     'hash'      =>  'System\\Hash',
   ],
   'middlewares' => [
-    'auth'        => 'App\\Middlewares\\AuthenticateMiddleware',
-    'ajax'        => 'App\\Middlewares\\AjaxMiddleware',
-    'permissions' => 'App\\Middlewares\\PermissionsMiddleware',
-    'userAdd'     => 'App\\Middlewares\\User\\AddMiddleware',
-    'userUpdate'  => 'App\\Middlewares\\User\\UpdateMiddleware',
+    'auth'        => 'app\\Middlewares\\AuthenticateMiddleware',
+    'ajax'        => 'app\\Middlewares\\AjaxMiddleware',
+    'permissions' => 'app\\Middlewares\\PermissionsMiddleware',
   ]
 ];

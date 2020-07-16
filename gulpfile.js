@@ -23,21 +23,11 @@ const webapckJsConfig = {
   entry: {
     // Website JS Files
     'website/home.js': './resources/js/website/home.js',
-    'website/contact.js': './resources/js/website/contact.js',
-    'website/imprint.js': './resources/js/website/imprint.js',
-    'website/privacy.js': './resources/js/website/privacy.js',
-    'website/services.js': './resources/js/website/services.js',
     'website/404.js': './resources/js/website/404.js',
 
     // Admin JS Files
     'admin/home.js': './resources/js/admin/home.js',
-    'admin/login.js': './resources/js/admin/login.js',
-    'admin/profile.js': './resources/js/admin/profile.js',
-    'admin/settings.js': './resources/js/admin/settings.js',
-    'admin/users/user.js': './resources/js/admin/users/user.js',
-    'admin/users/users.js': './resources/js/admin/users/users.js',
-    'admin/users/new.js': './resources/js/admin/users/new.js',
-    'admin/userGroups.js': './resources/js/admin/userGroups.js',
+    'admin/404.js': './resources/js/admin/404.js',
   },
   output: {
     path: path.resolve(__dirname, 'public/'),
@@ -72,24 +62,22 @@ const LIBS = {
   css: [
     {
       libs: [
-        'node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css',
+
       ],
     },
     {
       fonts: [
-        'node_modules/font-awesome/fonts/**/*',
-        'node_modules/simple-line-icons/fonts/**/*',
-        'node_modules/@coreui/icons/fonts/**/*',
+
       ],
     },
     {
       webfonts: [
-        'node_modules/@fortawesome/fontawesome-free/webfonts/**/*',
+
       ],
     },
     {
       flags: [
-        'node_modules/flag-icon-css/flags/**/*',
+
       ],
     },
   ],

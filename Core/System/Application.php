@@ -4,6 +4,7 @@ namespace System;
 
 use Closure;
 use Exception;
+use Dotenv\Dotenv;
 use Whoops\Run as Whoops;
 use Whoops\Util\Misc as WhoopsMisc;
 use Whoops\Handler\JsonResponseHandler;
@@ -34,9 +35,11 @@ class Application
   {
     $this->share('file', $file);
 
-    if ($this->file->call('config/error.php')) {
-      $this->handleErrors();
-    }
+    Dotenv::createImmutable($this->file->root())->load();
+
+    $this->file->call('config/error.php');
+
+    $this->handleErrors();
 
     $this->file->call('Core/helpers.php');
   }
@@ -82,8 +85,6 @@ class Application
   public function run()
   {
     $this->session->start();
-
-    $this->share('config', $this->file->call('config.php'));
 
     $this->request->prepareUrl();
 

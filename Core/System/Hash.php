@@ -23,7 +23,7 @@ class Hash
 
   public function password($password)
   {
-    return password_hash($password, $this->app->config['hash']['password']);
+    return password_hash($password, $_ENV['HASH_PASSWORD']);
   }
 
   public function passwordCheck($password, $hash)
@@ -33,7 +33,7 @@ class Hash
 
   public function hash($input)
   {
-    return hash($this->app->config['hash']['main'], $input);
+    return hash($_ENV['HASH_TYPE'], $input);
   }
 
   public function hashCheck($known, $user)

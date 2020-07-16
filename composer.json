@@ -4,12 +4,13 @@
   "require": {
     "filp/whoops": "^2.4",
     "pug-php/pug": "^3.2",
-    "ircmaxell/random-lib": "^1.2"
+    "ircmaxell/random-lib": "^1.2",
+    "vlucas/phpdotenv": "^5.1"
   },
   "autoload": {
     "psr-4": {
-      "App\\": "App/",
-      "System\\": "Core/System/"
+      "app\\": "app/",
+      "System\\": "core/System/"
     }
   }
 }

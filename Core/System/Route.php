@@ -205,7 +205,7 @@ class Route
 
   private function middleware($middleware)
   {
-    $middlewareInterface = 'App\Middlewares\MiddlewareIntrerface\MiddlewaresInterface';
+    $middlewareInterface = 'app\Middlewares\MiddlewareIntrerface\MiddlewaresInterface';
     $middlewares = $this->app->file->call('config/alias.php')['middlewares'];
     $middlewareClass = $middlewares[$middleware];
 
@@ -219,12 +219,12 @@ class Route
   private function continue($middlewares)
   {
     if (!empty($middlewares)) {
-      foreach ($middlewares as $middleware) {
-        $output = $this->middleware($middleware);
+    }
+    foreach ($middlewares as $middleware) {
+      $output = $this->middleware($middleware);
 
-        if ($output !== static::NEXT) {
-          return $output;
-        }
+      if ($output !== static::NEXT) {
+        return $output;
       }
     }
     return static::NEXT;

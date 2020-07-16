@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Middlewares;
+namespace app\Middlewares;
 
 use System\Application;
-use App\Middlewares\MiddlewareIntrerface\MiddlewaresInterface as Middleware;
+use app\Middlewares\MiddlewareIntrerface\MiddlewaresInterface as Middleware;
 
 class AjaxMiddleware implements Middleware
 {

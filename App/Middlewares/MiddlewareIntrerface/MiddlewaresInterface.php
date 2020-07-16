@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Middlewares\MiddlewareIntrerface;
+namespace app\Middlewares\MiddlewareIntrerface;
 
 use System\Application;
 

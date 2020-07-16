@@ -9,15 +9,4 @@ return [
     'auth'         => 'Refat Alsakka',
     'name'         => 'framework',
   ],
-  'db' => [
-    'server'  => 'localhost',
-    'dbname'  => 'mvc',
-    'dbuser'  => 'root',
-    'dbpass'  => '',
-  ],
-  'hash' => [
-    'password' => PASSWORD_BCRYPT,
-    'main'     => 'sha256',
-  ],
-  'mode' => 'dev',
 ];

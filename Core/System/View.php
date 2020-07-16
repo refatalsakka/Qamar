@@ -50,30 +50,15 @@ class View
     //Public
     $_public = $this->_public($dir, $host);
 
-    //Website ages
-    $pages = $this->websitePages();
-
-    $context += $this->app->config['website'];
+    $context += $this->app->file->call('config/about.php')['website'];
 
     $context += [
       'host'  => $host,
       'parameters' => $parameters,
       '_public' => $_public,
-      'pages' => $pages,
-      'admin' => $this->app->load->model('Login')->user(),
     ];
 
     return $pug->render($file, $context);
-  }
-
-  /**
-   * Get the website pages
-   *
-   * @return array
-   */
-  private function websitePages()
-  {
-    return $this->app->pages->getPages();
   }
 
   /**

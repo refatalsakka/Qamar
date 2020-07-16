@@ -115,7 +115,7 @@ class Loader
   {
     $controller .= strpos($controller, 'Controller') ? '' : 'Controller';
 
-    $controller = 'App\\Controllers\\' . $controller;
+    $controller = 'app\\Controllers\\' . $controller;
 
     return $controller;
   }
@@ -183,7 +183,7 @@ class Loader
   {
     $model .= strpos($model, 'Model') ? '' : 'Model';
 
-    $model = 'App\\Models\\' . $model;
+    $model = 'app\\Models\\' . $model;
 
     return $model;
   }
