@@ -39,9 +39,9 @@
 Install the dependencies and devDependencies 🔥
 
 ```sh
-$ cd framewwork
+$ cd mvc-php
 $ npm install
-$ composser install
+$ composer install
 $ npm run build
 ```
 
