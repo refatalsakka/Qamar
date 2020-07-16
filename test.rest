@@ -1,2 +1,2 @@
-POST https://www.facebook.com/home.php
+POST http://mvc-php.test/admin
 
