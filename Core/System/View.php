@@ -113,7 +113,9 @@ class View
   {
     $url = $this->app->request->url();
 
-    if ($url === '/') return;
+    if ($url === '/') {
+      return;
+    }
 
     $parameters = explode('/', $url);
 
@@ -122,7 +124,7 @@ class View
     $results = [];
 
     foreach ($parameters as $parameter) {
-      $name = str_replace('-', ' ', $parameter);;
+      $name = str_replace('-', ' ', $parameter);
 
       $length = strpos($url, $parameter) + strlen($parameter);
 

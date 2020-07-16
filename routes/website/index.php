@@ -2,7 +2,9 @@
 
 $app = app();
 
-if ($app->request->isRequestToAdminManagement()) return;
+if ($app->request->isRequestToAdminManagement()) {
+  return;
+}
 
 // Home
 $app->route->add('/', 'Website/Home');
