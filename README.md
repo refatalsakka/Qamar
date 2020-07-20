@@ -138,5 +138,5 @@ $ npm run server
 
 **Quick Git Commit**
 ```sh
-$ npm run gitty *message*
+$ npm run gitty **message**
 ```

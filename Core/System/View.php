@@ -35,7 +35,7 @@ class View
   {
     $pug = new Pug(array(
       'pretty' => true,
-      'cache' => 'template' . DS . 'cache',
+      'cache' => ($_ENV['APP_DEBUG'] == 'true') ? false : 'template' . DS . 'cache',
       'basedir' => 'template',
       'upToDateCheck' => false,
     ));
