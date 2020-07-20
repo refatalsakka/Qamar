@@ -49,10 +49,12 @@ class View
 
     //Public
     $_public = $this->_public($dir, $host);
-
-    $context += $this->app->file->call('config/about.php')['website'];
-
     $context += [
+      'lang' => $_ENV['App_LANG'],
+      'charset' => $_ENV['App_CHARSET'],
+      'decsription' => $_ENV['App_DECSRIPTION'],
+      'keywords' => $_ENV['App_KEYWORDS'],
+      'auth' => $_ENV['App_AUTH'],
       'host'  => $host,
       'parameters' => $parameters,
       '_public' => $_public,

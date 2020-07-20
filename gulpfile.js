@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const gulp = require('gulp');
 const { series } = require('gulp');
 
@@ -8,7 +10,6 @@ const eslint = require('gulp-eslint');
 
 const autoprefixer = require('gulp-autoprefixer');
 const sourcemaps = require('gulp-sourcemaps');
-const uglify = require('gulp-uglify');
 const browsersync = require('browser-sync').create();
 const rename = require('gulp-rename');
 const imagemin = require('gulp-imagemin');
@@ -19,7 +20,8 @@ const webpackStream = require('webpack-stream');
 const path = require('path');
 
 const webapckJsConfig = {
-  mode: 'development',
+  mode: process.env.APP_DEBUG === 'true' ? 'development' : 'production',
+  devtool: process.env.APP_DEBUG === 'true' ? 'source-map' : false,
   entry: {
     // Website JS Files
     'website/home.js': './resources/js/website/home.js',
@@ -131,9 +133,6 @@ async function scripts() {
   return gulp
     .src(`${JAVASCRIPT_DIR}/**/*.js`)
     .pipe(webpackStream(webapckJsConfig), webpack)
-    .pipe(sourcemaps.init({ loadMaps: true }))
-    .pipe(uglify())
-    .pipe(sourcemaps.write())
     .pipe(gulp.dest(`${JS_PUBLIC_DIR}`));
 }
 exports.scripts = series(scriptslint, scripts);

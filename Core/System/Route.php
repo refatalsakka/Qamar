@@ -139,7 +139,7 @@ class Route
   {
     $notfound = 'Website\Notfound';
 
-    if ($this->app->request->isRequestToAdminManagement() && $this->app->load->model('Login')->isLogged()) {
+    if ($this->app->request->isRequestToAdminManagement()) {
       $notfound = 'Admin\Notfound';
     }
     return (string) $this->app->load->action($notfound, 'index', []);
