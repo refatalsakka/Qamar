@@ -20,9 +20,6 @@ body {
   h1 {
     font-size: 125px;
     font-family: cursive;
-    @include custom-width(591px) {
-      font-size: 105px;
-    }
   }
 
   > div {

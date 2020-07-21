@@ -19,6 +19,32 @@ const webpack = require('webpack');
 const webpackStream = require('webpack-stream');
 const path = require('path');
 
+const testFolder = './resources/js/';
+const fs = require('fs');
+
+async function refat() {
+  let jsFiles = {};
+
+  fs.readdir(testFolder, (err, folders) => {
+    folders.forEach((folder) => {
+      if (folder === 'admin' || folder === 'website') {
+        fs.readdir(`${testFolder}${folder}/`, (_err, files) => {
+          files.forEach((file) => {
+            if (file !== '_layout.js') {
+              const key = `${folder}/${file}/`;
+              const value = `${testFolder}${folder}/${file}/`;
+              jsFiles = { [key]: value };
+            }
+          });
+        });
+      }
+    });
+  });
+
+  console.log(jsFiles);
+}
+exports.refat = refat;
+
 const webapckJsConfig = {
   mode: process.env.APP_DEBUG === 'true' ? 'development' : 'production',
   devtool: process.env.APP_DEBUG === 'true' ? 'source-map' : false,
@@ -120,7 +146,7 @@ async function styles() {
   return gulp
     .src([`${SASS_DIR}/**/*.scss`])
     .pipe(sourcemaps.init({ loadMaps: true }))
-    .pipe(sass({ outputStyle: 'compressed' }))
+    .pipe(sass({ outputStyle: process.env.APP_DEBUG === 'true' ? 'expanded' : 'compressed' }))
     .on('error', sass.logError)
     .pipe(autoprefixer())
     .pipe(sourcemaps.write())
@@ -150,8 +176,8 @@ async function imgmin() {
   return gulp
     .src(`${IMGAGES_DIR}/**/*.+(jpg|jpeg|png|webp|gif)`)
     .pipe(imagemin())
-    .pipe(imagesConvert({ targetType: 'webp' }))
-    .pipe(rename({ extname: '.webp' }))
+    .pipe(imagesConvert({ targetType: 'jpeg' }))
+    .pipe(rename({ extname: '.jpeg' }))
     .pipe(gulp.dest(`${IMG_PUBLIC_DIR}`));
 }
 exports.imgmin = gulp.parallel(imgmin, imgmSvg);
