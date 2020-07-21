@@ -22,6 +22,7 @@ const path = require('path');
 const testFolder = './resources/js/';
 const fs = require('fs');
 
+// Need t be fixed
 async function refat() {
   let jsFiles = {};
 
