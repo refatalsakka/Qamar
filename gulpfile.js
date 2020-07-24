@@ -19,32 +19,34 @@ const webpack = require('webpack');
 const webpackStream = require('webpack-stream');
 const path = require('path');
 
-const testFolder = './resources/js/';
-const fs = require('fs');
+// const testFolder = './resources/js/';
+// const fs = require('fs');
 
 // Need t be fixed
-async function refat() {
-  let jsFiles = {};
-
-  fs.readdir(testFolder, (err, folders) => {
-    folders.forEach((folder) => {
-      if (folder === 'admin' || folder === 'website') {
-        fs.readdir(`${testFolder}${folder}/`, (_err, files) => {
-          files.forEach((file) => {
-            if (file !== '_layout.js') {
-              const key = `${folder}/${file}/`;
-              const value = `${testFolder}${folder}/${file}/`;
-              jsFiles = { [key]: value };
-            }
-          });
-        });
-      }
-    });
-  });
-
-  console.log(jsFiles);
-}
-exports.refat = refat;
+// async function refat() {
+//   const objectTest = {};
+//   const testo = new Promise((resolve) => {
+//     fs.readdir(testFolder, (err, folders) => {
+//       folders.forEach((folder) => {
+//         if (folder === 'admin' || folder === 'website') {
+//           fs.readdir(`${testFolder}${folder}/`, (_err, files) => {
+//             files.forEach((file) => {
+//               if (file !== '_layout.js') {
+//                 const key = `${folder}/${file}`;
+//                 const value = `${testFolder}${folder}/${file}`;
+//                 objectTest[key] = value;
+//                 resolve(objectTest);
+//               }
+//             });
+//           });
+//         }
+//       });
+//     });
+//   });
+//   console.log(testo.then(value => value));
+//   return testo.then(value => value);
+// }
+// exports.refat = refat;
 
 const webapckJsConfig = {
   mode: process.env.APP_DEBUG === 'true' ? 'development' : 'production',
