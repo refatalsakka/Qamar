@@ -22,29 +22,25 @@ const path = require('path');
 // const testFolder = './resources/js/';
 // const fs = require('fs');
 
-// Need t be fixed
+// // Need t be fixed
 // async function refat() {
 //   const objectTest = {};
-//   const testo = new Promise((resolve) => {
-//     fs.readdir(testFolder, (err, folders) => {
-//       folders.forEach((folder) => {
-//         if (folder === 'admin' || folder === 'website') {
-//           fs.readdir(`${testFolder}${folder}/`, (_err, files) => {
-//             files.forEach((file) => {
-//               if (file !== '_layout.js') {
-//                 const key = `${folder}/${file}`;
-//                 const value = `${testFolder}${folder}/${file}`;
-//                 objectTest[key] = value;
-//                 resolve(objectTest);
-//               }
-//             });
+//   fs.readdir(testFolder, (err, folders) => {
+//     folders.forEach((folder) => {
+//       if (folder === 'admin' || folder === 'website') {
+//         fs.readdir(`${testFolder}${folder}/`, (_err, files) => {
+//           files.forEach((file) => {
+//             if (file !== '_layout.js') {
+//               const key = `${folder}/${file}`;
+//               const value = `${testFolder}${folder}/${file}`;
+//               objectTest[key] = value;
+//             }
 //           });
-//         }
-//       });
+//           return objectTest;
+//         });
+//       }
 //     });
 //   });
-//   console.log(testo.then(value => value));
-//   return testo.then(value => value);
 // }
 // exports.refat = refat;
 
