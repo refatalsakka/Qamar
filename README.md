@@ -22,23 +22,27 @@
 ## Installation
 
 ### Requirements
-
-- **Tools**
   - [PHP](https://www.php.net/downloads.php#gpg-7.2) v7+
   - [npm](https://www.npmjs.com/) v6+
   - [Composer](https://getcomposer.org/download/) v1.8+
-  - [Gulpjs](https://gulpjs.com/) v4+
 
-- **Extentions**
+### Recommended IDE Extenstions
+  - [EditorConfig](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig)
+  - [NPM](https://marketplace.visualstudio.com/items?itemName=eg2.vscode-npm-script)
+  - [PHP Intelephense](https://marketplace.visualstudio.com/items?itemName=bmewburn.vscode-intelephense-client)
+  - [PHP Intelephense](https://marketplace.visualstudio.com/items?itemName=felixfbecker.php-intellisense)
   - [Pug-Lint](https://marketplace.visualstudio.com/items?itemName=mrmlnc.vscode-puglint)
   - [Sass-Lint](https://marketplace.visualstudio.com/items?itemName=glen-84.sass-lint)
   - [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+  - [GitLens](https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens)
+  - [Git History](https://marketplace.visualstudio.com/items?itemName=donjayamanne.githistory)
 
-### How to Install
+### How to Install 🔥
 
-Install the dependencies and devDependencies 🔥
+**Install the dependencies and devDependencies**
 
 ```sh
+$ git clone git@github.com:refatalsakka/mvc-php.git
 $ cd mvc-php
 $ npm install
 $ composer install
@@ -138,5 +142,5 @@ $ npm run server
 
 **Quick Git Commit**
 ```sh
-$ npm run gitty **message**
+$ npm run gitty msg
 ```

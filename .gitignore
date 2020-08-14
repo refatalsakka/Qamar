@@ -5,5 +5,5 @@ template/cache
 resources/sass/linters
 public/*
 !public/uploads
-test.rest
 .env
+test.rest
