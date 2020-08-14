@@ -27,7 +27,7 @@
   - [Composer](https://getcomposer.org/download/) v1.8+
 
 ### Recommended IDE Extenstions
-  - [EditorConfig](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig)
+  - [Editor Config](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig)
   - [NPM](https://marketplace.visualstudio.com/items?itemName=eg2.vscode-npm-script)
   - [PHP Intelephense](https://marketplace.visualstudio.com/items?itemName=bmewburn.vscode-intelephense-client)
   - [PHP Intelephense](https://marketplace.visualstudio.com/items?itemName=felixfbecker.php-intellisense)
