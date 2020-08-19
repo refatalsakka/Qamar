@@ -23,7 +23,7 @@ class File
   /**
    * Constructor
    *
-   * @param string $root
+   * @param string root
    */
   public function __construct($root)
   {
@@ -84,12 +84,17 @@ class File
     $path = $this->to($path);
 
     if (!$this->isSharing($path . ':file')) {
+
       if ($this->exists($path)) {
+
         $this->share($path . ':file', require $path);
+
       } else {
+
         throw new Exception("$path is not found");
       }
     }
+
     return $this->container[$path . ':file'];
   }
 
@@ -104,12 +109,17 @@ class File
     $path = $this->to($path);
 
     if (!$this->isSharing($path . ':content')) {
+
       if ($this->exists($path)) {
+
         $this->share($path . ':content', file_get_contents($path));
+
       } else {
+
         throw new Exception("$path is not found");
       }
     }
+
     return $this->container[$path . ':content'];
   }
 

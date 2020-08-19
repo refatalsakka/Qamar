@@ -43,6 +43,7 @@ class Database
     $this->app = $app;
 
     if (!$this->isConnected()) {
+
       $this->connect();
     }
   }
@@ -55,6 +56,7 @@ class Database
   private function connect()
   {
     try {
+
       self::$connection = new PDO($_ENV['DB_CONNECTION'] . ':host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_DATABASE'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD']);
 
       self::$connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -62,7 +64,9 @@ class Database
       self::$connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
 
       self::$connection->exec('SET NAMES utf8');
+
     } catch (PDOException $e) {
+
       throw new Exception($e->getMessage());
     }
   }
@@ -90,9 +94,12 @@ class Database
   {
     $args = func_get_args()[0];
     $sql = null;
+
     foreach ($args as $join) {
+
       $sql[] = $join[0] . ' ON ' . $this->table . '.' . $join[1] . ' = ' . $join[0] . '.' . $join[2];
     }
+
     $this->joins = $sql;
 
     return $this;
@@ -103,6 +110,7 @@ class Database
     $sql = array_shift($bindings);
 
     if (is_array($bindings[0])) {
+
       $bindings = $bindings[0];
     }
 
@@ -157,6 +165,7 @@ class Database
   public function fetch($table = null)
   {
     if ($table) {
+
       $this->table($table);
     }
 
@@ -176,6 +185,7 @@ class Database
   public function fetchAll($table = null)
   {
     if ($table) {
+
       $this->table($table);
     }
 
@@ -195,18 +205,19 @@ class Database
   private function fetchStatment()
   {
     $sql = 'SELECT ';
-
     $sql .= $this->selects ? implode(', ', $this->selects) : '*';
-
     $sql .= ' FROM ' . $this->table . ' ';
 
     if (!empty($this->joins)) {
+
       foreach ($this->joins as $join) {
+
         $sql .= 'LEFT JOIN ' . $join . ' ';
       }
     }
 
     if (!empty($this->wheres)) {
+
       $sql .= ' WHERE ' . implode(' ', $this->wheres);
     }
 
@@ -216,22 +227,27 @@ class Database
   private function fetchStatmentExtra($sql)
   {
     if (!empty($this->havings)) {
+
       $sql .= ' HAVING ' . implode(' ', $this->havings) . ' ';
     }
 
     if (!empty($this->orderBy)) {
+
       $sql .= ' ORDER BY ' . implode(' ', $this->orderBy);
     }
 
     if ($this->limit) {
+
       $sql .= ' LIMIT ' . $this->limit;
     }
 
     if ($this->offset) {
+
       $sql .= ' OFFSET ' . $this->offset;
     }
 
     if (!empty($this->groupBy)) {
+
       $sql .= ' GROUP BY ' . implode(' ', $this->groupBy);
     }
 
@@ -251,20 +267,25 @@ class Database
   public function data($key, $value = null)
   {
     if (is_array($key)) {
+
       $this->data = array_merge($this->data, $key);
 
       $this->addToBindings($key);
+
     } else {
+
       $this->data[$key] = $value;
 
       $this->addToBindings($value);
     }
+
     return $this;
   }
 
   public function insert($table = null)
   {
     if ($table) {
+
       $this->table($table);
     }
 
@@ -281,6 +302,7 @@ class Database
   public function update($table = null)
   {
     if ($table) {
+
       $this->table($table);
     }
 
@@ -288,6 +310,7 @@ class Database
     $sql .= $this->setField();
 
     if (!empty($this->wheres)) {
+
       $sql .= ' WHERE ' . implode('', $this->wheres);
     }
 
@@ -299,12 +322,14 @@ class Database
   public function delete($table = null)
   {
     if ($table) {
+
       $this->table($table);
     }
 
     $sql = 'DELETE FROM ' . $this->table . ' ';
 
     if (!empty($this->wheres)) {
+
       $sql .= ' WHERE ' . implode('', $this->wheres);
     }
 
@@ -318,8 +343,10 @@ class Database
     $sql = '';
 
     foreach ($this->data as $key => $value) {
+
       $sql .= '`' . $key . '` = ? ,';
     }
+
     $sql = rtrim($sql, ' ,');
 
     return $sql;
@@ -328,8 +355,11 @@ class Database
   private function addToBindings($value)
   {
     if (is_array($value)) {
+
       $this->bindings = array_merge($this->bindings, array_values($value));
+
     } else {
+
       $this->bindings[] = $value;
     }
   }
@@ -339,16 +369,22 @@ class Database
     $sql = array_shift($bindings);
 
     if (count($bindings) == 1 and is_array($bindings[0])) {
+
       $bindings = $bindings[0];
     }
 
     try {
+
       $query = $this->connection()->prepare($sql);
 
       foreach ($bindings as $key => $value) {
+
         if ($value === null) {
+
           $query->bindValue($key + 1, $value);
+
         } else {
+
           $query->bindValue($key + 1, _e($value));
         }
       }
@@ -358,7 +394,9 @@ class Database
       $this->reset();
 
       return $query;
+
     } catch (PDOException $e) {
+
       throw new Exception($e->getMessage());
     }
   }

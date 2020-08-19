@@ -62,8 +62,10 @@ class Loader
     $controller = $this->getControllerName($controller);
 
     if (!$this->hasController($controller)) {
+
       $this->addController($controller);
     }
+
     return $this->getController($controller);
   }
 
@@ -131,8 +133,10 @@ class Loader
     $model = $this->getModelName($model);
 
     if (!$this->hasModel($model)) {
+
       $this->addModel($model);
     }
+
     return $this->getModel($model);
   }
 

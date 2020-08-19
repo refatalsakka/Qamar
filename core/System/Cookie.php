@@ -77,6 +77,7 @@ class Cookie
   public function remove($key)
   {
     $this->set($key, null, -1);
+
     unset($_COOKIE[$key]);
   }
 
@@ -98,8 +99,10 @@ class Cookie
   public function destroy()
   {
     foreach (array_keys($this->all()) as $key) {
+
       $this->remove($key);
     }
+
     unset($_COOKIE);
   }
 }

@@ -63,6 +63,7 @@ class Request
     $requestUri = $this->server('REQUEST_URI');
 
     if (strpos($requestUri, '?')) {
+
       list($requestUri, $queryString) = explode('?', $requestUri);
     }
 
@@ -85,13 +86,19 @@ class Request
   private function cleanUrl($script, $requestUri)
   {
     if (!in_array($script, ['/', '\\'])) {
+
       $url = preg_replace('#^' . $script . '#', '', $requestUri);
+
     } else {
+
       $url = $requestUri;
     }
+
     if ($url !== '/') {
+
       $url = rtrim($url, '/');
     }
+
     return $url;
   }
 
@@ -103,8 +110,10 @@ class Request
   private function isSecure()
   {
     if ($this->checkHttp() || $this->checkHttpXforwardedProto() || $this->checkHttpXforwardedSsl()) {
+
       return true;
     }
+
     return false;
   }
 
@@ -116,8 +125,10 @@ class Request
   private function checkHttp()
   {
     if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
+
       return true;
     }
+
     return false;
   }
 
@@ -129,8 +140,10 @@ class Request
   private function checkHttpXforwardedProto()
   {
     if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
+
       return true;
     }
+
     return false;
   }
 
@@ -142,8 +155,10 @@ class Request
   private function checkHttpXforwardedSsl()
   {
     if (!empty($_SERVER['HTTP_X_FORWARDED_SSL']) && $_SERVER['HTTP_X_FORWARDED_SSL'] == 'on') {
+
       return true;
     }
+
     return false;
   }
 
@@ -158,10 +173,14 @@ class Request
     $value = array_get($_GET, $key);
 
     if (is_array($value)) {
+
       $value = array_filter($value);
+
     } else {
+
       $value = trim($value);
     }
+
     return $value;
   }
 
@@ -176,10 +195,14 @@ class Request
     $value = array_get($_POST, $key);
 
     if (is_array($value)) {
+
       $value = array_filter($value);
+
     } else {
+
       $value = trim($value);
     }
+
     return $value;
   }
 
@@ -234,6 +257,7 @@ class Request
   public function file($input)
   {
     if (isset($this->files[$input])) {
+
       return $this->files[$input];
     }
 

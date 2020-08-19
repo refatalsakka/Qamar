@@ -37,33 +37,42 @@ class Route
       'method' => $requestMethos,
       'middleware' => $middleware
     ];
+
     $this->routes[] = $routes;
+
     return $this;
   }
 
   private function setPrefix($url)
   {
     if ($this->prefix && $this->prefix !== '/') {
+
       $url = $this->prefix . $url;
       $url = rtrim($url, '/');
     }
+
     return $url;
   }
 
   private function setAction($action)
   {
     if ($this->basController) {
+
       $action = $this->basController . '/' . $action;
     }
+
     return $action;
   }
 
   private function setMiddleware($middleware)
   {
     if (!is_array($middleware)) {
+
       $middleware = [$middleware];
     }
+
     $middleware = array_merge($this->groupMiddleware, $middleware);
+
     return $middleware;
   }
 
@@ -72,6 +81,7 @@ class Route
     $action = str_replace('/', '\\', $action);
     $action = (strpos($action, '@') != 0) ? $action : $action . '@index';
     $action = explode('@', $action);
+
     return $action;
   }
 
@@ -80,6 +90,7 @@ class Route
     $pattern = '#^';
     $pattern .= str_replace([':text', ':id'], ['([a-zA-Z0-9-]+)', '(\d+)'], strtolower($url));
     $pattern .= '$#';
+
     return $pattern;
   }
 
@@ -91,13 +102,19 @@ class Route
     $url = $this->app->request->url();
 
     if (($this->prefix && $prefix !== $this->prefix) || ($prefix && strpos($url, $prefix) !== 0)) {
+
       return $this;
     }
+
     $this->prefix = $prefix;
+
     $this->basController = $controller;
+
     $this->groupMiddleware = $middleware;
 
+
     $callback($this);
+
     return $this;
   }
 
@@ -105,30 +122,43 @@ class Route
   {
     $this->add($url, $controller);
     $row = isset($middlewares['row']) ? $middlewares['row'] : [];
+
     $this->add("$url/:id", "$controller@row", 'GET', $row);
     $new = isset($middlewares['new']) ? $middlewares['new'] : [];
+
     $this->add("$url/new", "$controller@new", 'GET', $new);
     $add = isset($middlewares['add']) ? $middlewares['add'] : [];
+
     $this->add("$url/add", "$controller@add", 'POST', $add);
     $update = isset($middlewares['update']) ? $middlewares['update'] : [];
+
     $this->add("$url/update/:id", "$controller@update", 'POST', $update);
     $delete = isset($middlewares['delete']) ? $middlewares['delete'] : [];
+
     $this->add("$url/delete/:id", "$controller@delete", 'POST', $delete);
+
     return $this;
   }
 
   public function getProperRoute()
   {
     foreach ($this->routes as $route) {
+
       if ($this->fullMatch($route['pattern'], $route['method'])) {
+
         $this->current = $route;
+
         $continue = $this->continue($route['middleware']);
 
         if ($continue == static::NEXT) {
+
           list($controller, $method) = $route['action'];
+
           $arguments = $this->getArgumentsFor($route['pattern']);
+
           return (string) $this->app->load->action($controller, $method, $arguments);
         }
+
         break;
       }
     }
@@ -140,8 +170,10 @@ class Route
     $notfound = 'Website\Notfound';
 
     if ($this->app->request->isRequestToAdminManagement()) {
+
       $notfound = 'Admin\Notfound';
     }
+
     return (string) $this->app->load->action($notfound, 'index', []);
   }
 
@@ -162,22 +194,31 @@ class Route
     $allowMethods = ['GET', 'POST'];
 
     if ($method == 'BOTH') {
+
       return $this->checkRequestMethodsBoth($allowMethods);
     }
+
     if (is_array($method)) {
+
       return $this->checkRequestMethodsArray($method, $allowMethods);
     }
+
     return $this->app->request->method() == $method;
   }
 
   private function checkRequestMethodsArray($methods = null, $allowMethods)
   {
     if (count($methods) == 1) {
+
       return $this->app->request->method() == $methods[0];
+
     } else {
+
       if (array_equal($methods, $allowMethods)) {
+
         return true;
       }
+
       return false;
     }
   }
@@ -185,16 +226,21 @@ class Route
   private function checkRequestMethodsBoth($allowMethods)
   {
     if (in_array($this->app->request->method(), $allowMethods)) {
+
       return true;
     }
+
     return false;
   }
 
   private function getArgumentsFor($pattern)
   {
     $url = $this->app->request->url();
+
     preg_match($pattern, $url, $matches);
+
     array_shift($matches);
+
     return $matches;
   }
 
@@ -210,23 +256,34 @@ class Route
     $middlewareClass = $middlewares[$middleware];
 
     if (!in_array($middlewareInterface, class_implements($middlewareClass))) {
+
       throw new Exception("$middlewareClass not Implement");
     }
+
     $middlewareObject = new $middlewareClass;
+
     return $middlewareObject->handle($this->app, static::NEXT);
   }
 
   private function continue($middlewares)
   {
-    if (!empty($middlewares)) {
+
+    $next = static::NEXT;
+
+    if (empty($middlewares)) {
+
+      return $next;
     }
+
     foreach ($middlewares as $middleware) {
       $output = $this->middleware($middleware);
 
-      if ($output !== static::NEXT) {
+      if ($output !== $next) {
+
         return $output;
       }
     }
-    return static::NEXT;
+
+    return $next;
   }
 }

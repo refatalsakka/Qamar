@@ -49,6 +49,7 @@ class View
 
     //Public
     $_public = $this->_public($dir, $host);
+
     $context += [
       'lang' => $_ENV['App_LANG'],
       'charset' => $_ENV['App_CHARSET'],
@@ -95,6 +96,7 @@ class View
     $public = str_replace('\\', '/', $public);
 
     if (substr($public, -1) !== '/') {
+
       $public = $public . '/';
     }
 

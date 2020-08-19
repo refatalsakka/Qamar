@@ -39,11 +39,13 @@
 
 ### How to Install 🔥
 
-**Install the dependencies and devDependencies**
-
 ```sh
 $ git clone git@github.com:refatalsakka/mvc-php.git
 $ cd mvc-php
+```
+
+**Install the dependencies and devDependencies**
+```sh
 $ npm install
 $ composer install
 $ npm run build

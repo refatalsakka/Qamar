@@ -56,12 +56,14 @@ class Application
     $run->prependHandler(new PrettyPageHandler());
 
     if (WhoopsMisc::isAjaxRequest()) {
+
       $jsonHandler = new JsonResponseHandler();
 
       $jsonHandler->setJsonApi(true);
 
       $run->prependHandler($jsonHandler);
     }
+
     $run->register();
   }
 
@@ -74,6 +76,7 @@ class Application
   public static function getInstance($file)
   {
     self::$instance = is_null(self::$instance) ? new static($file) : self::$instance;
+
     return self::$instance;
   }
 
@@ -89,6 +92,7 @@ class Application
     $this->request->prepareUrl();
 
     foreach (glob("routes/**/*.php") as $route) {
+
       $this->file->call($route);
     }
 
@@ -119,8 +123,10 @@ class Application
   public function share($key, $value)
   {
     if ($value instanceof Closure) {
+
       $value = call_user_func($value, $this);
     }
+
     $this->container[$key] = $value;
   }
 
@@ -133,12 +139,18 @@ class Application
   public function get($key)
   {
     if (!$this->isSharing($key)) {
+
       if ($this->isCoreAlias($key)) {
+
         $this->share($key, $this->createObject($key));
+
       } else {
+
         throw new Exception("$key is not found");
+
       }
     }
+
     return $this->container[$key];
   }
 
@@ -173,6 +185,7 @@ class Application
   public function createObject($key)
   {
     $object = $this->coreClasses()[$key];
+
     return new $object($this);
   }
 

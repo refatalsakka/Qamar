@@ -36,6 +36,7 @@ class UploadeFile
   private function getFileInfo($input)
   {
     if (empty($_FILES[$input])) {
+
       return;
     }
 
@@ -44,6 +45,7 @@ class UploadeFile
     $this->error = $file['error'];
 
     if ($this->error != UPLOAD_ERR_OK) {
+
       return;
     }
 
@@ -107,19 +109,17 @@ class UploadeFile
   public function moveTo($target, $newName = null)
   {
     $newName = $newName ?: sha1(rand()) . sha1(rand());
-
     $newName .= '.' . $this->extension;
 
     if (!is_dir($target)) {
+
       mkdir($target, 0777, true);
     }
 
     $filePath = $target . $newName;
-
     $filePath  = rtrim($filePath, '/');
     $filePath  = ltrim($filePath, '/');
 
-    $uploade = move_uploaded_file($this->tempFile, $filePath);
-    return $uploade;
+    return  move_uploaded_file($this->tempFile, $filePath);
   }
 }
