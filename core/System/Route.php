@@ -112,7 +112,6 @@ class Route
 
     $this->groupMiddleware = $middleware;
 
-
     $callback($this);
 
     return $this;

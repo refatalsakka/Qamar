@@ -99,3 +99,21 @@ if (!function_exists('array_equal')) {
     );
   }
 }
+
+if (!function_exists('isExtesntionAllowed')) {
+  function isExtesntionAllowed($key, $extension)
+  {
+    $allowExtesntions = app()->file->call('config/uploads.php')[$key];
+
+    return in_array($extension, $allowExtesntions);
+  }
+}
+
+if (!function_exists('isImage')) {
+  function isImage($minetype)
+  {
+    return strpos($minetype, "image/") === 0;
+  }
+}
+
+

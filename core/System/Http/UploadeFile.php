@@ -24,8 +24,6 @@ class UploadeFile
 
   private $error;
 
-  private const AllOW_EXTENSION = ['png', 'jpg', 'jpeg', 'gif', 'webp'];
-
   public function __construct(Application $app, $input)
   {
     $this->app = $app;
@@ -101,11 +99,6 @@ class UploadeFile
     return $this->tempFile;
   }
 
-  public function isImage()
-  {
-    return strpos($this->minetype, 'image/') === 0 && in_array($this->extension, self::AllOW_EXTENSION);
-  }
-
   public function moveTo($target, $newName = null)
   {
     $newName = $newName ?: sha1(rand()) . sha1(rand());
@@ -120,6 +113,6 @@ class UploadeFile
     $filePath  = rtrim($filePath, '/');
     $filePath  = ltrim($filePath, '/');
 
-    return  move_uploaded_file($this->tempFile, $filePath);
+    return move_uploaded_file($this->tempFile, $filePath);
   }
 }
