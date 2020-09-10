@@ -29,7 +29,7 @@ class Error
   }
 
   /**
-   * Check if the Errors should be displayed
+   * Check if the errors should be displayed
    *
    * @return void
    */
@@ -39,7 +39,7 @@ class Error
   }
 
   /**
-   * Show Error
+   * Show error
    *
    * @return void
    */
@@ -51,7 +51,7 @@ class Error
   }
 
   /**
-   * Hide Error
+   * Hide error
    *
    * @return void
    */
@@ -88,9 +88,9 @@ class Error
   private function sendErrorToAdmin($error)
   {
     $date = new DateTime('now', new DateTimeZone('Europe/Berlin'));
-    $date = $date->format('d.m.Y H:i:s');
+    $date = 'Error: ' . $date->format('d.m.Y H:i:s');
 
-    $this->app->email->recipients(['amin' => 'refat838@gmail.com'], ['refat' => 'refatalsakka@gmail.com'])->content(true, 'Error', 'test','test')->send();
+    $this->app->email->recipients(['admin' => $_ENV['EMAIL_ADMIN']])->content(true, $date, $error, $error)->send();
   }
 
   /**
@@ -116,6 +116,11 @@ class Error
     $run->register();
   }
 
+  /**
+   * Display friendly error to the users
+   *
+   * @return void
+   */
   private function displayFriendlyMessage()
   {
     echo $this->app->view->render('website/pages/error', []);

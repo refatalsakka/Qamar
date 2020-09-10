@@ -124,7 +124,7 @@ class Email
   /**
    * Send email
    *
-   * @return $this
+   * @return void
    */
   public function send()
   {
