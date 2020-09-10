@@ -37,6 +37,11 @@ class Email
     $this->setUp();
   }
 
+  /**
+   * Set up the configrations
+   *
+   * @return void
+   */
   private function setUp()
   {
     $this->mail->SMTPDebug = Error::allowDisplayingError() ? SMTP::DEBUG_SERVER : 0;
@@ -49,6 +54,11 @@ class Email
     $this->mail->Port = $_ENV['EMAIL_PORT'];
   }
 
+  /**
+   * Add recipients to email
+   *
+   * @return $this
+   */
   public function recipients($addresses, array $replayTo = [], $cc = null, $bcc = null)
   {
     $this->mail->setFrom($_ENV['EMAIL_ADMIN'], $_ENV['EMAIL_NAME']);
@@ -74,6 +84,11 @@ class Email
     return $this;
   }
 
+  /**
+   * Add attachments to email
+   *
+   * @return $this
+   */
   public function attachments($attachments)
   {
     if (!is_array($attachments)) $attachments = [$attachments];
@@ -91,6 +106,11 @@ class Email
     return $this;
   }
 
+  /**
+   * Add content to email
+   *
+   * @return $this
+   */
   public function content($html, $subject, $body, $altBody)
   {
     $this->mail->isHTML($html);
@@ -101,6 +121,11 @@ class Email
     return $this;
   }
 
+  /**
+   * Send email
+   *
+   * @return $this
+   */
   public function send()
   {
     try {
