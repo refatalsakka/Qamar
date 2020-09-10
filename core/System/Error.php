@@ -29,7 +29,7 @@ class Error
   }
 
   /**
-   * Check if the Errors should be displayed or not
+   * Check if the Errors should be displayed
    *
    * @return void
    */
@@ -63,7 +63,7 @@ class Error
   }
 
   /**
-   *
+   * Show or hide errors depend on the condition
    */
   public function toggleError()
   {
@@ -81,6 +81,7 @@ class Error
 
   /**
    * Send Email to the admin contain the Error
+   * and the date
    *
    * @return void
    */
@@ -121,9 +122,9 @@ class Error
   }
 
   /**
-   * Check the environment
-   * if lcaol run the Whoops
-   * else send email to the admin contain the error
+   * Check for last errors
+   * if there are errors than send continue to report the admin
+   * and display a friendly error to the users
    *
    * @return void
    */
