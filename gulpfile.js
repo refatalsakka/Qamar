@@ -51,6 +51,7 @@ const webapckJsConfig = {
     // Website JS Files
     'website/home.js': './resources/js/website/home.js',
     'website/404.js': './resources/js/website/404.js',
+    'website/error.js': './resources/js/website/error.js',
 
     // Admin JS Files
     'admin/home.js': './resources/js/admin/home.js',

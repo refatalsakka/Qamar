@@ -11,10 +11,10 @@ return [
     'html'      =>  'System\\Html',
     'db'        =>  'System\\Database',
     'url'       =>  'System\\Url',
-    'validator' =>  'System\\Validation\\Validator',
-    'paginatio' =>  'System\\Paginatio',
     'view'      =>  'System\\View',
     'hash'      =>  'System\\Hash',
+    'error'     =>  'System\\Error',
+    'email'     =>  'System\\Email'
   ],
   'middlewares' => [
     'auth'        => 'app\\Middlewares\\AuthenticateMiddleware',

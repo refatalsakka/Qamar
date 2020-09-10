@@ -6,22 +6,67 @@ use System\Application;
 
 class UploadeFile
 {
+  /**
+   * Application Object
+   *
+   * @var \System\Application
+   */
   private $app;
 
+  /**
+   * File
+   *
+   * @var array
+   */
   private $file = [];
 
+  /**
+   * File Name
+   *
+   * @var string
+   */
   private $fileName;
 
+  /**
+   * File Name
+   *
+   * @var string
+   */
   private $nameOnly;
 
+  /**
+   * File Extension
+   *
+   * @var string
+   */
   private $extension;
 
+  /**
+   * File Minetype
+   *
+   * @var string
+   */
   private $minetype;
 
+  /**
+   * File Temp
+   *
+   * @var string
+   */
   private $tempFile;
 
+  /**
+   * File Size
+   *
+   * @var string
+   */
   private $size;
 
+  /**
+   * File Error
+   *
+   * @var string
+   */
   private $error;
 
   public function __construct(Application $app, $input)

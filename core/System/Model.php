@@ -4,7 +4,7 @@ namespace System;
 
 abstract class Model
 {
-  protected $app;
+  private $app;
 
   protected $table;
 

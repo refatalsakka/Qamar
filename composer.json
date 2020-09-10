@@ -2,10 +2,13 @@
   "name": "php/mvc",
   "description": "",
   "require": {
-    "filp/whoops": "^2.4",
     "pug-php/pug": "^3.2",
     "ircmaxell/random-lib": "^1.2",
-    "vlucas/phpdotenv": "^5.1"
+    "vlucas/phpdotenv": "^5.1",
+    "phpmailer/phpmailer": "^6.1"
+  },
+  "require-dev": {
+    "filp/whoops": "^2.4"
   },
   "autoload": {
     "psr-4": {

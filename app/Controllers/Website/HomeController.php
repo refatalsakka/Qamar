@@ -8,6 +8,9 @@ class HomeController extends Controller
 {
   public function index()
   {
+    // $this->app->email->recipients(['amin' => 'refat838@gmail.com'])->content(true, 'Error', 'test','test')->send();
+    $this->app->email;
+
     $context = [
 
     ];

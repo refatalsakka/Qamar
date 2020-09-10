@@ -9,7 +9,7 @@ class Hash
    *
    * @var \System\Application
    */
-  protected $app;
+  private $app;
 
   /**
    * Constructor

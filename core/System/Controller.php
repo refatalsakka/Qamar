@@ -1,7 +1,6 @@
 <?php
 
 namespace System;
-use DateTime;
 
 abstract class Controller
 {

@@ -5,10 +5,6 @@ namespace System;
 use Closure;
 use Exception;
 use Dotenv\Dotenv;
-use Whoops\Run as Whoops;
-use Whoops\Util\Misc as WhoopsMisc;
-use Whoops\Handler\JsonResponseHandler;
-use Whoops\Handler\PrettyPageHandler;
 
 class Application
 {
@@ -37,34 +33,11 @@ class Application
 
     Dotenv::createImmutable($this->file->root())->load();
 
-    $this->file->call('config/error.php');
-
-    $this->handleErrors();
-
     $this->file->call('Core/helpers.php');
-  }
 
-  /**
-   * Run error handling of Whoops
-   *
-   * @return void
-   */
-  private function handleErrors()
-  {
-    $run = new Whoops();
+    $this->error->toggleError();
 
-    $run->prependHandler(new PrettyPageHandler());
-
-    if (WhoopsMisc::isAjaxRequest()) {
-
-      $jsonHandler = new JsonResponseHandler();
-
-      $jsonHandler->setJsonApi(true);
-
-      $run->prependHandler($jsonHandler);
-    }
-
-    $run->register();
+    register_shutdown_function([$this->error, 'handleErrors']);
   }
 
   /**
@@ -147,7 +120,6 @@ class Application
       } else {
 
         throw new Exception("$key is not found");
-
       }
     }
 

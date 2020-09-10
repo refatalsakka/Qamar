@@ -115,5 +115,3 @@ if (!function_exists('isImage')) {
     return strpos($minetype, "image/") === 0;
   }
 }
-
-

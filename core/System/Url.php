@@ -9,7 +9,7 @@ class Url
    *
    * @var \System\Application
    */
-  protected $app;
+  private $app;
 
   /**
    * Constructor
