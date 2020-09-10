@@ -46,13 +46,13 @@ class Hash
   /**
    * Check if the given password is verified with the given hash
    *
-   * @param $password
-   * @param $hash
+   * @param $password1
+   * @param $password2
    * @return string
    */
-  public function passwordCheck($password, $hash)
+  public function passwordCheck($password1, $password2)
   {
-    return password_verify($password, $hash);
+    return password_verify($password1, $password2);
   }
 
   /**
