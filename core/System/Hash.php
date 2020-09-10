@@ -21,23 +21,60 @@ class Hash
     $this->app = $app;
   }
 
+  /**
+   * Hash password
+   *
+   * @param $password
+   * @return string
+   */
   public function password($password)
   {
-    return password_hash($password, $_ENV['HASH_PASSWORD']);
+    $timeTarget = 0.05;
+    $cost = 3;
+    $password;
+
+    do {
+      $cost++;
+      $start = microtime(true);
+      $password = password_hash("test", PASSWORD_BCRYPT, ["cost" => $cost]);
+      $end = microtime(true);
+    } while (($end - $start) < $timeTarget);
+
+    return $password;
   }
 
+  /**
+   * Check if the given password is verified with the given hash
+   *
+   * @param $password
+   * @param $hash
+   * @return string
+   */
   public function passwordCheck($password, $hash)
   {
     return password_verify($password, $hash);
   }
 
-  public function hash($input)
+  /**
+   * Hash the given string
+   *
+   * @param $string
+   * @return string
+   */
+  public function hash($string)
   {
-    return hash($_ENV['HASH_TYPE'], $input);
+    return hash($_ENV['HASH_TYPE'], $string);
   }
 
-  public function hashCheck($known, $user)
+  /**
+   * Check if the given hashes are equal
+   *
+   * @param $hash1
+   * @param $hash2
+   * @return string
+   */
+  public function hashCheck($hash1, $hash2)
   {
-    return hash_equals($known, $user);
+    return hash_equals($hash1, $hash2);
   }
 }
