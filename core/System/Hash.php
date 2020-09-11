@@ -30,7 +30,7 @@ class Hash
   public function password($password)
   {
     $timeTarget = 0.05;
-    $cost = 3;
+    $cost = 8;
     $password;
 
     do {
