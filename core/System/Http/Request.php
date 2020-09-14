@@ -345,6 +345,7 @@ class Request
     return $url == 'admin';
   }
 
+
   public function isMatchingRequestMethod($methods = ['GET'])
   {
     if (!is_array($methods)) {
@@ -368,7 +369,11 @@ class Request
     return false;
   }
 
-
+  /**
+   * Check if the request can be Continued
+   *
+   * @return bool
+   */
   public function canRequestContinue($middlewares)
   {
     if (empty($middlewares)) {
