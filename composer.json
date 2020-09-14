@@ -3,7 +3,6 @@
   "description": "",
   "require": {
     "pug-php/pug": "^3.2",
-    "ircmaxell/random-lib": "^1.2",
     "vlucas/phpdotenv": "^5.1",
     "phpmailer/phpmailer": "^6.1"
   },

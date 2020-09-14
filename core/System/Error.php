@@ -135,10 +135,9 @@ class Error
    */
   public function handleErrors()
   {
-    $error = error_get_last();
+    $error = error_get_last() || null;
 
-    if (!empty($error)) {
-
+    if (!$error) {
       return;
     }
 
