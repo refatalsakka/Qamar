@@ -345,7 +345,11 @@ class Request
     return $url == 'admin';
   }
 
-
+  /**
+   * Check the request method
+   *
+   * @return bool
+   */
   public function isMatchingRequestMethod($methods = ['GET'])
   {
     if (!is_array($methods)) {

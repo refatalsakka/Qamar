@@ -65,11 +65,17 @@ class Email
 
     $this->addAddresses($addresses);
 
-    if (!empty($replayTo)) $this->mail->addReplyTo(array_values($replayTo)[0], array_keys($replayTo)[0]);
+    if (!empty($replayTo)) {
+      $this->mail->addReplyTo(array_values($replayTo)[0], array_keys($replayTo)[0]);
+    }
 
-    if ($cc) $this->mail->addCC($cc);
+    if ($cc) {
+      $this->mail->addCC($cc);
+    }
 
-    if ($bcc) $this->mail->addBCC($bcc);
+    if ($bcc) {
+      $this->mail->addBCC($bcc);
+    }
 
     return $this;
   }
@@ -81,7 +87,9 @@ class Email
    */
   private function addAddresses($addresses)
   {
-    if (!is_array($addresses)) $addresses = [$addresses];
+    if (!is_array($addresses)) {
+      $addresses = [$addresses];
+    }
 
     foreach ($addresses as $key => $value) {
       if (is_numeric($key)) {
@@ -101,7 +109,9 @@ class Email
    */
   public function attachments($attachments)
   {
-    if (!is_array($attachments)) $attachments = [$attachments];
+    if (!is_array($attachments)) {
+      $attachments = [$attachments];
+    }
 
     foreach ($attachments as $key => $value) {
       if (is_numeric($key)) {
