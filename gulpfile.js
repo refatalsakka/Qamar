@@ -19,34 +19,9 @@ const webpack = require('webpack');
 const webpackStream = require('webpack-stream');
 const path = require('path');
 
-// const testFolder = './resources/js/';
-// const fs = require('fs');
-
-// // Need t be fixed
-// async function refat() {
-//   const objectTest = {};
-//   fs.readdir(testFolder, (err, folders) => {
-//     folders.forEach((folder) => {
-//       if (folder === 'admin' || folder === 'website') {
-//         fs.readdir(`${testFolder}${folder}/`, (_err, files) => {
-//           files.forEach((file) => {
-//             if (file !== '_layout.js') {
-//               const key = `${folder}/${file}`;
-//               const value = `${testFolder}${folder}/${file}`;
-//               objectTest[key] = value;
-//             }
-//           });
-//           return objectTest;
-//         });
-//       }
-//     });
-//   });
-// }
-// exports.refat = refat;
-
 const webapckJsConfig = {
-  mode: process.env.APP_DEBUG === 'true' ? 'development' : 'production',
-  devtool: process.env.APP_DEBUG === 'true' ? 'source-map' : false,
+  mode: (process.env.APP_ENV === 'local' && process.env.APP_DEBUG === 'true') ? 'development' : 'production',
+  devtool: (process.env.APP_ENV === 'local' && process.env.APP_DEBUG === 'true') ? 'source-map' : false,
   entry: {
     // Website JS Files
     'website/home.js': './resources/js/website/home.js',
@@ -74,17 +49,6 @@ const webapckJsConfig = {
   },
 };
 
-// Folders 📁
-const TEMPLATE_DIR = 'template';
-const SASS_DIR = 'resources/sass';
-const JAVASCRIPT_DIR = 'resources/js';
-const IMGAGES_DIR = 'resources/imgs';
-const FONTS_DIR = 'resources/sass/fonts';
-const CSS_PUBLIC_DIR = 'public/css';
-const JS_PUBLIC_DIR = 'public/js';
-const IMG_PUBLIC_DIR = 'public/imgs';
-const FONTS_PUBLIC_DIR = 'public/css/fonts';
-
 // Files 🗄
 const LIBS = {
   css: [
@@ -110,6 +74,17 @@ const LIBS = {
     },
   ],
 };
+
+// Folders 📁
+const TEMPLATE_DIR = 'template';
+const SASS_DIR = 'resources/sass';
+const JAVASCRIPT_DIR = 'resources/js';
+const IMGAGES_DIR = 'resources/imgs';
+const FONTS_DIR = 'resources/sass/fonts';
+const CSS_PUBLIC_DIR = 'public/css';
+const JS_PUBLIC_DIR = 'public/js';
+const IMG_PUBLIC_DIR = 'public/imgs';
+const FONTS_PUBLIC_DIR = 'public/css/fonts';
 
 // Check Templates pug-lint Cehck ✅
 function templatelint() {

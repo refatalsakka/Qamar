@@ -3,9 +3,8 @@
 namespace app\Middlewares;
 
 use app\Middlewares\MiddlewareIntrerface\MiddlewaresInterface;
-use System\Controller as Middleware;
 
-class AjaxMiddleware extends Middleware implements MiddlewaresInterface
+class AjaxMiddleware implements MiddlewaresInterface
 {
   public function handle()
   {

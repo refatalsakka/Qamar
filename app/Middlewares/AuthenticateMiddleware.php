@@ -3,9 +3,8 @@
 namespace app\Middlewares;
 
 use app\Middlewares\MiddlewareIntrerface\MiddlewaresInterface;
-use System\Controller as Middleware;
 
-class AuthenticateMiddleware extends Middleware implements MiddlewaresInterface
+class AuthenticateMiddleware implements MiddlewaresInterface
 {
   public function handle()
   {
