@@ -20,7 +20,7 @@ class Email
    * PHPMailer Object
    *
    * @var PHPMailer
-  */
+   */
   private $mail;
 
   /**
@@ -63,6 +63,24 @@ class Email
   {
     $this->mail->setFrom($_ENV['EMAIL_ADMIN'], $_ENV['EMAIL_NAME']);
 
+    $this->addAddresses($addresses);
+
+    if (!empty($replayTo)) $this->mail->addReplyTo(array_values($replayTo)[0], array_keys($replayTo)[0]);
+
+    if ($cc) $this->mail->addCC($cc);
+
+    if ($bcc) $this->mail->addBCC($bcc);
+
+    return $this;
+  }
+
+  /**
+   * Add addresses
+   *
+   * @return void
+   */
+  private function addAddresses($addresses)
+  {
     if (!is_array($addresses)) $addresses = [$addresses];
 
     foreach ($addresses as $key => $value) {
@@ -74,14 +92,6 @@ class Email
         $this->mail->addAddress($value, $key);
       }
     }
-
-    if (!empty($replayTo)) $this->mail->addReplyTo(array_values($replayTo)[0], array_keys($replayTo)[0]);
-
-    if ($cc) $this->mail->addCC($cc);
-
-    if ($bcc) $this->mail->addBCC($bcc);
-
-    return $this;
   }
 
   /**

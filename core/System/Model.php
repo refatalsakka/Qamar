@@ -40,11 +40,11 @@ abstract class Model
   }
 
   /**
-  * Call the methods from Database Object
-  *
-  * @param $method
-  * @param $atgs
-  */
+   * Call the methods from Database Object
+   *
+   * @param $method
+   * @param $atgs
+   */
   public function __call($method, $args)
   {
     return call_user_func_array([$this->app->db, $method], $args);

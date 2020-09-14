@@ -118,7 +118,7 @@ if (!function_exists('isImage')) {
 
 if (!function_exists('notFoundPage')) {
 
- function notFoundPage()
+  function notFoundPage()
   {
     $notfound = 'Website\Notfound';
 

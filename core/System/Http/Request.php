@@ -357,7 +357,7 @@ class Request
       $methods = ['GET'];
     }
 
-    foreach($methods as $method) {
+    foreach ($methods as $method) {
 
       if ($this->method() == strtoupper($method)) {
 

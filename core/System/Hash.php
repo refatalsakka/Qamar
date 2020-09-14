@@ -48,7 +48,7 @@ class Hash
    *
    * @param $password1
    * @param $password2
-   * @return string
+   * @return bool
    */
   public function passwordCheck($password1, $password2)
   {
@@ -71,7 +71,7 @@ class Hash
    *
    * @param $hash1
    * @param $hash2
-   * @return string
+   * @return bool
    */
   public function hashCheck($hash1, $hash2)
   {

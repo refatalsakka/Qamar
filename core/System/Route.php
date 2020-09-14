@@ -159,7 +159,7 @@ class Route
 
   private function fullMatch($pattern, $methods)
   {
-    return $this->isMatchingPattern($pattern) &&  $this->app->request->isMatchingRequestMethod($methods);
+    return $this->isMatchingPattern($pattern) && $this->app->request->isMatchingRequestMethod($methods);
   }
 
   private function isMatchingPattern($pattern)

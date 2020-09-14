@@ -23,7 +23,7 @@ class File
   /**
    * Constructor
    *
-   * @param string root
+   * @param string $root
    */
   public function __construct($root)
   {

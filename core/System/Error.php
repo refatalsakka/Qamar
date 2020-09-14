@@ -31,7 +31,7 @@ class Error
   /**
    * Check if the errors should be displayed
    *
-   * @return void
+   * @return bool
    */
   public static function allowDisplayingError()
   {
@@ -137,7 +137,10 @@ class Error
   {
     $error = error_get_last();
 
-    if (!$error) return;
+    if (!empty($error)) {
+
+      return;
+    }
 
     $type = $error['type'];
     $message = $error['message'];
