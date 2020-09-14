@@ -146,7 +146,7 @@ class Error
 
     $error = "There is an Error type: {$type}. says: $message. in file: $file. on line: $line.";
 
-    // $this->sendErrorToAdmin($error);
+    $this->sendErrorToAdmin($error);
 
     $this->displayFriendlyMessage();
   }

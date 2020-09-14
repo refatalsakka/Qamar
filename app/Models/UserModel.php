@@ -12,4 +12,9 @@ class UserModel extends Model
   {
     return $this->table;
   }
+
+  public function isAdmin()
+  {
+    return false;
+  }
 }
