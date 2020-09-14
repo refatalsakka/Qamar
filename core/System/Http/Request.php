@@ -378,6 +378,7 @@ class Request
 
     foreach ($middlewares as $middleware) {
       $output = $this->app->load->middleware($middleware)->handle();
+
       if (!$output) {
 
         return false;
