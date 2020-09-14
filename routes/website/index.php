@@ -7,7 +7,7 @@ if ($app->request->isRequestToAdminManagement()) {
 }
 
 // Home
-$app->route->add('/', 'Website/Home');
+$app->route->add('/', 'Website/Home', 'get', 'Authenticate');
 $app->route->add('/home', 'Website/Home');
 
 

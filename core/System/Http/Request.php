@@ -344,4 +344,46 @@ class Request
 
     return $url == 'admin';
   }
+
+  public function isMatchingRequestMethod($methods = ['GET'])
+  {
+    if (!is_array($methods)) {
+
+      $methods = [$methods];
+    }
+
+    if (empty($methods)) {
+
+      $methods = ['GET'];
+    }
+
+    foreach($methods as $method) {
+
+      if ($this->method() == strtoupper($method)) {
+
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+
+  public function canRequestContinue($middlewares)
+  {
+    if (empty($middlewares)) {
+
+      return true;
+    }
+
+    foreach ($middlewares as $middleware) {
+      $output = $this->app->load->middleware($middleware)->handle();
+      if (!$output) {
+
+        return false;
+      }
+    }
+
+    return true;
+  }
 }

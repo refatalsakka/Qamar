@@ -115,3 +115,19 @@ if (!function_exists('isImage')) {
     return strpos($minetype, "image/") === 0;
   }
 }
+
+if (!function_exists('notFoundPage')) {
+
+ function notFoundPage()
+  {
+    $notfound = 'Website\Notfound';
+
+    if (app()->request->isRequestToAdminManagement()) {
+
+      $notfound = 'Admin\Notfound';
+    }
+
+    return (string) app()->load->action($notfound, 'index', []);
+  }
+}
+

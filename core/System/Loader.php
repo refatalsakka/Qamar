@@ -26,6 +26,13 @@ class Loader
   private $models = [];
 
   /**
+   * Models container
+   *
+   * @var array
+   */
+  private $middlewares = [];
+
+  /**
    * Constructor
    *
    * @param \System\Application $app
@@ -190,5 +197,75 @@ class Loader
     $model = 'app\\Models\\' . $model;
 
     return $model;
+  }
+
+  /**
+   * Call the given middleware
+   *
+   * @param string $middleware
+   * @return object
+   */
+  public function middleware($middleware)
+  {
+    $middleware = $this->getMiddlewareName($middleware);
+
+    if (!$this->hasMiddleware($middleware)) {
+
+      $this->addMiddleware($middleware);
+    }
+
+    return $this->getMiddleware($middleware);
+  }
+
+  /**
+   * Determine if the given class|middleware exists
+   * in the middlewares container
+   *
+   * @param string $middleware
+   * @return bool
+   */
+  private function hasMiddleware($middleware)
+  {
+    return array_key_exists($middleware, $this->middlewares);
+  }
+
+  /**
+   * Create new object for the given middleware and store it
+   * in middlewares container
+   *
+   * @param string $middleware
+   * @return void
+   */
+  private function addMiddleware($middleware)
+  {
+    $object = new $middleware($this->app);
+
+    $this->middlewares[$middleware] = $object;
+  }
+
+  /**
+   * Get the middleware object
+   *
+   * @param string $middleware
+   * @return object
+   */
+  private function getMiddleware($middleware)
+  {
+    return $this->middlewares[$middleware];
+  }
+
+  /**
+   * Get the full class name for the given middleware
+   *
+   * @param string $middleware
+   * @return string
+   */
+  private function getMiddlewareName($middleware)
+  {
+    $middleware .= strpos($middleware, 'Middleware') ? '' : 'Middleware';
+
+    $middleware = 'app\\Middlewares\\' . $middleware;
+
+    return $middleware;
   }
 }

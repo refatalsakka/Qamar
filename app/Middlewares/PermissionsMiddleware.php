@@ -2,13 +2,13 @@
 
 namespace app\Middlewares;
 
-use System\Application;
-use app\Middlewares\MiddlewareIntrerface\MiddlewaresInterface as Middleware;
+use app\Middlewares\MiddlewareIntrerface\MiddlewaresInterface;
+use System\Controller as Middleware;
 
-class PermissionsMiddleware implements Middleware
+class PermissionsMiddleware extends Middleware implements MiddlewaresInterface
 {
-  public function handle(Application $app, $next)
+  public function handle()
   {
-    return $next;
+    return true;
   }
 }

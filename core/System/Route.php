@@ -2,12 +2,8 @@
 
 namespace System;
 
-use Exception;
-
 class Route
 {
-  const NEXT = '_NEXT_';
-
   private $app;
 
   private $routes = [];
@@ -25,7 +21,7 @@ class Route
     $this->app = $app;
   }
 
-  public function add($url, $action, $requestMethos = 'GET', $middleware = [])
+  public function add($url, $action, $requestMethods = ['GET'], $middleware = [])
   {
     $url = $this->setPrefix($url);
     $action = $this->setAction($action);
@@ -34,7 +30,7 @@ class Route
       'url' => $url,
       'pattern' => $this->generatePattern($url),
       'action' => $this->getAction($action),
-      'method' => $requestMethos,
+      'method' => $requestMethods,
       'middleware' => $middleware
     ];
 
@@ -60,7 +56,6 @@ class Route
 
       $action = $this->basController . '/' . $action;
     }
-
     return $action;
   }
 
@@ -147,89 +142,32 @@ class Route
 
         $this->current = $route;
 
-        $continue = $this->continue($route['middleware']);
+        $continue = $this->app->request->canRequestContinue($route['middleware']);
 
-        if ($continue == static::NEXT) {
-
+        if ($continue) {
           list($controller, $method) = $route['action'];
 
           $arguments = $this->getArgumentsFor($route['pattern']);
 
           return (string) $this->app->load->action($controller, $method, $arguments);
         }
-
         break;
       }
     }
-    return $this->notFound();
+    return notFoundPage();
   }
 
-  private function notFound()
+  private function fullMatch($pattern, $methods)
   {
-    $notfound = 'Website\Notfound';
-
-    if ($this->app->request->isRequestToAdminManagement()) {
-
-      $notfound = 'Admin\Notfound';
-    }
-
-    return (string) $this->app->load->action($notfound, 'index', []);
-  }
-
-  private function fullMatch($pattern, $method)
-  {
-    return $this->isMatchingPattern($pattern) && $this->isMatchingRequestMethod($method);
+    return $this->isMatchingPattern($pattern) &&  $this->app->request->isMatchingRequestMethod($methods);
   }
 
   private function isMatchingPattern($pattern)
   {
     $url = $this->app->request->url();
     $url = strtolower($url);
+
     return preg_match($pattern, $url);
-  }
-
-  private function isMatchingRequestMethod($method)
-  {
-    $allowMethods = ['GET', 'POST'];
-
-    if ($method == 'BOTH') {
-
-      return $this->checkRequestMethodsBoth($allowMethods);
-    }
-
-    if (is_array($method)) {
-
-      return $this->checkRequestMethodsArray($method, $allowMethods);
-    }
-
-    return $this->app->request->method() == $method;
-  }
-
-  private function checkRequestMethodsArray($methods = null, $allowMethods)
-  {
-    if (count($methods) == 1) {
-
-      return $this->app->request->method() == $methods[0];
-
-    } else {
-
-      if (array_equal($methods, $allowMethods)) {
-
-        return true;
-      }
-
-      return false;
-    }
-  }
-
-  private function checkRequestMethodsBoth($allowMethods)
-  {
-    if (in_array($this->app->request->method(), $allowMethods)) {
-
-      return true;
-    }
-
-    return false;
   }
 
   private function getArgumentsFor($pattern)
@@ -246,43 +184,5 @@ class Route
   public function getCurrent($key)
   {
     return $this->current[$key];
-  }
-
-  private function middleware($middleware)
-  {
-    $middlewareInterface = 'app\Middlewares\MiddlewareIntrerface\MiddlewaresInterface';
-    $middlewares = $this->app->file->call('config/alias.php')['middlewares'];
-    $middlewareClass = $middlewares[$middleware];
-
-    if (!in_array($middlewareInterface, class_implements($middlewareClass))) {
-
-      throw new Exception("$middlewareClass not Implement");
-    }
-
-    $middlewareObject = new $middlewareClass;
-
-    return $middlewareObject->handle($this->app, static::NEXT);
-  }
-
-  private function continue($middlewares)
-  {
-
-    $next = static::NEXT;
-
-    if (empty($middlewares)) {
-
-      return $next;
-    }
-
-    foreach ($middlewares as $middleware) {
-      $output = $this->middleware($middleware);
-
-      if ($output !== $next) {
-
-        return $output;
-      }
-    }
-
-    return $next;
   }
 }
