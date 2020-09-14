@@ -139,7 +139,6 @@ class Route
     foreach ($this->routes as $route) {
 
       if ($this->fullMatch($route['pattern'], $route['method'])) {
-
         $this->current = $route;
 
         $continue = $this->app->request->canRequestContinue($route['middleware']);

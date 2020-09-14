@@ -81,7 +81,7 @@ class File
    */
   public function call($path)
   {
-    $path = $this->to($path);
+    $path = $this->fullPath($path);
 
     if (!$this->isSharing($path . ':file')) {
 
@@ -106,7 +106,7 @@ class File
    */
   public function fileContent($path)
   {
-    $path = $this->to($path);
+    $path = $this->fullPath($path);
 
     if (!$this->isSharing($path . ':content')) {
 
@@ -129,7 +129,7 @@ class File
    * @param string $path
    * @return string
    */
-  public function to($path)
+  public function fullPath($path)
   {
     return $this->root . DS . str_replace(['/', '\\'], DS, $path);
   }

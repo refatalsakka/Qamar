@@ -16,6 +16,27 @@ class Application
   private $container = [];
 
   /**
+   * Set and rename core classes
+   *
+   * @var array
+   */
+  private $coreClasses = [
+    'request'   =>  'System\\Http\\Request',
+    'response'  =>  'System\\Http\\Response',
+    'route'     =>  'System\\Route',
+    'session'   =>  'System\\Session',
+    'cookie'    =>  'System\\Cookie',
+    'load'      =>  'System\\Loader',
+    'html'      =>  'System\\Html',
+    'db'        =>  'System\\Database',
+    'url'       =>  'System\\Url',
+    'view'      =>  'System\\View',
+    'hash'      =>  'System\\Hash',
+    'error'     =>  'System\\Error',
+    'email'     =>  'System\\Email'
+  ];
+
+  /**
    * Application Object
    *
    * @var \System\Application
@@ -77,16 +98,6 @@ class Application
   }
 
   /**
-   * Get all core classes
-   *
-   * @return array
-   */
-  public function coreClasses()
-  {
-    return $this->file->call('config/alias.php')['classes'];
-  }
-
-  /**
    * Share the given key|value through Application
    *
    * @param string $key
@@ -118,8 +129,31 @@ class Application
         $this->share($key, $this->createObject($key));
 
       } else {
+        $found = false;
 
-        throw new Exception("$key is not found");
+        $directions = glob('core/System/', GLOB_ONLYDIR);
+        $subDirections = glob('core/**/*/', GLOB_ONLYDIR);
+
+        $dirs = array_merge($directions, $subDirections);
+
+        foreach ($dirs as $dir) {
+          $path = $this->file->fullPath($dir . ucwords($key)) . '.php';
+
+          if (file_exists($path)) {
+            $found = true;
+
+            $dir = $this->file->fullPath($dir . ucwords($key));
+            $dir = ltrim($dir, $this->file->root() . 'core');
+
+            $this->coreClasses[$key] = $dir;
+
+            $this->share($key, $this->createObject($key));
+          }
+        }
+
+        if (!$found) {
+          throw new Exception("$key is not found");
+        }
       }
     }
 
@@ -145,7 +179,7 @@ class Application
    */
   public function isCoreAlias($key)
   {
-    return isset($this->coreClasses()[$key]);
+    return isset($this->coreClasses[$key]);
   }
 
   /**
@@ -156,7 +190,7 @@ class Application
    */
   public function createObject($key)
   {
-    $object = $this->coreClasses()[$key];
+    $object = $this->coreClasses[$key];
 
     return new $object($this);
   }

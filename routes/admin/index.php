@@ -10,7 +10,7 @@ if (!$app->request->isRequestToAdminManagement()) {
 $adminOptions = [
   'prefix' => '/admin',
   'controller' => 'Admin',
-  'middleware' => ['auth', 'permissions']
+  'middleware' => ['Authenticate', 'Permissions']
 ];
 
 $app->route->group($adminOptions, function($route) {
