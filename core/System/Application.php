@@ -31,7 +31,7 @@ class Application
     'db'        =>  'System\\Database',
     'url'       =>  'System\\Url',
     'view'      =>  'System\\View',
-    'hash'      =>  'System\\Hash',
+    // 'hash'      =>  'System\\Hash',
     'error'     =>  'System\\Error',
     'email'     =>  'System\\Email'
   ];
@@ -130,11 +130,18 @@ class Application
 
       } else {
         $found = false;
+        $dirs = [];
 
-        $directions = glob('core/System/', GLOB_ONLYDIR);
-        $subDirections = glob('core/**/*/', GLOB_ONLYDIR);
+        $direPath = 'core/System/';
 
-        $dirs = array_merge($directions, $subDirections);
+        $directions = glob($direPath, GLOB_ONLYDIR);
+        $dirs = array_merge($directions, $dirs);
+
+        do {
+          $direPath .= '**/';
+          $directions = glob($direPath, GLOB_ONLYDIR);
+          $dirs = array_merge($directions, $dirs);
+        } while (!empty($directions));
 
         foreach ($dirs as $dir) {
           $path = $this->file->fullPath($dir . ucwords($key)) . '.php';
