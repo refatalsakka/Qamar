@@ -149,7 +149,7 @@ class Email
   public function send()
   {
     try {
-      $this->mail->send();
+      // $this->mail->send();
     } catch (Exception $e) {
       echo "Message could not be sent. Mailer Error: {$this->mail->ErrorInfo}";
     }

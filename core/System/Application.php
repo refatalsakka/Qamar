@@ -116,6 +116,13 @@ class Application
 
   /**
    * Get shared value
+   * When the key exists in the $coreClasses, it will look if it was sharing before
+   * is not sharing: it will create in an object and add it to the $container
+   * is sharing:  it will grab it direct from the $container
+   *
+   * When the key is not exists in the core $coreClasses it will look in all the folders and subfolders
+   * is it exists: it will process the name and create an object and add it to the $container
+   * is it not exists: it will throw an Exception
    *
    * @param string $key
    * @return mixed
