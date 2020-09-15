@@ -142,7 +142,7 @@ class Application
         foreach ($dirs as $dir) {
           $path = $this->file->fullPath($dir . ucwords($key)) . '.php';
 
-          if (file_exists($path)) {
+          if ($this->file->exists($path)) {
             $found = true;
 
             $dir = $this->file->fullPath($dir . ucwords($key));
