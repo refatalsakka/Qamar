@@ -131,3 +131,22 @@ if (!function_exists('notFoundPage')) {
   }
 }
 
+if (!function_exists('getAllSubDires')) {
+
+  function getAllSubDires($direPath)
+  {
+    $dirs = [];
+
+    $directions = glob($direPath, GLOB_ONLYDIR);
+    $dirs = array_merge($directions, $dirs);
+
+    do {
+      $direPath .= '**/';
+      $directions = glob($direPath, GLOB_ONLYDIR);
+      $dirs = array_merge($directions, $dirs);
+    } while (!empty($directions));
+
+    return $dirs;
+  }
+}
+
