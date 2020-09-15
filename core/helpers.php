@@ -136,6 +136,7 @@ if (!function_exists('getAllSubDires')) {
   function getAllSubDires($direPath)
   {
     $dirs = [];
+    $directions = [];
 
     $directions = glob($direPath, GLOB_ONLYDIR);
     $dirs = array_merge($directions, $dirs);
