@@ -24,6 +24,7 @@ class Url
     /**
      * Generate full link for the given path
      *
+     * @property object $request
      * @param string $path
      * @return string
      */
@@ -54,10 +55,12 @@ class Url
     /**
      * Redirect to the 404 page
      *
+     * @property object $request
+     * @property object $load
      * @param string $path
      * @return void
      */
-    public function notfound($path = null)
+    public function notfound($path = '')
     {
         if (!$path) {
             $path = '/404';
@@ -68,7 +71,6 @@ class Url
         }
 
         header('Refresh: 0; URL=' . $this->link($path));
-
         exit;
     }
 }

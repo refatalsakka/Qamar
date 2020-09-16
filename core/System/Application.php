@@ -20,21 +20,7 @@ class Application
      *
      * @var array
      */
-    private $coreClasses = [
-        'request'   =>  'System\\Http\\Request',
-        'response'  =>  'System\\Http\\Response',
-        'route'     =>  'System\\Route',
-        'session'   =>  'System\\Session',
-        'cookie'    =>  'System\\Cookie',
-        'load'      =>  'System\\Loader',
-        'html'      =>  'System\\Html',
-        'db'        =>  'System\\Database',
-        'url'       =>  'System\\Url',
-        'view'      =>  'System\\View',
-        'hash'      =>  'System\\Hash',
-        'error'     =>  'System\\Error',
-        'email'     =>  'System\\Email'
-    ];
+    private $classes = [];
 
     /**
      * Application Object
@@ -53,6 +39,8 @@ class Application
     private function __construct(File $file)
     {
         $this->share('file', $file);
+
+        $this->classes = $this->file->call('config/classes.php');
 
         Dotenv::createImmutable($this->file->root())->load();
 
@@ -121,11 +109,11 @@ class Application
 
     /**
      * Get shared value
-     * When the key exists in the $coreClasses, it will look if it was sharing before
+     * When the key exists in the $classes, it will look if it was sharing before
      * is not sharing: it will create in an object and add it to the $container
      * is sharing:  it will grab it direct from the $container
      *
-     * When the key is not exists in the core $coreClasses it will look in all the folders and subfolders
+     * When the key is not exists in the core $classes it will look in all the folders and subfolders
      * is it exists: it will process the name and create an object and add it to the $container
      * is it not exists: it will throw an Exception
      *
@@ -136,7 +124,7 @@ class Application
     public function get($key)
     {
         if (!$this->isSharing($key)) {
-            if ($this->isCoreAlias($key)) {
+            if ($this->isClassAliasIsset($key)) {
                 $this->share($key, $this->createObject($key));
             } else {
                 $found = false;
@@ -151,7 +139,7 @@ class Application
                         $dir = $this->file->fullPath($dir . ucwords($key));
                         $dir = ltrim($dir, $this->file->root() . 'core');
 
-                        $this->coreClasses[$key] = $dir;
+                        $this->classes[$key] = $dir;
 
                         $this->share($key, $this->createObject($key));
                     }
@@ -183,9 +171,9 @@ class Application
      * @param string $key
      * @return bool
      */
-    public function isCoreAlias($key)
+    public function isClassAliasIsset($key)
     {
-        return isset($this->coreClasses[$key]);
+        return isset($this->classes[$key]);
     }
 
     /**
@@ -196,7 +184,7 @@ class Application
      */
     public function createObject($key)
     {
-        $object = $this->coreClasses[$key];
+        $object = $this->classes[$key];
 
         return new $object($this);
     }

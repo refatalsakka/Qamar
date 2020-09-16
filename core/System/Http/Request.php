@@ -63,7 +63,7 @@ class Request
         $requestUri = $this->server('REQUEST_URI');
 
         if (strpos($requestUri, '?')) {
-            list($requestUri, $queryString) = explode('?', $requestUri);
+            list($requestUri) = explode('?', $requestUri);
         }
 
         $this->url = $this->cleanUrl($script, $requestUri);
@@ -154,14 +154,15 @@ class Request
     }
 
     /**
-     * Get value from $_GET by the given key
+     * Get value from spcefic request type
      *
+     * @param array $requestType
      * @param string $key
      * @return mixed
      */
-    public function get($key)
+    private function getValueOfRequest($requestType, $key)
     {
-        $value = array_get($_GET, $key);
+        $value = array_get($requestType, $key);
 
         if (is_array($value)) {
             $value = array_filter($value);
@@ -173,6 +174,17 @@ class Request
     }
 
     /**
+     * Get value from $_GET by the given key
+     *
+     * @param string $key
+     * @return mixed
+     */
+    public function get($key)
+    {
+        return $this->getValueOfRequest($_GET, $key);
+    }
+
+    /**
      * Get value from $_POST by the given key
      *
      * @param string $key
@@ -180,15 +192,7 @@ class Request
      */
     public function post($key)
     {
-        $value = array_get($_POST, $key);
-
-        if (is_array($value)) {
-            $value = array_filter($value);
-        } else {
-            $value = trim($value);
-        }
-
-        return $value;
+        return $this->getValueOfRequest($_POST, $key);
     }
 
     /**
@@ -237,7 +241,7 @@ class Request
      * Get the uploaded file object for the given input
      *
      * @param string $input
-     * @return System\Http\UploadeFile\
+     * @return array
      */
     public function file($input)
     {
@@ -355,7 +359,7 @@ class Request
 
     /**
      * Check if the request can be Continued
-     *
+     * @property object $load
      * @return bool
      */
     public function canRequestContinue($middlewares)

@@ -33,7 +33,7 @@ class Error
      *
      * @return bool
      */
-    public static function allowDisplayingError()
+    public function allowDisplayingError()
     {
         return (bool) ($_ENV['APP_ENV'] == 'local' && $_ENV['APP_DEBUG'] == 'true');
     }
@@ -67,7 +67,7 @@ class Error
      */
     public function toggleError()
     {
-        if (Error::allowDisplayingError()) {
+        if ($this->allowDisplayingError()) {
             $this->showError();
 
             $this->whoops();

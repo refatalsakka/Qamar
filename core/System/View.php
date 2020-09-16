@@ -27,6 +27,8 @@ class View
      * Render the given path with the passed
      * variables and generate new view object for it
      *
+     * @property object $request
+     * @property object $file
      * @param string $path
      * @param array $context
      * @return string
@@ -108,6 +110,7 @@ class View
      * the right link for admin is localhost/admin
      * the right link for users is localhost/admin/users
      *
+     * @property object $request
      * @return array
      */
     private function parameters()

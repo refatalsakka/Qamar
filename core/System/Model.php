@@ -42,6 +42,7 @@ abstract class Model
     /**
      * Call the methods from Database Object
      *
+     * @property object $db
      * @param $method
      * @param $atgs
      */
@@ -53,6 +54,9 @@ abstract class Model
     /**
      * Get all the Rows
      *
+     * @method orderBy
+     * @method limit
+     * @method fetchAll
      * @param array $order
      * @param int $limit
      */
@@ -64,6 +68,8 @@ abstract class Model
     /**
      * Get a Row
      *
+     * @method where
+     * @method fetch
      * @param string $value
      * @param string $coulmn
      */
@@ -75,6 +81,9 @@ abstract class Model
     /**
      * Check if row exists
      *
+     * @method select
+     * @method where
+     * @method fetch
      * @param string $value
      * @param string $key
      */
@@ -86,8 +95,9 @@ abstract class Model
     /**
      * Drop a row
      *
-     * @param string $value
-     * @param string $key
+     * @method where
+     * @method delete
+     * @param string $id
      */
     public function delete($id)
     {
@@ -97,6 +107,9 @@ abstract class Model
     /**
      * Join
      *
+     * @method select
+     * @method from
+     * @method join
      * @param string $select
      * @param string $joins
      * @param string $table
@@ -109,6 +122,10 @@ abstract class Model
     /**
      * Get a row after Joining
      *
+     * @method select
+     * @method from
+     * @method join
+     * @method where
      * @param string $select
      * @param string $table
      * @param string $joins

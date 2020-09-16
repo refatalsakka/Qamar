@@ -11,7 +11,6 @@ use System\Controller as Controller;
  */
 class HomeController extends Controller
 {
-
     public function index()
     {
         $context = [];

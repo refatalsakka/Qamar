@@ -44,7 +44,7 @@ class Email
      */
     private function setUp()
     {
-        $this->mail->SMTPDebug = Error::allowDisplayingError() ? SMTP::DEBUG_SERVER : 0;
+        $this->mail->SMTPDebug = $this->error->allowDisplayingError() ? SMTP::DEBUG_SERVER : 0;
         $this->mail->isSMTP();
         $this->mail->Host = $_ENV['EMAIL_HOST'];
         $this->mail->SMTPAuth = $_ENV['EMAIL_SMTPAUTH'];
