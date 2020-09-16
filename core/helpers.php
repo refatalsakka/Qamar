@@ -7,7 +7,7 @@ if (!function_exists('app')) {
     /**
      * Get Application instance
      *
-     * @param \System\File $file
+     * @param \System\File
      * @return \System\Application
      */
     function app()

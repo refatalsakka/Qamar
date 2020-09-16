@@ -40,6 +40,7 @@ class Email
     /**
      * Set up the configrations
      *
+     * @property object $error
      * @return void
      */
     private function setUp()
@@ -144,11 +145,10 @@ class Email
      */
     public function send()
     {
-        pre($this->mail);
         try {
-            // $this->mail->send();
+            $this->mail->send();
         } catch (Exception $e) {
-            echo "Message could not be sent. Mailer Error: {$this->mail->ErrorInfo}";
+            echo 'Message could not be sent. Mailer Error';
         }
     }
 }

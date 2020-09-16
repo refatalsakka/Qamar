@@ -241,7 +241,7 @@ class Request
      * Get the uploaded file object for the given input
      *
      * @param string $input
-     * @return array
+     * @return object
      */
     public function file($input)
     {
