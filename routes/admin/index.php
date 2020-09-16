@@ -2,11 +2,6 @@
 
 $app = app();
 
-if (!$app->request->isRequestToAdminManagement()) {
-    return;
-}
-
-// Home
 $adminOptions = [
   'prefix' => '/admin',
   'controller' => 'Admin',
@@ -14,7 +9,6 @@ $adminOptions = [
 ];
 
 $app->route->group($adminOptions, function ($route) {
-
-  // Home
     $route->add('/', 'Home');
+    $route->add('/home', 'Home');
 });

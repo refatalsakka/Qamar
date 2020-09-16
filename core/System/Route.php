@@ -27,11 +27,11 @@ class Route
         $action = $this->setAction($action);
         $middleware = $this->setMiddleware($middleware);
         $routes = [
-        'url' => $url,
-        'pattern' => $this->generatePattern($url),
-        'action' => $this->getAction($action),
-        'method' => $requestMethods,
-        'middleware' => $middleware
+            'url' => $url,
+            'pattern' => $this->generatePattern($url),
+            'action' => $this->getAction($action),
+            'method' => $requestMethods,
+            'middleware' => $middleware
         ];
 
         $this->routes[] = $routes;
@@ -91,11 +91,6 @@ class Route
         $prefix = $groupOptions['prefix'];
         $controller = $groupOptions['controller'];
         $middleware = $groupOptions['middleware'];
-        $url = $this->app->request->url();
-
-        if (($this->prefix && $prefix !== $this->prefix) || ($prefix && strpos($url, $prefix) !== 0)) {
-            return $this;
-        }
 
         $this->prefix = $prefix;
 
@@ -104,6 +99,12 @@ class Route
         $this->groupMiddleware = $middleware;
 
         $callback($this);
+
+        $this->prefix = '';
+
+        $this->basController = '';
+
+        $this->groupMiddleware = [];
 
         return $this;
     }

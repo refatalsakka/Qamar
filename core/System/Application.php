@@ -8,46 +8,48 @@ use Dotenv\Dotenv;
 
 class Application
 {
-  /**
-   * Container
-   *
-   * @var array
-   */
+    /**
+     * Container
+     *
+     * @var array
+     */
     private $container = [];
 
-  /**
-   * Set and rename core classes
-   *
-   * @var array
-   */
+    /**
+     * Set and rename core classes
+     *
+     * @var array
+     */
     private $coreClasses = [
-    'request'   =>  'System\\Http\\Request',
-    'response'  =>  'System\\Http\\Response',
-    'route'     =>  'System\\Route',
-    'session'   =>  'System\\Session',
-    'cookie'    =>  'System\\Cookie',
-    'load'      =>  'System\\Loader',
-    'html'      =>  'System\\Html',
-    'db'        =>  'System\\Database',
-    'url'       =>  'System\\Url',
-    'view'      =>  'System\\View',
-    'hash'      =>  'System\\Hash',
-    'error'     =>  'System\\Error',
-    'email'     =>  'System\\Email'
+        'request'   =>  'System\\Http\\Request',
+        'response'  =>  'System\\Http\\Response',
+        'route'     =>  'System\\Route',
+        'session'   =>  'System\\Session',
+        'cookie'    =>  'System\\Cookie',
+        'load'      =>  'System\\Loader',
+        'html'      =>  'System\\Html',
+        'db'        =>  'System\\Database',
+        'url'       =>  'System\\Url',
+        'view'      =>  'System\\View',
+        'hash'      =>  'System\\Hash',
+        'error'     =>  'System\\Error',
+        'email'     =>  'System\\Email'
     ];
 
-  /**
-   * Application Object
-   *
-   * @var \System\Application
-   */
+    /**
+     * Application Object
+     *
+     * @var \System\Application
+     */
     private static $instance;
 
-  /**
-   * Constructor
-   *
-   * @param \System\File $file
-   */
+    /**
+     * Constructor
+     *
+     * @property object $file
+     * @property object $error
+     * @param \System\File $file
+     */
     private function __construct(File $file)
     {
         $this->share('file', $file);
@@ -61,12 +63,12 @@ class Application
         register_shutdown_function([$this->error, 'handleErrors']);
     }
 
-  /**
-   * Get Application instance
-   *
-   * @param \System\File $file
-   * @return \System\Application
-   */
+    /**
+     * Get Application instance
+     *
+     * @param \System\File $file
+     * @return \System\Application
+     */
     public static function getInstance($file)
     {
         self::$instance = is_null(self::$instance) ? new static($file) : self::$instance;
@@ -74,11 +76,16 @@ class Application
         return self::$instance;
     }
 
-  /**
-   * Run the Application
-   *
-   * @return void
-   */
+    /**
+     * Run the Application
+     *
+     * @property object $session
+     * @property object $request
+     * @property object $file
+     * @property object $route
+     * @property object $response
+     * @return void
+     */
     public function run()
     {
         $this->session->start();
@@ -96,13 +103,13 @@ class Application
         $this->response->send();
     }
 
-  /**
-   * Share the given key|value through Application
-   *
-   * @param string $key
-   * @param mixed $value
-   * @return void
-   */
+    /**
+     * Share the given key|value through Application
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return void
+     */
     public function share($key, $value)
     {
         if ($value instanceof Closure) {
@@ -112,19 +119,20 @@ class Application
         $this->container[$key] = $value;
     }
 
-  /**
-   * Get shared value
-   * When the key exists in the $coreClasses, it will look if it was sharing before
-   * is not sharing: it will create in an object and add it to the $container
-   * is sharing:  it will grab it direct from the $container
-   *
-   * When the key is not exists in the core $coreClasses it will look in all the folders and subfolders
-   * is it exists: it will process the name and create an object and add it to the $container
-   * is it not exists: it will throw an Exception
-   *
-   * @param string $key
-   * @return mixed
-   */
+    /**
+     * Get shared value
+     * When the key exists in the $coreClasses, it will look if it was sharing before
+     * is not sharing: it will create in an object and add it to the $container
+     * is sharing:  it will grab it direct from the $container
+     *
+     * When the key is not exists in the core $coreClasses it will look in all the folders and subfolders
+     * is it exists: it will process the name and create an object and add it to the $container
+     * is it not exists: it will throw an Exception
+     *
+     * @property object $file
+     * @param string $key
+     * @return mixed
+     */
     public function get($key)
     {
         if (!$this->isSharing($key)) {
@@ -158,34 +166,34 @@ class Application
         return $this->container[$key];
     }
 
-  /**
-   * Determine if the given key is shared through Application
-   *
-   * @param string $key
-   * @return bool
-   */
+    /**
+     * Determine if the given key is shared through Application
+     *
+     * @param string $key
+     * @return bool
+     */
     public function isSharing($key)
     {
         return isset($this->container[$key]);
     }
 
-  /**
-   * Determine if the given key is an alias to core class
-   *
-   * @param string $key
-   * @return bool
-   */
+    /**
+     * Determine if the given key is an alias to core class
+     *
+     * @param string $key
+     * @return bool
+     */
     public function isCoreAlias($key)
     {
         return isset($this->coreClasses[$key]);
     }
 
-  /**
-   * Create new object for the core class based on the given key
-   *
-   * @param string $key
-   * @return object
-   */
+    /**
+     * Create new object for the core class based on the given key
+     *
+     * @param string $key
+     * @return object
+     */
     public function createObject($key)
     {
         $object = $this->coreClasses[$key];
@@ -193,12 +201,12 @@ class Application
         return new $object($this);
     }
 
-  /**
-   * Get shared value dynamically
-   *
-   * @param string $key
-   * @return mixed
-   */
+    /**
+     * Get shared value dynamically
+     *
+     * @param string $key
+     * @return mixed
+     */
     public function __get($key)
     {
         return $this->get($key);

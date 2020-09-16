@@ -6,56 +6,56 @@ use System\Application;
 
 class Request
 {
-  /**
-   * Application Object
-   *
-   * @var \System\Application
-   */
+    /**
+     * Application Object
+     *
+     * @var \System\Application
+     */
     private $app;
 
-  /**
-   * Url
-   *
-   * @var string
-   */
+    /**
+     * Url
+     *
+     * @var string
+     */
     private $url;
 
-  /**
-   * Base Url
-   *
-   * @var string
-   */
+    /**
+     * Base Url
+     *
+     * @var string
+     */
     private $baseUrl;
 
-  /**
-   * Uploaded files container
-   *
-   * @var array
-   */
+    /**
+     * Uploaded files container
+     *
+     * @var array
+     */
     private $files = [];
 
-  /**
-   * Host
-   *
-   * @var string
-   */
+    /**
+     * Host
+     *
+     * @var string
+     */
     private $host;
 
-  /**
-   * Constructor
-   *
-   * @param \System\Application $app
-   */
+    /**
+     * Constructor
+     *
+     * @param \System\Application $app
+     */
     public function __construct(Application $app)
     {
         $this->app = $app;
     }
 
-  /**
-   * Prepare url
-   *
-   * @return void
-   */
+    /**
+     * Prepare url
+     *
+     * @return void
+     */
     public function prepareUrl()
     {
         $script = dirname($this->server('SCRIPT_NAME'));
@@ -75,13 +75,13 @@ class Request
         $this->baseUrl = $this->host . $requestUri;
     }
 
-  /**
-   * Clean url
-   *
-   * @param string $script
-   * @param string $default
-   * @return string
-   */
+    /**
+     * Clean url
+     *
+     * @param string $script
+     * @param string $requestUri
+     * @return string
+     */
     private function cleanUrl($script, $requestUri)
     {
         if (!in_array($script, ['/', '\\'])) {
@@ -97,11 +97,11 @@ class Request
         return $url;
     }
 
-  /**
-   * Check if the website is secure
-   *
-   * @return bool
-   */
+    /**
+     * Check if the website is secure
+     *
+     * @return bool
+     */
     private function isSecure()
     {
         if ($this->checkHttp() || $this->checkHttpXforwardedProto() || $this->checkHttpXforwardedSsl()) {
@@ -111,11 +111,11 @@ class Request
         return false;
     }
 
-  /**
-   * Check if HTTPS is 'on'
-   *
-   * @return bool
-   */
+    /**
+     * Check if HTTPS is 'on'
+     *
+     * @return bool
+     */
     private function checkHttp()
     {
         if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
@@ -125,11 +125,11 @@ class Request
         return false;
     }
 
-  /**
-   * Check if HTTP_X_FORWARDED_PROTO is not empty or 'https'
-   *
-   * @return bool
-   */
+    /**
+     * Check if HTTP_X_FORWARDED_PROTO is not empty or 'https'
+     *
+     * @return bool
+     */
     private function checkHttpXforwardedProto()
     {
         if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
@@ -139,11 +139,11 @@ class Request
         return false;
     }
 
-  /**
-   * Check if HTTP_X_FORWARDED_SSL is 'on'
-   *
-   * @return bool
-   */
+    /**
+     * Check if HTTP_X_FORWARDED_SSL is 'on'
+     *
+     * @return bool
+     */
     private function checkHttpXforwardedSsl()
     {
         if (!empty($_SERVER['HTTP_X_FORWARDED_SSL']) && $_SERVER['HTTP_X_FORWARDED_SSL'] == 'on') {
@@ -153,12 +153,12 @@ class Request
         return false;
     }
 
-  /**
-   * Get value from $_GET by the given key
-   *
-   * @param string $key
-   * @return mixed
-   */
+    /**
+     * Get value from $_GET by the given key
+     *
+     * @param string $key
+     * @return mixed
+     */
     public function get($key)
     {
         $value = array_get($_GET, $key);
@@ -172,12 +172,12 @@ class Request
         return $value;
     }
 
-  /**
-   * Get value from $_POST by the given key
-   *
-   * @param string $key
-   * @return mixed
-   */
+    /**
+     * Get value from $_POST by the given key
+     *
+     * @param string $key
+     * @return mixed
+     */
     public function post($key)
     {
         $value = array_get($_POST, $key);
@@ -191,54 +191,54 @@ class Request
         return $value;
     }
 
-  /**
-   * Set value To $_POST For the given key
-   *
-   * @param string $key
-   * @param mixed $valuet
-   * @return mixed
-   */
+    /**
+     * Set value To $_POST For the given key
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return mixed
+     */
     public function setPost($key, $value)
     {
         $_POST[$key] = $value;
     }
 
-  /**
-   * Get $_POST
-   *
-   * @return array
-   */
+    /**
+     * Get $_POST
+     *
+     * @return array
+     */
     public function posts()
     {
         return $_POST;
     }
 
-  /**
-   * Get $_GET
-   *
-   * @return array
-   */
+    /**
+     * Get $_GET
+     *
+     * @return array
+     */
     public function gets()
     {
         return $_GET;
     }
 
-  /**
-   * Get $_FILES
-   *
-   * @return array
-   */
+    /**
+     * Get $_FILES
+     *
+     * @return array
+     */
     public function files()
     {
         return $_FILES;
     }
 
-  /**
-   * Get the uploaded file object for the given input
-   *
-   * @param string $input
-   * @return System\Http\UploadeFile\
-   */
+    /**
+     * Get the uploaded file object for the given input
+     *
+     * @param string $input
+     * @return System\Http\UploadeFile\
+     */
     public function file($input)
     {
         if (isset($this->files[$input])) {
@@ -252,72 +252,72 @@ class Request
         return $this->files[$input];
     }
 
-  /**
-   * Get value from $_SERVER by the given key
-   *
-   * @param string $key
-   * @return mixed
-   */
+    /**
+     * Get value from $_SERVER by the given key
+     *
+     * @param string $key
+     * @return mixed
+     */
     public function server($key)
     {
         return array_get($_SERVER, $key);
     }
 
-  /**
-   * Get current request method
-   *
-   * @return string
-   */
+    /**
+     * Get current request method
+     *
+     * @return string
+     */
     public function method()
     {
         return $this->server('REQUEST_METHOD');
     }
 
-  /**
-   * Get the referer link
-   *
-   * @return string
-   */
+    /**
+     * Get the referer link
+     *
+     * @return string
+     */
     public function referer()
     {
         return $this->server('HTTP_REFERER');
     }
 
-  /**
-   * Get full url of the script
-   *
-   * @return string
-   */
+    /**
+     * Get full url of the script
+     *
+     * @return string
+     */
     public function baseUrl()
     {
         return $this->baseUrl;
     }
 
-  /**
-   * Get only relative url (clean url)
-   *
-   * @return string
-   */
+    /**
+     * Get only relative url (clean url)
+     *
+     * @return string
+     */
     public function url()
     {
         return $this->url;
     }
 
-  /**
-   * Get only host
-   *
-   * @return string
-   */
+    /**
+     * Get only host
+     *
+     * @return string
+     */
     public function host()
     {
         return $this->host;
     }
 
-  /**
-   * Check if the request to the admin panel
-   *
-   * @return bool
-   */
+    /**
+     * Check if the request to the admin panel
+     *
+     * @return bool
+     */
     public function isRequestToAdminManagement()
     {
         $url = $this->url;
@@ -329,11 +329,11 @@ class Request
         return $url == 'admin';
     }
 
-  /**
-   * Check the request method
-   *
-   * @return bool
-   */
+    /**
+     * Check the request method
+     *
+     * @return bool
+     */
     public function isMatchingRequestMethod($methods = ['GET'])
     {
         if (!is_array($methods)) {
@@ -353,11 +353,11 @@ class Request
         return false;
     }
 
-  /**
-   * Check if the request can be Continued
-   *
-   * @return bool
-   */
+    /**
+     * Check if the request can be Continued
+     *
+     * @return bool
+     */
     public function canRequestContinue($middlewares)
     {
         if (empty($middlewares)) {

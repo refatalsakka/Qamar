@@ -3,30 +3,53 @@
 use System\Application;
 use System\File;
 
-if (!function_exists('pre')) {
-    function pre($var)
-    {
-        echo '<pre>';
-        print_r($var);
-        echo '</pre>';
-    }
-}
-
-if (!function_exists('array_get')) {
-    function array_get($array, $key, $default = null)
-    {
-        return ($array[$key] || $array[$key] == '0') ? $array[$key] : $default;
-    }
-}
-
 if (!function_exists('app')) {
+    /**
+     * Get Application instance
+     *
+     * @param \System\File $file
+     * @return \System\Application
+     */
     function app()
     {
         return Application::getInstance(new File(__DIR__));
     }
 }
 
+if (!function_exists('pre')) {
+    /**
+     * Display the give $input
+     *
+     * @param string $input
+     * @return string
+     */
+    function pre($input)
+    {
+        echo '<pre>';
+        print_r($input);
+        echo '</pre>';
+    }
+}
+
+if (!function_exists('sp')) {
+    /**
+     * Echo ======
+     *
+     * @return void
+     */
+    function sp()
+    {
+        echo '============================';
+    }
+}
+
 if (!function_exists('_e')) {
+    /**
+     * Clean the fiven $value
+     *
+     * @param string $value
+     * @return string
+     */
     function _e($value)
     {
         $value = trim($value);
@@ -36,71 +59,62 @@ if (!function_exists('_e')) {
     }
 }
 
-if (!function_exists('getLastParameter')) {
-    function getLastParameter($index)
-    {
-        $array = explode('/', $index);
-        return end($array);
-    }
-}
-
-if (!function_exists('userId')) {
-    function userId()
-    {
-        return getLastParameter(app()->request->baseUrl());
-    }
-}
-
-if (!function_exists('url')) {
-    function url($path)
-    {
-        return app()->url->link($path);
-    }
-}
-
 if (!function_exists('assets')) {
+    /**
+     * Get the assets of the fiven $path
+     *
+     * @property object $url
+     * @param string $path
+     * @return string
+     */
     function assets($path = null)
     {
-        return app()->url->link('public' . DS . $path);
+        return app()->url->link('public/' . ($path ? $path : ''));
     }
 }
 
-if (!function_exists('remove_space')) {
-    function remove_space($str)
+if (!function_exists('array_get')) {
+    /**
+     * Get the value of the given key of the given array
+     * if the given key is not exist than return the given default
+     *
+     * @param array $array
+     * @param string $key
+     * @param mixed $default
+     * @return mixed
+     */
+    function array_get(array $array, string $key, $default = null)
     {
-        return str_replace(' ', '-', $str);
-    }
-}
-
-if (!function_exists('remove_dash')) {
-    function remove_dash($str)
-    {
-        return str_replace('-', ' ', $str);
-    }
-}
-
-if (!function_exists('text_char_limit')) {
-    function text_char_limit($text, $limit)
-    {
-        if (strlen($text) > $limit) {
-            return substr($text, 0, $limit) . '...';
-        }
+        return ($array[$key] || $array[$key] == '0') ? $array[$key] : $default;
     }
 }
 
 if (!function_exists('array_equal')) {
-    function array_equal($a, $b)
+    /**
+     * Check if the given arrays are equal
+     *
+     * @param array $a
+     * @param array $b
+     * @return bool
+     */
+    function array_equal(array $a, array $b)
     {
-        return (
-        is_array($a)
-        && is_array($b)
-        && count($a) == count($b)
-        && array_diff($a, $b) === array_diff($b, $a)
-        );
+        return (is_array($a)
+            && is_array($b)
+            && count($a) == count($b)
+            && array_diff($a, $b) === array_diff($b, $a));
     }
 }
 
 if (!function_exists('isExtesntionAllowed')) {
+    /**
+     * Check if the given extension is allow to use
+     *
+     * @param string $key
+     * @param string $extension
+     * @property object $file
+     * @return bool
+     */
     function isExtesntionAllowed($key, $extension)
     {
         $allowExtesntions = app()->file->call('config/uploads.php')[$key];
@@ -110,14 +124,25 @@ if (!function_exists('isExtesntionAllowed')) {
 }
 
 if (!function_exists('isImage')) {
-    function isImage($minetype)
+    /**
+     * Check if the given minetype is an image
+     *
+     * @param string $minetype
+     * @return bool
+     */
+    function isMinetypeisAnImage($minetype)
     {
         return strpos($minetype, "image/") === 0;
     }
 }
 
 if (!function_exists('notFoundPage')) {
-
+    /**
+     * Display Notfound page of admin or user depends on the user persmissions
+     *
+     * @property object $load
+     * @return string
+     */
     function notFoundPage()
     {
         $notfound = 'Website\Notfound';
@@ -130,8 +155,14 @@ if (!function_exists('notFoundPage')) {
     }
 }
 
-if (!function_exists('getAllSubDires')) {
 
+if (!function_exists('getAllSubDires')) {
+    /**
+     * Getting all the sub-folders in the given path
+     *
+     * @param string $direPath
+     * @return array
+     */
     function getAllSubDires($direPath)
     {
         $dirs = [];
@@ -149,4 +180,3 @@ if (!function_exists('getAllSubDires')) {
         return $dirs;
     }
 }
-

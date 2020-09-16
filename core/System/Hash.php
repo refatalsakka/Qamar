@@ -4,29 +4,29 @@ namespace System;
 
 class Hash
 {
-  /**
-   * Application Object
-   *
-   * @var \System\Application
-   */
+    /**
+     * Application Object
+     *
+     * @var \System\Application
+     */
     private $app;
 
-  /**
-   * Constructor
-   *
-   * @param \System\Application $app
-   */
+    /**
+     * Constructor
+     *
+     * @param \System\Application $app
+     */
     public function __construct(Application $app)
     {
         $this->app = $app;
     }
 
-  /**
-   * Hash password
-   *
-   * @param $password
-   * @return string
-   */
+    /**
+     * Hash password
+     *
+     * @param $password
+     * @return string
+     */
     public function password($password)
     {
         $timeTarget = 0.05;
@@ -43,36 +43,36 @@ class Hash
         return $password;
     }
 
-  /**
-   * Check if the given password is verified with the given hash
-   *
-   * @param $password1
-   * @param $password2
-   * @return bool
-   */
+    /**
+     * Check if the given password is verified with the given hash
+     *
+     * @param $password1
+     * @param $password2
+     * @return bool
+     */
     public function passwordCheck($password1, $password2)
     {
         return password_verify($password1, $password2);
     }
 
-  /**
-   * Hash the given string
-   *
-   * @param $string
-   * @return string
-   */
+    /**
+     * Hash the given string
+     *
+     * @param $string
+     * @return string
+     */
     public function hash($string)
     {
         return hash($_ENV['HASH_TYPE'], $string);
     }
 
-  /**
-   * Check if the given hashes are equal
-   *
-   * @param $hash1
-   * @param $hash2
-   * @return bool
-   */
+    /**
+     * Check if the given hashes are equal
+     *
+     * @param $hash1
+     * @param $hash2
+     * @return bool
+     */
     public function hashCheck($hash1, $hash2)
     {
         return hash_equals($hash1, $hash2);

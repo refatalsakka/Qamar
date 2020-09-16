@@ -4,29 +4,29 @@ namespace System;
 
 class Url
 {
-  /**
-   * Application Object
-   *
-   * @var \System\Application
-   */
+    /**
+     * Application Object
+     *
+     * @var \System\Application
+     */
     private $app;
 
-  /**
-   * Constructor
-   *
-   * @param \System\Application $app
-   */
+    /**
+     * Constructor
+     *
+     * @param \System\Application $app
+     */
     public function __construct(Application $app)
     {
         $this->app = $app;
     }
 
-  /**
-   * Generate full link for the given path
-   *
-   * @param string $path
-   * @return string
-   */
+    /**
+     * Generate full link for the given path
+     *
+     * @param string $path
+     * @return string
+     */
     public function link($path)
     {
         $link = $this->app->request->host();
@@ -37,13 +37,13 @@ class Url
         return $link . '/' . $path;
     }
 
-  /**
-   * Redirect to the given path
-   *
-   * @param string $path
-   * @param number $num
-   * @return void
-   */
+    /**
+     * Redirect to the given path
+     *
+     * @param string $path
+     * @param int $num
+     * @return void
+     */
     public function redirectTo($path, $num = 0)
     {
         header('Refresh: ' . $num . '; URL=' . $this->link($path));
@@ -51,12 +51,12 @@ class Url
         exit;
     }
 
-  /**
-   * Redirect to the 404 page
-   *
-   * @param string $path
-   * @return void
-   */
+    /**
+     * Redirect to the 404 page
+     *
+     * @param string $path
+     * @return void
+     */
     public function notfound($path = null)
     {
         if (!$path) {

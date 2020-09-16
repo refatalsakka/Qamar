@@ -4,6 +4,11 @@ namespace app\Middlewares;
 
 use app\Middlewares\MiddlewareIntrerface\MiddlewaresInterface;
 
+/**
+ * Ajax Middleware
+ *
+ * @property object $url
+ */
 class AjaxMiddleware implements MiddlewaresInterface
 {
     public function handle()
