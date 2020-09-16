@@ -16,68 +16,67 @@ class Error
    *
    * @var \System\Application
    */
-  private $app;
+    private $app;
 
   /**
    * Constructor
    *
    * @param \System\Application $app
    */
-  public function __construct(Application $app)
-  {
-    $this->app = $app;
-  }
+    public function __construct(Application $app)
+    {
+        $this->app = $app;
+    }
 
   /**
    * Check if the errors should be displayed
    *
    * @return bool
    */
-  public static function allowDisplayingError()
-  {
-    return (bool) ($_ENV['APP_ENV'] == 'local' && $_ENV['APP_DEBUG'] == 'true');
-  }
+    public static function allowDisplayingError()
+    {
+        return (bool) ($_ENV['APP_ENV'] == 'local' && $_ENV['APP_DEBUG'] == 'true');
+    }
 
   /**
    * Show error
    *
    * @return void
    */
-  private function showError()
-  {
-    error_reporting(E_ALL);
+    private function showError()
+    {
+        error_reporting(E_ALL);
 
-    ini_set("display_errors", 1);
-  }
+        ini_set("display_errors", 1);
+    }
 
   /**
    * Hide error
    *
    * @return void
    */
-  private function hideError()
-  {
-    error_reporting(0);
+    private function hideError()
+    {
+        error_reporting(0);
 
-    ini_set('display_errors', 0);
-  }
+        ini_set('display_errors', 0);
+    }
 
   /**
    * Show or hide errors depend on the condition
    */
-  public function toggleError()
-  {
-    if (Error::allowDisplayingError()) {
+    public function toggleError()
+    {
+        if (Error::allowDisplayingError()) {
+            $this->showError();
 
-      $this->showError();
+            $this->whoops();
 
-      $this->whoops();
+            return;
+        }
 
-      return;
+        return $this->hideError();
     }
-
-    return $this->hideError();
-  }
 
   /**
    * Send Email to the admin contain the Error
@@ -85,46 +84,45 @@ class Error
    *
    * @return void
    */
-  private function sendErrorToAdmin($error)
-  {
-    $date = new DateTime('now', new DateTimeZone('Europe/Berlin'));
-    $date = 'Error: ' . $date->format('d.m.Y H:i:s');
+    private function sendErrorToAdmin($error)
+    {
+        $date = new DateTime('now', new DateTimeZone('Europe/Berlin'));
+        $date = 'Error: ' . $date->format('d.m.Y H:i:s');
 
-    $this->app->email->recipients(['admin' => $_ENV['EMAIL_ADMIN']])->content(true, $date, $error, $error)->send();
-  }
+        $this->app->email->recipients(['admin' => $_ENV['EMAIL_ADMIN']])->content(true, $date, $error, $error)->send();
+    }
 
   /**
    * Run error handling of Whoops
    *
    * @return void
    */
-  private function whoops()
-  {
-    $run = new Whoops();
+    private function whoops()
+    {
+        $run = new Whoops();
 
-    $run->prependHandler(new PrettyPageHandler());
+        $run->prependHandler(new PrettyPageHandler());
 
-    if (WhoopsMisc::isAjaxRequest()) {
+        if (WhoopsMisc::isAjaxRequest()) {
+            $jsonHandler = new JsonResponseHandler();
 
-      $jsonHandler = new JsonResponseHandler();
+            $jsonHandler->setJsonApi(true);
 
-      $jsonHandler->setJsonApi(true);
+            $run->prependHandler($jsonHandler);
+        }
 
-      $run->prependHandler($jsonHandler);
+        $run->register();
     }
-
-    $run->register();
-  }
 
   /**
    * Display friendly error to the users
    *
    * @return void
    */
-  private function displayFriendlyMessage()
-  {
-    echo $this->app->view->render('website/pages/error', []);
-  }
+    private function displayFriendlyMessage()
+    {
+        echo $this->app->view->render('website/pages/error', []);
+    }
 
   /**
    * Check for last errors
@@ -133,23 +131,23 @@ class Error
    *
    * @return void
    */
-  public function handleErrors()
-  {
-    $error = error_get_last() || null;
+    public function handleErrors()
+    {
+        $error = error_get_last() || null;
 
-    if (!$error) {
-      return;
+        if (!$error) {
+            return;
+        }
+
+        $type = $error['type'];
+        $message = $error['message'];
+        $file = $error['file'];
+        $line = $error['line'];
+
+        $error = "There is an Error type: {$type}. says: $message. in file: $file. on line: $line.";
+
+        $this->sendErrorToAdmin($error);
+
+        $this->displayFriendlyMessage();
     }
-
-    $type = $error['type'];
-    $message = $error['message'];
-    $file = $error['file'];
-    $line = $error['line'];
-
-    $error = "There is an Error type: {$type}. says: $message. in file: $file. on line: $line.";
-
-    $this->sendErrorToAdmin($error);
-
-    $this->displayFriendlyMessage();
-  }
 }

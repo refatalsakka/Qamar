@@ -9,24 +9,24 @@ abstract class Model
    *
    * @var \System\Application
    */
-  private $app;
+    private $app;
 
   /**
    * Table of a model
    *
    * @var $table
    */
-  protected $table;
+    protected $table;
 
   /**
    * Constructor
    *
    * @param \System\Application $app
    */
-  public function __construct(Application $app)
-  {
-    $this->app = $app;
-  }
+    public function __construct(Application $app)
+    {
+        $this->app = $app;
+    }
 
   /**
    * Call shared Application Objects dynamically
@@ -34,10 +34,10 @@ abstract class Model
    * @param string $key
    * @return mixed
    */
-  public function __get($key)
-  {
-    return $this->app->get($key);
-  }
+    public function __get($key)
+    {
+        return $this->app->get($key);
+    }
 
   /**
    * Call the methods from Database Object
@@ -45,10 +45,10 @@ abstract class Model
    * @param $method
    * @param $atgs
    */
-  public function __call($method, $args)
-  {
-    return call_user_func_array([$this->app->db, $method], $args);
-  }
+    public function __call($method, $args)
+    {
+        return call_user_func_array([$this->app->db, $method], $args);
+    }
 
   /**
    * Get all the Rows
@@ -56,10 +56,10 @@ abstract class Model
    * @param array $order
    * @param int $limit
    */
-  public function getAll(array $order = ['id', 'DESC'], $limit = null, $table = null)
-  {
-    return $this->orderBy($order[0], $order[1])->limit($limit)->fetchAll($table ? $table : $this->table);
-  }
+    public function getAll(array $order = ['id', 'DESC'], $limit = null, $table = null)
+    {
+        return $this->orderBy($order[0], $order[1])->limit($limit)->fetchAll($table ? $table : $this->table);
+    }
 
   /**
    * Get a Row
@@ -67,10 +67,10 @@ abstract class Model
    * @param string $value
    * @param string $coulmn
    */
-  public function get($value, $coulmn = 'id')
-  {
-    return $this->where($coulmn . ' = ?', $value)->fetch($this->table);
-  }
+    public function get($value, $coulmn = 'id')
+    {
+        return $this->where($coulmn . ' = ?', $value)->fetch($this->table);
+    }
 
   /**
    * Check if row exists
@@ -78,10 +78,10 @@ abstract class Model
    * @param string $value
    * @param string $key
    */
-  public function exists($value, $key = 'id')
-  {
-    return (bool) $this->select($key)->where($key . ' = ? ', $value)->fetch($this->table);
-  }
+    public function exists($value, $key = 'id')
+    {
+        return (bool) $this->select($key)->where($key . ' = ? ', $value)->fetch($this->table);
+    }
 
   /**
    * Drop a row
@@ -89,10 +89,10 @@ abstract class Model
    * @param string $value
    * @param string $key
    */
-  public function delete($id)
-  {
-    return $this->where('id = ?', $id)->delete($this->table);
-  }
+    public function delete($id)
+    {
+        return $this->where('id = ?', $id)->delete($this->table);
+    }
 
   /**
    * Join
@@ -100,10 +100,10 @@ abstract class Model
    * @param string $value
    * @param string $key
    */
-  public function joinGetAll($select, $joins, $table = null)
-  {
-    return $this->db->select($select)->from($table ? $table : $this->table)->join($joins);
-  }
+    public function joinGetAll($select, $joins, $table = null)
+    {
+        return $this->db->select($select)->from($table ? $table : $this->table)->join($joins);
+    }
 
   /**
    * Get a row after Joining
@@ -113,8 +113,9 @@ abstract class Model
    * @param string $joins
    * @param string $table
    */
-  public function joinGetRow($select, $joins, $where, $table = null)
-  {
-    return $this->db->select($select)->from($table ? $table : $this->table)->join($joins)->where($table ? $table : $this->tablee . '.id = ?', $where);
-  }
+    public function joinGetRow($select, $joins, $where, $table = null)
+    {
+        $table = $table ? $table : $this->table;
+        return $this->db->select($select)->from($table)->join($joins)->where($table . '.id = ?', $where);
+    }
 }

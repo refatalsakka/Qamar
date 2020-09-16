@@ -11,34 +11,34 @@ class File
    *
    * @var string
    */
-  private $root;
+    private $root;
 
   /**
    * Container
    *
    * @var array
    */
-  private $container = [];
+    private $container = [];
 
   /**
    * Constructor
    *
    * @param string $root
    */
-  public function __construct($root)
-  {
-    $this->root = $root;
-  }
+    public function __construct($root)
+    {
+        $this->root = $root;
+    }
 
   /**
    * Root
    *
    * @return $root
    */
-  public function root()
-  {
-    return $this->root;
-  }
+    public function root()
+    {
+        return $this->root;
+    }
 
   /**
    * Add the given path file to the container
@@ -46,10 +46,10 @@ class File
    * @param string $file
    * @return void
    */
-  private function share($key, $value)
-  {
-    $this->container[$key] = $value;
-  }
+    private function share($key, $value)
+    {
+        $this->container[$key] = $value;
+    }
 
   /**
    * Check if the given path file exists in the container
@@ -57,10 +57,10 @@ class File
    * @param string $key
    * @return bool
    */
-  private function isSharing($key)
-  {
-    return isset($this->container[$key]);
-  }
+    private function isSharing($key)
+    {
+        return isset($this->container[$key]);
+    }
 
   /**
    * Determine if the given file path exists
@@ -68,10 +68,10 @@ class File
    * @param string $file
    * @return bool
    */
-  public function exists($file)
-  {
-    return file_exists($file);
-  }
+    public function exists($file)
+    {
+        return file_exists($file);
+    }
 
   /**
    * Require the given file
@@ -79,24 +79,20 @@ class File
    * @param string $path
    * @return mixed
    */
-  public function call($path)
-  {
-    $path = $this->fullPath($path);
+    public function call($path)
+    {
+        $path = $this->fullPath($path);
 
-    if (!$this->isSharing($path . ':file')) {
+        if (!$this->isSharing($path . ':file')) {
+            if ($this->exists($path)) {
+                $this->share($path . ':file', require $path);
+            } else {
+                throw new Exception("$path is not found");
+            }
+        }
 
-      if ($this->exists($path)) {
-
-        $this->share($path . ':file', require $path);
-
-      } else {
-
-        throw new Exception("$path is not found");
-      }
+        return $this->container[$path . ':file'];
     }
-
-    return $this->container[$path . ':file'];
-  }
 
   /**
    * Get file content
@@ -104,24 +100,20 @@ class File
    * @param string $path
    * @return mixed
    */
-  public function fileContent($path)
-  {
-    $path = $this->fullPath($path);
+    public function fileContent($path)
+    {
+        $path = $this->fullPath($path);
 
-    if (!$this->isSharing($path . ':content')) {
+        if (!$this->isSharing($path . ':content')) {
+            if ($this->exists($path)) {
+                $this->share($path . ':content', file_get_contents($path));
+            } else {
+                throw new Exception("$path is not found");
+            }
+        }
 
-      if ($this->exists($path)) {
-
-        $this->share($path . ':content', file_get_contents($path));
-
-      } else {
-
-        throw new Exception("$path is not found");
-      }
+        return $this->container[$path . ':content'];
     }
-
-    return $this->container[$path . ':content'];
-  }
 
   /**
    * Generate full path to the given path
@@ -129,8 +121,8 @@ class File
    * @param string $path
    * @return string
    */
-  public function fullPath($path)
-  {
-    return $this->root . DS . str_replace(['/', '\\'], DS, $path);
-  }
+    public function fullPath($path)
+    {
+        return $this->root . DS . str_replace(['/', '\\'], DS, $path);
+    }
 }

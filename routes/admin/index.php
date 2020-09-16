@@ -3,7 +3,7 @@
 $app = app();
 
 if (!$app->request->isRequestToAdminManagement()) {
-  return;
+    return;
 }
 
 // Home
@@ -13,8 +13,8 @@ $adminOptions = [
   'middleware' => ['Authenticate', 'Permissions']
 ];
 
-$app->route->group($adminOptions, function($route) {
+$app->route->group($adminOptions, function ($route) {
 
   // Home
-  $route->add('/', 'Home');
+    $route->add('/', 'Home');
 });

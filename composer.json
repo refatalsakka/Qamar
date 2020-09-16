@@ -7,7 +7,8 @@
     "phpmailer/phpmailer": "^6.1"
   },
   "require-dev": {
-    "filp/whoops": "^2.4"
+    "filp/whoops": "^2.4",
+    "squizlabs/php_codesniffer": "3.*"
   },
   "autoload": {
     "psr-4": {

@@ -9,38 +9,38 @@ class Loader
    *
    * @var \System\Application
    */
-  private $app;
+    private $app;
 
   /**
    * Controllers container
    *
    * @var array
    */
-  private $controllers = [];
+    private $controllers = [];
 
   /**
    * Models container
    *
    * @var array
    */
-  private $models = [];
+    private $models = [];
 
   /**
    * Models container
    *
    * @var array
    */
-  private $middlewares = [];
+    private $middlewares = [];
 
   /**
    * Constructor
    *
    * @param \System\Application $app
    */
-  public function __construct(Application $app)
-  {
-    $this->app = $app;
-  }
+    public function __construct(Application $app)
+    {
+        $this->app = $app;
+    }
 
   /**
    * Call the given controller with the given method
@@ -51,12 +51,12 @@ class Loader
    * @param array $arguments
    * @return mixed
    */
-  public function action($controller, $method, array $arguments)
-  {
-    $object = $this->controller($controller);
+    public function action($controller, $method, array $arguments)
+    {
+        $object = $this->controller($controller);
 
-    return call_user_func([$object, $method], $arguments);
-  }
+        return call_user_func([$object, $method], $arguments);
+    }
 
   /**
    * Call the given controller
@@ -64,17 +64,16 @@ class Loader
    * @param string $controller
    * @return object
    */
-  public function controller($controller)
-  {
-    $controller = $this->getControllerName($controller);
+    public function controller($controller)
+    {
+        $controller = $this->getControllerName($controller);
 
-    if (!$this->hasController($controller)) {
+        if (!$this->hasController($controller)) {
+            $this->addController($controller);
+        }
 
-      $this->addController($controller);
+        return $this->getController($controller);
     }
-
-    return $this->getController($controller);
-  }
 
   /**
    * Determine if the given class|controller exists
@@ -83,10 +82,10 @@ class Loader
    * @param string $controller
    * @return bool
    */
-  private function hasController($controller)
-  {
-    return array_key_exists($controller, $this->controllers);
-  }
+    private function hasController($controller)
+    {
+        return array_key_exists($controller, $this->controllers);
+    }
 
   /**
    * Create new object for the given controller and store it
@@ -95,12 +94,12 @@ class Loader
    * @param string $controller
    * @return void
    */
-  private function addController($controller)
-  {
-    $object = new $controller($this->app);
+    private function addController($controller)
+    {
+        $object = new $controller($this->app);
 
-    $this->controllers[$controller] = $object;
-  }
+        $this->controllers[$controller] = $object;
+    }
 
   /**
    * Get the controller object
@@ -108,10 +107,10 @@ class Loader
    * @param string $controller
    * @return object
    */
-  private function getController($controller)
-  {
-    return $this->controllers[$controller];
-  }
+    private function getController($controller)
+    {
+        return $this->controllers[$controller];
+    }
 
 
   /**
@@ -120,14 +119,14 @@ class Loader
    * @param string $controller
    * @return string
    */
-  private function getControllerName($controller)
-  {
-    $controller .= strpos($controller, 'Controller') ? '' : 'Controller';
+    private function getControllerName($controller)
+    {
+        $controller .= strpos($controller, 'Controller') ? '' : 'Controller';
 
-    $controller = 'app\\Controllers\\' . $controller;
+        $controller = 'app\\Controllers\\' . $controller;
 
-    return $controller;
-  }
+        return $controller;
+    }
 
   /**
    * Call the given model
@@ -135,17 +134,16 @@ class Loader
    * @param string $model
    * @return object
    */
-  public function model($model)
-  {
-    $model = $this->getModelName($model);
+    public function model($model)
+    {
+        $model = $this->getModelName($model);
 
-    if (!$this->hasModel($model)) {
+        if (!$this->hasModel($model)) {
+            $this->addModel($model);
+        }
 
-      $this->addModel($model);
+        return $this->getModel($model);
     }
-
-    return $this->getModel($model);
-  }
 
   /**
    * Determine if the given class|model exists
@@ -154,10 +152,10 @@ class Loader
    * @param string $model
    * @return bool
    */
-  private function hasModel($model)
-  {
-    return array_key_exists($model, $this->models);
-  }
+    private function hasModel($model)
+    {
+        return array_key_exists($model, $this->models);
+    }
 
   /**
    * Create new object for the given model and store it
@@ -166,12 +164,12 @@ class Loader
    * @param string $model
    * @return void
    */
-  private function addModel($model)
-  {
-    $object = new $model($this->app);
+    private function addModel($model)
+    {
+        $object = new $model($this->app);
 
-    $this->models[$model] = $object;
-  }
+        $this->models[$model] = $object;
+    }
 
   /**
    * Get the model object
@@ -179,10 +177,10 @@ class Loader
    * @param string $model
    * @return object
    */
-  private function getModel($model)
-  {
-    return $this->models[$model];
-  }
+    private function getModel($model)
+    {
+        return $this->models[$model];
+    }
 
   /**
    * Get the full class name for the given model
@@ -190,14 +188,14 @@ class Loader
    * @param string $model
    * @return string
    */
-  private function getModelName($model)
-  {
-    $model .= strpos($model, 'Model') ? '' : 'Model';
+    private function getModelName($model)
+    {
+        $model .= strpos($model, 'Model') ? '' : 'Model';
 
-    $model = 'app\\Models\\' . $model;
+        $model = 'app\\Models\\' . $model;
 
-    return $model;
-  }
+        return $model;
+    }
 
   /**
    * Call the given middleware
@@ -205,17 +203,16 @@ class Loader
    * @param string $middleware
    * @return object
    */
-  public function middleware($middleware)
-  {
-    $middleware = $this->getMiddlewareName($middleware);
+    public function middleware($middleware)
+    {
+        $middleware = $this->getMiddlewareName($middleware);
 
-    if (!$this->hasMiddleware($middleware)) {
+        if (!$this->hasMiddleware($middleware)) {
+            $this->addMiddleware($middleware);
+        }
 
-      $this->addMiddleware($middleware);
+        return $this->getMiddleware($middleware);
     }
-
-    return $this->getMiddleware($middleware);
-  }
 
   /**
    * Determine if the given class|middleware exists
@@ -224,10 +221,10 @@ class Loader
    * @param string $middleware
    * @return bool
    */
-  private function hasMiddleware($middleware)
-  {
-    return array_key_exists($middleware, $this->middlewares);
-  }
+    private function hasMiddleware($middleware)
+    {
+        return array_key_exists($middleware, $this->middlewares);
+    }
 
   /**
    * Create new object for the given middleware and store it
@@ -236,12 +233,12 @@ class Loader
    * @param string $middleware
    * @return void
    */
-  private function addMiddleware($middleware)
-  {
-    $object = new $middleware($this->app);
+    private function addMiddleware($middleware)
+    {
+        $object = new $middleware($this->app);
 
-    $this->middlewares[$middleware] = $object;
-  }
+        $this->middlewares[$middleware] = $object;
+    }
 
   /**
    * Get the middleware object
@@ -249,10 +246,10 @@ class Loader
    * @param string $middleware
    * @return object
    */
-  private function getMiddleware($middleware)
-  {
-    return $this->middlewares[$middleware];
-  }
+    private function getMiddleware($middleware)
+    {
+        return $this->middlewares[$middleware];
+    }
 
   /**
    * Get the full class name for the given middleware
@@ -260,12 +257,12 @@ class Loader
    * @param string $middleware
    * @return string
    */
-  private function getMiddlewareName($middleware)
-  {
-    $middleware .= strpos($middleware, 'Middleware') ? '' : 'Middleware';
+    private function getMiddlewareName($middleware)
+    {
+        $middleware .= strpos($middleware, 'Middleware') ? '' : 'Middleware';
 
-    $middleware = 'app\\Middlewares\\' . $middleware;
+        $middleware = 'app\\Middlewares\\' . $middleware;
 
-    return $middleware;
-  }
+        return $middleware;
+    }
 }

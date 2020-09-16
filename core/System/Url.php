@@ -9,17 +9,17 @@ class Url
    *
    * @var \System\Application
    */
-  private $app;
+    private $app;
 
   /**
    * Constructor
    *
    * @param \System\Application $app
    */
-  public function __construct(Application $app)
-  {
-    $this->app = $app;
-  }
+    public function __construct(Application $app)
+    {
+        $this->app = $app;
+    }
 
   /**
    * Generate full link for the given path
@@ -27,15 +27,15 @@ class Url
    * @param string $path
    * @return string
    */
-  public function link($path)
-  {
-    $link = $this->app->request->host();
+    public function link($path)
+    {
+        $link = $this->app->request->host();
 
-    $path = rtrim($path, '/');
-    $path = ltrim($path, '/');
+        $path = rtrim($path, '/');
+        $path = ltrim($path, '/');
 
-    return $link . '/' . $path;
-  }
+        return $link . '/' . $path;
+    }
 
   /**
    * Redirect to the given path
@@ -44,12 +44,12 @@ class Url
    * @param number $num
    * @return void
    */
-  public function redirectTo($path, $num = 0)
-  {
-    header('Refresh: ' . $num . '; URL=' . $this->link($path));
+    public function redirectTo($path, $num = 0)
+    {
+        header('Refresh: ' . $num . '; URL=' . $this->link($path));
 
-    exit;
-  }
+        exit;
+    }
 
   /**
    * Redirect to the 404 page
@@ -57,19 +57,18 @@ class Url
    * @param string $path
    * @return void
    */
-  public function notfound($path = null)
-  {
-    if (!$path) {
-      $path = '/404';
+    public function notfound($path = null)
+    {
+        if (!$path) {
+            $path = '/404';
 
-      if ($this->app->request->isRequestToAdminManagement() && $this->app->load->model('User')->isAdmin()) {
+            if ($this->app->request->isRequestToAdminManagement() && $this->app->load->model('User')->isAdmin()) {
+                $path = 'admin/404';
+            }
+        }
 
-        $path = 'admin/404';
-      }
+        header('Refresh: 0; URL=' . $this->link($path));
+
+        exit;
     }
-
-    header('Refresh: 0; URL=' . $this->link($path));
-
-    exit;
-  }
 }

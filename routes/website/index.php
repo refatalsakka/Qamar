@@ -3,7 +3,7 @@
 $app = app();
 
 if ($app->request->isRequestToAdminManagement()) {
-  return;
+    return;
 }
 
 // Home

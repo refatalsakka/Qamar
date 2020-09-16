@@ -6,15 +6,15 @@ use System\Model;
 
 class UserModel extends Model
 {
-  protected $table = 'users';
+    protected $table = 'users';
 
-  public function getTable()
-  {
-    return $this->table;
-  }
+    public function getTable()
+    {
+        return $this->table;
+    }
 
-  public function isAdmin()
-  {
-    return false;
-  }
+    public function isAdmin()
+    {
+        return false;
+    }
 }

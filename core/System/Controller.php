@@ -9,12 +9,12 @@ abstract class Controller
    *
    * @var \System\Application
    */
-  protected $app;
+    protected $app;
 
-  public function __construct(Application $app)
-  {
-    $this->app = $app;
-  }
+    public function __construct(Application $app)
+    {
+        $this->app = $app;
+    }
 
   /**
    * Call shared Application Objects dynamically
@@ -22,8 +22,8 @@ abstract class Controller
    * @param string $key
    * @return mixed
    */
-  public function __get($key)
-  {
-    return $this->app->get($key);
-  }
+    public function __get($key)
+    {
+        return $this->app->get($key);
+    }
 }

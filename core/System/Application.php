@@ -13,14 +13,14 @@ class Application
    *
    * @var array
    */
-  private $container = [];
+    private $container = [];
 
   /**
    * Set and rename core classes
    *
    * @var array
    */
-  private $coreClasses = [
+    private $coreClasses = [
     'request'   =>  'System\\Http\\Request',
     'response'  =>  'System\\Http\\Response',
     'route'     =>  'System\\Route',
@@ -34,32 +34,32 @@ class Application
     'hash'      =>  'System\\Hash',
     'error'     =>  'System\\Error',
     'email'     =>  'System\\Email'
-  ];
+    ];
 
   /**
    * Application Object
    *
    * @var \System\Application
    */
-  private static $instance;
+    private static $instance;
 
   /**
    * Constructor
    *
    * @param \System\File $file
    */
-  private function __construct(File $file)
-  {
-    $this->share('file', $file);
+    private function __construct(File $file)
+    {
+        $this->share('file', $file);
 
-    Dotenv::createImmutable($this->file->root())->load();
+        Dotenv::createImmutable($this->file->root())->load();
 
-    $this->file->call('Core/helpers.php');
+        $this->file->call('Core/helpers.php');
 
-    $this->error->toggleError();
+        $this->error->toggleError();
 
-    register_shutdown_function([$this->error, 'handleErrors']);
-  }
+        register_shutdown_function([$this->error, 'handleErrors']);
+    }
 
   /**
    * Get Application instance
@@ -67,35 +67,34 @@ class Application
    * @param \System\File $file
    * @return \System\Application
    */
-  public static function getInstance($file)
-  {
-    self::$instance = is_null(self::$instance) ? new static($file) : self::$instance;
+    public static function getInstance($file)
+    {
+        self::$instance = is_null(self::$instance) ? new static($file) : self::$instance;
 
-    return self::$instance;
-  }
+        return self::$instance;
+    }
 
   /**
    * Run the Application
    *
    * @return void
    */
-  public function run()
-  {
-    $this->session->start();
+    public function run()
+    {
+        $this->session->start();
 
-    $this->request->prepareUrl();
+        $this->request->prepareUrl();
 
-    foreach (glob("routes/**/*.php") as $route) {
+        foreach (glob("routes/**/*.php") as $route) {
+            $this->file->call($route);
+        }
 
-      $this->file->call($route);
+        $output = $this->route->getProperRoute();
+
+        $this->response->setOutput($output);
+
+        $this->response->send();
     }
-
-    $output = $this->route->getProperRoute();
-
-    $this->response->setOutput($output);
-
-    $this->response->send();
-  }
 
   /**
    * Share the given key|value through Application
@@ -104,15 +103,14 @@ class Application
    * @param mixed $value
    * @return void
    */
-  public function share($key, $value)
-  {
-    if ($value instanceof Closure) {
+    public function share($key, $value)
+    {
+        if ($value instanceof Closure) {
+            $value = call_user_func($value, $this);
+        }
 
-      $value = call_user_func($value, $this);
+        $this->container[$key] = $value;
     }
-
-    $this->container[$key] = $value;
-  }
 
   /**
    * Get shared value
@@ -127,41 +125,38 @@ class Application
    * @param string $key
    * @return mixed
    */
-  public function get($key)
-  {
-    if (!$this->isSharing($key)) {
+    public function get($key)
+    {
+        if (!$this->isSharing($key)) {
+            if ($this->isCoreAlias($key)) {
+                $this->share($key, $this->createObject($key));
+            } else {
+                $found = false;
+                $dirs = getAllSubDires('core/System/');
 
-      if ($this->isCoreAlias($key)) {
+                foreach ($dirs as $dir) {
+                    $path = $this->file->fullPath($dir . ucwords($key)) . '.php';
 
-        $this->share($key, $this->createObject($key));
+                    if ($this->file->exists($path)) {
+                        $found = true;
 
-      } else {
-        $found = false;
-        $dirs = getAllSubDires('core/System/');
+                        $dir = $this->file->fullPath($dir . ucwords($key));
+                        $dir = ltrim($dir, $this->file->root() . 'core');
 
-        foreach ($dirs as $dir) {
-          $path = $this->file->fullPath($dir . ucwords($key)) . '.php';
+                        $this->coreClasses[$key] = $dir;
 
-          if ($this->file->exists($path)) {
-            $found = true;
+                        $this->share($key, $this->createObject($key));
+                    }
+                }
 
-            $dir = $this->file->fullPath($dir . ucwords($key));
-            $dir = ltrim($dir, $this->file->root() . 'core');
-
-            $this->coreClasses[$key] = $dir;
-
-            $this->share($key, $this->createObject($key));
-          }
+                if (!$found) {
+                    throw new Exception("$key is not found");
+                }
+            }
         }
 
-        if (!$found) {
-          throw new Exception("$key is not found");
-        }
-      }
+        return $this->container[$key];
     }
-
-    return $this->container[$key];
-  }
 
   /**
    * Determine if the given key is shared through Application
@@ -169,10 +164,10 @@ class Application
    * @param string $key
    * @return bool
    */
-  public function isSharing($key)
-  {
-    return isset($this->container[$key]);
-  }
+    public function isSharing($key)
+    {
+        return isset($this->container[$key]);
+    }
 
   /**
    * Determine if the given key is an alias to core class
@@ -180,10 +175,10 @@ class Application
    * @param string $key
    * @return bool
    */
-  public function isCoreAlias($key)
-  {
-    return isset($this->coreClasses[$key]);
-  }
+    public function isCoreAlias($key)
+    {
+        return isset($this->coreClasses[$key]);
+    }
 
   /**
    * Create new object for the core class based on the given key
@@ -191,12 +186,12 @@ class Application
    * @param string $key
    * @return object
    */
-  public function createObject($key)
-  {
-    $object = $this->coreClasses[$key];
+    public function createObject($key)
+    {
+        $object = $this->coreClasses[$key];
 
-    return new $object($this);
-  }
+        return new $object($this);
+    }
 
   /**
    * Get shared value dynamically
@@ -204,8 +199,8 @@ class Application
    * @param string $key
    * @return mixed
    */
-  public function __get($key)
-  {
-    return $this->get($key);
-  }
+    public function __get($key)
+    {
+        return $this->get($key);
+    }
 }
