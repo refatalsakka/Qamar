@@ -45,7 +45,6 @@ class Route
             $url = $this->prefix . $url;
             $url = rtrim($url, '/');
         }
-
         return $url;
     }
 
@@ -62,10 +61,7 @@ class Route
         if (!is_array($middleware)) {
             $middleware = [$middleware];
         }
-
-        $middleware = array_merge($this->groupMiddleware, $middleware);
-
-        return $middleware;
+        return array_merge($this->groupMiddleware, $middleware);
     }
 
     private function getAction($action)
@@ -93,17 +89,13 @@ class Route
         $middleware = $groupOptions['middleware'];
 
         $this->prefix = $prefix;
-
         $this->basController = $controller;
-
         $this->groupMiddleware = $middleware;
 
         $callback($this);
 
         $this->prefix = '';
-
         $this->basController = '';
-
         $this->groupMiddleware = [];
 
         return $this;
