@@ -23,12 +23,22 @@ class Http
         $this->app = $app;
     }
 
-        /**
+    /**
+     * Return https or http
+     *
+     * @return string
+     */
+    public function requestProtocol()
+    {
+        return $this->app->http->isSecure() ? 'https' : 'http';
+    }
+
+    /**
      * Check if the website is secure
      *
      * @return bool
      */
-    public function isSecure()
+    private function isSecure()
     {
         if ($this->checkHttp() || $this->checkHttpXforwardedProto() || $this->checkHttpXforwardedSsl()) {
             return true;

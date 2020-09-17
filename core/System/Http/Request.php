@@ -47,6 +47,7 @@ class Request
     /**
      * Prepare url
      *
+     * @property object $http
      * @return void
      */
     public function prepareUrl()
@@ -61,9 +62,7 @@ class Request
 
         $this->url = cleanUrl($script, $requestUri);
 
-        $REQUEST_PROTOCOL = $this->app->http->isSecure() ? 'https' : 'http';
-
-        $this->host = $REQUEST_PROTOCOL . '://' . $this->server('HTTP_HOST');
+        $this->host = $this->app->http->requestProtocol() . '://' . $this->server('HTTP_HOST');
 
         $this->baseUrl = $this->host . $requestUri;
     }

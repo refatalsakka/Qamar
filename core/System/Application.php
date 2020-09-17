@@ -108,16 +108,47 @@ class Application
     }
 
     /**
+     * After getting all  the folders and sub-folders, it will loop over all of them
+     * is the class exists: it will process the name and create an object and add it to the $container
+     * is the class not exists: it will throw an Exception
+     *
+     * @property object $file
+     * @param string $key
+     * @return void
+     */
+    private function searchForClass($key)
+    {
+        $found = false;
+        $dirs = getAllSubDires('core/System/');
+
+        foreach ($dirs as $dir) {
+            $path = $this->file->fullPath($dir . ucwords($key)) . '.php';
+
+            if ($this->file->exists($path)) {
+                $found = true;
+
+                $dir = $this->file->fullPath($dir . ucwords($key));
+                $dir = ltrim($dir, $this->file->root() . 'core');
+
+                $this->classes[$key] = $dir;
+
+                $this->share($key, $this->createObject($key));
+            }
+        }
+
+        if (!$found) {
+            throw new Exception("$key is not found");
+        }
+    }
+
+    /**
      * Get shared value
      * When the key exists in the $classes, it will look if it was sharing before
      * is not sharing: it will create in an object and add it to the $container
      * is sharing:  it will grab it direct from the $container
      *
-     * When the key is not exists in the core $classes it will look in all the folders and subfolders
-     * is it exists: it will process the name and create an object and add it to the $container
-     * is it not exists: it will throw an Exception
+     * When the key is not exists in the core $classes, the @method searchForClass will be called
      *
-     * @property object $file
      * @param string $key
      * @return mixed
      */
@@ -127,27 +158,7 @@ class Application
             if ($this->isClassAliasIsset($key)) {
                 $this->share($key, $this->createObject($key));
             } else {
-                $found = false;
-                $dirs = getAllSubDires('core/System/');
-
-                foreach ($dirs as $dir) {
-                    $path = $this->file->fullPath($dir . ucwords($key)) . '.php';
-
-                    if ($this->file->exists($path)) {
-                        $found = true;
-
-                        $dir = $this->file->fullPath($dir . ucwords($key));
-                        $dir = ltrim($dir, $this->file->root() . 'core');
-
-                        $this->classes[$key] = $dir;
-
-                        $this->share($key, $this->createObject($key));
-                    }
-                }
-
-                if (!$found) {
-                    throw new Exception("$key is not found");
-                }
+                $this->searchForClass($key);
             }
         }
 
