@@ -4,6 +4,7 @@
         'http'      =>  'System\\Http\\Http',
         'response'  =>  'System\\Http\\Response',
         'response'  =>  'System\\Http\\Response',
+        'upload'    =>  'System\\Http\\UploadeFile',
         'route'     =>  'System\\Route',
         'session'   =>  'System\\Session',
         'cookie'    =>  'System\\Cookie',

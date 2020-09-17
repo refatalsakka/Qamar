@@ -3,6 +3,7 @@
 namespace System\Http;
 
 use System\Application;
+use Exception;
 
 class UploadeFile
 {
@@ -75,28 +76,40 @@ class UploadeFile
      * @param \System\Application $app
      * @param $file
      */
-    public function __construct(Application $app, $file)
+    public function __construct(Application $app)
     {
         $this->app = $app;
-
-        $this->getFileInfo($file);
     }
 
-    private function getFileInfo($input)
+    /**
+     * Recive the file key
+     *
+     * @param string $file
+     * @return object $this;
+     */
+    public function file($file)
     {
-        if (empty($_FILES[$input])) {
-            return;
-        }
+        $this->setFileInfo($file);
 
-        $file = $_FILES[$input];
+        return $this;
+    }
 
-        $this->error = $file['error'];
+    /**
+     * Set the variables
+     *
+     * @property object $request
+     * @param string $file
+     * @return void
+     */
+    private function setFileInfo($file)
+    {
+        $this->file = $this->app->request->file($file);
+
+        $this->error = $this->file['error'];
 
         if ($this->error != UPLOAD_ERR_OK) {
-            return;
+            throw new Exception('Something went wrong');
         }
-
-        $this->file = $file;
 
         $this->fileName = $this->file['name'];
 
@@ -113,41 +126,73 @@ class UploadeFile
         $this->extension = $fileInfo['extension'];
     }
 
-    public function exists()
-    {
-        return !empty($this->file);
-    }
-
+    /**
+     * Get file name
+     *
+     * @return string
+     */
     public function getFileName()
     {
         return $this->fileName;
     }
 
+    /**
+     * Get file name only
+     *
+     * @return string
+     */
     public function getNameOnly()
     {
         return $this->nameOnly;
     }
 
+    /**
+     * Get extension
+     *
+     * @return string
+     */
     public function getExtension()
     {
         return $this->extension;
     }
 
+    /**
+     * Get minetype
+     *
+     * @return string
+     */
     public function getMinetype()
     {
         return $this->minetype;
     }
 
+    /**
+     * Get size
+     *
+     * @return string
+     */
     public function getSize()
     {
         return $this->size;
     }
 
+    /**
+     * Get temp file
+     *
+     * @return string
+     */
     public function getTempFile()
     {
         return $this->tempFile;
     }
 
+    /**
+     * Move file to the geven target
+     *
+     * @param string $target
+     * @param string $newName
+     * @return bool
+     */
     public function moveTo($target, $newName = null)
     {
         $newName = $newName ?: sha1(rand()) . sha1(rand());
