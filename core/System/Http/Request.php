@@ -83,7 +83,6 @@ class Request
         } else {
             $value = trim($value);
         }
-
         return $value;
     }
 
@@ -261,7 +260,6 @@ class Request
                 return true;
             }
         }
-
         return false;
     }
 
@@ -285,7 +283,6 @@ class Request
                 return false;
             }
         }
-
         return true;
     }
 }

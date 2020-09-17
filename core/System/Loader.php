@@ -71,7 +71,6 @@ class Loader
         if (!$this->hasController($controller)) {
             $this->addController($controller);
         }
-
         return $this->getController($controller);
     }
 
@@ -123,9 +122,7 @@ class Loader
     {
         $controller .= strpos($controller, 'Controller') ? '' : 'Controller';
 
-        $controller = 'app\\Controllers\\' . $controller;
-
-        return $controller;
+        return 'app\\Controllers\\' . $controller;
     }
 
     /**
@@ -141,7 +138,6 @@ class Loader
         if (!$this->hasModel($model)) {
             $this->addModel($model);
         }
-
         return $this->getModel($model);
     }
 
@@ -192,9 +188,7 @@ class Loader
     {
         $model .= strpos($model, 'Model') ? '' : 'Model';
 
-        $model = 'app\\Models\\' . $model;
-
-        return $model;
+        return 'app\\Models\\' . $model;
     }
 
     /**
@@ -210,7 +204,6 @@ class Loader
         if (!$this->hasMiddleware($middleware)) {
             $this->addMiddleware($middleware);
         }
-
         return $this->getMiddleware($middleware);
     }
 
@@ -261,8 +254,6 @@ class Loader
     {
         $middleware .= strpos($middleware, 'Middleware') ? '' : 'Middleware';
 
-        $middleware = 'app\\Middlewares\\' . $middleware;
-
-        return $middleware;
+        return 'app\\Middlewares\\' . $middleware;
     }
 }

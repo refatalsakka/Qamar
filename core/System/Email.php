@@ -102,7 +102,6 @@ class Email
         if ($bcc) {
             $this->mail->addBCC($bcc);
         }
-
         return $this;
     }
 

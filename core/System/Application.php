@@ -103,7 +103,6 @@ class Application
         if ($value instanceof Closure) {
             $value = call_user_func($value, $this);
         }
-
         $this->container[$key] = $value;
     }
 
@@ -161,7 +160,6 @@ class Application
                 $this->searchForClass($key);
             }
         }
-
         return $this->container[$key];
     }
 

@@ -74,7 +74,6 @@ class Error
 
             return;
         }
-
         return $this->hideError();
     }
 
@@ -112,7 +111,6 @@ class Error
 
             $run->prependHandler($jsonHandler);
         }
-
         $run->register();
     }
 

@@ -48,7 +48,6 @@ class Url
     public function redirectTo($path, $num = 0)
     {
         header('Refresh: ' . $num . '; URL=' . $this->link($path));
-
         exit;
     }
 
@@ -69,7 +68,6 @@ class Url
                 $path = 'admin/404';
             }
         }
-
         header('Refresh: 0; URL=' . $this->link($path));
         exit;
     }

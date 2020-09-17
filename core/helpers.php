@@ -150,7 +150,6 @@ if (!function_exists('notFoundPage')) {
         if (app()->request->isRequestToAdminManagement()) {
             $notfound = 'Admin\Notfound';
         }
-
         return (string) app()->load->action($notfound, 'index', []);
     }
 }
@@ -200,7 +199,6 @@ if (!function_exists('cleanUrl')) {
         if ($url !== '/') {
             $url = rtrim($url, '/');
         }
-
         return $url;
     }
 }

@@ -60,7 +60,6 @@ class View
             'parameters' => $parameters,
             '_public' => $_public,
         ];
-
         return $pug->render($file, $context);
     }
 
@@ -98,7 +97,6 @@ class View
         if (substr($public, -1) !== '/') {
             $public = $public . '/';
         }
-
         return $public;
     }
 
@@ -120,7 +118,6 @@ class View
         if ($url === '/') {
             return;
         }
-
         $parameters = explode('/', $url);
 
         array_shift($parameters);
@@ -139,7 +136,6 @@ class View
                 'link' => $link,
             ];
         }
-
         return $results;
     }
 }

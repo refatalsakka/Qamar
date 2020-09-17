@@ -122,7 +122,6 @@ class File
                 throw new Exception("$path is not found");
             }
         }
-
         return $this->container[$path . ':' . $share];
     }
 
