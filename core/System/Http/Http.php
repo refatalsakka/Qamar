@@ -30,7 +30,7 @@ class Http
      */
     public function requestProtocol()
     {
-        return $this->app->http->isSecure() ? 'https' : 'http';
+        return $this->isSecure() ? 'https' : 'http';
     }
 
     /**

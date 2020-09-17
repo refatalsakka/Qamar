@@ -112,21 +112,11 @@ class Route
     public function package($url, $controller, $middlewares = [])
     {
         $this->add($url, $controller);
-
-        $row = isset($middlewares['row']) ? $middlewares['row'] : [];
-        $this->add("$url/:id", "$controller@row", ['GET'], $row);
-
-        $new = isset($middlewares['new']) ? $middlewares['new'] : [];
-        $this->add("$url/new", "$controller@new", ['GET'], $new);
-
-        $add = isset($middlewares['add']) ? $middlewares['add'] : [];
-        $this->add("$url/add", "$controller@add", ['POST'], $add);
-
-        $update = isset($middlewares['update']) ? $middlewares['update'] : [];
-        $this->add("$url/update/:id", "$controller@update", ['POST'], $update);
-
-        $delete = isset($middlewares['delete']) ? $middlewares['delete'] : [];
-        $this->add("$url/delete/:id", "$controller@delete", ['POST'], $delete);
+        $this->add("$url/:id", "$controller@row", ['GET'], $middlewares['row'] ?? []);
+        $this->add("$url/new", "$controller@new", ['GET'], $middlewares['new'] ?? []);
+        $this->add("$url/add", "$controller@add", ['POST'], $middlewares['add'] ?? []);
+        $this->add("$url/update/:id", "$controller@update", ['POST'], $middlewares['update'] ?? []);
+        $this->add("$url/delete/:id", "$controller@delete", ['POST'], $middlewares['delete'] ?? []);
 
         return $this;
     }

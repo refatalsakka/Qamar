@@ -57,9 +57,11 @@ class Email
     /**
      * To add addresses or attachments easily to the object
      *
+     * @param string|array $input
+     * @param string $method
      * @return void
      */
-    private function add($input, $add)
+    private function add($input, $method)
     {
         if (!is_array($input)) {
             $input = [$input];
@@ -67,9 +69,9 @@ class Email
 
         foreach ($input as $key => $value) {
             if (is_numeric($key)) {
-                $this->mail->$add($value);
+                $this->mail->$method($value);
             } else {
-                $this->mail->$add($value, $key);
+                $this->mail->$method($value, $key);
             }
         }
     }

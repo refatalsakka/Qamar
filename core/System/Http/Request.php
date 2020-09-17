@@ -95,7 +95,7 @@ class Request
      */
     public function get($key = null)
     {
-        if ($key) {
+        if ($key !== null) {
             return $this->getValueOfRequest($_GET, $key);
         }
         return $_GET;
@@ -109,7 +109,7 @@ class Request
      */
     public function post($key = null)
     {
-        if ($key) {
+        if ($key !== null) {
             return $this->getValueOfRequest($_POST, $key);
         }
         return $_POST;
@@ -123,7 +123,7 @@ class Request
      */
     public function file($key = null)
     {
-        if ($key) {
+        if ($key !== null) {
             return $this->getValueOfRequest($_FILES, $key);
         }
         return $_FILES;
