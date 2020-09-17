@@ -119,6 +119,7 @@ class Request
     /**
      * Get value from $_FILES by the given key
      *
+     * @param string $key
      * @return mixed
      */
     public function file($key = null)
@@ -243,6 +244,7 @@ class Request
     /**
      * Check the request method
      *
+     * @param string|array $methods
      * @return bool
      */
     public function isMatchingRequestMethod($methods = ['GET'])
@@ -266,7 +268,9 @@ class Request
 
     /**
      * Check if the request can be Continued
+     *
      * @property object $load
+     * @param array $middlewares
      * @return bool
      */
     public function canRequestContinue($middlewares)
