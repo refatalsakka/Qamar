@@ -5,7 +5,6 @@ namespace System;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
-use System\Error;
 
 class Email
 {
@@ -78,6 +77,10 @@ class Email
     /**
      * Add recipients to email
      *
+     * @param string|array $addresses
+     * @param array $replayTo
+     * @param string $cc
+     * @param string $bcc
      * @return $this
      */
     public function recipients($addresses, array $replayTo = [], $cc = null, $bcc = null)
@@ -104,6 +107,7 @@ class Email
     /**
      * Add addresses
      *
+     * @param string|array $addresses
      * @return void
      */
     private function addresses($addresses)
@@ -114,6 +118,7 @@ class Email
     /**
      * Add attachments to email
      *
+     * @param string|array $attachments
      * @return $this
      */
     public function attachments($attachments)
@@ -126,6 +131,10 @@ class Email
     /**
      * Add content to email
      *
+     * @param string $html
+     * @param string $subject
+     * @param string $body
+     * @param string $altBody
      * @return $this
      */
     public function content($html, $subject, $body, $altBody)

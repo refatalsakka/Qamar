@@ -28,13 +28,6 @@ class Request
     private $baseUrl;
 
     /**
-     * Uploaded files container
-     *
-     * @var array
-     */
-    private $files = [];
-
-    /**
      * Host
      *
      * @var string
@@ -66,91 +59,13 @@ class Request
             list($requestUri) = explode('?', $requestUri);
         }
 
-        $this->url = $this->cleanUrl($script, $requestUri);
+        $this->url = cleanUrl($script, $requestUri);
 
-        $REQUEST_PROTOCOL = $this->isSecure() ? 'https' : 'http';
+        $REQUEST_PROTOCOL = $this->app->http->isSecure() ? 'https' : 'http';
 
         $this->host = $REQUEST_PROTOCOL . '://' . $this->server('HTTP_HOST');
 
         $this->baseUrl = $this->host . $requestUri;
-    }
-
-    /**
-     * Clean url
-     *
-     * @param string $script
-     * @param string $requestUri
-     * @return string
-     */
-    private function cleanUrl($script, $requestUri)
-    {
-        if (!in_array($script, ['/', '\\'])) {
-            $url = preg_replace('#^' . $script . '#', '', $requestUri);
-        } else {
-            $url = $requestUri;
-        }
-
-        if ($url !== '/') {
-            $url = rtrim($url, '/');
-        }
-
-        return $url;
-    }
-
-    /**
-     * Check if the website is secure
-     *
-     * @return bool
-     */
-    private function isSecure()
-    {
-        if ($this->checkHttp() || $this->checkHttpXforwardedProto() || $this->checkHttpXforwardedSsl()) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Check if HTTPS is 'on'
-     *
-     * @return bool
-     */
-    private function checkHttp()
-    {
-        if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Check if HTTP_X_FORWARDED_PROTO is not empty or 'https'
-     *
-     * @return bool
-     */
-    private function checkHttpXforwardedProto()
-    {
-        if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Check if HTTP_X_FORWARDED_SSL is 'on'
-     *
-     * @return bool
-     */
-    private function checkHttpXforwardedSsl()
-    {
-        if (!empty($_SERVER['HTTP_X_FORWARDED_SSL']) && $_SERVER['HTTP_X_FORWARDED_SSL'] == 'on') {
-            return true;
-        }
-
-        return false;
     }
 
     /**
@@ -179,9 +94,12 @@ class Request
      * @param string $key
      * @return mixed
      */
-    public function get($key)
+    public function get($key = null)
     {
-        return $this->getValueOfRequest($_GET, $key);
+        if ($key) {
+            return $this->getValueOfRequest($_GET, $key);
+        }
+        return $_GET;
     }
 
     /**
@@ -190,9 +108,25 @@ class Request
      * @param string $key
      * @return mixed
      */
-    public function post($key)
+    public function post($key = null)
     {
-        return $this->getValueOfRequest($_POST, $key);
+        if ($key) {
+            return $this->getValueOfRequest($_POST, $key);
+        }
+        return $_POST;
+    }
+
+    /**
+     * Get value from $_FILES by the given key
+     *
+     * @return mixed
+     */
+    public function file($key = null)
+    {
+        if ($key) {
+            return $this->getValueOfRequest($_FILES, $key);
+        }
+        return $_FILES;
     }
 
     /**
@@ -200,7 +134,7 @@ class Request
      *
      * @param string $key
      * @param mixed $value
-     * @return mixed
+     * @return void
      */
     public function setPost($key, $value)
     {
@@ -208,59 +142,34 @@ class Request
     }
 
     /**
-     * Get $_POST
+     * Set value To $_GET For the given key
      *
-     * @return array
+     * @param string $key
+     * @param mixed $value
+     * @return void
      */
-    public function posts()
+    public function setGet($key, $value)
     {
-        return $_POST;
+        $_GET[$key] = $value;
     }
 
     /**
-     * Get $_GET
+     * Set value To $_FILES For the given key
      *
-     * @return array
+     * @param string $key
+     * @param mixed $value
+     * @return void
      */
-    public function gets()
+    public function setFile($key, $value)
     {
-        return $_GET;
-    }
-
-    /**
-     * Get $_FILES
-     *
-     * @return array
-     */
-    public function files()
-    {
-        return $_FILES;
-    }
-
-    /**
-     * Get the uploaded file object for the given input
-     *
-     * @param string $input
-     * @return object
-     */
-    public function file($input)
-    {
-        if (isset($this->files[$input])) {
-            return $this->files[$input];
-        }
-
-        $upoadedFile = new UploadeFile($this->app, $input);
-
-        $this->files[$input] = $upoadedFile;
-
-        return $this->files[$input];
+        $_FILES[$key] = $value;
     }
 
     /**
      * Get value from $_SERVER by the given key
      *
      * @param string $key
-     * @return mixed
+     * @return string
      */
     public function server($key)
     {
@@ -325,9 +234,7 @@ class Request
     public function isRequestToAdminManagement()
     {
         $url = $this->url;
-
         $url = ltrim($url, '/');
-
         $url = explode('/', $url)[0];
 
         return $url == 'admin';

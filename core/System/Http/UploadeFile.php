@@ -69,11 +69,17 @@ class UploadeFile
      */
     private $error;
 
-    public function __construct(Application $app, $input)
+    /**
+     * Constructor
+     *
+     * @param \System\Application $app
+     * @param $file
+     */
+    public function __construct(Application $app, $file)
     {
         $this->app = $app;
 
-        $this->getFileInfo($input);
+        $this->getFileInfo($file);
     }
 
     private function getFileInfo($input)

@@ -81,7 +81,9 @@ class Error
     /**
      * Send Email to the admin contain the Error
      * and the date
+     *
      * @property object $email
+     * @param string $error
      * @return void
      */
     private function sendErrorToAdmin($error)

@@ -1,7 +1,8 @@
 <?php
 
     return [
-        'request'   =>  'System\\Http\\Request',
+        'http'      =>  'System\\Http\\Http',
+        'response'  =>  'System\\Http\\Response',
         'response'  =>  'System\\Http\\Response',
         'route'     =>  'System\\Route',
         'session'   =>  'System\\Session',

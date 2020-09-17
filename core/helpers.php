@@ -180,3 +180,27 @@ if (!function_exists('getAllSubDires')) {
         return $dirs;
     }
 }
+
+if (!function_exists('cleanUrl')) {
+    /**
+     * Clean url
+     *
+     * @param string $script
+     * @param string $requestUri
+     * @return string
+     */
+    function cleanUrl($script, $requestUri)
+    {
+        if (!in_array($script, ['/', '\\'])) {
+            $url = preg_replace('#^' . $script . '#', '', $requestUri);
+        } else {
+            $url = $requestUri;
+        }
+
+        if ($url !== '/') {
+            $url = rtrim($url, '/');
+        }
+
+        return $url;
+    }
+}
