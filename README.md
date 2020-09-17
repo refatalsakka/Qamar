@@ -70,6 +70,11 @@ $ npm run lint:sass
 $ npm run lint:js
 ```
 
+**Check PHP Lint**
+```sh
+$ npm run lint:php
+```
+
 **Fix Pugjs Lint**
 ```sh
 *There is no yet.*
@@ -83,6 +88,11 @@ $ npm run lint:fix:sass
 **Fix JavaScript Lint**
 ```sh
 $ npm run lint:fix:js
+```
+
+**Fix PHP Lint**
+```sh
+$ npm run lint:fix:php
 ```
 
 **Convert to SCSS, Compresse, Output public/css**
