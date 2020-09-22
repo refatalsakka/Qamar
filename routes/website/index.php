@@ -3,5 +3,5 @@
 $app = app();
 
 // Home
-$app->route->add('/', 'Website/Home', 'GET', 'Authenticate');
-$app->route->add('/home/:text/:id', 'Website/Home');
+$app->route->get('/', 'Website/Home');
+$app->route->get('/home', 'Website/Home');

@@ -34,8 +34,7 @@ const QUOTES = [
   'Someone’s sitting in the shade today because someone planted a tree a long time ago.',
 ];
 
-const INDEX = Math.floor(Math.random() * QUOTES.length);
-
 (function appendInDocument() {
+  const INDEX = Math.floor(Math.random() * QUOTES.length);
   document.querySelector('.quote').innerHTML = QUOTES[INDEX];
 }());

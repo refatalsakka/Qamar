@@ -46,7 +46,7 @@ class Application
 
         $this->file->call('Core/helpers.php');
 
-        $this->error->toggleError();
+        $this->error->start();
 
         register_shutdown_function([$this->error, 'handleErrors']);
     }
@@ -103,11 +103,12 @@ class Application
         if ($value instanceof Closure) {
             $value = call_user_func($value, $this);
         }
+
         $this->container[$key] = $value;
     }
 
     /**
-     * After getting all  the folders and sub-folders, it will loop over all of them
+     * After getting all the folders and sub-folders, it will loop over all of them
      * is the class exists: it will process the name and create an object and add it to the $container
      * is the class not exists: it will throw an Exception
      *

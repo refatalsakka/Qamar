@@ -1,10 +1,5 @@
 @import './layout';
 
-$white: #fff;
-$black: #343434;
-$blue: #669dd1;
-$yellow: #ffc83d;
-
 body {
   background-image: url('/public/imgs/website/404/404.webp');
   background-size: cover;
@@ -15,26 +10,29 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 90vh;
+  height: 100vh;
 
   h1 {
-    font-size: 125px;
+    font-size: 10vmin;
     font-family: cursive;
   }
 
   > div {
-    text-align: center;
+    margin: 4vh 0;
     color: $black;
+    text-align: center;
 
     .quote {
       color: $blue;
       background: $yellow;
       padding: 14px;
       text-shadow: -1px 0 7px $white;
+      font-size: 3vmin;
     }
   }
 
   a {
+    font-size: 1.5vmin;
     color: $white;
   }
 }

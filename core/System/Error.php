@@ -65,7 +65,7 @@ class Error
     /**
      * Show or hide errors depend on the condition
      */
-    public function toggleError()
+    public function start()
     {
         if ($this->allowDisplayingError()) {
             $this->showError();
@@ -123,6 +123,7 @@ class Error
     private function displayFriendlyMessage()
     {
         echo $this->app->view->render('website/pages/error', []);
+        exit;
     }
 
     /**

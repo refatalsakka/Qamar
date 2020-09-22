@@ -9,6 +9,6 @@ $adminOptions = [
 ];
 
 $app->route->group($adminOptions, function ($route) {
-    $route->add('/', 'Home');
-    $route->add('/home', 'Home');
+    $route->get('/', 'Home');
+    $route->get('/home', 'Home');
 });

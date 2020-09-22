@@ -92,5 +92,6 @@ class Response
     private function sendOutput()
     {
         echo $this->content;
+        exit;
     }
 }

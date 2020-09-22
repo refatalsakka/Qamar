@@ -84,6 +84,34 @@ class Route
     }
 
     /**
+     * Add route GET to $routes
+     *
+     * @param string $url
+     * @param string $action
+     * @param string|array $middleware
+     * @return object $this
+     */
+    public function get($url, $action, $middleware = [])
+    {
+        $this->add($url, $action, ['GET'], $middleware);
+        return $this;
+    }
+
+    /**
+     * Add route POST to $routes
+     *
+     * @param string $url
+     * @param string $action
+     * @param string|array $middleware
+     * @return object $this
+     */
+    public function post($url, $action, $middleware = [])
+    {
+        $this->add($url, $action, ['POST'], $middleware);
+        return $this;
+    }
+
+    /**
      * Add prefix at the first of $url if exists or not equal to '/'
      *
      * @param string $url
@@ -176,8 +204,7 @@ class Route
      */
     private function isMatchingPattern($pattern)
     {
-        $url = $this->app->request->url();
-        $url = strtolower($url);
+        $url = strtolower($this->app->request->url());
 
         return preg_match($pattern, $url);
     }

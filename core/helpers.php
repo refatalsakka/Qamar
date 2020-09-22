@@ -199,6 +199,7 @@ if (!function_exists('cleanUrl')) {
         if ($url !== '/') {
             $url = rtrim($url, '/');
         }
+
         return $url;
     }
 }
