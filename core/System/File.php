@@ -69,7 +69,7 @@ class File
      * @param string $file
      * @return bool
      */
-    public function exists($file)
+    public function exists(string $file)
     {
         return file_exists($file);
     }
@@ -80,7 +80,7 @@ class File
      * @param string $path
      * @return mixed
      */
-    public function call($path)
+    public function call(string $path)
     {
         return $this->processSharing($path, 'file');
     }
@@ -91,7 +91,7 @@ class File
      * @param string $path
      * @return mixed
      */
-    public function fileContent($path)
+    public function fileContent(string $path)
     {
         return $this->processSharing($path, 'content');
     }
@@ -131,7 +131,7 @@ class File
      * @param string $path
      * @return string
      */
-    public function fullPath($path)
+    public function fullPath(string $path)
     {
         return $this->root . DS . str_replace(['/', '\\'], DS, $path);
     }

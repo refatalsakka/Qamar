@@ -33,7 +33,7 @@ class View
      * @param array $context
      * @return string
      */
-    public function render($path, array $context)
+    public function render(string $path, array $context)
     {
         $pug = new Pug(array(
             'pretty' => true,

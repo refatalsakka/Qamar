@@ -65,7 +65,7 @@ class Route
      * @param string|array $middleware
      * @return object $this
      */
-    public function add($url, $action, $requestMethods = ['GET'], $middleware = [])
+    public function add(string $url, string $action, $requestMethods = ['GET'], $middleware = [])
     {
         $url = $this->setPrefix($url);
         $action = $this->setAction($action);
@@ -91,7 +91,7 @@ class Route
      * @param string|array $middleware
      * @return object $this
      */
-    public function get($url, $action, $middleware = [])
+    public function get(string $url, string $action, $middleware = [])
     {
         $this->add($url, $action, ['GET'], $middleware);
         return $this;
@@ -105,7 +105,7 @@ class Route
      * @param string|array $middleware
      * @return object $this
      */
-    public function post($url, $action, $middleware = [])
+    public function post(string $url, string $action, $middleware = [])
     {
         $this->add($url, $action, ['POST'], $middleware);
         return $this;
@@ -234,7 +234,7 @@ class Route
      * @param callable $callback
      * @return object $this
      */
-    public function group($groupOptions, callable $callback)
+    public function group(array $groupOptions, callable $callback)
     {
         $prefix = $groupOptions['prefix'];
         $controller = $groupOptions['controller'];
@@ -261,7 +261,7 @@ class Route
      * @param array $middlewares
      * @return object $this
      */
-    public function package($url, $controller, $middlewares = [])
+    public function package(string $url, string $controller, array $middlewares = [])
     {
         $this->add($url, $controller);
         $this->add("$url/:id", "$controller@row", ['GET'], $middlewares['row'] ?? []);

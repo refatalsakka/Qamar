@@ -20,7 +20,7 @@ if (!function_exists('pre')) {
     /**
      * Display the give $input
      *
-     * @param string $input
+     * @param mixed $input
      * @return string
      */
     function pre($input)
@@ -50,7 +50,7 @@ if (!function_exists('_e')) {
      * @param string $value
      * @return string
      */
-    function _e($value)
+    function _e(string $value)
     {
         $value = trim($value);
         $value = preg_replace('# {2,}#', ' ', $value);
@@ -67,7 +67,7 @@ if (!function_exists('assets')) {
      * @param string $path
      * @return string
      */
-    function assets($path = null)
+    function assets(string $path = null)
     {
         return app()->url->link('public/' . ($path ? $path : ''));
     }
@@ -115,7 +115,7 @@ if (!function_exists('isExtesntionAllowed')) {
      * @property object $file
      * @return bool
      */
-    function isExtesntionAllowed($key, $extension)
+    function isExtesntionAllowed(string $key, string $extension)
     {
         $allowExtesntions = app()->file->call('config/uploads.php')[$key];
 
@@ -130,7 +130,7 @@ if (!function_exists('isImage')) {
      * @param string $minetype
      * @return bool
      */
-    function isMinetypeisAnImage($minetype)
+    function isMinetypeisAnImage(string $minetype)
     {
         return strpos($minetype, "image/") === 0;
     }
@@ -162,7 +162,7 @@ if (!function_exists('getAllSubDires')) {
      * @param string $direPath
      * @return array
      */
-    function getAllSubDires($direPath)
+    function getAllSubDires(string $direPath)
     {
         $dirs = [];
         $directions = [];
@@ -188,7 +188,7 @@ if (!function_exists('cleanUrl')) {
      * @param string $requestUri
      * @return string
      */
-    function cleanUrl($script, $requestUri)
+    function cleanUrl(string $script, string $requestUri)
     {
         if (!in_array($script, ['/', '\\'])) {
             $url = preg_replace('#^' . $script . '#', '', $requestUri);

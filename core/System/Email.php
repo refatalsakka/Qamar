@@ -44,7 +44,7 @@ class Email
      */
     private function setUp()
     {
-        $this->mail->SMTPDebug = $this->error->allowDisplayingError() ? SMTP::DEBUG_SERVER : 0;
+        $this->mail->SMTPDebug = $this->app->error->allowDisplayingError() ? SMTP::DEBUG_SERVER : 0;
         $this->mail->isSMTP();
         $this->mail->Host = $_ENV['EMAIL_HOST'];
         $this->mail->SMTPAuth = $_ENV['EMAIL_SMTPAUTH'];
@@ -81,8 +81,8 @@ class Email
      *
      * @param string|array $addresses
      * @param array $replayTo
-     * @param string $cc
-     * @param string $bcc
+     * @param string|array $cc
+     * @param string|array $bcc
      * @return $this
      */
     public function recipients($addresses, array $replayTo = [], $cc = null, $bcc = null)
@@ -93,10 +93,6 @@ class Email
 
         if (!empty($replayTo)) {
             $this->mail->addReplyTo(array_values($replayTo)[0], array_keys($replayTo)[0]);
-        }
-
-        if ($cc) {
-            $this->mail->addCC($cc);
         }
 
         if ($bcc) {
@@ -130,6 +126,32 @@ class Email
     }
 
     /**
+     * Add bcc to email
+     *
+     * @param string|array $bccs
+     * @return $this
+     */
+    public function bcc($bccs)
+    {
+        $this->add($bccs, 'addBCC');
+
+        return $this;
+    }
+
+    /**
+     * Add cc to email
+     *
+     * @param string|array $ccs
+     * @return $this
+     */
+    public function cc($ccs)
+    {
+        $this->add($ccs, 'addCC');
+
+        return $this;
+    }
+
+    /**
      * Add content to email
      *
      * @param string $html
@@ -138,7 +160,7 @@ class Email
      * @param string $altBody
      * @return $this
      */
-    public function content($html, $subject, $body, $altBody)
+    public function content(string $html, string $subject, string $body, string $altBody)
     {
         $this->mail->isHTML($html);
         $this->mail->Subject = $subject;

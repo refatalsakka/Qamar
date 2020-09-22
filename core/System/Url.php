@@ -28,7 +28,7 @@ class Url
      * @param string $path
      * @return string
      */
-    public function link($path)
+    public function link(string $path)
     {
         $link = $this->app->request->host();
 
@@ -45,7 +45,7 @@ class Url
      * @param int $num
      * @return void
      */
-    public function redirectTo($path, $num = 0)
+    public function redirectTo(string $path, int $num = 0)
     {
         header('Refresh: ' . $num . '; URL=' . $this->link($path));
         exit;
@@ -59,7 +59,7 @@ class Url
      * @param string $path
      * @return void
      */
-    public function notfound($path = '')
+    public function notfound(string $path = '')
     {
         if (!$path) {
             $path = '/404';

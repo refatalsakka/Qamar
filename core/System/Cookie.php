@@ -39,7 +39,7 @@ class Cookie
      * @param int $hours
      * @return void
      */
-    public function set($key, $value, $hours = 1800)
+    public function set(string $key, $value, int $hours = 1800)
     {
         $expireTime = $hours == -1 ? -1 : time() + $hours * 3600;
 
@@ -53,7 +53,7 @@ class Cookie
      * @param mixed $default
      * @return mixed
      */
-    public function get($key, $default = null)
+    public function get(string $key, $default = null)
     {
         return array_get($_COOKIE, $key, $default);
     }
@@ -64,7 +64,7 @@ class Cookie
      * @param string $key
      * @return bool
      */
-    public function has($key)
+    public function has(string $key)
     {
         return array_key_exists($key, $_COOKIE);
     }
@@ -75,7 +75,7 @@ class Cookie
      * @param string $key
      * @return void
      */
-    public function remove($key)
+    public function remove(string $key)
     {
         $this->set($key, null, -1);
 

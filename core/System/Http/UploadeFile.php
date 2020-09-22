@@ -87,7 +87,7 @@ class UploadeFile
      * @param string $file
      * @return object $this;
      */
-    public function file($file)
+    public function file(string $file)
     {
         $this->setFileInfo($file);
 
@@ -193,7 +193,7 @@ class UploadeFile
      * @param string $newName
      * @return bool
      */
-    public function moveTo($target, $newName = null)
+    public function moveTo(string $target, string $newName = null)
     {
         $newName = $newName ?: sha1(rand()) . sha1(rand());
         $newName .= '.' . $this->extension;

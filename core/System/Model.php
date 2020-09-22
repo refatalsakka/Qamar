@@ -59,8 +59,9 @@ abstract class Model
      * @method fetchAll
      * @param array $order
      * @param int $limit
+     * @param string $table
      */
-    public function getAll(array $order = ['id', 'DESC'], $limit = null, $table = null)
+    public function getAll(array $order = ['id', 'DESC'], int $limit = null, string $table = null)
     {
         return $this->orderBy($order[0], $order[1])->limit($limit)->fetchAll($table ? $table : $this->table);
     }
@@ -73,7 +74,7 @@ abstract class Model
      * @param string $value
      * @param string $coulmn
      */
-    public function get($value, $coulmn = 'id')
+    public function get(string $value, string $coulmn = 'id')
     {
         return $this->where($coulmn . ' = ?', $value)->fetch($this->table);
     }
@@ -87,7 +88,7 @@ abstract class Model
      * @param string $value
      * @param string $key
      */
-    public function exists($value, $key = 'id')
+    public function exists(string $value, string $key = 'id')
     {
         return (bool) $this->select($key)->where($key . ' = ? ', $value)->fetch($this->table);
     }
@@ -99,7 +100,7 @@ abstract class Model
      * @method delete
      * @param string $id
      */
-    public function delete($id)
+    public function delete(string $id)
     {
         return $this->where('id = ?', $id)->delete($this->table);
     }
@@ -114,7 +115,7 @@ abstract class Model
      * @param string $joins
      * @param string $table
      */
-    public function joinGetAll($select, $joins, $table = null)
+    public function joinGetAll(string $select, string $joins, string $table = null)
     {
         return $this->db->select($select)->from($table ? $table : $this->table)->join($joins);
     }
@@ -131,7 +132,7 @@ abstract class Model
      * @param string $joins
      * @param string $table
      */
-    public function joinGetRow($select, $joins, $where, $table = null)
+    public function joinGetRow(string $select, string $joins, string $where, string $table = null)
     {
         $table = $table ? $table : $this->table;
         return $this->db->select($select)->from($table)->join($joins)->where($table . '.id = ?', $where);

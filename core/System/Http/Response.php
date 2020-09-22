@@ -43,7 +43,7 @@ class Response
      * @param string $content
      * @return void
      */
-    public function setOutput($content)
+    public function setOutput(string $content)
     {
         $this->content = $content;
     }
@@ -55,7 +55,7 @@ class Response
      * @param mixed $value
      * @return void
      */
-    public function setHeader($header, $value)
+    public function setHeader(string $header, $value = '')
     {
         $this->headers[$header] = $value;
     }
@@ -80,7 +80,9 @@ class Response
     private function sendHeaders()
     {
         foreach ($this->headers as $header => $value) {
-            header($header . ':' . $value);
+            $value = !$value ?: ':' . $value;
+
+            header($header . $value);
         }
     }
 

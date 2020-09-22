@@ -51,7 +51,7 @@ class Loader
      * @param array $arguments
      * @return mixed
      */
-    public function action($controller, $method, array $arguments)
+    public function action(string $controller, string $method, array $arguments)
     {
         $object = $this->controller($controller);
 
@@ -64,7 +64,7 @@ class Loader
      * @param string $controller
      * @return object
      */
-    public function controller($controller)
+    public function controller(string $controller)
     {
         $controller = $this->getControllerName($controller);
 
@@ -131,7 +131,7 @@ class Loader
      * @param string $model
      * @return object
      */
-    public function model($model)
+    public function model(string $model)
     {
         $model = $this->getModelName($model);
 
@@ -197,7 +197,7 @@ class Loader
      * @param string $middleware
      * @return object
      */
-    public function middleware($middleware)
+    public function middleware(string $middleware)
     {
         $middleware = $this->getMiddlewareName($middleware);
 

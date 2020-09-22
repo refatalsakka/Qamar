@@ -92,7 +92,7 @@ class Request
      * @param string $key
      * @return mixed
      */
-    public function get($key = null)
+    public function get(string $key = null)
     {
         if ($key !== null) {
             return $this->getValueOfRequest($_GET, $key);
@@ -106,7 +106,7 @@ class Request
      * @param string $key
      * @return mixed
      */
-    public function post($key = null)
+    public function post(string $key = null)
     {
         if ($key !== null) {
             return $this->getValueOfRequest($_POST, $key);
@@ -120,7 +120,7 @@ class Request
      * @param string $key
      * @return mixed
      */
-    public function file($key = null)
+    public function file(string $key = null)
     {
         if ($key !== null) {
             return $this->getValueOfRequest($_FILES, $key);
@@ -135,7 +135,7 @@ class Request
      * @param mixed $value
      * @return void
      */
-    public function setPost($key, $value)
+    public function setPost(string $key, $value)
     {
         $_POST[$key] = $value;
     }
@@ -147,7 +147,7 @@ class Request
      * @param mixed $value
      * @return void
      */
-    public function setGet($key, $value)
+    public function setGet(string $key, $value)
     {
         $_GET[$key] = $value;
     }
@@ -159,7 +159,7 @@ class Request
      * @param mixed $value
      * @return void
      */
-    public function setFile($key, $value)
+    public function setFile(string $key, $value)
     {
         $_FILES[$key] = $value;
     }
@@ -170,7 +170,7 @@ class Request
      * @param string $key
      * @return string
      */
-    public function server($key)
+    public function server(string $key)
     {
         return array_get($_SERVER, $key);
     }
@@ -270,7 +270,7 @@ class Request
      * @param array $middlewares
      * @return bool
      */
-    public function canRequestContinue($middlewares)
+    public function canRequestContinue(array $middlewares)
     {
         if (empty($middlewares)) {
             return true;

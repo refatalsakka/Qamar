@@ -98,7 +98,7 @@ class Application
      * @param mixed $value
      * @return void
      */
-    public function share($key, $value)
+    private function share($key, $value)
     {
         if ($value instanceof Closure) {
             $value = call_user_func($value, $this);
@@ -152,7 +152,7 @@ class Application
      * @param string $key
      * @return mixed
      */
-    public function get($key)
+    public function get(string $key)
     {
         if (!$this->isSharing($key)) {
             if ($this->isClassAliasIsset($key)) {
@@ -170,7 +170,7 @@ class Application
      * @param string $key
      * @return bool
      */
-    public function isSharing($key)
+    private function isSharing($key)
     {
         return isset($this->container[$key]);
     }
@@ -181,7 +181,7 @@ class Application
      * @param string $key
      * @return bool
      */
-    public function isClassAliasIsset($key)
+    private function isClassAliasIsset($key)
     {
         return isset($this->classes[$key]);
     }
@@ -192,7 +192,7 @@ class Application
      * @param string $key
      * @return object
      */
-    public function createObject($key)
+    private function createObject($key)
     {
         $object = $this->classes[$key];
 

@@ -18,7 +18,7 @@ body {
   }
 
   > div {
-    margin: 4vh 0;
+    margin: 3vmin 0 1vmin;
     color: $black;
     text-align: center;
 
@@ -27,7 +27,7 @@ body {
       background: $yellow;
       padding: 14px;
       text-shadow: -1px 0 7px $white;
-      font-size: 3vmin;
+      font-size: 2vmin;
     }
   }
 

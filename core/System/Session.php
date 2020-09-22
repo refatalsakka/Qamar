@@ -42,7 +42,7 @@ class Session
      * @param mixed $value
      * @return void
      */
-    public function set($key, $value)
+    public function set(string $key, $value)
     {
         $_SESSION[$key] = $value;
     }
@@ -54,7 +54,7 @@ class Session
      * @param mixed $default
      * @return mixed
      */
-    public function get($key, $default = null)
+    public function get(string $key, $default = null)
     {
         return array_get($_SESSION, $key, $default);
     }
@@ -65,7 +65,7 @@ class Session
      * @param string $key
      * @return bool
      */
-    public function has($key)
+    public function has(string $key)
     {
         return isset($_SESSION[$key]);
     }
@@ -76,7 +76,7 @@ class Session
      * @param string $key
      * @return void
      */
-    public function remove($key)
+    public function remove(string $key)
     {
         unset($_SESSION[$key]);
     }
@@ -87,7 +87,7 @@ class Session
      * @param string $key
      * @return mixed
      */
-    public function pull($key)
+    public function pull(string $key)
     {
         $value = $this->get($key);
 

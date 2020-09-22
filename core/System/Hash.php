@@ -27,7 +27,7 @@ class Hash
      * @param $password
      * @return string
      */
-    public function password($password)
+    public function password(string $password)
     {
         $timeTarget = 0.05;
         $cost = 8;
@@ -50,7 +50,7 @@ class Hash
      * @param $password2
      * @return bool
      */
-    public function passwordCheck($password1, $password2)
+    public function passwordCheck(string $password1, string $password2)
     {
         return password_verify($password1, $password2);
     }
@@ -61,7 +61,7 @@ class Hash
      * @param $string
      * @return string
      */
-    public function hash($string)
+    public function hash(string $string)
     {
         return hash($_ENV['HASH_TYPE'], $string);
     }
@@ -73,7 +73,7 @@ class Hash
      * @param $hash2
      * @return bool
      */
-    public function hashCheck($hash1, $hash2)
+    public function hashCheck(string $hash1, string $hash2)
     {
         return hash_equals($hash1, $hash2);
     }
