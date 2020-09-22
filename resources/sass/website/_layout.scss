@@ -1,7 +1,8 @@
 $white: #fff;
-$black: #343434;
+$black: #2b2828;
 $blue: #669dd1;
 $yellow: #ffc83d;
+$shadow: #aaa;
 $font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 
 * {
@@ -9,4 +10,20 @@ $font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   padding: 0;
   box-sizing: border-box;
   font-family: $font-family;
+}
+
+body {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+
+
+h1 {
+  font-size: 20vmin;
+  font-family: cursive;
+  color: $black;
+  text-shadow: 10px 10px 10px $shadow;
 }

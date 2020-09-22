@@ -1,5 +1,7 @@
 @import './layout';
 
+$shadow: #286ba9;
+
 body {
   background-image: url('/public/imgs/website/404/404.webp');
   background-size: cover;
@@ -15,12 +17,14 @@ body {
   h1 {
     font-size: 10vmin;
     font-family: cursive;
+    text-shadow: 10px 10px 10px $shadow;
   }
 
   > div {
     margin: 3vmin 0 1vmin;
     color: $black;
     text-align: center;
+    box-shadow: 10px 10px 10px $shadow;
 
     .quote {
       color: $blue;
@@ -34,5 +38,6 @@ body {
   a {
     font-size: 1.5vmin;
     color: $white;
+    text-shadow: 10px 10px 10px $shadow;
   }
 }
