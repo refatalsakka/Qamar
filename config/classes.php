@@ -3,7 +3,7 @@
 return [
     'http'      =>  'System\\Http\\Http',
     'response'  =>  'System\\Http\\Response',
-    'response'  =>  'System\\Http\\Response',
+    'request'   =>  'System\\Http\\Request',
     'upload'    =>  'System\\Http\\UploadeFile',
     'route'     =>  'System\\Route',
     'session'   =>  'System\\Session',
