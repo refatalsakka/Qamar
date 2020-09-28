@@ -38,7 +38,6 @@
   - [Git History](https://marketplace.visualstudio.com/items?itemName=donjayamanne.githistory)
 
 ### How to Install 🔥
-
 ```sh
 $ git clone git@github.com:refatalsakka/mvc-php.git
 $ cd mvc-php
