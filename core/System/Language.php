@@ -25,7 +25,7 @@ class Language
     {
         $lang = $this->app->cookie->get('lang');
 
-        if (!$lang) {
+        if (!$lang || !is_allow('languages', $lang)) {
             $lang = $_ENV['APP_LANG'];
         }
 

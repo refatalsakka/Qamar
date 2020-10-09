@@ -203,3 +203,12 @@ if (!function_exists('cleanUrl')) {
         return $url;
     }
 }
+
+if (!function_exists('is_allow')) {
+    function is_allow(string $key, string $value)
+    {
+        $allow = app()->file->call('config/allow.php')[$key];
+
+        return in_array($value, $allow) ?: false;
+    }
+}
