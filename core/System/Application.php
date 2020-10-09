@@ -57,7 +57,7 @@ class Application
      * @param \System\File $file
      * @return \System\Application
      */
-    public static function getInstance($file)
+    public static function getInstance(FILE $file)
     {
         self::$instance = is_null(self::$instance) ? new static($file) : self::$instance;
 
@@ -74,7 +74,7 @@ class Application
      * @property object $response
      * @return void
      */
-    public function run()
+    public function run(): void
     {
         $this->session->start();
 
@@ -103,7 +103,6 @@ class Application
         if ($value instanceof Closure) {
             $value = call_user_func($value, $this);
         }
-
         $this->container[$key] = $value;
     }
 
@@ -150,7 +149,7 @@ class Application
      * When the key is not exists in the core $classes, the @method searchForClass will be called
      *
      * @param string $key
-     * @return mixed
+     * @return object
      */
     public function get(string $key)
     {
@@ -203,9 +202,9 @@ class Application
      * Get shared value dynamically
      *
      * @param string $key
-     * @return mixed
+     * @return object
      */
-    public function __get($key)
+    public function __get(string $key): object
     {
         return $this->get($key);
     }

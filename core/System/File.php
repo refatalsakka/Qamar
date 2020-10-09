@@ -133,6 +133,6 @@ class File
      */
     public function fullPath(string $path)
     {
-        return $this->root . DS . str_replace(['/', '\\'], DS, $path);
+        return $this->root . DIRECTORY_SEPARATOR . str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path);
     }
 }

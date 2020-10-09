@@ -52,6 +52,7 @@ class Email
         $this->mail->Password = $_ENV['EMAIL_PASSWORD'];
         $this->mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $this->mail->Port = $_ENV['EMAIL_PORT'];
+        $this->mail->setFrom($_ENV['EMAIL_ADMIN'], $_ENV['EMAIL_NAME']);
     }
 
     /**
@@ -77,46 +78,36 @@ class Email
     }
 
     /**
-     * Add recipients to email
+     * Add addresses
      *
      * @param string|array $addresses
-     * @param array $replayTo
-     * @param string|array $cc
-     * @param string|array $bcc
-     * @return $this
+     * @return object $this
      */
-    public function recipients($addresses, array $replayTo = [], $cc = null, $bcc = null)
+    public function address($addresses)
     {
-        $this->mail->setFrom($_ENV['EMAIL_ADMIN'], $_ENV['EMAIL_NAME']);
+        $this->add($addresses, 'addAddress');
 
-        $this->addresses($addresses);
-
-        if (!empty($replayTo)) {
-            $this->mail->addReplyTo(array_values($replayTo)[0], array_keys($replayTo)[0]);
-        }
-
-        if ($bcc) {
-            $this->mail->addBCC($bcc);
-        }
         return $this;
     }
 
     /**
      * Add addresses
      *
-     * @param string|array $addresses
-     * @return void
+     * @param array $replayTo
+     * @return object $this
      */
-    private function addresses($addresses)
+    public function replayTo(array $replayTo = [])
     {
-        $this->add($addresses, 'addAddress');
+        $this->mail->addReplyTo(array_values($replayTo)[0], array_keys($replayTo)[0]);
+
+        return $this;
     }
 
     /**
      * Add attachments to email
      *
      * @param string|array $attachments
-     * @return $this
+     * @return object $this
      */
     public function attachments($attachments)
     {
@@ -128,12 +119,12 @@ class Email
     /**
      * Add bcc to email
      *
-     * @param string|array $bccs
-     * @return $this
+     * @param string|array $bcc
+     * @return object $this
      */
-    public function bcc($bccs)
+    public function bcc($bcc)
     {
-        $this->add($bccs, 'addBCC');
+        $this->add($bcc, 'addBCC');
 
         return $this;
     }
@@ -141,12 +132,12 @@ class Email
     /**
      * Add cc to email
      *
-     * @param string|array $ccs
-     * @return $this
+     * @param string|array $cc
+     * @return object $this
      */
-    public function cc($ccs)
+    public function cc($cc)
     {
-        $this->add($ccs, 'addCC');
+        $this->add($cc, 'addCC');
 
         return $this;
     }
@@ -158,7 +149,7 @@ class Email
      * @param string $subject
      * @param string $body
      * @param string $altBody
-     * @return $this
+     * @return object $this
      */
     public function content(string $html, string $subject, string $body, string $altBody)
     {

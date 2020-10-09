@@ -206,6 +206,6 @@ class UploadeFile
         $filePath  = rtrim($filePath, '/');
         $filePath  = ltrim($filePath, '/');
 
-        return move_uploaded_file($this->tempFile, $filePath);
+        return (bool) move_uploaded_file($this->tempFile, $filePath);
     }
 }

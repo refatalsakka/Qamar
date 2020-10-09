@@ -64,6 +64,8 @@ class Error
 
     /**
      * Show or hide errors depend on the condition
+     *
+     * @return mixed
      */
     public function start()
     {

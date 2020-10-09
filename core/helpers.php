@@ -85,7 +85,7 @@ if (!function_exists('array_get')) {
      */
     function array_get(array $array, string $key, $default = null)
     {
-        return ($array[$key] || $array[$key] == '0') ? $array[$key] : $default;
+        return isset($array[$key]) ? $array[$key] : $default;
     }
 }
 

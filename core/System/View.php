@@ -37,7 +37,7 @@ class View
     {
         $pug = new Pug(array(
             'pretty' => true,
-            'cache' => ($_ENV['APP_DEBUG'] == 'true') ? false : 'template' . DS . 'cache',
+            'cache' => ($_ENV['APP_DEBUG'] == 'true') ? false : 'template' . DIRECTORY_SEPARATOR . 'cache',
             'basedir' => 'template',
             'upToDateCheck' => false,
         ));
@@ -51,11 +51,11 @@ class View
         $_public = $this->_public($dir, $host);
 
         $context += [
-            'lang' => $_ENV['App_LANG'],
-            'charset' => $_ENV['App_CHARSET'],
-            'decsription' => $_ENV['App_DECSRIPTION'],
-            'keywords' => $_ENV['App_KEYWORDS'],
-            'auth' => $_ENV['App_AUTH'],
+            'lang' => $_ENV['APP_LANG'],
+            'charset' => $_ENV['APP_CHARSET'],
+            'decsription' => $_ENV['APP_DECSRIPTION'],
+            'keywords' => $_ENV['APP_KEYWORDS'],
+            'auth' => $_ENV['APP_AUTH'],
             'host'  => $host,
             'parameters' => $parameters,
             '_public' => $_public,
@@ -72,9 +72,9 @@ class View
      */
     private function filePath($path, $dir)
     {
-        $file = str_replace(['/', '\\'], DS, $path);
+        $file = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path);
 
-        $file = $dir . DS . 'template' . DS . $file . '.pug';
+        $file = $dir . DIRECTORY_SEPARATOR . 'template' . DIRECTORY_SEPARATOR . $file . '.pug';
 
         return $file;
     }

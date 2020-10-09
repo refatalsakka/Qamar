@@ -16,4 +16,6 @@ return [
     'hash'      =>  'System\\Hash',
     'error'     =>  'System\\Error',
     'email'     =>  'System\\Email',
+    'msg'       =>  'System\\Message',
+    'lang'      =>  'System\\Language',
 ];
