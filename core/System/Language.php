@@ -21,6 +21,12 @@ class Language
         $this->app = $app;
     }
 
+    /**
+     * Get the language from cookies
+     * if not exists get it from .ENV
+     *
+     * @return string $lang
+     */
     public function get()
     {
         $lang = $this->app->cookie->get('lang');
@@ -32,6 +38,11 @@ class Language
         return $lang;
     }
 
+    /**
+     * Set language in cookies
+     *
+     * @return string $lang
+     */
     public function set($value)
     {
         $this->app->cookie->set('lang', $value, 1000000);

@@ -21,18 +21,38 @@ class Message
         $this->app = $app;
     }
 
-    public function __call($name, $arguments)
+    /**
+     * Get the right array from config/allow.php
+     *
+     * @property string $key
+     * @param array $arguments
+     *
+     * @return method editMsg()
+     */
+    public function __call($key, $arguments)
     {
         $lang = $this->app->lang->get();
 
-        $text = $this->app->file->call('resources/lang/' . $lang . '/' . $name . '.php')[$arguments[0]];
-        $edit = $arguments[1];
+        $text = $this->app->file->call('resources/lang/' . $lang . '/' . $key . '.php')[$arguments[0]];
+        $edit = $arguments[1] ?? [];
 
         return $this->editMsg($text, $edit);
     }
 
+    /**
+     * Replace the key to the value in the given array $edit
+     *
+     * @property string $text
+     * @param array $edit
+     *
+     * @return string $text
+     */
     private function editMsg($text, array $edit)
     {
+        if (empty($edit)) {
+            return $text;
+        }
+
         foreach ($edit as $key => $value) {
             $text = str_replace($key, $value, $text);
         }

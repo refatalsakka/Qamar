@@ -204,7 +204,7 @@ class Application
      * @param string $key
      * @return object
      */
-    public function __get(string $key): object
+    public function __get(string $key)
     {
         return $this->get($key);
     }

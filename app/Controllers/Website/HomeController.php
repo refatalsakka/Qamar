@@ -13,6 +13,9 @@ class HomeController extends Controller
 {
     public function index()
     {
+        echo $this->msg->example('example', [
+            ':number' => 2,
+        ]);
         $context = [];
         return $this->view->render('website/pages/home', $context);
     }

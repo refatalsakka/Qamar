@@ -43,8 +43,8 @@ abstract class Model
      * Call the methods from Database Object
      *
      * @property object $db
-     * @param $method
-     * @param $atgs
+     * @param method $method
+     * @param array $args
      */
     public function __call($method, $args)
     {
