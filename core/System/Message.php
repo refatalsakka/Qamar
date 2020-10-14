@@ -49,12 +49,10 @@ class Message
      */
     private function editMsg($text, array $edit)
     {
-        if (empty($edit)) {
-            return $text;
-        }
-
-        foreach ($edit as $key => $value) {
-            $text = str_replace($key, $value, $text);
+        if (!empty($edit)) {
+            foreach ($edit as $key => $value) {
+                $text = str_replace($key, $value, $text);
+            }
         }
 
         return $text;
