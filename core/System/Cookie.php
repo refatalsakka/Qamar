@@ -12,13 +12,6 @@ class Cookie
     private $app;
 
     /**
-     * Cookies Path
-     *
-     * @var string
-     */
-    private $path;
-
-    /**
      * Constructor
      *
      * @property object $request
@@ -27,8 +20,6 @@ class Cookie
     public function __construct(Application $app)
     {
         $this->app = $app;
-
-        $this->path = dirname($this->app->request->server('SCRIPT_NAME')) ?: '/';
     }
 
     /**
@@ -39,11 +30,11 @@ class Cookie
      * @param int $hours
      * @return void
      */
-    public function set(string $key, $value, int $hours = 1800)
+    public function set(string $key, $value, int $hours = 1800, $path = '/')
     {
         $expireTime = $hours == -1 ? -1 : time() + $hours * 3600;
 
-        setcookie($key, $value, $expireTime, $this->path, '', false, true);
+        setcookie($key, $value, $expireTime, $path, '', false, true);
     }
 
     /**

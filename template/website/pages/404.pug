@@ -1,8 +1,5 @@
 extends ../_layout.pug
 
-block title
-  title 404
-
 block styles
   link(href=cssWebsite + '404.css', rel='stylesheet')
 
@@ -11,8 +8,8 @@ block scripts
 
 block view
   .notfound
-    h1 OOPS! 404 😲
+    h1=ops
     div
       hr
-      p.quote A lot of hard work is hidden behind nice things.
-    a(href='/') Go to Home
+      p.quote=quote
+    a(href='/')=goHome

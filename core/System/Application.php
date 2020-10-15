@@ -68,7 +68,6 @@ class Application
      * Run the Application
      *
      * @property object $session
-     * @property object $request
      * @property object $file
      * @property object $route
      * @property object $response
@@ -77,8 +76,6 @@ class Application
     public function run(): void
     {
         $this->session->start();
-
-        $this->request->prepareUrl();
 
         foreach (glob("routes/**/*.php") as $route) {
             $this->file->call($route);

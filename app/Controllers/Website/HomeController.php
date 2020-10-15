@@ -13,7 +13,11 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $context = [];
+        $title = $this->msg->titles('home');
+
+        $context = [
+            'title' => $title,
+        ];
         return $this->view->render('website/pages/home', $context);
     }
 }

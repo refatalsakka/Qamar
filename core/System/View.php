@@ -27,7 +27,7 @@ class View
      * Render the given path with the passed
      * variables and generate new view object for it
      *
-     * @property object $request
+     * @property object $url
      * @property object $file
      * @param string $path
      * @param array $context
@@ -42,7 +42,7 @@ class View
             'upToDateCheck' => false,
         ));
 
-        $host = $this->app->request->host();
+        $host = $this->app->url->host();
         $dir = $this->app->file->root();
         $parameters = $this->parameters();
 
@@ -108,12 +108,12 @@ class View
      * the right link for admin is localhost/admin
      * the right link for users is localhost/admin/users
      *
-     * @property object $request
+     * @property object $url
      * @return array
      */
     private function parameters()
     {
-        $url = $this->app->request->url();
+        $url = $this->app->url->get();
 
         if ($url === '/') {
             return;

@@ -1,8 +1,5 @@
 extends ../_layout.pug
 
-block title
-  title Home
-
 block styles
   link(href=cssWebsite + 'home.css', rel='stylesheet')
 
@@ -10,4 +7,4 @@ block scripts
   script(src=jsWebsite + 'home.js')
 
 block view
-  h1 Home
+  h1=title

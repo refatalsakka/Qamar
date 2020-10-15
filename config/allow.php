@@ -1,6 +1,6 @@
 <?php
 
 return [
-  'languages' => ['en', 'de'],
+  'languages' => ['ar', 'en', 'de'],
   'image_extensions' => ['png', 'jpg', 'jpeg', 'gif', 'webp'],
 ];

@@ -199,12 +199,13 @@ class Route
     /**
      * Check if the url of the requesting page is matching the given pattern
      *
+     * @property object $url
      * @param string $pattern
      * @return bool
      */
     private function isMatchingPattern($pattern)
     {
-        $url = strtolower($this->app->request->url());
+        $url = strtolower($this->app->url->get());
 
         return preg_match($pattern, $url);
     }
@@ -213,12 +214,13 @@ class Route
      * Get the rest parameter of the url as paramter for
      * the method
      *
+     * @property object $url
      * @param string $pattern
      * @return bool
      */
     private function getArgumentsFor($pattern)
     {
-        $url = $this->app->request->url();
+        $url = $this->app->url->get();
 
         preg_match($pattern, $url, $matches);
 

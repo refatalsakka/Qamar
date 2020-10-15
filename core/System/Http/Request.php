@@ -14,27 +14,6 @@ class Request
     private $app;
 
     /**
-     * Url
-     *
-     * @var string
-     */
-    private $url;
-
-    /**
-     * Base Url
-     *
-     * @var string
-     */
-    private $baseUrl;
-
-    /**
-     * Host
-     *
-     * @var string
-     */
-    private $host;
-
-    /**
      * Constructor
      *
      * @param \System\Application $app
@@ -42,29 +21,6 @@ class Request
     public function __construct(Application $app)
     {
         $this->app = $app;
-    }
-
-    /**
-     * Prepare url
-     *
-     * @property object $http
-     * @return void
-     */
-    public function prepareUrl()
-    {
-        $script = dirname($this->server('SCRIPT_NAME'));
-
-        $requestUri = $this->server('REQUEST_URI');
-
-        if (strpos($requestUri, '?')) {
-            list($requestUri) = explode('?', $requestUri);
-        }
-
-        $this->url = cleanUrl($script, $requestUri);
-
-        $this->host = $this->app->http->requestProtocol() . '://' . $this->server('HTTP_HOST');
-
-        $this->baseUrl = $this->host . $requestUri;
     }
 
     /**
@@ -196,43 +152,13 @@ class Request
     }
 
     /**
-     * Get full url of the script
-     *
-     * @return string
-     */
-    public function baseUrl()
-    {
-        return $this->baseUrl;
-    }
-
-    /**
-     * Get only relative url (clean url)
-     *
-     * @return string
-     */
-    public function url()
-    {
-        return $this->url;
-    }
-
-    /**
-     * Get only host
-     *
-     * @return string
-     */
-    public function host()
-    {
-        return $this->host;
-    }
-
-    /**
      * Check if the request to the admin panel
      *
      * @return bool
      */
     public function isRequestToAdminManagement()
     {
-        $url = $this->url;
+        $url = $this->app->url->get();
         $url = ltrim($url, '/');
         $url = explode('/', $url)[0];
 

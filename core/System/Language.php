@@ -29,7 +29,7 @@ class Language
      */
     public function get()
     {
-        $lang = $this->app->cookie->get('lang');
+        $lang = $this->app->cookie->get('language');
 
         if (!$lang || !is_allow('languages', $lang)) {
             $lang = $_ENV['APP_LANG'];
@@ -45,6 +45,6 @@ class Language
      */
     public function set($value)
     {
-        $this->app->cookie->set('lang', $value, 1000000);
+        $this->app->cookie->set('language', $value);
     }
 }
