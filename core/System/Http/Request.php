@@ -121,6 +121,18 @@ class Request
     }
 
     /**
+     * Set value To $_SERVER For the given key
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return void
+     */
+    public function setServer(string $key, $value)
+    {
+        $_SERVER[$key] = $value;
+    }
+
+    /**
      * Get value from $_SERVER by the given key
      *
      * @param string $key

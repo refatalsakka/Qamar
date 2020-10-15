@@ -86,6 +86,7 @@ class Application
         $this->response->setOutput($output);
 
         $this->response->send();
+
     }
 
     /**
