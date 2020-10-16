@@ -47,7 +47,7 @@ class Message
      *
      * @return string $text
      */
-    private function editMsg($text, array $edit)
+    private function editMsg($text, $edit)
     {
         if (!empty($edit)) {
             foreach ($edit as $key => $value) {
