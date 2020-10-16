@@ -46,8 +46,6 @@ class Error
     private function showError()
     {
         error_reporting(E_ALL);
-
-        ini_set("display_errors", 1);
     }
 
     /**
@@ -58,8 +56,6 @@ class Error
     private function hideError()
     {
         error_reporting(0);
-
-        ini_set('display_errors', 0);
     }
 
     /**
@@ -124,7 +120,12 @@ class Error
      */
     private function displayFriendlyMessage()
     {
-        echo $this->app->view->render('website/pages/error', []);
+        $title = $this->app->msg->error('title');
+
+        $context = [
+            'title' => $title,
+        ];
+        echo $this->app->view->render('website/pages/error', $context);
         exit;
     }
 
@@ -150,8 +151,8 @@ class Error
 
         $error = "There is an Error type: {$type}. says: $message. in file: $file. on line: $line.";
 
-        $this->sendErrorToAdmin($error);
+        // $this->displayFriendlyMessage();
 
-        $this->displayFriendlyMessage();
+        $this->sendErrorToAdmin($error);
     }
 }

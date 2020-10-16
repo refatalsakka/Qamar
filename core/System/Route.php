@@ -26,6 +26,13 @@ class Route
     public $current = [];
 
     /**
+     * Current page
+     *
+     * @var string
+     */
+     private $page;
+
+    /**
      * Prefix
      *
      * @var string
@@ -295,6 +302,8 @@ class Route
                 if ($continue) {
                     list($controller, $method) = $route['action'];
 
+                    $this->page = $controller;
+
                     $arguments = $this->getArgumentsFor($route['pattern']);
 
                     return (string) $this->app->load->action($controller, $method, $arguments);
@@ -302,6 +311,8 @@ class Route
                 break;
             }
         }
+        $this->page = 'notfound';
+
         return notFoundPage();
     }
 
@@ -313,5 +324,18 @@ class Route
     public function getCurrent()
     {
         return $this->current;
+    }
+
+    /**
+     * Get current page
+     *
+     * @return string $current
+     */
+    public function getPage()
+    {
+        $page = explode('\\', $this->page);
+        $length = count($page);
+
+        return $page[$length - 1];
     }
 }

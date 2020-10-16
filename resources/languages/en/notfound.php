@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'title' => 'Not found 404',
     'ops' => 'OOPS! 404 😲',
     'goHome' => 'Go Home',
     'quotes' => [

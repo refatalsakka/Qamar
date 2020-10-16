@@ -49,6 +49,8 @@ class View
         $file = $this->filePath($path, $dir);
 
         $_public = $this->_public($dir, $host);
+        $page = $this->app->route->getPage();
+        $title = $this->app->msg->$page('title');
 
         $context += [
             'lang' => $_ENV['APP_LANG'],
@@ -59,6 +61,7 @@ class View
             'host'  => $host,
             'parameters' => $parameters,
             '_public' => $_public,
+            'title' => $title,
         ];
         return $pug->render($file, $context);
     }
