@@ -24,7 +24,7 @@ class NotfoundController extends Controller
             'goHome' => $goHome,
             'quote' => $quote,
         ];
-        return $this->view->render('website/pages/404', $context);
+        return $this->view->render('website/pages/notfound', $context);
     }
 
     private function pickQuote()

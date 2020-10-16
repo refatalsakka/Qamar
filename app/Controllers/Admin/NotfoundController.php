@@ -14,6 +14,6 @@ class NotfoundController extends Controller
     public function index()
     {
         $context = [];
-        return $this->view->render('admin/pages/404', $context);
+        return $this->view->render('admin/pages/notfound', $context);
     }
 }
