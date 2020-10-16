@@ -49,8 +49,7 @@ class View
         $file = $this->filePath($path, $dir);
 
         $_public = $this->_public($dir, $host);
-        $page = $this->app->route->getPage();
-        $title = $this->app->msg->$page('title');
+        $title = $this->getPageTitle();
 
         $context += [
             'lang' => $_ENV['APP_LANG'],
@@ -140,5 +139,18 @@ class View
             ];
         }
         return $results;
+    }
+
+    /**
+     * Get the page title
+     *
+     * @property object $route
+     * @property object $msg
+     * @return string
+     */
+    private function getPageTitle()
+    {
+        $page = strtolower($this->app->route->getPage());
+        return $this->app->msg->$page('title');
     }
 }
