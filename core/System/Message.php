@@ -31,9 +31,9 @@ class Message
      */
     public function __call($key, $arguments)
     {
-        $lang = $this->app->lang->get();
+        $language = $this->app->lang->get();
 
-        $text = $this->app->file->call('resources/languages/' . $lang . '/' . $key . '.php')[$arguments[0]];
+        $text = $this->app->file->call('resources/languages/' . $language . '/' . $key . '.php')[$arguments[0]];
         $edit = $arguments[1] ?? [];
 
         return $this->editMsg($text, $edit);

@@ -25,17 +25,17 @@ class Language
      * Get the language from cookies
      * if not exists get it from .ENV
      *
-     * @return string $lang
+     * @return string $language
      */
     public function get()
     {
-        $lang = $this->app->cookie->get('language');
+        $language = $this->app->cookie->get('language');
 
-        if (!$lang || !is_allow('languages', $lang)) {
-            $lang = $_ENV['APP_LANG'];
+        if (!$language || !is_allow('languages', $language)) {
+            $language = $_ENV['APP_LANG'];
         }
 
-        return $lang;
+        return $language;
     }
 
     /**
