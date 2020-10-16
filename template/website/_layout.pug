@@ -22,9 +22,10 @@ block varibles
 html(lang=lang)
   head
     include partials/head.pug
-    link(href=cssWebsite + 'libraries.css', rel='stylesheet')
+    link(href=cssWebsite + page + '.css', rel='stylesheet')
     block styles
   body
     block view
     include partials/footer.pug
+    script(src=jsWebsite + page + '.js')
     block scripts

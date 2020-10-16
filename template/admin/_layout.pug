@@ -22,8 +22,10 @@ doctype html
 html(lang='en')
   head
     include partials/head.pug
+    link(href=cssWebsite + title + '.css', rel='stylesheet')
     block styles
   body
     block view
     include partials/footer.pug
+    script(src=jsWebsite + title + '.js')
     block scripts

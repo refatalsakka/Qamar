@@ -25,12 +25,12 @@ const webapckJsConfig = {
   entry: {
     // Website JS Files
     'website/home.js': './resources/js/website/home.js',
-    'website/404.js': './resources/js/website/404.js',
+    'website/notfound.js': './resources/js/website/notfound.js',
     'website/error.js': './resources/js/website/error.js',
 
     // Admin JS Files
     'admin/home.js': './resources/js/admin/home.js',
-    'admin/404.js': './resources/js/admin/404.js',
+    'admin/notfound.js': './resources/js/admin/notfound.js',
   },
   output: {
     path: path.resolve(__dirname, 'public/'),

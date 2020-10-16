@@ -1,11 +1,5 @@
 extends ../_layout.pug
 
-block styles
-  link(href=cssWebsite + 'error.css', rel='stylesheet')
-
-block scripts
-  script(src=jsWebsite + 'error.js')
-
 block view
   h1=title
   p=errorMsg
