@@ -85,6 +85,20 @@ class Request
     }
 
     /**
+     * Get value from $_SERVER by the given key
+     *
+     * @param string $key
+     * @return string
+     */
+    public function server(string $key)
+    {
+        if ($key !== null) {
+            return $this->getValueOfRequest($_SERVER, $key);
+        }
+        return $_SERVER;
+    }
+
+    /**
      * Set value To $_POST For the given key
      *
      * @param string $key
@@ -133,17 +147,6 @@ class Request
     }
 
     /**
-     * Get value from $_SERVER by the given key
-     *
-     * @param string $key
-     * @return string
-     */
-    public function server(string $key)
-    {
-        return array_get($_SERVER, $key);
-    }
-
-    /**
      * Get current request method
      *
      * @return string
@@ -151,16 +154,6 @@ class Request
     public function method()
     {
         return $this->server('REQUEST_METHOD');
-    }
-
-    /**
-     * Get the referer link
-     *
-     * @return string
-     */
-    public function referer()
-    {
-        return $this->server('HTTP_REFERER');
     }
 
     /**
@@ -210,15 +203,13 @@ class Request
      */
     public function canRequestContinue(array $middlewares)
     {
-        if (empty($middlewares)) {
-            return true;
-        }
+        if (!empty($middlewares)) {
+            foreach ($middlewares as $middleware) {
+                $output = $this->app->load->middleware($middleware)->handle();
 
-        foreach ($middlewares as $middleware) {
-            $output = $this->app->load->middleware($middleware)->handle();
-
-            if (!$output) {
-                return false;
+                if (!$output) {
+                    return false;
+                }
             }
         }
         return true;

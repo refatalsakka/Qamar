@@ -48,7 +48,7 @@ class View
 
         $file = $this->filePath($path, $dir);
 
-        $_public = $this->_public($dir, $host);
+        $public = $this->_public($dir, $host);
         $page = strtolower($this->app->route->getPage());
         $title = $this->app->msg->$page('title');
 
@@ -58,9 +58,9 @@ class View
             'decsription' => $_ENV['APP_DECSRIPTION'],
             'keywords' => $_ENV['APP_KEYWORDS'],
             'auth' => $_ENV['APP_AUTH'],
-            'host'  => $host,
+            'host' => $host,
             'parameters' => $parameters,
-            '_public' => $_public,
+            '_public' => $public,
             'title' => $title,
             'page' => $page,
         ];
@@ -84,7 +84,7 @@ class View
     }
 
     /**
-     * Generate the url to public
+     * Generate link to public
      *
      * @param string $dir
      * @param array $host
