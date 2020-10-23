@@ -1,3 +1,5 @@
+/* eslint-disable guard-for-in */
+/* eslint-disable no-restricted-syntax */
 require('dotenv').config();
 
 const gulp = require('gulp');
@@ -50,29 +52,8 @@ const webapckJsConfig = {
 };
 
 // Files 🗄
-const LIBS = {
-  css: [
-    {
-      libs: [
-
-      ],
-    },
-    {
-      fonts: [
-
-      ],
-    },
-    {
-      webfonts: [
-
-      ],
-    },
-    {
-      flags: [
-
-      ],
-    },
-  ],
+// 'File path': 'Where the file should be copied'
+const FILES = {
 };
 
 // Folders 📁
@@ -165,26 +146,34 @@ async function fonts() {
 }
 exports.fonts = fonts;
 
-// Libraries Copy  ↪ 📁 node_modules/ Output ↪ 📁 public/ {js & css} /libs
-async function libraries() {
-  for (const LIB in LIBS) {
-    for (const output of LIBS[LIB]) {
-      if (typeof output === 'object') {
-        for (const extra in output) {
-          output[extra].map(outputExtra => gulp
-            .src(`${outputExtra}`)
-            .pipe(gulp.dest(`public/${LIB}/${extra}`)));
-        }
-      } else {
+// Copy from 📁 node_modules/ Output ↪ 📁 public/
+async function copyToPublic() {
+  if (FILES) {
+    for (const file in FILES) {
+      let copyIn = FILES[file];
+
+      const folders = copyIn.split('/');
+      const lastFolder = folders[folders.length - 1];
+      const isLastFolderFile = /^\w+\.\w+$/gi.test(lastFolder);
+
+      if (isLastFolderFile) {
+        copyIn = copyIn.replace(/\w+\.\w+$/gi, '');
+
         return gulp
-          .src(`${output}`)
-          .pipe(gulp.dest(`public/${LIB}`));
+          .src(file)
+          .pipe(rename(lastFolder))
+          .pipe(gulp.dest(copyIn));
       }
+
+      return gulp
+        .src(file)
+        .pipe(gulp.dest(copyIn));
     }
   }
+
   return false;
 }
-exports.libraries = libraries;
+exports.copyToPublic = copyToPublic;
 
 // Start the Server 🖥
 function server() {
@@ -216,4 +205,4 @@ exports.watchScripts = watchScripts;
 exports.watch = gulp.parallel(watchStyles, watchScripts, watchTemplate);
 
 // Build the Plugins 🔥
-gulp.task('build', gulp.series(templatelint, series(stylelint, styles), series(scriptslint, scripts), series(imgmin, imgmSvg, fonts, libraries)));
+gulp.task('build', gulp.series(templatelint, series(stylelint, styles), series(scriptslint, scripts), series(imgmin, imgmSvg, fonts, copyToPublic)));
