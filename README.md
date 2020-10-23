@@ -15,8 +15,8 @@
   - *more flexibility*
 - **Speed**
   - *compressed js and css files and images*
-  - *every signle page requests just own css and js file*
-  - *a library can be requsted just for specfic page*
+  - *every single page requests just own css and js file*
+  - *a library can be requested just for specfic page*
 
 ## Installation
 
@@ -95,13 +95,13 @@ $ npm run lint:fix:php
 ```sh
 $ npm run scss
 ```
-*If there was any lint error, the function will not complate.*
+*If there was any lint error, the function will not complete.*
 
 **Convert to JS5, Compresse, Output public/js**
 ```sh
 $ npm run js
 ```
-*If there was any lint error, the function will not complate.*
+*If there was any lint error, the function will not complete.*
 
 **Convert to HTM**
 ```sh
