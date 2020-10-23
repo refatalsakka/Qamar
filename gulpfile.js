@@ -54,6 +54,7 @@ const webapckJsConfig = {
 // Files 🗄
 // 'File path': 'Where the file should be copied'
 const FILES = {
+
 };
 
 // Folders 📁
