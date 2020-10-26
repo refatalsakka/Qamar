@@ -8,6 +8,7 @@
 
 ### Requirements
   - [PHP](https://www.php.net/downloads.php#gpg-7.3) v7.3+
+  - [Node.js](https://nodejs.org/en/)
   - [npm](https://www.npmjs.com/) v6+
   - [Composer](https://getcomposer.org/download/) v1.8+
 
