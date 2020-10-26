@@ -1,7 +1,18 @@
 {
-  "name": "mvc-framework",
+  "name": "qamar",
   "description": "",
   "version": "3.0.0",
+  "keywords": ["framework", "web-app"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/refatalsakka/mvc-php"
+  },
+  "author": "Refat Alsakka",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/refatalsakka/mvc-php/issues"
+  },
+  "homepage": "https://github.com/refatalsakka/mvc-php#readme",
   "scripts": {
     "lint": "gulp lint && phpcs",
     "lint:pug": "gulp templatelint",
@@ -24,16 +35,6 @@
     "gitty": "node gitty.js",
     "server": "gulp server"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/refatalsakka/mvc-php"
-  },
-  "author": "Refat Alsakka",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/refatalsakka/mvc-php/issues"
-  },
-  "homepage": "https://github.com/refatalsakka/mvc-php#readme",
   "dependencies": {},
   "devDependencies": {
     "@babel/core": "^7.11.6",
