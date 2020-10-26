@@ -22,8 +22,8 @@ const webpackStream = require('webpack-stream');
 const path = require('path');
 
 const webapckJsConfig = {
-  mode: (process.env.APP_ENV === 'local' && process.env.APP_DEBUG === 'true') ? 'development' : 'production',
-  devtool: (process.env.APP_ENV === 'local' && process.env.APP_DEBUG === 'true') ? 'source-map' : false,
+  mode: (process.env.APP_ENV === 'dev' && process.env.APP_DEBUG === 'true') ? 'development' : 'production',
+  devtool: (process.env.APP_ENV === 'dev' && process.env.APP_DEBUG === 'true') ? 'source-map' : false,
   entry: {
     // Website JS Files
     'website/home.js': './resources/js/website/home.js',
