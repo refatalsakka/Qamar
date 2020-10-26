@@ -3,7 +3,6 @@
 
 # Qamar
 
-
 ## Installation
 
 ### Requirements
