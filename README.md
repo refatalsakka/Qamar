@@ -26,7 +26,7 @@
 ### How to Install 🔥
 ```sh
 $ git clone git@github.com:refatalsakka/qamar.git
-$ qamar mvc-php
+$ cd qamar
 $ npm install
 $ composer install
 $ npm run build
