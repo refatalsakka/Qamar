@@ -4,13 +4,13 @@ namespace app\Controllers\Admin;
 
 use System\Controller as Controller;
 
-/**
- * Home Controller
- *
- * @property object $view
- */
 class HomeController extends Controller
 {
+    /**
+     * Home
+     *
+     * @property object $view
+     */
     public function index()
     {
         $context = [];
