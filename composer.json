@@ -1,6 +1,14 @@
 {
   "name": "php/mvc",
   "description": "",
+  "version": "4.0.0",
+  "keywords": ["PHP", "MVC-PHP"],
+  "type": "framework",
+  "authors":  [
+    {
+      "name": "Refat Alsakka"
+    }
+  ],
   "require": {
     "pug-php/pug": "^3.2",
     "vlucas/phpdotenv": "^5.1",

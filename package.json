@@ -1,7 +1,7 @@
 {
   "name": "mvc-framework",
-  "version": "1.0.0",
   "description": "",
+  "version": "3.0.0",
   "scripts": {
     "lint": "gulp lint && phpcs",
     "lint:pug": "gulp templatelint",
