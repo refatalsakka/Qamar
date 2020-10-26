@@ -1,8 +1,11 @@
 {
   "name": "qamar",
   "description": "",
-  "version": "3.0.0",
-  "keywords": ["framework", "web-app"],
+  "version": "1.0.0",
+  "keywords": [
+    "framework",
+    "web-app"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/refatalsakka/qamar"
