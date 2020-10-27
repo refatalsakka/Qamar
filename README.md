@@ -1,7 +1,7 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/refatalsakka/framework/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/refatalsakka/framework/?branch=master)
 [![Build Status](https://scrutinizer-ci.com/g/refatalsakka/framework/badges/build.png?b=master)](https://scrutinizer-ci.com/g/refatalsakka/framework/build-status/master)
 
-# Qamar
+# Qamar 🌙
 
 ## Installation
 
