@@ -117,7 +117,7 @@ class View
      */
     private function parameters()
     {
-        $url = $this->app->url->get();
+        $url = $this->app->url->parameters();
 
         if ($url === '/') {
             return;

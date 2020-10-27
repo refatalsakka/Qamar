@@ -212,7 +212,7 @@ class Route
      */
     private function isMatchingPattern($pattern)
     {
-        $url = strtolower($this->app->url->get());
+        $url = strtolower($this->app->url->parameters());
 
         return preg_match($pattern, $url);
     }
@@ -227,7 +227,7 @@ class Route
      */
     private function getArgumentsFor($pattern)
     {
-        $url = $this->app->url->get();
+        $url = $this->app->url->parameters();
 
         preg_match($pattern, $url, $matches);
 

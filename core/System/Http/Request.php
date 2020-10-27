@@ -163,7 +163,8 @@ class Request
      */
     public function isRequestToAdminManagement()
     {
-        $url = $this->app->url->get();
+        $url = $this->app->url->parameters();
+        ;
         $url = ltrim($url, '/');
         $url = explode('/', $url)[0];
 

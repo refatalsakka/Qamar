@@ -5,18 +5,25 @@ namespace System;
 class Url
 {
     /**
-     * Application Object
-     *
-     * @var \System\Application
-     */
-    private $app;
-
-    /**
-     * Url
+     * Protocol
      *
      * @var string
      */
-    private $url;
+    private $protocol;
+
+    /**
+     * Host
+     *
+     * @var string
+     */
+    private $host;
+
+    /**
+     * Parameters
+     *
+     * @var string
+     */
+    private $parameters;
 
     /**
      * Base Url
@@ -26,11 +33,11 @@ class Url
     private $baseUrl;
 
     /**
-     * Host
+     * Application Object
      *
-     * @var string
+     * @var \System\Application
      */
-    private $host;
+    private $app;
 
     /**
      * Constructor
@@ -61,31 +68,45 @@ class Url
             list($requestUri) = explode('?', $requestUri);
         }
 
-        $this->url = cleanUrl($script, $requestUri);
+        $this->protocol = $this->app->http->requestProtocol();
 
-        $this->host = $this->app->http->requestProtocol() . '://' . $this->app->request->server('HTTP_HOST');
+        $this->rootDomain = $this->app->request->server('HTTP_HOST');
 
-        $this->baseUrl = $this->host . $requestUri;
+        $this->host = $this->protocol . '://' . $this->rootDomain;
+
+        $this->parameters = cleanUrl($script, $requestUri);
+
+        $this->baseUrl = $this->host . $this->parameters;
     }
 
     /**
-     * Get only relative url (clean url)
+     * Get Protocol
      *
      * @return string
      */
-    public function get()
+    public function protocol()
     {
-        return $this->url;
+        return $this->protocol;
     }
 
     /**
-     * Get full url of the script
+     * Get Root domain
      *
      * @return string
      */
-    public function baseUrl()
+    public function rootDomain()
     {
-        return $this->baseUrl;
+        return $this->rootDomain;
+    }
+
+    /**
+     * Get parameters
+     *
+     * @return string
+     */
+    public function parameters()
+    {
+        return $this->parameters;
     }
 
     /**
@@ -96,6 +117,16 @@ class Url
     public function host()
     {
         return $this->host;
+    }
+
+    /**
+     * Get full url of the script
+     *
+     * @return string
+     */
+    public function baseUrl()
+    {
+        return $this->baseUrl;
     }
 
     /**
