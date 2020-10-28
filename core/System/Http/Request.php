@@ -177,20 +177,10 @@ class Request
      * @param string|array $methods
      * @return bool
      */
-    public function isMatchingRequestMethod($methods = ['GET'])
+    public function isMatchingRequestMethod($method)
     {
-        if (!is_array($methods)) {
-            $methods = [$methods];
-        }
-
-        if (empty($methods)) {
-            $methods = ['GET'];
-        }
-
-        foreach ($methods as $method) {
-            if ($this->method() == strtoupper($method)) {
-                return true;
-            }
+        if ($this->method() == strtoupper($method)) {
+            return true;
         }
         return false;
     }
