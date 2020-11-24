@@ -29,3 +29,8 @@ $ npm install
 $ composer install
 $ npm run build
 ```
+### What will be updated
+- adding JS Pollyfill
+- separating the Database to an API
+- adding JWT
+- writing a documentation
