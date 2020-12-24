@@ -1,6 +1,14 @@
 {
-  "name": "php/mvc",
+  "name": "qamar/qamar",
   "description": "",
+  "version": "1.0.0",
+  "keywords": ["framework", "web-app"],
+  "type": "framework",
+  "authors":  [
+    {
+      "name": "Refat Alsakka"
+    }
+  ],
   "require": {
     "pug-php/pug": "^3.2",
     "vlucas/phpdotenv": "^5.1",

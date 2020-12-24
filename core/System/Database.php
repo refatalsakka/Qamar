@@ -346,7 +346,7 @@ class Database
     {
         $sql = array_shift($bindings);
 
-        if (count($bindings) == 1 and is_array($bindings[0])) {
+        if (count($bindings) == 1 && is_array($bindings[0])) {
             $bindings = $bindings[0];
         }
 

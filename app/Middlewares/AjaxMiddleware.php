@@ -4,13 +4,13 @@ namespace app\Middlewares;
 
 use app\Middlewares\MiddlewareIntrerface\MiddlewaresInterface;
 
-/**
- * Ajax Middleware
- *
- * @property object $url
- */
 class AjaxMiddleware implements MiddlewaresInterface
 {
+    /**
+     * Check if the request is by Ajax.
+     *
+     * @property object $url
+     */
     public function handle()
     {
         if (empty($_SERVER['HTTP_X_REQUESTED_WITH'])) {

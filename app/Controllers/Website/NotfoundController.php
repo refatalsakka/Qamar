@@ -4,13 +4,13 @@ namespace App\Controllers\Website;
 
 use System\Controller as Controller;
 
-/**
- * Notfound Controller
- *
- * @property object $view
- */
 class NotfoundController extends Controller
 {
+    /**
+     * Notfound
+     *
+     * @property object $view
+     */
     public function index()
     {
         $this->response->setHeader("HTTP/1.0 404 Not Found");
@@ -27,6 +27,11 @@ class NotfoundController extends Controller
         return $this->view->render('website/pages/notfound', $context);
     }
 
+    /**
+     * Pick a random Quote
+     *
+     * @property object $msg
+     */
     private function pickQuote()
     {
         return $this->msg->notfound('quotes')[rand(0, 26)];

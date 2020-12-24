@@ -4,13 +4,13 @@ namespace App\Controllers\Admin;
 
 use System\Controller as Controller;
 
-/**
- * Notfound Controller
- *
- * @property object $view
- */
 class NotfoundController extends Controller
 {
+    /**
+     * Notfound
+     *
+     * @property object $view
+     */
     public function index()
     {
         $context = [];

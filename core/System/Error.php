@@ -35,7 +35,7 @@ class Error
      */
     public function allowDisplayingError()
     {
-        return (bool) ($_ENV['APP_ENV'] == 'local' && $_ENV['APP_DEBUG'] == 'true');
+        return (bool) ($_ENV['APP_ENV'] == 'dev' && $_ENV['APP_DEBUG'] == 'true');
     }
 
     /**

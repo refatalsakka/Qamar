@@ -30,7 +30,7 @@ class Route
      *
      * @var string
      */
-     private $page;
+    private $page;
 
     /**
      * Prefix
@@ -72,7 +72,7 @@ class Route
      * @param string|array $middleware
      * @return object $this
      */
-    public function add(string $url, string $action, $requestMethods = ['GET'], $middleware = [])
+    private function add(string $url, string $action, $requestMethods, $middleware = [])
     {
         $url = $this->setPrefix($url);
         $action = $this->setAction($action);
@@ -100,7 +100,7 @@ class Route
      */
     public function get(string $url, string $action, $middleware = [])
     {
-        $this->add($url, $action, ['GET'], $middleware);
+        $this->add($url, $action, 'GET', $middleware);
         return $this;
     }
 
@@ -114,7 +114,7 @@ class Route
      */
     public function post(string $url, string $action, $middleware = [])
     {
-        $this->add($url, $action, ['POST'], $middleware);
+        $this->add($url, $action, 'POST', $middleware);
         return $this;
     }
 
@@ -212,7 +212,7 @@ class Route
      */
     private function isMatchingPattern($pattern)
     {
-        $url = strtolower($this->app->url->get());
+        $url = strtolower($this->app->url->parameters());
 
         return preg_match($pattern, $url);
     }
@@ -227,7 +227,7 @@ class Route
      */
     private function getArgumentsFor($pattern)
     {
-        $url = $this->app->url->get();
+        $url = $this->app->url->parameters();
 
         preg_match($pattern, $url, $matches);
 
@@ -272,7 +272,7 @@ class Route
      */
     public function package(string $url, string $controller, array $middlewares = [])
     {
-        $this->add($url, $controller);
+        $this->add($url, $controller, 'GET');
         $this->add("$url/:id", "$controller@row", ['GET'], $middlewares['row'] ?? []);
         $this->add("$url/new", "$controller@new", ['GET'], $middlewares['new'] ?? []);
         $this->add("$url/add", "$controller@add", ['POST'], $middlewares['add'] ?? []);
