@@ -3,9 +3,9 @@ options:
   # Don't merge default rules
   merge-default-rules: true
   # Set the formatter to 'html'
-  # formatter: html
+  formatter: html
   # Output file instead of logging results
-  # output-file: 'resources/sass/linters/sass-lint.html'
+  output-file: 'resources/sass/linters/sass-lint.html'
   # Raise an error if more than 50 warnings are generated
   max-warnings: 50
 # File Options
